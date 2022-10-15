@@ -14,17 +14,20 @@ contributors. Siehe <https://arc42.org>.
 
 ## Aufgabenstellung {#_aufgabenstellung}
 
-## Qualitätsziele {#_qualit_tsziele}
+## Qualitätsziele
 
-## Stakeholder {#_stakeholder}
+|Qualitätsziel  |Erklärung|
+|---------------|---------|
+|Kompatibilität |Es können mindestens zwei Spieler auf unterschiedlichen Geräten miteinander spielen|
+|Fehlertoleranz/ Stabilität| Das Spiel soll bestehen/ stabil bleiben, auch wenn Teilnehmer abstürzen|
+|Zuverlässigkeit|Das Spiel soll immer gleich schnell laufen (kein "Jittering")|
+|Ein Spiel am Stück|Es reicht aus, wenn ein Spiel am Stück spielbar ist (Keine "direkte" Rematch-Option)|
+## Stakeholder
 
-+-----------------+-----------------+-----------------------------------+
-| Rolle           | Kontakt         | Erwartungshaltung                 |
-+=================+=================+===================================+
-| *\<Rolle-1>*    | *\<Kontakt-1>*  | *\<Erwartung-1>*                  |
-+-----------------+-----------------+-----------------------------------+
-| *\<Rolle-2>*    | *\<Kontakt-2>*  | *\<Erwartung-2>*                  |
-+-----------------+-----------------+-----------------------------------+
+|Rolle  |Kontakt        |Erwartungshaltung|
+|-------|---------------|-----------------|
+|Kunde  |Martin Becke   |Entwicklung eines Tron-Spiels als verteiltes System, gut dokumentiert (Code <-> Dokumentation), Konzepte aus der Vorlesung sinnvoll angewendet und verstanden|
+|Entwickler|Kathleen Neitzel, Kjell May, Viviam Guimaraes| - Das Spiel als verteiltes System entwickeln und dabei die Inhalte aus der Vorlesung praktisch verstehen und anwenden können <br>- PVL erhalten|
 
 # Randbedingungen {#section-architecture-constraints}
 
