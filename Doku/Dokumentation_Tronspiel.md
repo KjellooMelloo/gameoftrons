@@ -21,7 +21,7 @@ contributors. Siehe <https://arc42.org>.
 |Kompatibilität |Es können mindestens zwei Spieler auf unterschiedlichen Geräten miteinander spielen|
 |Fehlertoleranz/ Stabilität| Das Spiel soll bestehen/ stabil bleiben, auch wenn Teilnehmer abstürzen|
 |Zuverlässigkeit|Das Spiel soll immer gleich schnell laufen (kein "Jittering")|
-|Ein Spiel am Stück|Es reicht aus, wenn ein Spiel am Stück spielbar ist (Keine "direkte" Rematch-Option)|
+|Ein Spiel am Stück (Rematch-Option)|Es reicht aus, wenn ein Spiel am Stück spielbar ist (Keine "direkte" Rematch-Option)|
 ## Stakeholder
 
 |Rolle  |Kontakt        |Erwartungshaltung|
@@ -194,18 +194,23 @@ Zuordnung von Bausteinen zu Infrastruktur
 
 # Architekturentscheidungen {#section-design-decisions}
 
-# Qualitätsanforderungen {#section-quality-scenarios}
+# Qualitätsanforderungen
 
-::: formalpara-title
-**Weiterführende Informationen**
-:::
+## Qualitätsbaum
 
-Siehe [Qualitätsanforderungen](https://docs.arc42.org/section-10/) in
-der online-Dokumentation (auf Englisch!).
+![Qualitätsbaum](./images/qualitaetsbaum.png)
 
-## Qualitätsbaum {#_qualit_tsbaum}
+## Qualitätsszenarien
 
-## Qualitätsszenarien {#_qualit_tsszenarien}
+|ID |Szenario|
+|---|--------|
+|K01|Es lässt sich ein faires Spiel erstellen und starten mit 2-6 Spielern|
+|F01|Ein Spieler verliert die Verbindung zum Spiel. Das Spiel geht trotzdem weiter für die anderen Spieler|
+|F02|Eingaben eines Spielers kommen verzögert oder unregelmäßig an. Das Spiel registriert trotzdem für jeden Spieler regelmäßig gleich viele Eingaben und geht fair weiter|
+|Z01|Pakete im Netzwerk haben Varianz in der Laufzeit (Jittering). Das Spiel geht trotzdem gleich schnell weiter|
+|R01|Ein Spiel wurde beendet. Alle Spieler können den Endbildschirm sehen und werden dann zurück zum Startbildschirm geleitet. Die Option dasselbe Spiel zu wiederholen gibt es nicht.|
+
+**TODO Wahrscheinlich noch mehr Szenarien**
 
 # Risiken und technische Schulden {#section-technical-risks}
 
