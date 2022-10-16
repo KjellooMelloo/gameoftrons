@@ -97,9 +97,13 @@ Wichtige Schnittstellen
 
 ## Ebene 2 {#_ebene_2}
 
-### Whitebox *\<Baustein 1>* {#_whitebox_emphasis_baustein_1_emphasis}
+### Whitebox Model
 
-*\<Whitebox-Template>*
+![Model_Ebene2](./images/Model_Ebene2.png)
+
+|Methode    |Kurzbeschreibung|
+|-----------|----------------|
+|
 
 ### Whitebox *\<Baustein 2>* {#_whitebox_emphasis_baustein_2_emphasis}
 
@@ -113,9 +117,16 @@ Wichtige Schnittstellen
 
 ## Ebene 3 {#_ebene_3}
 
-### Whitebox \<\_Baustein x.1\_\> {#_whitebox_baustein_x_1}
+### Whitebox Model
 
-*\<Whitebox-Template>*
+![Model_Ebene3](images/Model_Ebene3.png)
+
+|Methode    |Kurzbeschreibung|
+|-----------|----------------|
+|addPlayer  ||
+|cancelWait ||
+|startGame  ||
+|movePlayer ||
 
 ### Whitebox \<\_Baustein x.2\_\> {#_whitebox_baustein_x_2}
 
@@ -216,10 +227,6 @@ Zuordnung von Bausteinen zu Infrastruktur
 
 # Glossar {#section-glossary}
 
-+-----------------------+-----------------------------------------------+
-| Begriff               | Definition                                    |
-+=======================+===============================================+
-| *\<Begriff-1>*        | *\<Definition-1>*                             |
-+-----------------------+-----------------------------------------------+
-| *\<Begriff-2*         | *\<Definition-2>*                             |
-+-----------------------+-----------------------------------------------+
+|Begriff    |Definition|
+|-----------|----------|
+|||
