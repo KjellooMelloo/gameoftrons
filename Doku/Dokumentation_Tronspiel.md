@@ -12,7 +12,17 @@ contributors. Siehe <https://arc42.org>.
 
 # Einführung und Ziele {#section-introduction-and-goals}
 
-## Aufgabenstellung {#_aufgabenstellung}
+## Aufgabenstellung
+
+Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wurden die Bildschirmanzeigen aller Use Cases skizziert und die dazu zugehörigen Anforderungen aufgenommen. Die Anforderungen werden in der unteren Tabelle neben der Verlinkung zur zugehörigen Bildschirmskizze aufgeführt.
+
+|Bildschirmanzeige  | Anforderungen |
+| --- | --- |
+| [Startbildschirm](images/tron1.png) | <ul><li>Der Übergang zum Wartebildschirm erfolgt über das Anklicken des Start-Buttons</li><li>Das Spiel kann mit 2 bis 6 Spielern gespielt werden</li><li>Die gewünschte Anzahl von Spielern wird über ein Eingabefeld eingestellt</li><li>Default Wert</li><li>Gegner Mensch oder Computer</li><li>Alle Spieler spielen gegen einander</li></ul> |
+| [Wartebildschirm](images/tron2.png) | <ul><li>Die maximale Wartezeit auf die gewünschte Anzahl von Spielern ist parametrisierbar</li><li>Das Warten auf anderen Spieler kann abgebrochen werden, wenn man alleine wartet</li><li>Das Spiel startet automatisch, wenn alle Spieler beigetreten sind</li></ul> |
+| [Spielbildschirm](images/tron3.png) | <ul><li>Das Spielfeld ist rasterförmig mit sichtbarem Raster</li><li>Beim Start des Spiels gibt einen Countdown von 3 Sekunde</li><li>Es müssen faire Startkonditionen für alle Spieler geben</li><li>Ein Spieler stirbt bei Kollision mit einer Wand, einem Motorrad oder einer Spur</li><li>Bei einer Frontalkollision zwischen zwei Spielern ...</li><li>Die zugehörige Spur stirbt beim Tod des Spielers</li><li>Es soll erkennbar sein, welcher Spieler zum Nutzer gehört</li><li>Die Spielfeldgröße soll parametrisierbar sein</li><li>Die Geschwindigkeit soll zwischen 1-500 Bewegungen pro Sekunde parametrisierbar sein</li><li>Das Motorras bewegt sich automatisch gerade aus und kann nach rechts oder links gesteuert werden</li></ul> |
+| [Endbildschirm](images/tron4.png) | <ul><li>Das Endbildschirm erscheint, wenn das Spiel vorbei ist</li><li>Es soll die Option geben, Auskunft darüber zu erlangen, wer der Gewinner ist oder ob das Spiel unentschieden ausgegangen ist</li><li>Nach einigen Sekunden wird zum Startbildschirm gewechselt</li><li>Das Endbildschirm wird erst angezeigt, wenn das Spiel vorbei ist und nicht sobald man stirbt</li></ul>
+| Konfiguration | <ul><li>Die Konfigurationsdatei wird beim Start des Spiels geladen</li><li>Darüber wird die Spieleranzahl zwischen 2 und 6, die maximale Wartezeit bis zum Spielstart, die Spielfeldgröße, die Größe von jedem Feld im Raster, die Geschwindigkeit und die Tastenbelegung für die Steuerung konfiguriert</li></ul>
 
 ## Qualitätsziele {#_qualit_tsziele}
 
