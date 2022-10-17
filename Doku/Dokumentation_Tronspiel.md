@@ -67,15 +67,21 @@ Wichtige Schnittstellen
 
 :   *\<Beschreibung wichtiger Schnittstellen>*
 
-### \<Name Blackbox 1> {#__name_blackbox_1}
+### Model
 
-*\<Zweck/Verantwortung>*
+**Zweck/ Verantwortung**
 
-*\<Schnittstelle(n)>*
+Das Model ist in unserem Spiel sowohl für die Spielelogik, als auch die Lobbylogik zuständig. Es berechnet den aktuellen Spielstand anhand der Eingaben und gibt dies an die View weiter. Die Lobbylogik kümmert sich um das Erstellen und Starten von Spielen, also vom Start- über den Warte- zum Spielbildschirm.
+
+**Schnittstelle(n)**
+
+Um die Tasteneingaben verarbeiten zu können benötigt das Model die angebotene Schnittstelle *ModelController* vom Controller. Um den neuen Spielstand an die View zu übergeben, bietet das Model selbst eine Schnittstelle *ViewModel* an.
 
 *\<(Optional) Qualitäts-/Leistungsmerkmale>*
+Einfach solide geschrieben
 
 *\<(Optional) Ablageort/Datei(en)>*
+tbd
 
 *\<(Optional) Erfüllte Anforderungen>*
 
@@ -101,10 +107,6 @@ Wichtige Schnittstellen
 
 ![Model_Ebene2](./images/Model_Ebene2.png)
 
-|Methode    |Kurzbeschreibung|
-|-----------|----------------|
-|
-
 ### Whitebox *\<Baustein 2>* {#_whitebox_emphasis_baustein_2_emphasis}
 
 *\<Whitebox-Template>*
@@ -123,10 +125,10 @@ Wichtige Schnittstellen
 
 |Methode    |Kurzbeschreibung|
 |-----------|----------------|
-|addPlayer  ||
-|cancelWait ||
-|startGame  ||
-|movePlayer ||
+|addPlayer  |Diese Methode kümmert sich um das Hinzufügen eines neuen Spielers zum Spiel. Dabei wird ein Player-Objekt initialisiert mit einer noch nicht vergebenen Farbe.|
+|cancelWait |Diese Methode bricht die Spielesuche/ das Warten auf weitere Spieler ab|
+|startGame  |Diese Methode initialisiert und startet das eigentliche Spiel, sobald alle Spieler beigetreten sind.|
+|movePlayer |Mit dieser Methode wird die Bewegung im Spiel modelliert. Tasteneingaben vom Spieler bestimmen seine Richtung. Hier wird außerdem mit internen Methoden weiter überprüft, ob es Kollisionen gab und demnach gehandelt.|
 
 ### Whitebox \<\_Baustein x.2\_\> {#_whitebox_baustein_x_2}
 
