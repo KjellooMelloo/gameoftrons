@@ -105,7 +105,6 @@ Wichtige Schnittstellen
 
 **IView**
 
-Diese Schnittstelle definiert die Anzeigefunktionalitäten der Benutzerberfläche an.
 
 | Methode | Kurzbeschreibung |
 | --- | --- |
@@ -113,17 +112,19 @@ Diese Schnittstelle definiert die Anzeigefunktionalitäten der Benutzerberfläch
 | initWaitScreen() | Zeigt den Wartebildschirm an |
 | initGameScreen() | Zeigt den Spielbildschirm an |
 | initEndScreen() | Zeigt den Endbildschirm an |
+| getInputPlayerCount() | Liefert die durch den Nutzer eingegebene Spieleranzahl |
+| cancelWaiting() | Bricht das Warten auf anderen Spieler ab |
+| changeDirection() | Ändert die Richtung des Motorrades des Nutzers |
 
 
 **IViewController**
 
 | Methode | Kurzbeschreibung |
 | --- | --- |
-| getInputPlayerCount() | Liefert die durch den Nutzer eingegebene Spieleranzahl |
-| cancelWaiting() | Bricht das Warten auf anderen Spieler ab |
-| moveStraightForward() | Bewegt das Motorrad des Spielers geradeaus in der gesetzten Geschwindigkeit |
-| changeDirection() | Ändert die Richtung des Motorrades des Nutzers |
-| die() | Entfernt einen Spieler vom Spiel, weil er gestorben ist |
+| getPlayerList()| Liefert
+| getLivingPlayers | Entfernt einen Spieler vom Spiel, weil er gestorben ist |
+| getTilesArray() | Liefert Informationen des Spielfeldes |
+| getTilesAfterDeath() | Liefert aktualisierte Informationen zum Spielfeld nach dem Tod eines Spielers|
 
 
 *\<Blackbox-Template>*
