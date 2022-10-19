@@ -36,6 +36,10 @@ contributors. Siehe <https://arc42.org>.
 ## Fachlicher Kontext {#_fachlicher_kontext}
 
 **\<Diagramm und/oder Tabelle>**
+|Usecase    |Beschreibung   |
+|-----------|---------------|
+|UC3 Spiel starten|Wenn die gewünschte Anzahl an Spielern dem Spiel beigetreten sind, startet es nach einem Countdown von 3 Sekunden automatisch|
+|UC6 Spielende|Sobald nur noch ein Spieler lebt, ist das Spiel vorbei und dieser Spieler hat gewonnen. Sterben hingegen die letzten beiden Spieler gleichzeitig, gibt es ein Unentschieden zwischen diesen. Alle Spieler kommen danach zum Endbildschirm|
 
 **\<optional: Erläuterung der externen fachlichen Schnittstellen>**
 
