@@ -12,7 +12,17 @@ contributors. Siehe <https://arc42.org>.
 
 # Einführung und Ziele {#section-introduction-and-goals}
 
-## Aufgabenstellung {#_aufgabenstellung}
+## Aufgabenstellung
+
+Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wurden die Bildschirmanzeigen aller Use Cases skizziert und die dazu zugehörigen Anforderungen aufgenommen. Die Anforderungen werden in der unteren Tabelle neben der Verlinkung zur zugehörigen Bildschirmskizze aufgeführt.
+
+| Bildschirmanzeige  | Anforderungen |
+| --- | --- |
+| [Startbildschirm](images/tron1.png) | <ul><li>Der Übergang zum Wartebildschirm erfolgt über das Anklicken des Start-Buttons</li><li>Das Spiel kann mit 2 bis 6 Spielern gespielt werden</li><li>Die gewünschte Anzahl von Spielern wird über ein Eingabefeld eingestellt</li><li>Die Spieleranzahl wird per Default auf 2 gesetzt</li><li>Alle Spieler spielen gegen einander</li></ul> |
+| [Wartebildschirm](images/tron2.PNG) | <ul><li>Die maximale Wartezeit auf die gewünschte Anzahl von Spielern ist parametrisierbar</li><li>Das Warten auf anderen Spieler kann abgebrochen werden, wenn man alleine wartet</li><li>Das Spiel startet automatisch, wenn alle Spieler beigetreten sind</li></ul> |
+| [Spielbildschirm](images/tron3.PNG) | <ul><li>Das Spielfeld ist rasterförmig mit sichtbarem Raster</li><li>Beim Start des Spiels gibt einen Countdown von 3 Sekunden</li><li>Es müssen faire Startkonditionen für alle Spieler geben</li><li>Ein Spieler stirbt bei Kollision mit einer Wand, einem Motorrad oder einer Spur</li><li>Bei einer Frontalkollision zwischen zwei Spielern sterben beide Spieler</li><li>Wenn die letzten zwei Spieler durch eine Frontalkollision sterben, endet das Spiel unentschieden</li><li>Wenn die letzten zwei Spieler im Spiel gleichzeitig durch Kollision mit einer Wand und/oder Spur sterben, dann ender das Spiel unentschieden</li><li>Die zugehörige Spur stirbt beim Tod des Spielers</li><li>Es soll erkennbar sein, welcher Spieler zum Nutzer gehört</li><li>Die Spielfeldgröße soll parametrisierbar sein</li><li>Die Geschwindigkeit soll zwischen 1-500 Bewegungen pro Sekunde parametrisierbar sein</li><li>Das Motorrad bewegt sich automatisch gerade aus und kann nach rechts oder links gesteuert werden</li></ul> |
+| [Endbildschirm Fall 1](images/tron4.PNG)<br> [Endbildschirm Fall 2](images/tron5.PNG)| <ul><li>Das Endbildschirm erscheint, wenn das Spiel vorbei ist</li><li>Im Endbildschirm wird angezeigt, wer gewonnen hat oder ob das Spiel unentschieden ausgegangen ist</li><li>Nach einigen Sekunden wird zum Startbildschirm gewechselt</li><li>Das Endbildschirm wird erst angezeigt, wenn das Spiel vorbei ist und nicht sobald man stirbt</li></ul>
+| Konfiguration | <ul><li>Die Konfigurationsdatei wird beim Start des Spiels geladen</li><li>Darüber wird vom Nutzer die Spieleranzahl zwischen 2 und 6, die maximale Wartezeit bis zum Spielstart, die Spielfeldgröße, die Größe von jedem Feld im Raster, die Geschwindigkeit und die Tastenbelegung für die Steuerung konfiguriert</li></ul>
 
 ## Qualitätsziele
 
@@ -70,7 +80,14 @@ contributors. Siehe <https://arc42.org>.
 
 **\<Mapping fachliche auf technische Schnittstellen>**
 
-# Lösungsstrategie {#section-solution-strategy}
+# Lösungsstrategie
+
+| Qualitätsziel | Lösungsstrategie |
+| --- | --- |
+| Kompatibilität | <ul></ul> |
+| Fehlertoleranz/Stabilität | <ul></ul> |
+| Zuverlässigkeit | <ul></ul> |
+| Ein Spiel am Stück (Rematch-Option) | <ul><li>Nach Spielende wird automatisch zum Startbildschirm gewechselt, wo die Spieler wieder die gewünschte Spieleranzahl angeben können und über den Start-Button in den Warteraum können</ul> |
 
 # Bausteinsicht {#section-building-block-view}
 
@@ -110,7 +127,37 @@ tbd
 
 *\<(optional) Offene Punkte/Probleme/Risiken>*
 
-### \<Name Blackbox 2> {#__name_blackbox_2}
+### View (Blackbox) 
+ Das View-Subsystem implementiert die gleichnamige View des eingesetzten MVC-Patterns.
+ Das Subsystem stellt die grafische Benutzeroberfläche bereit. Es nimmt Aktionen vom Nutzer entgegen und leitet diese zum Controller weiter. 
+
+ Bei Bedarf, im Falle einer Änderung im Datenmodell (Datenmodell wird Subsystem Model verwaltet), informiert der Controller die View über die Änderung. Daraufhin passt die View die angezeigten Inhalte an.
+
+#### Schnittstellen
+
+**IView**
+
+
+| Methode | Kurzbeschreibung |
+| --- | --- |
+| initStartScreen() | Zeigt den Startbildschirm an |
+| initWaitScreen() | Zeigt den Wartebildschirm an |
+| initGameScreen() | Zeigt den Spielbildschirm an |
+| initEndScreen() | Zeigt den Endbildschirm an |
+| getInputPlayerCount() | Liefert die durch den Nutzer eingegebene Spieleranzahl |
+| cancelWaiting() | Bricht das Warten auf anderen Spieler ab |
+| changeDirection() | Ändert die Richtung des Motorrades des Nutzers |
+
+
+**IViewController**
+
+| Methode | Kurzbeschreibung |
+| --- | --- |
+| getPlayerList()| Liefert
+| getLivingPlayers | Entfernt einen Spieler vom Spiel, weil er gestorben ist |
+| getTilesArray() | Liefert Informationen des Spielfeldes |
+| getTilesAfterDeath() | Liefert aktualisierte Informationen zum Spielfeld nach dem Tod eines Spielers|
+
 
 *\<Blackbox-Template>*
 
@@ -235,7 +282,13 @@ Zuordnung von Bausteinen zu Infrastruktur
 
 *\<Erklärung>*
 
-# Architekturentscheidungen {#section-design-decisions}
+# Architekturentscheidungen 
+
+Ausschlaggebend für die Architektur ist das MVC-Entwurfsmuster, das häufig bei Anwendungen mit Benutzeroberfläche eingesetzt wird, was auch bei der hier behandelten Anwendung der Fall ist.
+
+Dieses Entwurfsmuster implementiert das Prinzip des Separation of Concerns, wodurch die Wartbarbeit und des Systems steigt und Auswirkungen von Änderungen eher lokal bleiben. Diese Eigenschaften führen auch dazu, dass das System erweiterbar ist.
+
+Die Vorteile, die das Einsetzen dieses Patterns bringen, sind für die Entwicklung dieser Software unerlässlich, da der Softwareentwicklungsprozess iterativ gestaltet ist und da Änderungen in der Logik oder Architektur aufgrund von neuen Wunschäußerungen durch die Stakeholder oder aufgrund von Fehleinschätzungen durch das unerfahrene Entwicklungsteam zu erwarten sind.
 
 # Qualitätsanforderungen
 
