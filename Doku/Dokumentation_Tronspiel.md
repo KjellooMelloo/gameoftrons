@@ -138,10 +138,7 @@ tbd
 
 | Methode | Kurzbeschreibung |
 | --- | --- |
-| initStartScreen() | Zeigt den Startbildschirm an |
-| initWaitScreen() | Zeigt den Wartebildschirm an |
-| initGameScreen() | Zeigt den Spielbildschirm an |
-| initEndScreen() | Zeigt den Endbildschirm an |
+| showScreen() | Zeigt den Bildschirm an, der zum aktuellen Programmzustand passt |
 | getInputPlayerCount() | Liefert die durch den Nutzer eingegebene Spieleranzahl |
 | cancelWaiting() | Bricht das Warten auf anderen Spieler ab |
 | changeDirection() | Ändert die Richtung des Motorrades des Nutzers |
@@ -151,7 +148,7 @@ tbd
 
 | Methode | Kurzbeschreibung |
 | --- | --- |
-| getPlayerList()| Liefert
+| getPlayerList()| Liefert die instanziierten Spieler |
 | getLivingPlayers | Entfernt einen Spieler vom Spiel, weil er gestorben ist |
 | getTilesArray() | Liefert Informationen des Spielfeldes |
 | getTilesAfterDeath() | Liefert aktualisierte Informationen zum Spielfeld nach dem Tod eines Spielers|
