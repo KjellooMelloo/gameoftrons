@@ -144,11 +144,9 @@ tbd
 
 | Methode | Kurzbeschreibung |
 | --- | --- |
-| getPlayerList()| Liefert
-| getLivingPlayers | Entfernt einen Spieler vom Spiel, weil er gestorben ist |
-| getTilesArray() | Liefert Informationen des Spielfeldes |
-| getTilesAfterDeath() | Liefert aktualisierte Informationen zum Spielfeld nach dem Tod eines Spielers|
-| loadState() | |
+|sendPlayerList()| Liefert die instanziierten Spieler |
+|sendTilesArray() | Liefert Informationen des Spielfeldes |
+
 
 
 **IModelController**
@@ -194,12 +192,12 @@ tbd
 
 |Methode    |Kurzbeschreibung|
 |-----------|----------------|
-|addPlayer  |Diese Methode kümmert sich um das Hinzufügen eines neuen Spielers zum Spiel. Dabei wird ein Player-Objekt initialisiert mit einer noch nicht vergebenen Farbe.|
-|cancelWait |Diese Methode bricht die Spielesuche/ das Warten auf weitere Spieler ab|
-|startGame  |Diese Methode initialisiert und startet das eigentliche Spiel, sobald alle Spieler beigetreten sind.|
-|movePlayer |Mit dieser Methode wird die Bewegung im Spiel modelliert. Tasteneingaben vom Spieler bestimmen seine Richtung. Hier wird außerdem mit internen Methoden weiter überprüft, ob es Kollisionen gab und demnach gehandelt.|
-|checkCollision| Diese Methode überprüft, ob es eine Kollision zwischen einem Spieler und einem anderen Spieler, Spur oder Wand gegeben hat.|
-|clearPlayer|Wenn ein Spieler kollidiert ist, soll er vom Spielfeld verschwinden.|
+|addPlayer()|Diese Methode kümmert sich um das Hinzufügen eines neuen Spielers zum Spiel. Dabei wird ein Player-Objekt initialisiert mit einer noch nicht vergebenen Farbe.|
+|cancelWait()|Diese Methode bricht die Spielesuche/ das Warten auf weitere Spieler ab|
+|startGame()|Diese Methode initialisiert und startet das eigentliche Spiel, sobald alle Spieler beigetreten sind.|
+|movePlayer()|Mit dieser Methode wird die Bewegung im Spiel modelliert. Tasteneingaben vom Spieler bestimmen seine Richtung. Hier wird außerdem mit internen Methoden weiter überprüft, ob es Kollisionen gab und demnach gehandelt.|
+|checkCollision()| Diese Methode überprüft, ob es eine Kollision zwischen einem Spieler und einem anderen Spieler, Spur oder Wand gegeben hat.|
+|clearPlayer()|Wenn ein Spieler kollidiert ist, soll er vom Spielfeld verschwinden.|
 
 ### Whitebox \<\_Baustein x.2\_\> {#_whitebox_baustein_x_2}
 
