@@ -159,6 +159,11 @@ tbd
 
 ## *\<Bezeichnung Laufzeitszenario n>* {#__emphasis_bezeichnung_laufzeitszenario_n_emphasis}
 
+**Usecase 3 Spielstart**
+![Sequenzdiagramm_Spielstart](images/SD_Spielstart.png)
+
+**Usecase 6 Spielende**
+![Sequenzdiagramm_Spielende](images/SD_Spielende.png)
 ...
 
 # Verteilungssicht {#section-deployment-view}
