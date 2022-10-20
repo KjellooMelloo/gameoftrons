@@ -28,21 +28,18 @@ contributors. Siehe <https://arc42.org>.
 
 # Randbedingungen {#section-architecture-constraints}
 **\<Technische Randbedingungen>**
-+-----------------+-----------------+-----------------------------------+
+
 | Randbedingung           | Erläuterung                                 |
-+=================+=================+===================================+
-| *\<Programmiersprache>* | *\<Die Vorgabe der Aufgabenstellung erfordert die Nutzung einer objektorientierten Programmiersprache. Die Nutzung von Java wird empfohlen, da in dieser Sprache Code-Beispiele in den Vorlesungen gezeigt werden. Wir haben uns aus diesem Grund für Java entschieden.>*                                                          |
-+-----------------+-----------------+-----------------------------------+
-| *\<Versionsverwaltung>* | *\<Die Nutzung von unserem hochschuleigenen Gitlab ist ebenfalls vorgeschrieben. Wir arbeiten gerne mit dieser Versionsverwaltung, da ein effizientes Zusammenarbeiten im Team ermöglicht und zu intensivem Austausch angeregt wird.>*                                                                      |
-+-----------------+-----------------+-----------------------------------+
-| *\<Schnittstellen>*     | *\<Kommunikation RPC und REST>*             |
-+-----------------+-----------------+-----------------------------------+
+|-------------------------|---------------------------------------------|
+| Programmiersprache | Die Vorgabe der Aufgabenstellung erfordert die Nutzung einer objektorientierten Programmiersprache. Die Nutzung von Java wird empfohlen, da in dieser Sprache Code-Beispiele in den Vorlesungen gezeigt werden. Wir haben uns aus diesem Grund für Java entschieden. |
+| Versionsverwaltung | Die Nutzung von unserem hochschuleigenen Gitlab ist ebenfalls vorgeschrieben. Wir arbeiten gerne mit dieser Versionsverwaltung, da ein effizientes Zusammenarbeiten im Team ermöglicht und zu intensivem Austausch angeregt wird. |
+| Schnittstellen     | Kommunikation RPC und REST |
 
 **\<Organisatorische Randbedingungen>**
 +-----------------+-----------------+-----------------------------------+
 | Randbedingung   | Erläuterung                                         |
 +=================+=================+===================================+
-| *\<Team>*       | *\<Kjell May, Viviam Ribeiro Guimaraes und Kathleen Neitzel aus dem Studiengang der Angewandten Informatik. Fachsemester 6 und höher.>*                                                               |
+| *\<Team>*       | *\<Kjell May, Viviam Ribeiro Guimaraes und Kathleen Neitzel aus dem Studiengang der Angewandten Informatik. Fachsemester 6 und 7.>*                                                               |
 +-----------------+-----------------+-----------------------------------+
 | *\<Zeit>*       | *\<Standalone Applikation bis Mitte November, endgültige Abgabe Ende Januar 2023>*                                                                  |
 +-----------------+-----------------+-----------------------------------+
@@ -53,11 +50,15 @@ contributors. Siehe <https://arc42.org>.
 
 **\<Diagramm und/oder Tabelle>**
 
+![blackbox_kontext.png](./images/blackbox_kontext.png)
+
 **\<optional: Erläuterung der externen fachlichen Schnittstellen>**
 
 ## Technischer Kontext {#_technischer_kontext}
 
 **\<Diagramm oder Tabelle>**
+
+![Technischer_Kontext.png](./images/Technischer_Kontext.png)
 
 **\<optional: Erläuterung der externen technischen Schnittstellen>**
 
@@ -140,6 +141,8 @@ Wichtige Schnittstellen
 ### Whitebox \<\_Baustein y.1\_\> {#_whitebox_baustein_y_1}
 
 *\<Whitebox-Template>*
+
+![Tron_Controller.png](./images/Tron_Controller.png)
 
 # Laufzeitsicht {#section-runtime-view}
 
