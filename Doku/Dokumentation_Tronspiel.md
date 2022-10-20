@@ -40,14 +40,11 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 | Versionsverwaltung | Die Nutzung von unserem hochschuleigenen Gitlab ist ebenfalls vorgeschrieben. Wir arbeiten gerne mit dieser Versionsverwaltung, da ein effizientes Zusammenarbeiten im Team ermöglicht und zu intensivem Austausch angeregt wird. |
 | Schnittstellen     | Kommunikation RPC und REST |
 
-**Organisatorische Randbedingungen**
-+-----------------+-----------------+-----------------------------------+
-| Randbedingung   | Erläuterung                                         |
-+=================+=================+===================================+
-| *\<Team>*       | *\<Kjell May, Viviam Ribeiro Guimaraes und Kathleen Neitzel aus dem Studiengang der Angewandten Informatik. Fachsemester 6 und 7.>*                                                               |
-+-----------------+-----------------+-----------------------------------+
-| *\<Zeit>*       | *\<Standalone Applikation bis Mitte November, endgültige Abgabe Ende Januar 2023>*                                                                  |
-+-----------------+-----------------+-----------------------------------+
+**\<Organisatorische Randbedingungen>**
+| Randbedingung   | Erläuterung |
+|-----------------|-------------|
+| Team            | Kjell May, Viviam Ribeiro Guimaraes und Kathleen Neitzel aus dem Studiengang der Angewandten Informatik. Fachsemester 6 und 7. |
+| Zeit            | Standalone Applikation bis Mitte November, endgültige Abgabe Ende Januar 2023. |
 
 # Kontextabgrenzung
 
@@ -56,8 +53,12 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 **Diagramm und Tabelle**
 |Usecase    |Beschreibung   |
 |-----------|---------------|
-|UC3 Spiel starten|Wenn die gewünschte Anzahl an Spielern dem Spiel beigetreten sind, startet es nach einem Countdown von 3 Sekunden automatisch|
-|UC6 Spielende|Sobald nur noch ein Spieler lebt, ist das Spiel vorbei und dieser Spieler hat gewonnen. Sterben hingegen die letzten beiden Spieler gleichzeitig, gibt es ein Unentschieden zwischen diesen. Alle Spieler kommen danach zum Endbildschirm|
+| UC1 Spiel erstellen | Beim Programmstart wird die Config-Datei in den Controller geladen. Startbildschirm wird angezeigt (--> drawScreen()). Der Benutzer kann aus einer Drop-Down-Liste die gewünschte Spieleranzahl auswählen. Wenn keine Zahl ausgewählt wurde, wird der Default-Wert aus der Config Datei genutzt. Der Benutzer kann den Start-Button anklicken. Eine neue Spielinstanz wird mit allen Parametern aus der Config-Datei erstellt. Der Benutzer wird in die Lobby weitergeleitet. |
+| UC2 Warten abbrechen | Vorbedingung: Benutzer befindet sich in der Lobby und wartet alleine. Der Benutzer kann auf den Button "Cancel" klicken (EventLog, cancelWaiting() View, deleteGame() Controller). Das System leitet ihn zum Startbildschirm zurück (drawScreen() View). Fehlerfall: Der Benutzer wartet nicht allein. Der Benutzer klickt "Cancel". System zeigt Fehlermeldung an, da Benutzer nicht alleine wartet und somit das Warten nicht beenden kann (checkState() Controller, drawScreen() View). |
+| UC3 Spiel starten | Vorbedingung: Alle bis auf den letzten Mitspieler befinden sich im Warteraum. Der letzte fehlende Spieler betritt den Warteraum. Der letzte Spieler wird der Spielerliste in der Config-Datei hinzugefügt (addPlayer). Die Spielinstanz wird ins Model geladen. Ein 3-Sekunden-Countdown startet automatisch (drawScreen() View). |
+| UC4 rechts-links | Beschreibung |
+| UC5 Kollision | Beschreibung |
+| UC6 Spielende | Sobald nur noch ein Spieler lebt, ist das Spiel vorbei und dieser Spieler hat gewonnen. Sterben hingegen die letzten beiden Spieler gleichzeitig, gibt es ein Unentschieden zwischen diesen. Alle Spieler kommen danach zum Endbildschirm |
 
 ![blackbox_kontext.png](./images/blackbox_kontext.png)
 
@@ -67,7 +68,7 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 
 **\<Diagramm oder Tabelle>**
 
-![Technischer_Kontext.png](./images/Technischer_Kontext.png)
+![Tron_Standalone_kontext.png](./images/Tron_Standalone_kontext.png)
 
 **\<optional: Erläuterung der externen technischen Schnittstellen>**
 
@@ -150,6 +151,14 @@ tbd
 | getLivingPlayers | Entfernt einen Spieler vom Spiel, weil er gestorben ist |
 | getTilesArray() | Liefert Informationen des Spielfeldes |
 | getTilesAfterDeath() | Liefert aktualisierte Informationen zum Spielfeld nach dem Tod eines Spielers|
+| loadState() | |
+
+
+**IModelController**
+| Methode | Kurzbeschreibung |
+| --- | --- |
+| setPlayerList() | Liefert |
+| updateState() | |
 
 
 *\<Blackbox-Template>*
