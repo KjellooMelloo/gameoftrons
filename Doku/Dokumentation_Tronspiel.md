@@ -1,17 +1,9 @@
-# 
+# **Dokumentation Game of Trons**
 
-**Über arc42**
+**Autoren**: Kathleen Neitzel, Kjell May, Viviam Guimaraes
+**Modul**: Verteilte Systeme
 
-arc42, das Template zur Dokumentation von Software- und
-Systemarchitekturen.
-
-Template Version 8.1 DE. (basiert auf AsciiDoc Version), Mai 2022
-
-Created, maintained and © by Dr. Peter Hruschka, Dr. Gernot Starke and
-contributors. Siehe <https://arc42.org>.
-
-# Einführung und Ziele {#section-introduction-and-goals}
-
+# Einführung und Ziele
 ## Aufgabenstellung
 
 Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wurden die Bildschirmanzeigen aller Use Cases skizziert und die dazu zugehörigen Anforderungen aufgenommen. Die Anforderungen werden in der unteren Tabelle neben der Verlinkung zur zugehörigen Bildschirmskizze aufgeführt.
@@ -39,8 +31,8 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 |Kunde  |Martin Becke   |Entwicklung eines Tron-Spiels als verteiltes System, gut dokumentiert (Code <-> Dokumentation), Konzepte aus der Vorlesung sinnvoll angewendet und verstanden|
 |Entwickler|Kathleen Neitzel, Kjell May, Viviam Guimaraes| - Das Spiel als verteiltes System entwickeln und dabei die Inhalte aus der Vorlesung praktisch verstehen und anwenden können <br>- PVL erhalten|
 
-# Randbedingungen {#section-architecture-constraints}
-**\<Technische Randbedingungen>**
+# Randbedingungen
+**Technische Randbedingungen**
 
 | Randbedingung           | Erläuterung                                 |
 |-------------------------|---------------------------------------------|
@@ -48,7 +40,7 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 | Versionsverwaltung | Die Nutzung von unserem hochschuleigenen Gitlab ist ebenfalls vorgeschrieben. Wir arbeiten gerne mit dieser Versionsverwaltung, da ein effizientes Zusammenarbeiten im Team ermöglicht und zu intensivem Austausch angeregt wird. |
 | Schnittstellen     | Kommunikation RPC und REST |
 
-**\<Organisatorische Randbedingungen>**
+**Organisatorische Randbedingungen**
 +-----------------+-----------------+-----------------------------------+
 | Randbedingung   | Erläuterung                                         |
 +=================+=================+===================================+
@@ -57,11 +49,11 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 | *\<Zeit>*       | *\<Standalone Applikation bis Mitte November, endgültige Abgabe Ende Januar 2023>*                                                                  |
 +-----------------+-----------------+-----------------------------------+
 
-# Kontextabgrenzung {#section-system-scope-and-context}
+# Kontextabgrenzung
 
-## Fachlicher Kontext {#_fachlicher_kontext}
+## Fachlicher Kontext
 
-**\<Diagramm und/oder Tabelle>**
+**Diagramm und Tabelle**
 |Usecase    |Beschreibung   |
 |-----------|---------------|
 |UC3 Spiel starten|Wenn die gewünschte Anzahl an Spielern dem Spiel beigetreten sind, startet es nach einem Countdown von 3 Sekunden automatisch|
@@ -71,7 +63,7 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 
 **\<optional: Erläuterung der externen fachlichen Schnittstellen>**
 
-## Technischer Kontext {#_technischer_kontext}
+## Technischer Kontext
 
 **\<Diagramm oder Tabelle>**
 
@@ -90,9 +82,9 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 | Zuverlässigkeit | <ul></ul> |
 | Ein Spiel am Stück (Rematch-Option) | <ul><li>Nach Spielende wird automatisch zum Startbildschirm gewechselt, wo die Spieler wieder die gewünschte Spieleranzahl angeben können und über den Start-Button in den Warteraum können</ul> |
 
-# Bausteinsicht {#section-building-block-view}
+# Bausteinsicht
 
-## Whitebox Gesamtsystem {#_whitebox_gesamtsystem}
+## Whitebox Gesamtsystem
 
 ***\<Übersichtsdiagramm>***
 
@@ -228,7 +220,7 @@ Methodenliste
 | ...() | ... |
 
 
-# Laufzeitsicht {#section-runtime-view}
+# Laufzeitsicht
 
 ## *\<Bezeichnung Laufzeitszenario 1>* {#__emphasis_bezeichnung_laufzeitszenario_1_emphasis}
 
@@ -243,10 +235,10 @@ Methodenliste
 
 ## *\<Bezeichnung Laufzeitszenario n>* {#__emphasis_bezeichnung_laufzeitszenario_n_emphasis}
 
-**Usecase 3 Spielstart**
+## Usecase 3 Spielstart
 ![Sequenzdiagramm_Spielstart](images/SD_Spielstart.png)
 
-**Usecase 6 Spielende**
+## Usecase 6 Spielende
 ![Sequenzdiagramm_Spielende](images/SD_Spielende.png)
 ...
 
