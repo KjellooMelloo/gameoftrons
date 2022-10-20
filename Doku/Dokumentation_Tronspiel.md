@@ -1,6 +1,6 @@
 # **Dokumentation Game of Trons**
 
-**Autoren**: Kathleen Neitzel, Kjell May, Viviam Guimaraes
+**Autoren**: Kathleen Neitzel, Kjell May, Viviam Ribeiro
 **Modul**: Verteilte Systeme
 
 # Einführung und Ziele
@@ -29,7 +29,7 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 |Rolle  |Kontakt        |Erwartungshaltung|
 |-------|---------------|-----------------|
 |Kunde  |Martin Becke   |Entwicklung eines Tron-Spiels als verteiltes System, gut dokumentiert (Code <-> Dokumentation), Konzepte aus der Vorlesung sinnvoll angewendet und verstanden|
-|Entwickler|Kathleen Neitzel, Kjell May, Viviam Guimaraes| - Das Spiel als verteiltes System entwickeln und dabei die Inhalte aus der Vorlesung praktisch verstehen und anwenden können <br>- PVL erhalten|
+|Entwickler|Kathleen Neitzel, Kjell May, Viviam Ribeiro| - Das Spiel als verteiltes System entwickeln und dabei die Inhalte aus der Vorlesung praktisch verstehen und anwenden können <br>- PVL erhalten|
 
 # Randbedingungen
 **Technische Randbedingungen**
