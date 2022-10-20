@@ -144,6 +144,21 @@ Wichtige Schnittstellen
 
 ![Tron_Controller.png](./images/Tron_Controller.png)
 
+Methodenliste
+| Methode           | Beschreibung                                 |
+|-------------------------|---------------------------------------------|
+| createGame() | Erstellt eine neue Spielinstanz, nutzt User Input der View für die Spielerzahl und lädt die Config-Datei. Falls bereits eine vorhanden --> bestehende ersetzt. |
+| deleteGame() | Löscht die bestehende Spielinstanz. Falls keine vorhanden --> Exception |
+| checkState() | Prüft, ob eine gültige Anzahl an Spielern vorhanden sind. Prüft, ob benötigte Spielinstanz für angefragte Operation vorhanden. |
+? Model und Controller auseinanderpflücken --> Use Cases überlegen.
+| next() | Wechselt in den gültigen angefragten Zustand. Aktualisierung des aktuellen States. Vorheriger State wird auf Stack gespeichert. |
+| back() | Lädt den letzten (gültigen) Zustand auf dem Stack als aktuellen State. |
+| resetStateMachine() | Löscht alle auf dem Stack gespeicherten States und lädt den Default State als aktuellen State. |
+| updateSpieler() | Aktualisiert die Spielerliste. |
+| updateField() | Aktualisiert alle Farben des Spielfelds. |
+| ...() | ... |
+
+
 # Laufzeitsicht {#section-runtime-view}
 
 ## *\<Bezeichnung Laufzeitszenario 1>* {#__emphasis_bezeichnung_laufzeitszenario_1_emphasis}
