@@ -1,17 +1,9 @@
-# 
+# **Dokumentation Game of Trons**
 
-**Über arc42**
+**Autoren**: Kathleen Neitzel, Kjell May, Viviam Guimaraes
+**Modul**: Verteilte Systeme
 
-arc42, das Template zur Dokumentation von Software- und
-Systemarchitekturen.
-
-Template Version 8.1 DE. (basiert auf AsciiDoc Version), Mai 2022
-
-Created, maintained and © by Dr. Peter Hruschka, Dr. Gernot Starke and
-contributors. Siehe <https://arc42.org>.
-
-# Einführung und Ziele {#section-introduction-and-goals}
-
+# Einführung und Ziele
 ## Aufgabenstellung
 
 Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wurden die Bildschirmanzeigen aller Use Cases skizziert und die dazu zugehörigen Anforderungen aufgenommen. Die Anforderungen werden in der unteren Tabelle neben der Verlinkung zur zugehörigen Bildschirmskizze aufgeführt.
@@ -39,8 +31,8 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 |Kunde  |Martin Becke   |Entwicklung eines Tron-Spiels als verteiltes System, gut dokumentiert (Code <-> Dokumentation), Konzepte aus der Vorlesung sinnvoll angewendet und verstanden|
 |Entwickler|Kathleen Neitzel, Kjell May, Viviam Guimaraes| - Das Spiel als verteiltes System entwickeln und dabei die Inhalte aus der Vorlesung praktisch verstehen und anwenden können <br>- PVL erhalten|
 
-# Randbedingungen {#section-architecture-constraints}
-**\<Technische Randbedingungen>**
+# Randbedingungen
+**Technische Randbedingungen**
 
 | Randbedingung           | Erläuterung                                 |
 |-------------------------|---------------------------------------------|
@@ -54,12 +46,12 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 | Team            | Kjell May, Viviam Ribeiro Guimaraes und Kathleen Neitzel aus dem Studiengang der Angewandten Informatik. Fachsemester 6 und 7. |
 | Zeit            | Standalone Applikation bis Mitte November, endgültige Abgabe Ende Januar 2023. |
 
-# Kontextabgrenzung {#section-system-scope-and-context}
+# Kontextabgrenzung
 
-## Fachlicher Kontext {#_fachlicher_kontext}
+## Fachlicher Kontext
 
-**\<Diagramm und/oder Tabelle>**
-| Usecase   | Beschreibung  |
+**Diagramm und Tabelle**
+|Usecase    |Beschreibung   |
 |-----------|---------------|
 | UC1 Spiel erstellen | Beim Programmstart wird die Config-Datei in den Controller geladen. Startbildschirm wird angezeigt (--> drawScreen()). Der Benutzer kann aus einer Drop-Down-Liste die gewünschte Spieleranzahl auswählen. Wenn keine Zahl ausgewählt wurde, wird der Default-Wert aus der Config Datei genutzt. Der Benutzer kann den Start-Button anklicken. Eine neue Spielinstanz wird mit allen Parametern aus der Config-Datei erstellt. Der Benutzer wird in die Lobby weitergeleitet. |
 | UC2 Warten abbrechen | Vorbedingung: Benutzer befindet sich in der Lobby und wartet alleine. Der Benutzer kann auf den Button "Cancel" klicken (EventLog, cancelWaiting() View, deleteGame() Controller). Das System leitet ihn zum Startbildschirm zurück (drawScreen() View). Fehlerfall: Der Benutzer wartet nicht allein. Der Benutzer klickt "Cancel". System zeigt Fehlermeldung an, da Benutzer nicht alleine wartet und somit das Warten nicht beenden kann (checkState() Controller, drawScreen() View). |
@@ -72,7 +64,7 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 
 **\<optional: Erläuterung der externen fachlichen Schnittstellen>**
 
-## Technischer Kontext {#_technischer_kontext}
+## Technischer Kontext
 
 **\<Diagramm oder Tabelle>**
 
@@ -91,9 +83,9 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 | Zuverlässigkeit | <ul></ul> |
 | Ein Spiel am Stück (Rematch-Option) | <ul><li>Nach Spielende wird automatisch zum Startbildschirm gewechselt, wo die Spieler wieder die gewünschte Spieleranzahl angeben können und über den Start-Button in den Warteraum können</ul> |
 
-# Bausteinsicht {#section-building-block-view}
+# Bausteinsicht
 
-## Whitebox Gesamtsystem {#_whitebox_gesamtsystem}
+## Whitebox Gesamtsystem
 
 ***\<Übersichtsdiagramm>***
 
@@ -237,7 +229,7 @@ Methodenliste
 | ...() | ... |
 
 
-# Laufzeitsicht {#section-runtime-view}
+# Laufzeitsicht
 
 ## *\<Bezeichnung Laufzeitszenario 1>* {#__emphasis_bezeichnung_laufzeitszenario_1_emphasis}
 
@@ -252,10 +244,10 @@ Methodenliste
 
 ## *\<Bezeichnung Laufzeitszenario n>* {#__emphasis_bezeichnung_laufzeitszenario_n_emphasis}
 
-**Usecase 3 Spielstart**
+## Usecase 3 Spielstart
 ![Sequenzdiagramm_Spielstart](images/SD_Spielstart.png)
 
-**Usecase 6 Spielende**
+## Usecase 6 Spielende
 ![Sequenzdiagramm_Spielende](images/SD_Spielende.png)
 ...
 
