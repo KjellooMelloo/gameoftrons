@@ -148,10 +148,9 @@ tbd
 
 | Methode | Kurzbeschreibung |
 | --- | --- |
-| getPlayerList()| Liefert die instanziierten Spieler |
-| getLivingPlayers | Entfernt einen Spieler vom Spiel, weil er gestorben ist |
-| getTilesArray() | Liefert Informationen des Spielfeldes |
-| getTilesAfterDeath() | Liefert aktualisierte Informationen zum Spielfeld nach dem Tod eines Spielers|
+| sendPlayerList()| Liefert die instanziierten Spieler |
+| sendTilesArray() | Liefert Informationen des Spielfeldes |
+
 
 
 *\<Blackbox-Template>*
