@@ -14,17 +14,20 @@ contributors. Siehe <https://arc42.org>.
 
 ## Aufgabenstellung {#_aufgabenstellung}
 
-## Qualitätsziele {#_qualit_tsziele}
+## Qualitätsziele
 
-## Stakeholder {#_stakeholder}
+|Qualitätsziel  |Erklärung|
+|---------------|---------|
+|Kompatibilität |Es können mindestens zwei Spieler auf unterschiedlichen Geräten miteinander spielen|
+|Fehlertoleranz/ Stabilität| Das Spiel soll bestehen/ stabil bleiben, auch wenn Teilnehmer abstürzen|
+|Zuverlässigkeit|Das Spiel soll immer gleich schnell laufen (kein "Jittering")|
+|Ein Spiel am Stück (Rematch-Option)|Es reicht aus, wenn ein Spiel am Stück spielbar ist (Keine "direkte" Rematch-Option)|
+## Stakeholder
 
-+-----------------+-----------------+-----------------------------------+
-| Rolle           | Kontakt         | Erwartungshaltung                 |
-+=================+=================+===================================+
-| *\<Rolle-1>*    | *\<Kontakt-1>*  | *\<Erwartung-1>*                  |
-+-----------------+-----------------+-----------------------------------+
-| *\<Rolle-2>*    | *\<Kontakt-2>*  | *\<Erwartung-2>*                  |
-+-----------------+-----------------+-----------------------------------+
+|Rolle  |Kontakt        |Erwartungshaltung|
+|-------|---------------|-----------------|
+|Kunde  |Martin Becke   |Entwicklung eines Tron-Spiels als verteiltes System, gut dokumentiert (Code <-> Dokumentation), Konzepte aus der Vorlesung sinnvoll angewendet und verstanden|
+|Entwickler|Kathleen Neitzel, Kjell May, Viviam Guimaraes| - Das Spiel als verteiltes System entwickeln und dabei die Inhalte aus der Vorlesung praktisch verstehen und anwenden können <br>- PVL erhalten|
 
 # Randbedingungen {#section-architecture-constraints}
 **\<Technische Randbedingungen>**
@@ -52,6 +55,10 @@ contributors. Siehe <https://arc42.org>.
 ## Fachlicher Kontext {#_fachlicher_kontext}
 
 **\<Diagramm und/oder Tabelle>**
+|Usecase    |Beschreibung   |
+|-----------|---------------|
+|UC3 Spiel starten|Wenn die gewünschte Anzahl an Spielern dem Spiel beigetreten sind, startet es nach einem Countdown von 3 Sekunden automatisch|
+|UC6 Spielende|Sobald nur noch ein Spieler lebt, ist das Spiel vorbei und dieser Spieler hat gewonnen. Sterben hingegen die letzten beiden Spieler gleichzeitig, gibt es ein Unentschieden zwischen diesen. Alle Spieler kommen danach zum Endbildschirm|
 
 **\<optional: Erläuterung der externen fachlichen Schnittstellen>**
 
@@ -83,15 +90,21 @@ Wichtige Schnittstellen
 
 :   *\<Beschreibung wichtiger Schnittstellen>*
 
-### \<Name Blackbox 1> {#__name_blackbox_1}
+### Model
 
-*\<Zweck/Verantwortung>*
+**Zweck/ Verantwortung**
 
-*\<Schnittstelle(n)>*
+Das Model ist in unserem Spiel sowohl für die Spielelogik, als auch die Lobbylogik zuständig. Es berechnet den aktuellen Spielstand anhand der Eingaben und gibt dies an die View weiter. Die Lobbylogik kümmert sich um das Erstellen und Starten von Spielen, also vom Start- über den Warte- zum Spielbildschirm.
+
+**Schnittstelle(n)**
+
+Um die Tasteneingaben verarbeiten zu können benötigt das Model die angebotene Schnittstelle *ModelController* vom Controller. Um den neuen Spielstand an die View zu übergeben, bietet das Model selbst eine Schnittstelle *ViewModel* an.
 
 *\<(Optional) Qualitäts-/Leistungsmerkmale>*
+Einfach solide geschrieben
 
 *\<(Optional) Ablageort/Datei(en)>*
+tbd
 
 *\<(Optional) Erfüllte Anforderungen>*
 
@@ -113,9 +126,9 @@ Wichtige Schnittstellen
 
 ## Ebene 2 {#_ebene_2}
 
-### Whitebox *\<Baustein 1>* {#_whitebox_emphasis_baustein_1_emphasis}
+### Whitebox Model
 
-*\<Whitebox-Template>*
+![Model_Ebene2](./images/Model_Ebene2.png)
 
 ### Whitebox *\<Baustein 2>* {#_whitebox_emphasis_baustein_2_emphasis}
 
@@ -129,9 +142,18 @@ Wichtige Schnittstellen
 
 ## Ebene 3 {#_ebene_3}
 
-### Whitebox \<\_Baustein x.1\_\> {#_whitebox_baustein_x_1}
+### Whitebox Model
 
-*\<Whitebox-Template>*
+![Model_Ebene3](images/Model_Ebene3.png)
+
+|Methode    |Kurzbeschreibung|
+|-----------|----------------|
+|addPlayer  |Diese Methode kümmert sich um das Hinzufügen eines neuen Spielers zum Spiel. Dabei wird ein Player-Objekt initialisiert mit einer noch nicht vergebenen Farbe.|
+|cancelWait |Diese Methode bricht die Spielesuche/ das Warten auf weitere Spieler ab|
+|startGame  |Diese Methode initialisiert und startet das eigentliche Spiel, sobald alle Spieler beigetreten sind.|
+|movePlayer |Mit dieser Methode wird die Bewegung im Spiel modelliert. Tasteneingaben vom Spieler bestimmen seine Richtung. Hier wird außerdem mit internen Methoden weiter überprüft, ob es Kollisionen gab und demnach gehandelt.|
+|checkCollision| Diese Methode überprüft, ob es eine Kollision zwischen einem Spieler und einem anderen Spieler, Spur oder Wand gegeben hat.|
+|clearPlayer|Wenn ein Spieler kollidiert ist, soll er vom Spielfeld verschwinden.|
 
 ### Whitebox \<\_Baustein x.2\_\> {#_whitebox_baustein_x_2}
 
@@ -156,6 +178,11 @@ Wichtige Schnittstellen
 
 ## *\<Bezeichnung Laufzeitszenario n>* {#__emphasis_bezeichnung_laufzeitszenario_n_emphasis}
 
+**Usecase 3 Spielstart**
+![Sequenzdiagramm_Spielstart](images/SD_Spielstart.png)
+
+**Usecase 6 Spielende**
+![Sequenzdiagramm_Spielende](images/SD_Spielende.png)
 ...
 
 # Verteilungssicht {#section-deployment-view}
@@ -210,27 +237,28 @@ Zuordnung von Bausteinen zu Infrastruktur
 
 # Architekturentscheidungen {#section-design-decisions}
 
-# Qualitätsanforderungen {#section-quality-scenarios}
+# Qualitätsanforderungen
 
-::: formalpara-title
-**Weiterführende Informationen**
-:::
+## Qualitätsbaum
 
-Siehe [Qualitätsanforderungen](https://docs.arc42.org/section-10/) in
-der online-Dokumentation (auf Englisch!).
+![Qualitätsbaum](./images/qualitaetsbaum.png)
 
-## Qualitätsbaum {#_qualit_tsbaum}
+## Qualitätsszenarien
 
-## Qualitätsszenarien {#_qualit_tsszenarien}
+|ID |Szenario|
+|---|--------|
+|K01|Es lässt sich ein faires Spiel erstellen und starten mit 2-6 Spielern|
+|F01|Ein Spieler verliert die Verbindung zum Spiel. Das Spiel geht trotzdem weiter für die anderen Spieler|
+|F02|Eingaben eines Spielers kommen verzögert oder unregelmäßig an. Das Spiel registriert trotzdem für jeden Spieler regelmäßig gleich viele Eingaben und geht fair weiter|
+|Z01|Pakete im Netzwerk haben Varianz in der Laufzeit (Jittering). Das Spiel geht trotzdem gleich schnell weiter|
+|R01|Ein Spiel wurde beendet. Alle Spieler können den Endbildschirm sehen und werden dann zurück zum Startbildschirm geleitet. Die Option dasselbe Spiel zu wiederholen gibt es nicht.|
+
+**TODO Wahrscheinlich noch mehr Szenarien**
 
 # Risiken und technische Schulden {#section-technical-risks}
 
 # Glossar {#section-glossary}
 
-+-----------------------+-----------------------------------------------+
-| Begriff               | Definition                                    |
-+=======================+===============================================+
-| *\<Begriff-1>*        | *\<Definition-1>*                             |
-+-----------------------+-----------------------------------------------+
-| *\<Begriff-2*         | *\<Definition-2>*                             |
-+-----------------------+-----------------------------------------------+
+|Begriff    |Definition|
+|-----------|----------|
+|||
