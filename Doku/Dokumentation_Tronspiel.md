@@ -41,21 +41,18 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 
 # Randbedingungen {#section-architecture-constraints}
 **\<Technische Randbedingungen>**
-+-----------------+-----------------+-----------------------------------+
+
 | Randbedingung           | Erläuterung                                 |
-+=================+=================+===================================+
-| *\<Programmiersprache>* | *\<Die Vorgabe der Aufgabenstellung erfordert die Nutzung einer objektorientierten Programmiersprache. Die Nutzung von Java wird empfohlen, da in dieser Sprache Code-Beispiele in den Vorlesungen gezeigt werden. Wir haben uns aus diesem Grund für Java entschieden.>*                                                          |
-+-----------------+-----------------+-----------------------------------+
-| *\<Versionsverwaltung>* | *\<Die Nutzung von unserem hochschuleigenen Gitlab ist ebenfalls vorgeschrieben. Wir arbeiten gerne mit dieser Versionsverwaltung, da ein effizientes Zusammenarbeiten im Team ermöglicht und zu intensivem Austausch angeregt wird.>*                                                                      |
-+-----------------+-----------------+-----------------------------------+
-| *\<Schnittstellen>*     | *\<Kommunikation RPC und REST>*             |
-+-----------------+-----------------+-----------------------------------+
+|-------------------------|---------------------------------------------|
+| Programmiersprache | Die Vorgabe der Aufgabenstellung erfordert die Nutzung einer objektorientierten Programmiersprache. Die Nutzung von Java wird empfohlen, da in dieser Sprache Code-Beispiele in den Vorlesungen gezeigt werden. Wir haben uns aus diesem Grund für Java entschieden. |
+| Versionsverwaltung | Die Nutzung von unserem hochschuleigenen Gitlab ist ebenfalls vorgeschrieben. Wir arbeiten gerne mit dieser Versionsverwaltung, da ein effizientes Zusammenarbeiten im Team ermöglicht und zu intensivem Austausch angeregt wird. |
+| Schnittstellen     | Kommunikation RPC und REST |
 
 **\<Organisatorische Randbedingungen>**
 +-----------------+-----------------+-----------------------------------+
 | Randbedingung   | Erläuterung                                         |
 +=================+=================+===================================+
-| *\<Team>*       | *\<Kjell May, Viviam Ribeiro Guimaraes und Kathleen Neitzel aus dem Studiengang der Angewandten Informatik. Fachsemester 6 und höher.>*                                                               |
+| *\<Team>*       | *\<Kjell May, Viviam Ribeiro Guimaraes und Kathleen Neitzel aus dem Studiengang der Angewandten Informatik. Fachsemester 6 und 7.>*                                                               |
 +-----------------+-----------------+-----------------------------------+
 | *\<Zeit>*       | *\<Standalone Applikation bis Mitte November, endgültige Abgabe Ende Januar 2023>*                                                                  |
 +-----------------+-----------------+-----------------------------------+
@@ -70,11 +67,15 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 |UC3 Spiel starten|Wenn die gewünschte Anzahl an Spielern dem Spiel beigetreten sind, startet es nach einem Countdown von 3 Sekunden automatisch|
 |UC6 Spielende|Sobald nur noch ein Spieler lebt, ist das Spiel vorbei und dieser Spieler hat gewonnen. Sterben hingegen die letzten beiden Spieler gleichzeitig, gibt es ein Unentschieden zwischen diesen. Alle Spieler kommen danach zum Endbildschirm|
 
+![blackbox_kontext.png](./images/blackbox_kontext.png)
+
 **\<optional: Erläuterung der externen fachlichen Schnittstellen>**
 
 ## Technischer Kontext {#_technischer_kontext}
 
 **\<Diagramm oder Tabelle>**
+
+![Technischer_Kontext.png](./images/Technischer_Kontext.png)
 
 **\<optional: Erläuterung der externen technischen Schnittstellen>**
 
@@ -209,6 +210,23 @@ tbd
 ### Whitebox \<\_Baustein y.1\_\> {#_whitebox_baustein_y_1}
 
 *\<Whitebox-Template>*
+
+![Tron_Controller.png](./images/Tron_Controller.png)
+
+Methodenliste
+| Methode           | Beschreibung                                 |
+|-------------------------|---------------------------------------------|
+| createGame() | Erstellt eine neue Spielinstanz, nutzt User Input der View für die Spielerzahl und lädt die Config-Datei. Falls bereits eine vorhanden --> bestehende ersetzt. |
+| deleteGame() | Löscht die bestehende Spielinstanz. Falls keine vorhanden --> Exception |
+| checkState() | Prüft, ob eine gültige Anzahl an Spielern vorhanden sind. Prüft, ob benötigte Spielinstanz für angefragte Operation vorhanden. |
+? Model und Controller auseinanderpflücken --> Use Cases überlegen.
+| next() | Wechselt in den gültigen angefragten Zustand. Aktualisierung des aktuellen States. Vorheriger State wird auf Stack gespeichert. |
+| back() | Lädt den letzten (gültigen) Zustand auf dem Stack als aktuellen State. |
+| resetStateMachine() | Löscht alle auf dem Stack gespeicherten States und lädt den Default State als aktuellen State. |
+| updateSpieler() | Aktualisiert die Spielerliste. |
+| updateField() | Aktualisiert alle Farben des Spielfelds. |
+| ...() | ... |
+
 
 # Laufzeitsicht {#section-runtime-view}
 
