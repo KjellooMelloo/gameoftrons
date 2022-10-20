@@ -72,7 +72,7 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 
 **\<Diagramm oder Tabelle>**
 
-![Technischer_Kontext.png](./images/Technischer_Kontext.png)
+![Tron_Standalone_kontext.png](./images/Tron_Standalone_kontext.png)
 
 **\<optional: Erläuterung der externen technischen Schnittstellen>**
 
