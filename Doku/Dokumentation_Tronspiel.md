@@ -202,6 +202,7 @@ tbd
 ### Whitebox \<\_Baustein x.2\_\> {#_whitebox_baustein_x_2}
 
 *\<Whitebox-Template>*
+![Diagramme_VS__1_.jpg](Diagramme_VS__1_.jpg)
 
 ### Whitebox \<\_Baustein y.1\_\> {#_whitebox_baustein_y_1}
 
