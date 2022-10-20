@@ -49,13 +49,10 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 | Schnittstellen     | Kommunikation RPC und REST |
 
 **\<Organisatorische Randbedingungen>**
-+-----------------+-----------------+-----------------------------------+
-| Randbedingung   | Erläuterung                                         |
-+=================+=================+===================================+
-| *\<Team>*       | *\<Kjell May, Viviam Ribeiro Guimaraes und Kathleen Neitzel aus dem Studiengang der Angewandten Informatik. Fachsemester 6 und 7.>*                                                               |
-+-----------------+-----------------+-----------------------------------+
-| *\<Zeit>*       | *\<Standalone Applikation bis Mitte November, endgültige Abgabe Ende Januar 2023>*                                                                  |
-+-----------------+-----------------+-----------------------------------+
+| Randbedingung   | Erläuterung |
+|-----------------|-------------|
+| Team            | Kjell May, Viviam Ribeiro Guimaraes und Kathleen Neitzel aus dem Studiengang der Angewandten Informatik. Fachsemester 6 und 7. |
+| Zeit            | Standalone Applikation bis Mitte November, endgültige Abgabe Ende Januar 2023. |
 
 # Kontextabgrenzung {#section-system-scope-and-context}
 
