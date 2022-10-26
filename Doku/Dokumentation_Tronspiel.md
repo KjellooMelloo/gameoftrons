@@ -25,10 +25,6 @@ Im Spiel
 ![im_spiel.png](./images/im_spiel.png)
 
 <br>
-Im Spiel
-![im_spiel.png](./images/im_spiel.png)
-
-<br>
 Kollision mit der Wand
 ![kollision_wand.png](./images/kollision_wand.png)
 
