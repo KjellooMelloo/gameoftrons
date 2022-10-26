@@ -63,7 +63,7 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 
 **Diagramm und Tabelle**
 
-![blackbox_kontext.png](./images/blackbox_kontext.png)
+![fachlicher_trontext.png](./images/fachlicher_trontext.png)
 
 **\<optional: Erläuterung der externen fachlichen Schnittstellen>**
 
@@ -71,7 +71,7 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 
 **\<Diagramm oder Tabelle>**
 
-![Tron_Standalone_kontext.png](./images/Tron_Standalone_kontext.png)
+![technischer_trontext.png](./images/technischer_trontext.png)
 
 **\<optional: Erläuterung der externen technischen Schnittstellen>**
 
