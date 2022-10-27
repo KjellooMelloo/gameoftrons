@@ -1,6 +1,6 @@
 # **Dokumentation Game of Trons**
 
-**Autoren**: Kathleen Neitzel, Kjell May, Viviam Ribeiro
+**Autoren**: Kathleen Neitzel, Kjell May, Viviam Ribeiro <br>
 **Modul**: Verteilte Systeme
 
 # Einführung und Ziele
@@ -10,49 +10,23 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 
 | Bildschirmanzeige  | Anforderungen |
 | --- | --- |
-| ![Startbildschirm](images/tron2.png) | <ul><li>Der Übergang zum Wartebildschirm erfolgt über das Anklicken des Start-Buttons</li><li>Das Spiel kann mit 2 bis 6 Spielern gespielt werden</li><li>Die gewünschte Anzahl von Spielern wird über ein Eingabefeld eingestellt</li><li>Die Spieleranzahl wird per Default auf 2 gesetzt</li><li>Alle Spieler spielen gegen einander</li></ul> |
-| ![Wartebildschirm](images/tron3.PNG) | <ul><li>Die maximale Wartezeit auf die gewünschte Anzahl von Spielern ist parametrisierbar</li><li>Das Warten auf anderen Spieler kann abgebrochen werden, wenn man alleine wartet</li><li>Das Spiel startet automatisch, wenn alle Spieler beigetreten sind</li></ul> |
-| ![Spielbildschirm](images/tron1.PNG) | <ul><li>Das Spielfeld ist rasterförmig mit sichtbarem Raster</li><li>Beim Start des Spiels gibt einen Countdown von 3 Sekunden</li><li>Es müssen faire Startkonditionen für alle Spieler geben</li><li>Ein Spieler stirbt bei Kollision mit einer Wand, einem Motorrad oder einer Spur</li><li>Bei einer Frontalkollision zwischen zwei Spielern sterben beide Spieler</li><li>Wenn die letzten zwei Spieler durch eine Frontalkollision sterben, endet das Spiel unentschieden</li><li>Wenn die letzten zwei Spieler im Spiel gleichzeitig durch Kollision mit einer Wand und/oder Spur sterben, dann endet das Spiel unentschieden</li><li>Die zugehörige Spur verschwindet beim Tod des Spielers</li><li>Es soll erkennbar sein, welcher Spieler zum Nutzer gehört</li><li>Die Spielfeldgröße soll parametrisierbar sein</li><li>Die Geschwindigkeit soll zwischen 1-500 Bewegungen pro Sekunde parametrisierbar sein</li><li>Das Motorrad bewegt sich automatisch geradeaus und kann nach rechts oder links gesteuert werden</li></ul> |
-| ![Endbildschirm Fall 1](images/tron4.PNG)<br> ![Endbildschirm Fall 2](images/tron5.PNG)| <ul><li>Der Endbildschirm erscheint, wenn das Spiel vorbei ist</li><li>Im Endbildschirm wird angezeigt, wer gewonnen hat oder ob das Spiel unentschieden ausgegangen ist</li><li>Nach 3 Sekunden wird zum Startbildschirm gewechselt</li><li>Der Endbildschirm wird erst angezeigt, wenn das Spiel vorbei ist und nicht sobald man stirbt</li></ul>
-| Konfiguration | <ul><li>Die Konfigurationsdatei wird beim Start des Spiels geladen</li><li>Darüber wird vom Nutzer die Spieleranzahl zwischen 2 und 6, die maximale Wartezeit bis zum Spielstart, die Spielfeldgröße, die Größe von jedem Feld im Raster, die Geschwindigkeit und die Tastenbelegung für die Steuerung konfiguriert</li></ul>
+| ![Startbildschirm](images/tron2.PNG) | <ul><li>Der Übergang zum Wartebildschirm erfolgt über das Anklicken des Start-Buttons</li><li>Das Spiel kann mit 2 bis 6 Spielern gespielt werden</li><li>Die gewünschte Anzahl von Spielern wird über ein Eingabefeld eingestellt</li><li>Die Spieleranzahl wird bei falscher Benutzerangabe der Default-Wert aus der Config-Datei geladen</li></ul> |
+| ![Wartebildschirm](images/tron3.PNG) | <ul><li>Der Wartebildschirm zeigt an, wie viele Spieler bereits dem Spiel beigetreten sind und wie viele Spieler fehlen, bis die gewünschte Spieleranzahl erreicht ist.</li><li>Die maximale Wartezeit auf die gewünschte Anzahl von Spielern ist parametrisierbar (Default: 120 Sekunden)</li><li>Das Warten wird automatisch abgebrochen nach Ablauf der maximalen Wartezeit.</li><li>Das Warten auf anderen Spieler kann über den Cancel-Button abgebrochen werden, wenn man alleine wartet</li><li>Wenn das Warten abgebrochen wird, wird automatisch zum Startbildschirm gewechselt.</li><li>Das Spiel startet automatisch, wenn alle Spieler beigetreten sind</li></ul> |
+| ![Spielbildschirm](images/tron1.png) | <ul><li>Alle Spieler spielen gegen einander</li><li>Das Spielfeld ist rasterförmig mit sichtbarem Raster</li><li>Die Spielfeldgröße soll über die Config-Datei parametrisierbar sein</li><li>Der Parameter der Spielfeldgröße bestimmt die Anzahl der Reihen und Spalten (Default: Geschwindkeit * 5, Minimum:Geschwindigkeit * 5 , Maximum: Geschwindigkeit * 12)</li><li>Beim Start des Spiels gibt es einen Countdown von 3 Sekunden</li><li>Es müssen faire Startkonditionen für alle Spieler geben</li><li>Ein Spieler stirbt bei Kollision mit einer Wand, einem Motorrad oder einer Spur</li><li>Bei einer Frontalkollision zwischen zwei Spielern sterben beide Spieler</li><li>Wenn die letzten zwei Spieler durch eine Frontalkollision sterben, endet das Spiel unentschieden</li><li>Wenn die letzten zwei Spieler im Spiel gleichzeitig durch Kollision mit einer Wand und/oder Spur sterben, dann endet das Spiel unentschieden</li><li>Die zugehörige Spur verschwindet beim Tod des Spielers</li><li>Es soll erkennbar sein, welcher Spieler zum Nutzer gehört</li><li>Die Geschwindigkeit soll zwischen 1-500 Bewegungen pro Sekunde parametrisierbar sein. Bei ungültiger Eingabe, wird Geschwindigkeit auf den Default-Wert 100 gesetzt.</li><li>Das Motorrad bewegt sich automatisch geradeaus und kann nach rechts oder links gesteuert werden</li></ul> |
+| ![Endbildschirm Fall 1](images/tron4a.png)<br> ![Endbildschirm Fall 2](images/tron5.PNG)| <ul><li>Der Endbildschirm erscheint, wenn das Spiel vorbei ist</li><li>Im Endbildschirm wird angezeigt, wer gewonnen hat oder ob das Spiel unentschieden ausgegangen ist</li><li>Nach 3 Sekunden wird zum Startbildschirm gewechselt</li><li>Der Endbildschirm wird erst angezeigt, wenn das Spiel vorbei ist und nicht sobald man stirbt</li></ul>
+| Konfiguration | <ul><li>Die Konfigurationsdatei wird beim Start des Spiels geladen</li><li>Die Konfigurationsdatei kann vom Nutzer bearbeitet werden</li><li>Darüber wird der Default-Wert 2 der Spieleranzahl, die maximale Wartezeit bis zum Spielstart, die Spielfeldgröße, die Geschwindigkeit und die Tastenbelegung für die Steuerung konfiguriert</li></ul>
 
-### **Weitere Storyboard Ansichten**
-
-**Spielstart**
-
-![spielstart.png](./images/spielstart.png)
-<br>
-
-**Im Spiel**
-
-![im_spiel.png](./images/im_spiel.png)
-<br>
-
-**Kollision mit der Wand**
-
-![kollision_wand.png](./images/kollision_wand.png)
-<br>
-
-**Gleichzeitige Kollision zweier Spieler**
-
-![kollision_gleich.png](./images/kollision_gleich.png)
-<br>
-
-**Frontalkollision**
-
-![frontalkollision.png](./images/frontalkollision.png)
-<br>
-
-### **UseCases**
-
-|Usecase    |Objekt   |Vorbedingungen   |Nachbedingungen    |Ablaufsemantik |Fehlersemantik|
-|-----------|---------|-----------------|-------------------|---------------|--------------|
-|UC01 create|Application|Die Spieleranzahl wurde festgelegt durch Config-Datei oder Eingabefeld. Der Spieler befindet sich im Startbildschirm.|Ein Spiel wurde erstellt und es wird auf weitere Spieler gewartet. Der Wartebildschirm wird angezeigt. Dem Spieler wird seine Farbe im Spiel angezeigt|1. Der Spieler drückt auf den Start-Knopf. <br>2. Eine Spielinstanz mit den Parametern aus der Config-Datei und dem Feld vom Startbildschirm wird erzeugt.<br>3. Der Spieler wird im Spiel registriert.|1. Die vom Nutzer eingegebene Spieler Zahl ist nicht in [2;6] --> Default-Wert aus Config-Datei wird genommen|
-|UC02 cancel wait|Application|Der Spieler befindet sich in der Lobby (Wartebildschirm) und wartet alleine.|Der Spieler befindet sich wieder im Startbildschirm. Die Spielinstanz wurde gelöscht.|1a. Der Spieler drückt auf den Button "Cancel".<br>1b. Die maximale Wartezeit aus der Config-Datei ist abgelaufen.<br>2. Das System leitet ihn zum Startbildschirm zurück.<br>3. Die Spielinstanz inkl. des Spielers wird gelöscht|1. Der Spieler wartet nicht allein und klickt trotzdem "Cancel". Das System zeigt Fehlermeldung an, da Benutzer nicht alleine wartet und somit das Warten nicht beenden kann.<br>2. Die maximale Wartezeit ist noch nicht abgelaufen. Das System sendet Anfrage an User, ob das Warten tatsächlich abgebrochen werden soll. User kann entscheiden, ob er frühzeitig abbricht (weitere Schritte siehe UC02) oder weiter wartet bis die Zeit abläuft oder weitere Spieler hinzukommen.|
-|UC03 start|Game|Alle bis auf den letzten Mitspieler befinden sich im Warteraum. Der letzte fehlende Spieler betritt den Warteraum.|Das Spiel wurde gestartet und allen Spielern wird der Spielbildschirm angezeigt.|1. Der letzte Spieler wird der Spielerliste der Spielinstanz hinzugefügt.<br>2. Der 3-Sekunden-Countdown startet.<br>3. Es wird zum Spielbildschirm gewechselt.|1. Das Spiel startet trotz ausreichender Spieleranzahl nicht.<br>2. Ein oder mehrere Mitspieler verlassen während des Start Countdowns das Spiel. Die Spielelogik prüft die Anzahl der Spieler. Sind mehr als ein Spieler im Raum, wird das Spiel fortgeführt und die fehlenden Spieler von der Spielerliste und Spielfeld gelöscht. Befindet sich nur noch 1 Spieler im Raum, hat dieser direkt gewonnen.|
-|UC04 steer|Spieler|Der Spieler befindet sich im Spiel und ist noch am Leben.|Das Motorrad des Spielers biegt in die gewünschte Richtung ab.|1a. Der Spieler drückt eine der Tasten für rechts/ links abbiegen (default: 'D' und 'A')<br>1b. Der Spieler drückt keine Taste<br>2a. Das Spiel registriert den Tastendruck.<br>3. Das Spiel berechnet die Richtung und setzt die neue Position des Spielers. Bei keiner gedrückter Taste wird die Richtung beibehalten|1a. Es wird trotz Tastendrucks nicht abgebogen.<br>1b. Es wird trotz fehlendem Tastendruck abgebogen.<br>2. Der Spieler drückt beide Tasten kurz versetzt bzw. hält eine oder mehrere Tasten gedrückt innerhalb eines Ticks. Die Richtung der Taste, die der Spieler zuerst gedrückt hat, wird für den aktuellen Tick innerhalb des Spiels übernommen, alle weiteren Tastendrucke verfallen. 2. Der Spieler drückt rechts und links gleichzeitig?|
-|UC5 collide|Game|Der Spieler ist noch am Leben und will abbiegen oder fährt automatisch geradeaus|Der Spieler ist gestorben und aus dem Spiel inkl. seiner Spur entfernt.|1. Die neue Position des Motorrads des Spieler ist eine Wand, Spur oder ein anderes Motorrad.<br>2. Die enstehende Kollision wird vom Spiel erkannt.<br>3a. Die Spur des Spielers wird entfernt und der Spieler wird aus dem Spiel entfernt.<br>3b. Die Kollision war mit einem anderen Motorrad, es werden beide Spieler entfernt.<br>4. Der Spieler bekommt zu wissen, dass er gestorben ist.|1. Der Spieler stirbt trotz Kollision nicht.<br>2. Die Spur wird trotz Tod nicht entfernt.<br>3. Spieler 1 fährt nicht frontal in das Motorrad von Spieler 2 rein. Spieler 1 stirbt und Spieler 2 lebt weiter.|
-|UC6 win/lose/tie|Game|Es sind noch maximal zwei Spieler am Leben und min. ein Spieler hat eine Kollision|Das Spiel wurde beendet und alle Spieler wurden wieder zum Startbildschirm weitergeleitet.|1a.Ein Spieler ist kollidiert und wird vom Spiel entfernt.<br>1b. Zwei Spieler kollidieren gleichzeitig und sterben damit beide.<br>2a. Der letzte überlende Spieler wird als Sieger festgelegt.<br>2b. Das Spielergebnis ist Unentschieden zwischen den beiden Spielern.<br>3. Alle Spieler werden zum Endbildschirm weitergeleitet und der Sieger/ das Unentschieden wird angezeigt.<br>4. Nach 3 Sekunden wird die Spielinstanz gelöscht und allen wird wieder der Startbildschirm angezeigt.|1. Obwohl nur noch ein Spieler übrig ist, wird das Spiel nicht beendet.<br>2. Es wird ein Spieler als Sieger bestimmt, obwohl es ein Unentschieden sein sollte.<br>3. Mehr als zwei Spieler sterben gleichzeitig. Unentschieden.<br>4. Das Spiel startete nur mit einem Spieler und es gibt nicht zwingend eine Kollision. Der Spieler hat unverzüglich gewonnen.|
+**UseCases**
+| Usecase | Objekt/Klasse | Vorbedingungen | Nachbedingungen |Erfolgsfall | Erweiterungsfälle| Fehlerfälle |
+|---|---|---|---|---|---|---|
+|**UC1** Create|Game|Der Spieler befindet sich im Startbildschirm.|Ein Spiel wurde erstellt und es wird auf weitere Spieler gewartet. Der Wartebildschirm wird angezeigt. Dem Spieler wird seine Farbe im Spiel angezeigt|**1.** Der Nutzer gibt die gewünschte Spieleranzahl in das Eingabefeld ein und klickt den Start-Knopf an. <br><br>**2.** Das System erzeugt eine Spielinstanz mit den Parametern aus der Config-Datei und dem Feld vom Startbildschirm.<br><br>**3.** Das System registriert den Nutzer im Spiel.<br><br> **4.** Das System zeigt den Wartebildschirm an||**1a** Die vom Nutzer eingegebene Spieleranzahl ist nicht zwischen 2-6. <br><br> **1a.1** Das System übernimmt den Default-Wert aus der Config-Datei <br><br> **1a.2** Das System informiert den Nutzer über die altenative Spieleranzahl über eine Fehlermeldung<br><br> **2a** Ein Parameter in der Config-Datei ist nicht gültig <br><br> **2a.1** Für alle ungültigen Parameter werden Default-Werte eingesetzt<br><br> **2a.2** Der Nutzer wird über eine Meldung darüber informiert, dass Parameter auf ihren Default-Wert gesetzt wurden|
+|**UC2** Cancel Wait|Game|Der Spieler befindet sich in der Lobby (Wartebildschirm).|Der Spieler befindet sich wieder im Startbildschirm. Die Spielinstanz wurde gelöscht.|**1.** Der Nutzer drückt auf den Button "Cancel".<br><br>**2.** Das System leitet ihn zum Startbildschirm zurück.<br><br>**3.** Das System löscht die Spielinstanz inkl. des Spielers.|**1a.1** Die maximale Wartezeit aus der Config-Datei ist abgelaufen. <br><br> **1a.2** Das System informiert den Nutzer über eine Meldung, dass die maximale Wartezeit abgelaufen ist. |**1a.1** Der Nutzer wartet nicht allein und klickt auf "Cancel". <br><br> **1a.2** Das System zeigt eine Fehlermeldung an, da der Nutzer nicht alleine wartet und somit das Warten nicht beenden kann.|
+|**UC3** Start|Game|Alle bis auf den letzten Mitspieler befinden sich im Warteraum. Der letzte fehlende Spieler betritt den Warteraum.|Das Spiel wurde gestartet und allen Spielern wird der Spielbildschirm angezeigt.|**1.** Das System fügt den letzten Spieler der Spielerliste der Spielinstanz hinzu.<br><br>**2.** Das System zeigt den 3-Sekunden-Countdown an.<br><br>**3.** Das System wechselt zum Spielbildschirm und zeigt die Farbe des Spielers an.|||
+|**UC4** Steer|Spieler|Der Spieler befindet sich im Spiel und ist noch am Leben.|Das Motorrad des Spielers bewegt sich in einer Richtung weiter|**1.** Der Nutzer drückt keine Taste an <br><br> **2.** Das System zeigt die Bewegung des Motorrades in der aktuellen Richtung und Geschwindigkeit an| **1.a** Der Nutzer drückt auf eine der Steuerungstasten gemäß der angegebenen Tastenbelegung in der Config-Datei. <br><br> **1.a.2** Das System registriert den Tastendruck <br><br> **1.a.3** Das System berechnet die neue Richtung und aktualisiert die Richtung des Spielers entsprechend der gedrückten Taste <br><br> **1.a.4** Das System zeigt die neue Richtung des Motorrads des Spielers an.||
+|**UC5** Collide on|Game Field|Der Spieler ist noch am Leben und bewegt sich auf dem Spielfeld|Der Spieler ist gestorben und wurde aus dem Spiel inkl. seiner Spur entfernt.|**1.** Das System stellt fest, dass sich auf der neuen Position des Motorrads des Spielers eine Wand, eine Spur oder ein anderes Motorrad befindet.<br><br> **2.** Das System entfernt die Spur des Spielers und entfernt den Spieler aus dem Spiel.<br><br> **3.** Das System zeigt eine Meldung an, um den Nutzer zu informieren, dass er gestorben ist.|||
+|**UC6** Win |Game|Der Spieler befindet sich mit nur einem weiteren Spieler auf dem Spielfeld|Das Spiel wurde gelöscht und alle Nutzer wurden zum Startbildschirm weitergeleitet.|**1.** Der andere Spieler kollidiert (siehe UC5).<br><br> **2.** Das System legt den letzten überlebenden Spieler als Sieger fest <br><br> **3.** Das System zeigt allen Nutzern den Endschirm an, wo angezeigt wird, welcher Spieler gewonnen hat.<br><br> **4.** Nach 3 Sekunden löscht das System die Spielinstanz und zeigt allen wieder den Startbildschirm an.| |
+|**UC7** Lose|Game|Der Spieler befindet sich mit mindestens einem weiteren Spieler auf dem Spielfeld|Der Spieler wurde aus dem Spiel entfernt|**1.** Der Spieler kollidiert (siehe UC5).<br><br> **2.** Das System entfernt den Spieler aus dem Spiel| | |
+|**UC8** Tie|Game|Der Spieler befindet sich mit nur einem weiteren Spieler auf dem Spielfeld|Das Spiel wurde gelöscht und alle Nutzer wurden zum Startbildschirm weitergeleitet.|**1.** Beide Spieler kollidieren gleichzeitig (siehe UC5).<br><br> **2.** Das System legt fest, dass das Spiel unentschieden ist.<br><br> **3.** Das System zeigt allen Nutzern den Endschirm an, wo angezeigt wird, dass das Spiel unentschieden ist.<br><br> **4.** Nach 3 Sekunden löscht das System die Spielinstanz und zeigt allen wieder den Startbildschirm an.| |
 
 
 ## Qualitätsziele
@@ -82,7 +56,7 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 **\<Organisatorische Randbedingungen>**
 | Randbedingung   | Erläuterung |
 |-----------------|-------------|
-| Team            | Kjell May, Viviam Ribeiro Guimaraes und Kathleen Neitzel aus dem Studiengang der Angewandten Informatik. Fachsemester 6 und 7. |
+| Team            | Kjell May, Viviam Ribeiro und Kathleen Neitzel aus dem Studiengang der Angewandten Informatik. Fachsemester 6 und 7. |
 | Zeit            | Standalone Applikation bis Mitte November, endgültige Abgabe Ende Januar 2023. |
 
 # Kontextabgrenzung
@@ -107,12 +81,52 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 
 # Lösungsstrategie
 
-| Qualitätsziel | Lösungsstrategie |
-| --- | --- |
-| Kompatibilität | <ul></ul> |
-| Fehlertoleranz/Stabilität | <ul></ul> |
-| Zuverlässigkeit | <ul></ul> |
-| Ein Spiel am Stück (Rematch-Option) | <ul><li>Nach Spielende wird automatisch zum Startbildschirm gewechselt, wo die Spieler wieder die gewünschte Spieleranzahl angeben können und über den Start-Button in den Warteraum können</ul> |
+Todo: Eine Methode für das Laden der Parameter aus COnfig
+
+**Was passiert, wenn Config-Datei falsch geladen wird?** -> Mit Default-Werten besetzen
+
+**Soll die Breite und die Höhe angepasst werden?** --> Nein!!!!! Wir sind Quadratophile!!
+**Was soll die maximale und minimale Größe sein?** --> siehe Anforderungen
+**Create Game instance: Wann true, wann false? Wann Fehler werfen?** --> Instanz zurückgeben;Wenn nicht erfolgreich, Exception werfen; 
+**registerPlayer** --> keine Informationen über Fehler mit boolean-Rückgabewert, ausschließlich über Exception-Throwing
+
+|Use Case| Akteur | Funktionssignatur | Ablaufsemantik | Fehlersemantik |
+| --- | --- | --- | --- | --- |
+|UC1 | | int getPlayerCount() | Die Methode liefert die durch den Benutzer eingegebenen Spieleranzahl | Wenn die Spieleranzahl keine Zahl zwischen 2 und 6 ist, wird die Methode loadDefaulftPlayerCount() aufgerufen |
+|UC1 | | int loadDefaultPlayerCount() | Die Methode liefert den Default-Wert für die Spieleranzahl aus der Config-Datei und ruft die Methode informUser("Spieleranzahl muss eine Zahl zwischen 2 und 6 sein. Der Default-Wert <<Default-Wert>> wird gesetzt") | Wenn keine Zahl geladen werden konnte, wird eine Exception mit Fehlerbeschreibung geworfen. |
+|UC1 | |int[] loadConfigParams() | Die Methode liefert die Parameter aus der Config-Datei in einem int-Array der Länge 4. <br> **Index 0:** Die maximale Wartezeit <br> **Index 1:** Die Tastenbelegung (0: Steuerung über die Pfeiltasten rechts/links; 1: Steuerung über die Tasten 'A'/'D') <br> **Index 2:** Die Geschwindigkeit<br> **Index 3:** Die Spielfeldgröße | Wenn ein Parameter nicht im gültigen Wertebereich liegt oder nicht geladen werden konnte, wird der entsprenchde Default-Wert gesetzt: <br> **Default maximale Wartezeit:** 120 Sekunden<br> **Default Geschwindkeit:** 100 (Einheit: Bewegungen/Sekunde) <br> **Default Spielfeldgröße:** Geschwindigkeit * 5 <br><br> Anschließend wird die Methode informUser("Ein oder mehr Parameter aus der Konfigurationsdatei waren ungültig oder konnten nicht geladen werden. Die betroffenen Parameter wurde auf Default-Werte gesetzt.") aufgerufen |
+|UC1 | | static Game createGameInstance() | Die Methode ruft die Methode loadConfigParams() auf und erstellt eine neue Spielinstanz mit den geladenen Parametern. Die Methode gibt die erstellte Spielinstanz zurück| Die Methode wirft eine Exception mit Fehlerbeschreibung. Die Fehlerbeschreibung dient ebenfalls als Meldung für den Nutzer und wird als Parameter für den Aufruf der Methode informUSer() genutzt. |
+|UC1 | | Player createPlayer() | Die Methode erstellt einen neuen Spieler, indem dem Spieler eine noch nicht vergebene ID und Farbe vergeben wird. Die Methode gibt den erstellten Spieler zurück | Wenn kein Spieler erstellt werden konnte wird eine Exception mit Fehlerbeschreibung geworfen|
+|UC1 | | void registerPlayer(Player) | Die Methode fügt die als Parameter übergebene Spielerinstanz in die Spielerliste hinzu.| Wenn der übergebene Player null ist, wird eine NullPointerException geworfen.<br>Wenn der übergebene Player eine Farbe hat, die bereits vergeben ist, wird eine Exception mit Fehlerbeschreibung geworfen<br>Wenn der übergebene Player eine bereits vergebene ID hat, wird eine Exception mit Fehlerbeschreibung geworfen|
+|UC1, UC2, UC5 | | void informUSer(String) | Zeigt Fehlerbeschreibung der Exception dem Nutzer an | |
+|UC1, UC2, UC6, UC8 | |void drawScreen(String) | Die Methode zeigt den Bildschirm an, der zum übergebenen Bildschirmzustand passt.  | Wenn zum übergebenen Zustandsparameter kein anzuzeigenden Bildschirm gehört, wird eine Exception mit einer Fehlerbeschreibung geworfen. |
+|UC2 | | void cancelWaitingButtonClick() | Die Methode bricht den Wartevorgang als Folge des Anklicken des Cancel-Buttons ab | Wenn mehr als ein Spieler warten, wird die Methode informUSer("Wartevorgang kann nicht abgebrochen werdne, wenn mehrere Spieler warten") aufgerufen und anschließend eine Exception mit Fehlerbeschreibung geworfen.|
+|UC2, UC6, UC8 | | void deleteGameInstance() | Die Methode löscht die aktuelle Spielinstanz. | Wenn Spielinstanz nicht erfolgreich gelöscht werden kann, wird eine Exception mit Fehlerbeschreibung geworfen. |
+|UC2 | | void cancelWaitingTimer() | Die Methode bricht den Wartevorgang als Folge des Timer-Ablaufs ab und informiert den Nutzer über den Aufruf der Methode informUser("Wartezeit zu lang. Der Wartevorgang wird abgebrochen ...").| Wenn der Wartevorgang nicht erfolgreich abgebrochen werden kann, wird eine Exception mit Fehlerbeschreibung geworfen.|
+|UC3 | | void showCountdown() | Die Methode zeigt den 3 Sekunden Countdown an| Eine Exception wird mit Fehlerbeschreibung geworfen |
+|UC3 | | Color getPlayerColor(int) | Die Methode gibt die Farbe des Spieler zurück, dessen ID als Parameter übergeben wurde |Wenn die übergebene ID keinem Spieler gehört, wird eine Exception mit Fehlerbeschribung geworfen |
+|UC3 | | void showPlayerColor(Color) | Die Methode zeigt die Spielerfarbe an, die als Parameter übergeben wird | | 
+|UC4 | | void movePlayers() | Die Methode bewegt alle Spieler geradeaus entsprechend ihrer aktuellen Richtung | Eine Exception mit Fehlerbschreibung wird geworfen, wenn die Positionsänderung nicht erfolgreich war|
+|UC4 | | List<Player> getPlayersInGameField() | Die Methode liefert eine Liste mit allen Spielern, die noch nicht verloren haben und deshalb noch auf dem Spielfeld sind | Im Fehlerfall wird eine Exception mit Fehlerbschreibung geworfen |
+|UC4 | | void drawPlayers() | Die Methode ruft die Methode getPlayersinGameField() auf, um Informationen über die aktuellen Spieler zu erhalten. Anhand dieser Informationen zeigt die Spieler an ihrer aktuellen Position und Ausrichtung an. | Im Fehlerfall wird eine Exception mit Fehlerbeschreibung geworfen |
+|UC4| | String getDirectionKeyboardInput() | Die Methode wird aufgerufen, wenn eine der Tasten entsprechend konfigurierten Tastenbelegung gedrückt wurde. Die Methode liefert die Richtung, die über die Tastatur vom Nutzer eingegeben wurde. Wenn die entsprechende Tastenbelegung für die Steuerung des Motorrads nach links gedrückt wurde, gibt die Methode den String 'left' zurück. <br> Wenn die entsprechende Tastenbelegung für die Steuerung des Motorrads nach rechts gedrückt wurde, gibt die Methode den String 'right' zurück.| Im Fehlerfall wird eine Exception mit Fehlerbeschreibung geworfen |
+|UC4 | | void changePlayerDirection(int, String) | Der wird als Parameter die Spieler-ID übergeben. Die Methode ändert die Richtung des Spielers mit der übergebenen Spieler-ID nach links oder rechts. Der übergebene String liefert die Information, ob der Spieler nach links oder nach rechts gesteuert wird. | Im Fehlerfall wird eine Exception mit Fehlerbeschreibung geworfen. |
+|UC5 | | boolean checkCollision(Position) | Die Methode prüft, ob es eine Kollision an der übergebenen Position gegeben hat. Sie gibt true zurück, wenn eine Kollision stattgefunden hat, sonst false. | Im Fehlerfall wird eine Exception mit Fehlerbeschreibung geworfen|
+|UC5| | Player removePlayer(int) | Die Methode entfernt den Spieler mit der übergebenen Spieler-ID aus dem Spielfeld. Die Methode informUser("You lose...Du wurdest aus dem Spiel entfernt"), um den Nutzer zu informieren und gibt den entfernten Spieler zurück. | |
+|UC6 | |boolean checkOnlyOnePlayerLeft ()| Die Methode wird aufgerufen, wenn eine Kollision stattgefunden hat. Die Methode liefert die Information, ob sich nur noch ein Spieler im Spiel befindet. Sie gibt, true zurück, wenn es nur noch ein Spieler gibt, sonst false. | Im Fehlerfall wird eine Exception mit Fehlerbeschreibung geworfen|
+|UC6 | |int setGameWinner(Player) | Die Methode wird aufgerufen, wenn es nur noch einen Spieler im Spiel gibt. Der übergebene Player ist der letzte im Spie. Seine Spieler-ID wird von der Methode als Sieger registriert. | |
+|UC6 | | Player getGameWinner()| Die Methode wird aufgerufen, wenn ein Gewinner festgelegt wurde. Die Methode gibt den festgelegten Gewinner zurück| Wenn kein Gewinner festgelegt wurde, wird eine NullPointerException geworfen.|
+|UC8| | boolean checkOnlyTwoLeft() | Die Methode wird in jedem Durchlauf des Game Loops aufgerufen. Die Methode gibt true zurück, wenn es nur noch zwei Spieler auf dem Spielfeld gibt, sonst false.| |
+|UC8| | Long setCollisionTimeStamps() |Diese Methode wird aufgerufen, wenn es nur noch zwei Spieler auf dem Spielfeld gibt und eine Kollision stattgefunden hat. Die Methode speichert den Zeitpunkt der Kollision und gibt den gespeicherten Zeitpunkt zurück. | |
+|UC8| | boolean checkCollisionTimeStamps(Long, Long) | Diese Methode wird aufgerufen, wenn es nur noch zwei Spieler auf dem Spielfeld gibt und eine Kollision stattgefunden hat. Sie prüft, ob die Differenz der beiden übergebenen Zeitpunkte <= 0,1 ist. Wenn ja, dann gibt sie true zurück, sonst false.|Wenn einer der übergeben Parameter null ist, wird eine NullPointerException mit Fehlerbeschreibung geworfen. |
+|UC8| | int setGameAsTied() | Die Methode wird aufgerufen, wenn zwei Kollisionen"gleichzeitig" (Zeitabstand <=0,1: Methode checkCollision() gibt true zurück). Die Methode setzt den Gewinner auf -1, um zu zeigen, dass das Spiel unentschieden ausgegangen ist.| |
+|UC6, UC8| |int getGameResult() | Die Methode wird aufgerufen, wenn ein Gewinner registriert wurde oder das Spiel als unentschieden markiert wurde. Die Methode liefert entweder die Spieler-ID des Gewinners oder -1, wenn das Spiel unentschieden ausgegangen ist.| |
+
+
+
+
+
+
 
 # Bausteinsicht
 
