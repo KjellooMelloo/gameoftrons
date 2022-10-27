@@ -109,14 +109,7 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 
 # Lösungsstrategie
 
-Todo: Eine Methode für das Laden der Parameter aus COnfig
 
-**Was passiert, wenn Config-Datei falsch geladen wird?** -> Mit Default-Werten besetzen
-
-**Soll die Breite und die Höhe angepasst werden?** --> Nein!!!!! Wir sind Quadratophile!!
-**Was soll die maximale und minimale Größe sein?** --> siehe Anforderungen
-**Create Game instance: Wann true, wann false? Wann Fehler werfen?** --> Instanz zurückgeben;Wenn nicht erfolgreich, Exception werfen; 
-**registerPlayer** --> keine Informationen über Fehler mit boolean-Rückgabewert, ausschließlich über Exception-Throwing
 
 |Use Case| Akteur | Funktionssignatur | Ablaufsemantik | Fehlersemantik |
 | --- | --- | --- | --- | --- |
