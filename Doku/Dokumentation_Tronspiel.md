@@ -16,7 +16,35 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 | ![Endbildschirm Fall 1](images/tron4a.png)<br> ![Endbildschirm Fall 2](images/tron5.PNG)| <ul><li>Der Endbildschirm erscheint, wenn das Spiel vorbei ist</li><li>Im Endbildschirm wird angezeigt, wer gewonnen hat oder ob das Spiel unentschieden ausgegangen ist</li><li>Nach 3 Sekunden wird zum Startbildschirm gewechselt</li><li>Der Endbildschirm wird erst angezeigt, wenn das Spiel vorbei ist und nicht sobald man stirbt</li></ul>
 | Konfiguration | <ul><li>Die Konfigurationsdatei wird beim Start des Spiels geladen</li><li>Die Konfigurationsdatei kann vom Nutzer bearbeitet werden</li><li>Darüber wird der Default-Wert 2 der Spieleranzahl, die maximale Wartezeit bis zum Spielstart, die Spielfeldgröße, die Geschwindigkeit und die Tastenbelegung für die Steuerung konfiguriert</li></ul>
 
-**UseCases**
+### **Weitere Storyboard Ansichten**
+
+**Spielstart**
+
+![spielstart.png](./images/spielstart.png)
+<br>
+
+**Im Spiel**
+
+![im_spiel.png](./images/im_spiel.png)
+<br>
+
+**Kollision mit der Wand**
+
+![kollision_wand.png](./images/kollision_wand.png)
+<br>
+
+**Gleichzeitige Kollision zweier Spieler**
+
+![kollision_gleich.png](./images/kollision_gleich.png)
+<br>
+
+**Frontalkollision**
+
+![frontalkollision.png](./images/frontalkollision.png)
+<br>
+
+### **UseCases**
+
 | Usecase | Objekt/Klasse | Vorbedingungen | Nachbedingungen |Erfolgsfall | Erweiterungsfälle| Fehlerfälle |
 |---|---|---|---|---|---|---|
 |**UC1** Create|Game|Der Spieler befindet sich im Startbildschirm.|Ein Spiel wurde erstellt und es wird auf weitere Spieler gewartet. Der Wartebildschirm wird angezeigt. Dem Spieler wird seine Farbe im Spiel angezeigt|**1.** Der Nutzer gibt die gewünschte Spieleranzahl in das Eingabefeld ein und klickt den Start-Knopf an. <br><br>**2.** Das System erzeugt eine Spielinstanz mit den Parametern aus der Config-Datei und dem Feld vom Startbildschirm.<br><br>**3.** Das System registriert den Nutzer im Spiel.<br><br> **4.** Das System zeigt den Wartebildschirm an||**1a** Die vom Nutzer eingegebene Spieleranzahl ist nicht zwischen 2-6. <br><br> **1a.1** Das System übernimmt den Default-Wert aus der Config-Datei <br><br> **1a.2** Das System informiert den Nutzer über die altenative Spieleranzahl über eine Fehlermeldung<br><br> **2a** Ein Parameter in der Config-Datei ist nicht gültig <br><br> **2a.1** Für alle ungültigen Parameter werden Default-Werte eingesetzt<br><br> **2a.2** Der Nutzer wird über eine Meldung darüber informiert, dass Parameter auf ihren Default-Wert gesetzt wurden|
