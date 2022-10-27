@@ -114,14 +114,13 @@ Todo: Eine Methode für das Laden der Parameter aus COnfig
 |UC5 | | boolean checkCollision(Position) | Die Methode prüft, ob es eine Kollision an der übergebenen Position gegeben hat. Sie gibt true zurück, wenn eine Kollision stattgefunden hat, sonst false. | Im Fehlerfall wird eine Exception mit Fehlerbeschreibung geworfen|
 |UC5| | Player removePlayer(int) | Die Methode entfernt den Spieler mit der übergebenen Spieler-ID aus dem Spielfeld. Die Methode informUser("You lose...Du wurdest aus dem Spiel entfernt"), um den Nutzer zu informieren und gibt den entfernten Spieler zurück. | |
 |UC6 | |boolean checkOnlyOnePlayerLeft ()| Die Methode wird aufgerufen, wenn eine Kollision stattgefunden hat. Die Methode liefert die Information, ob sich nur noch ein Spieler im Spiel befindet. Sie gibt, true zurück, wenn es nur noch ein Spieler gibt, sonst false. | Im Fehlerfall wird eine Exception mit Fehlerbeschreibung geworfen|
-|UC6 | |Player setGameWinner() | |
-|UC6 | | Player getGameWinner()| |
-|Uc6| | getPlayerColor(int)| |
-|UC8| | boolean checkOnlyTwoLeft() | |
-|UC8| | void setCollisionTimeStamps() | |
-|UC8| | boolean checkCollisionTimeStamps() | |
-|UC8| | void setGameAsTied() | |
-|UC6, UC8| |int getGameResult() | | |
+|UC6 | int setGameWinner(Player) | Die Methode wird aufgerufen, wenn es nur noch einen Spieler im Spiel gibt. Der übergebene Player ist der letzte im Spie. Seine Spieler-ID wird von der Methode als Sieger registriert. |
+|UC6 | | Player getGameWinner()| Die Methode wird aufgerufen, wenn ein Gewinner festgelegt wurde. Die Methode gibt den festgelegten Gewinner zurück| Wenn kein Gewinner festgelegt wurde, wird eine NullPointerException geworfen.|
+|UC8| | boolean checkOnlyTwoLeft() | Die Methode wird in jedem Durchlauf des Game Loops aufgerufen. Die Methode gibt true zurück, wenn es nur noch zwei Spieler auf dem Spielfeld gibt, sonst false.| |
+|UC8| | Long setCollisionTimeStamps() |Diese Methode wird aufgerufen, wenn es nur noch zwei Spieler auf dem Spielfeld gibt und eine Kollision stattgefunden hat. Die Methode speichert den Zeitpunkt der Kollision und gibt den gespeicherten Zeitpunkt zurück. | |
+|UC8| | boolean checkCollisionTimeStamps(Long, Long) | Diese Methode wird aufgerufen, wenn es nur noch zwei Spieler auf dem Spielfeld gibt und eine Kollision stattgefunden hat. Sie prüft, ob die Differenz der beiden übergebenen Zeitpunkte <= 0,1 ist. Wenn ja, dann gibt sie true zurück, sonst false.|Wenn einer der übergeben Parameter null ist, wird eine NullPointerException mit Fehlerbeschreibung geworfen. |
+|UC8| | int setGameAsTied() | Die Methode wird aufgerufen, wenn zwei Kollisionen"gleichzeitig" (Zeitabstand <=0,1: Methode checkCollision() gibt true zurück). Die Methode setzt den Gewinner auf -1, um zu zeigen, dass das Spiel unentschieden ausgegangen ist.| |
+|UC6, UC8| |int getGameResult() | Die Methode wird aufgerufen, wenn ein Gewinner registriert wurde oder das Spiel als unentschieden markiert wurde. Die Methode liefert entweder die Spieler-ID des Gewinners oder -1, wenn das Spiel unentschieden ausgegangen ist.| |
 
 
 
