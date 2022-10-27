@@ -16,6 +16,27 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 | ![Endbildschirm Fall 1](images/tron4.PNG)<br> ![Endbildschirm Fall 2](images/tron5.PNG)| <ul><li>Der Endbildschirm erscheint, wenn das Spiel vorbei ist</li><li>Im Endbildschirm wird angezeigt, wer gewonnen hat oder ob das Spiel unentschieden ausgegangen ist</li><li>Nach 3 Sekunden wird zum Startbildschirm gewechselt</li><li>Der Endbildschirm wird erst angezeigt, wenn das Spiel vorbei ist und nicht sobald man stirbt</li></ul>
 | Konfiguration | <ul><li>Die Konfigurationsdatei wird beim Start des Spiels geladen</li><li>Darüber wird vom Nutzer die Spieleranzahl zwischen 2 und 6, die maximale Wartezeit bis zum Spielstart, die Spielfeldgröße, die Größe von jedem Feld im Raster, die Geschwindigkeit und die Tastenbelegung für die Steuerung konfiguriert</li></ul>
 
+Weitere Storyboard Ansichten
+Spielstart
+![spielstart.png](./images/spielstart.png)
+
+<br>
+Im Spiel
+![im_spiel.png](./images/im_spiel.png)
+
+<br>
+Kollision mit der Wand
+![kollision_wand.png](./images/kollision_wand.png)
+
+<br>
+Gleichzeitige Kollision zweier Spieler
+![kollision_gleich.png](./images/kollision_gleich.png)
+
+<br>
+Frontalkollision
+![frontalkollision.png](./images/frontalkollision.png)
+
+<br>
 **UseCases**
 |Usecase    |Objekt   |Vorbedingungen   |Nachbedingungen    |Ablaufsemantik |Fehlersemantik|
 |-----------|---------|-----------------|-------------------|---------------|--------------|
