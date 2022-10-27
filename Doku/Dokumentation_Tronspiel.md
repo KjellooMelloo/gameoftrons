@@ -16,28 +16,35 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 | ![Endbildschirm Fall 1](images/tron4.PNG)<br> ![Endbildschirm Fall 2](images/tron5.PNG)| <ul><li>Der Endbildschirm erscheint, wenn das Spiel vorbei ist</li><li>Im Endbildschirm wird angezeigt, wer gewonnen hat oder ob das Spiel unentschieden ausgegangen ist</li><li>Nach 3 Sekunden wird zum Startbildschirm gewechselt</li><li>Der Endbildschirm wird erst angezeigt, wenn das Spiel vorbei ist und nicht sobald man stirbt</li></ul>
 | Konfiguration | <ul><li>Die Konfigurationsdatei wird beim Start des Spiels geladen</li><li>Darüber wird vom Nutzer die Spieleranzahl zwischen 2 und 6, die maximale Wartezeit bis zum Spielstart, die Spielfeldgröße, die Größe von jedem Feld im Raster, die Geschwindigkeit und die Tastenbelegung für die Steuerung konfiguriert</li></ul>
 
-Weitere Storyboard Ansichten
-Spielstart
+### **Weitere Storyboard Ansichten**
+
+**Spielstart**
+
 ![spielstart.png](./images/spielstart.png)
-
 <br>
-Im Spiel
+
+**Im Spiel**
+
 ![im_spiel.png](./images/im_spiel.png)
-
 <br>
-Kollision mit der Wand
+
+**Kollision mit der Wand**
+
 ![kollision_wand.png](./images/kollision_wand.png)
-
 <br>
-Gleichzeitige Kollision zweier Spieler
+
+**Gleichzeitige Kollision zweier Spieler**
+
 ![kollision_gleich.png](./images/kollision_gleich.png)
-
 <br>
-Frontalkollision
+
+**Frontalkollision**
+
 ![frontalkollision.png](./images/frontalkollision.png)
-
 <br>
-**UseCases**
+
+### **UseCases**
+
 |Usecase    |Objekt   |Vorbedingungen   |Nachbedingungen    |Ablaufsemantik |Fehlersemantik|
 |-----------|---------|-----------------|-------------------|---------------|--------------|
 |UC01 create|Application|Die Spieleranzahl wurde festgelegt durch Config-Datei oder Eingabefeld. Der Spieler befindet sich im Startbildschirm.|Ein Spiel wurde erstellt und es wird auf weitere Spieler gewartet. Der Wartebildschirm wird angezeigt. Dem Spieler wird seine Farbe im Spiel angezeigt|1. Der Spieler drückt auf den Start-Knopf. <br>2. Eine Spielinstanz mit den Parametern aus der Config-Datei und dem Feld vom Startbildschirm wird erzeugt.<br>3. Der Spieler wird im Spiel registriert.|1. Die vom Nutzer eingegebene Spieler Zahl ist nicht in [2;6] --> Default-Wert aus Config-Datei wird genommen|
