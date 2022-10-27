@@ -119,7 +119,7 @@ Todo: Eine Methode für das Laden der Parameter aus COnfig
 |UC8| | void setCollisionTimeStamps() | |
 |UC8| | boolean checkCollisionTimeStamps() | |
 |UC8| | void setGameAsTied() | |
-|UC6, UC8| int getGameResult() | |
+|UC6, UC8| |int getGameResult() | | |
 
 
 
