@@ -316,6 +316,9 @@ Methodenliste
 
 ## Usecase 6 Spielende
 ![Sequenzdiagramm_Spielende](images/SD_Spielende.png)
+
+## UC6 Win
+![Sequenzdiagramm_Spielende](images/SD_UC6Win.png)
 ...
 
 # Verteilungssicht {#section-deployment-view}
