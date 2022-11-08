@@ -235,6 +235,8 @@ tbd
 
 ### \<Name Schnittstelle 1> {#__name_schnittstelle_1}
 
+**Controller Blackbox (Ebene 1)**
+
 ...
 
 ### \<Name Schnittstelle m> {#__name_schnittstelle_m}
@@ -279,7 +281,10 @@ tbd
 
 *\<Whitebox-Template>*
 
-![Tron_Controller.png](./images/Tron_Controller.png)
+**Controller Whitebox (Ebene 3)**
+
+![Controller_Whitebox.png](./images/Controller_Whitebox.png)
+<br>
 
 Methodenliste
 | Methode           | Beschreibung                                 |
