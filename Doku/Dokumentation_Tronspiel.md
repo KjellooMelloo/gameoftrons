@@ -319,6 +319,12 @@ Methodenliste
 
 ## UC6 Win
 ![Sequenzdiagramm_Spielende](images/SD_UC6Win.png)
+
+## UC7 Lose
+![Sequenzdiagramm_Spielende](images/SD_UC7Lose.png)
+
+## UC8 Tie
+![Sequenzdiagramm_Spielende](images/SD_UC8Tie.png)
 ...
 
 # Verteilungssicht {#section-deployment-view}
