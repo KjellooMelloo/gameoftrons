@@ -237,6 +237,9 @@ tbd
 
 **Controller Blackbox (Ebene 1)**
 
+![Controller_Blackbox.png](./images/Controller_Blackbox.png)
+<br>
+
 ...
 
 ### \<Name Schnittstelle m> {#__name_schnittstelle_m}
