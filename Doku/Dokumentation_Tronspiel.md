@@ -329,6 +329,16 @@ Methodenliste
 ## Usecase 3 Spielstart
 ![Sequenzdiagramm_Spielstart](images/SD_Spielstart.png)
 
+## Usecase 4 Spieler steuern
+
+![Sequenzdiagramm_UC4](images/Sequenzdiagramm_UC4.png)
+
+## Usecase 4.a Erweiterungsfall Spieler steuern
+![Sequenzdiagramm_UC4a](images/Sequenzdiagramm_UC4_1a.png)
+
+## Usecase 5 gegen Spielobjekt kollidieren
+![Sequenzdiagramm_UC5](images/Sequenzdiagramm_UC5.png)
+
 ## Usecase 6 Spielende
 ![Sequenzdiagramm_Spielende](images/SD_Spielende.png)
 ...
