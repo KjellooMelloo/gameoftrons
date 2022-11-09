@@ -3,6 +3,32 @@
 **Autoren**: Kathleen Neitzel, Kjell May, Viviam Ribeiro <br>
 **Modul**: Verteilte Systeme
 
+- [Einführung und Ziele](#einfuehrung)
+   - [Use Cases](#usecases)
+   - [Qualitätsziele](#qualitaetsziele)
+   - [Stakeholder](#stakeholder)
+   - [Randbedingungen](#randbedingungen)
+- [Kontextabgrenzung](#kontextabgrenzung)
+  - [Fachlicher Kontext](#fachlicherkontext)
+  - [Technischer Kontext](#technischerkontext)
+- [Lösungsstrategie](#loesungsstrategie)
+- [Bausteinsicht](#bausteinsicht)
+  - [Whitebox Gesamtsystem](#whiteboxgesamt)
+    - [Model Blackbox](#modelblackbox)
+    - [View Blackbox](#viewblackbox)
+    - [Controller Blackbox](#controllerblackbox)
+  - [Whitebox Ebene 2](#ebene2)
+  - [Whitebox Ebene 3](#ebene3)
+- [Laufzeitsicht](#laufzeitsicht)
+- [Verteilungssicht](#verteilungssicht)
+- [Architekturentscheidungen](#architektur)
+- [Risiken und technische Schulden](#risiken)
+- [Qualitätsanforderungen](#qualitaet)
+- [Glossar](#glossar)
+
+
+
+<a name="einfuehrung"></a>
 # Einführung und Ziele
 ## Aufgabenstellung
 
@@ -43,6 +69,7 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 ![frontalkollision.png](./images/frontalkollision.png)
 <br>
 
+<a name="usecases"></a>
 ### **UseCases**
 
 | Usecase | Objekt/Klasse | Vorbedingungen | Nachbedingungen |Erfolgsfall | Erweiterungsfälle| Fehlerfälle |
@@ -56,7 +83,7 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 |**UC7** Lose|Game|Der Spieler befindet sich mit mindestens einem weiteren Spieler auf dem Spielfeld|Der Spieler wurde aus dem Spiel entfernt|**1.** Der Spieler kollidiert (siehe UC5).<br><br> **2.** Das System entfernt den Spieler aus dem Spiel| | |
 |**UC8** Tie|Game|Der Spieler befindet sich mit nur einem weiteren Spieler auf dem Spielfeld|Das Spiel wurde gelöscht und alle Nutzer wurden zum Startbildschirm weitergeleitet.|**1.** Beide Spieler kollidieren gleichzeitig (siehe UC5).<br><br> **2.** Das System legt fest, dass das Spiel unentschieden ist.<br><br> **3.** Das System zeigt allen Nutzern den Endschirm an, wo angezeigt wird, dass das Spiel unentschieden ist.<br><br> **4.** Nach 3 Sekunden löscht das System die Spielinstanz und zeigt allen wieder den Startbildschirm an.| |
 
-
+<a name="qualitaetsziele"></a>
 ## Qualitätsziele
 
 |Qualitätsziel  |Erklärung|
@@ -65,6 +92,8 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 |Fehlertoleranz/ Stabilität| Das Spiel soll bestehen/ stabil bleiben, auch wenn Teilnehmer abstürzen|
 |Zuverlässigkeit|Das Spiel soll immer gleich schnell laufen (kein "Jittering")|
 |Ein Spiel am Stück (Rematch-Option)|Es reicht aus, wenn ein Spiel am Stück spielbar ist (Keine "direkte" Rematch-Option)|
+
+<a name="stakeholder"></a>
 ## Stakeholder
 
 |Rolle  |Kontakt        |Erwartungshaltung|
@@ -72,8 +101,10 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 |Kunde  |Martin Becke   |Entwicklung eines Tron-Spiels als verteiltes System, gut dokumentiert (Code <-> Dokumentation), Konzepte aus der Vorlesung sinnvoll angewendet und verstanden|
 |Entwickler|Kathleen Neitzel, Kjell May, Viviam Ribeiro| - Das Spiel als verteiltes System entwickeln und dabei die Inhalte aus der Vorlesung praktisch verstehen und anwenden können <br>- PVL erhalten|
 
+
+<a name="randbedingungen"></a>
 # Randbedingungen
-**Technische Randbedingungen**
+
 
 | Randbedingung           | Erläuterung                                 |
 |-------------------------|---------------------------------------------|
@@ -87,26 +118,27 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 | Team            | Kjell May, Viviam Ribeiro und Kathleen Neitzel aus dem Studiengang der Angewandten Informatik. Fachsemester 6 und 7. |
 | Zeit            | Standalone Applikation bis Mitte November, endgültige Abgabe Ende Januar 2023. |
 
+
+<a name="kontextabgrenzung"></a>
 # Kontextabgrenzung
 
+<a name="fachlicherkontext"></a>
 ## Fachlicher Kontext
 
-**Diagramm und Tabelle**
 
 ![fachlicher_trontext.png](./images/fachlicher_trontext.png)
 
-**\<optional: Erläuterung der externen fachlichen Schnittstellen>**
 
+
+<a name="technischerkontext"></a>
 ## Technischer Kontext
 
-**\<Diagramm oder Tabelle>**
+
 
 ![technischer_trontext.png](./images/technischer_trontext.png)
 
-**\<optional: Erläuterung der externen technischen Schnittstellen>**
 
-**\<Mapping fachliche auf technische Schnittstellen>**
-
+<a name="loesungsstrategie"></a>
 # Lösungsstrategie
 
 Aufgabe des Models: Spiellogik!!
@@ -152,9 +184,10 @@ TODO: UC3:runGame(), UC1,UC2,UC3,UC5,UC6,UC8 changeState()  --> Controller
 
 
 
-
+<a name="bausteinsicht"></a>
 # Bausteinsicht
 
+<a name="whiteboxgesamt"></a>
 ## Whitebox Gesamtsystem
 
 Game Of Trons ist in drei Komponenten aufgeteilt, die in der unteren Abbildung zu sehen sind.
@@ -173,7 +206,7 @@ Die Komponentenaufteilung richtet sich nach dem eingesetzten MVC-Architekturmust
 |Controller | Regelt die Ablaufsemantik außerhalb des Spielens des Spiels und vermittelt zwischen Model und View.|
 
 
-
+<a name="modelblackbox"></a>
 ### Model (Blackbox)
 
 **Zweck/ Verantwortung**
@@ -185,7 +218,7 @@ Das Model ist in unserem Spiel sowohl für die Spielelogik, als auch die Lobbylo
 Um die Tasteneingaben verarbeiten zu können benötigt das Model die angebotene Schnittstelle *ModelController* vom Controller. Um den neuen Spielstand an die View zu übergeben, bietet das Model selbst eine Schnittstelle *ViewModel* an.
 
 
-
+<a name="viewblackbox"></a>
 ### View (Blackbox) 
 
 **Zweck/ Verantwortung**
@@ -217,25 +250,14 @@ Die View importiert Controller-Funktionalitäten über die Schnittstelle **IView
 | int getGameResult | |
 
 
+<a name="ebene2"></a>
+## Ebene 2 
 
-
-*\<Blackbox-Template>*
-
-### \<Name Blackbox n> {#__name_blackbox_n}
-
-*\<Blackbox-Template>*
-
-### \<Name Schnittstelle 1> {#__name_schnittstelle_1}
-
-...
-
-### \<Name Schnittstelle m> {#__name_schnittstelle_m}
-
-## Ebene 2 {#_ebene_2}
 
 ### Whitebox Model
 
 ![Model_Ebene2](./images/Model_Ebene2.png)
+
 
 ### Whitebox View 
 
@@ -245,11 +267,10 @@ Die View importiert Controller-Funktionalitäten über die Schnittstelle **IView
 | --- | --- |
 |drawScreen() | Abstrakte Methode, die in den konkreten Klassen die Bildschirmanzeige zeichnet. |
 
-### Whitebox *\<Baustein m>* {#_whitebox_emphasis_baustein_m_emphasis}
 
-*\<Whitebox-Template>*
 
-## Ebene 3 {#_ebene_3}
+<a name="ebene3"></a>
+## Ebene 3 
 
 ### Whitebox Model
 
@@ -264,16 +285,15 @@ Die View importiert Controller-Funktionalitäten über die Schnittstelle **IView
 |checkCollision()| Diese Methode überprüft, ob es eine Kollision zwischen einem Spieler und einem anderen Spieler, Spur oder Wand gegeben hat.|
 |clearPlayer()|Wenn ein Spieler kollidiert ist, soll er vom Spielfeld verschwinden.|
 
-### Whitebox \<\_Baustein x.2\_\> {#_whitebox_baustein_x_2}
+### Whitebox View
 
-*\<Whitebox-Template>*
+
 ![Diagramme_VS__1_.jpg](Diagramme_VS__1_.jpg)
 
-### Whitebox \<\_Baustein y.1\_\> {#_whitebox_baustein_y_1}
-
-*\<Whitebox-Template>*
+### Whitebox Controller
 
 ![Tron_Controller.png](./images/Tron_Controller.png)
+
 
 Methodenliste
 | Methode           | Beschreibung                                 |
@@ -290,6 +310,7 @@ Methodenliste
 
 ? Model und Controller auseinanderpflücken --> Use Cases überlegen.
 
+<a name="laufzeitsicht"></a>
 # Laufzeitsicht
 
 ## *\<Bezeichnung Laufzeitszenario 1>* {#__emphasis_bezeichnung_laufzeitszenario_1_emphasis}
@@ -312,6 +333,7 @@ Methodenliste
 ![Sequenzdiagramm_Spielende](images/SD_Spielende.png)
 ...
 
+<a name="verteilungssicht"></a>
 # Verteilungssicht {#section-deployment-view}
 
 ## Infrastruktur Ebene 1 {#_infrastruktur_ebene_1}
@@ -346,6 +368,7 @@ Zuordnung von Bausteinen zu Infrastruktur
 
 *\<Diagramm + Erläuterungen>*
 
+<a name="querschnitt"></a>
 # Querschnittliche Konzepte {#section-concepts}
 
 ## *\<Konzept 1>* {#__emphasis_konzept_1_emphasis}
@@ -362,6 +385,7 @@ Zuordnung von Bausteinen zu Infrastruktur
 
 *\<Erklärung>*
 
+<a name="architektur"></a>
 # Architekturentscheidungen 
 
 Ausschlaggebend für die Architektur ist das MVC-Entwurfsmuster, das häufig bei Anwendungen mit Benutzeroberfläche eingesetzt wird, was auch bei der hier behandelten Anwendung der Fall ist.
@@ -370,6 +394,7 @@ Dieses Entwurfsmuster implementiert das Prinzip des Separation of Concerns, wodu
 
 Die Vorteile, die das Einsetzen dieses Patterns bringen, sind für die Entwicklung dieser Software unerlässlich, da der Softwareentwicklungsprozess iterativ gestaltet ist und da Änderungen in der Logik oder Architektur aufgrund von neuen Wunschäußerungen durch die Stakeholder oder aufgrund von Fehleinschätzungen durch das unerfahrene Entwicklungsteam zu erwarten sind.
 
+<a name="qualitaet"></a>
 # Qualitätsanforderungen
 
 ## Qualitätsbaum
@@ -388,8 +413,10 @@ Die Vorteile, die das Einsetzen dieses Patterns bringen, sind für die Entwicklu
 
 **TODO Wahrscheinlich noch mehr Szenarien**
 
+<a name="risiken"></a>
 # Risiken und technische Schulden {#section-technical-risks}
 
+<a name="glossar"></a>
 # Glossar {#section-glossary}
 
 |Begriff    |Definition|
