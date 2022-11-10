@@ -311,7 +311,7 @@ Die View importiert Controller-Funktionalitäten über die Schnittstelle **IView
 <br>
 
 State Machine
-![Whitebox_SM.png](./images/Whitebox_SM.png)
+![Whitebox_StateMachine.png](./images/Whitebox_StateMachine.png)
 <br>
 
 
