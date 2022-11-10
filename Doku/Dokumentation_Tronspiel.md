@@ -286,7 +286,11 @@ tbd
 
 **Controller Whitebox (Ebene 3)**
 
-![Controller_Whitebox.png](./images/Controller_Whitebox.png)
+![Whitebox_Controller.png](./images/Whitebox_Controller.png)
+<br>
+
+State Machine
+![Whitebox_SM.png](./images/Whitebox_SM.png)
 <br>
 
 Methodenliste
