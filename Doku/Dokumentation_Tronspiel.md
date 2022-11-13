@@ -200,7 +200,7 @@ Die Komponentenaufteilung richtet sich nach dem eingesetzten MVC-Architekturmust
 | --- | --- |
 | Model | Enthält das Datenmodell und die Spielelogik |
 | View | Verantwortlich für die GUI-Anzeige|
-|Controller | Regelt die Ablaufsemantik außerhalb des Spielens des Spiels und vermittelt zwischen Model und View.|
+|Controller | Regelt die Ablaufsemantik außerhalb des Spiels und vermittelt zwischen Model und View.|
 
 
 <a name="modelblackbox"></a>
@@ -249,6 +249,38 @@ Die View importiert Controller-Funktionalitäten über die Schnittstelle **IView
 | int getGameResult | |
 
 
+
+<a name="controllerblackbox"></a>
+### Controller (Blackbox) 
+
+**Zweck/ Verantwortung**
+
+Der Controller steuert den gesamten Ablauf rund um das Spiel. Dieser umfasst das Weiterleiten vom Startbildschirm in die Lobby, das Warten auf weitere Mitspieler, das Mitteilen des Siegers am Ende des Spiels, das Löschen der beendeten Runde und das Zurückleiten zum Startbildschirm. Außerdem setzt der Controller die Kommunikation zwischen der View- und der Modelkomponente sowohl vor und nach als auch während der laufenden Runde über mehrere Schnittstellen um.
+Während des Spiels nimmt der Controller die Benutzereingaben zur Steuerung des Spielers an und leitet diese an das Model weiter.
+
+**Schnittstelle(n)**
+
+Der Controller bietet Funktionalitäten für das Model v.a. zur Kommunikation mit der View über die Schnittstelle **IModelController** an.
+
+
+| Methode | Kurzbeschreibung |
+| --- | --- |
+| void updatePlayersInGameField(List<Player>) | Zeigt den Bildschirm an, der zum als String übergebenen Programmzustand passt |
+| void endGame(int?) | aktualisiert die Spielerliste in der View |
+| static Game createGameInstance() | setzt ein Spielergebnis in der View|
+
+
+Der Controller bietet Funktionalitäten für die View v.a. zur Kommunikation mit dem Model über die Schnittstelle **IViewController** an.
+
+| Methode | Kurzbeschreibung |
+| --- | --- |
+| int handleInputPlayerCount() | |
+| void handleWaitingButtonClick()| |
+| String handleDirectionKeyboardInput()|  |
+| void notifyGameResult(int) | |
+| void notifyCountdownOver() | |
+
+
 <a name="ebene2"></a>
 ## Ebene 2 
 
@@ -256,7 +288,7 @@ Die View importiert Controller-Funktionalitäten über die Schnittstelle **IView
 
 ### \<Name Schnittstelle 1> {#__name_schnittstelle_1}
 
-**Controller Blackbox (Ebene 1)**
+**Controller Whitebox (Ebene 1)**
 
 ![Controller_Blackbox.png](./images/Controller_Blackbox.png)
 <br>
