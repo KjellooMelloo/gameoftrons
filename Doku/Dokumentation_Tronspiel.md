@@ -339,7 +339,7 @@ Der Controller bietet Funktionalitäten für die View v.a. zur Kommunikation mit
 
 **Controller Whitebox (Ebene 3)**
 
-![Whitebox_Controller.png](./images/Whitebox_Controller.png)
+![Controller_WB_complete.png](./images/Controller_WB_complete.png)
 <br>
 
 State Machine
