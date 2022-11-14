@@ -208,7 +208,7 @@ Die Komponentenaufteilung richtet sich nach dem eingesetzten MVC-Architekturmust
 
 **Zweck/ Verantwortung**
 
-Das Model ist in unserem Spiel sowohl für die Spielelogik, als auch die Lobbylogik zuständig. Es berechnet den aktuellen Spielstand anhand der Eingaben und gibt dies an die View weiter. Die Lobbylogik kümmert sich um das Erstellen und Starten von Spielen, also vom Start- über den Warte- zum Spielbildschirm.
+Das Model ist in unserem Spiel für die Spielelogik zuständig. Es berechnet den aktuellen Spielstand anhand der Eingaben und gibt die Informationen an die View weiter
 
 **Schnittstelle(n)**
 
@@ -287,16 +287,11 @@ Die View importiert Controller-Funktionalitäten über die Schnittstelle **IView
 
 ### Whitebox Model
 
-![Model_Ebene3](images/Model_Ebene3.png)
+![Model_Ebene3](images/Model_Ebene3_Refactor.png)
 
 |Methode    |Kurzbeschreibung|
-|-----------|----------------|
-|addPlayer()|Diese Methode kümmert sich um das Hinzufügen eines neuen Spielers zum Spiel. Dabei wird ein Player-Objekt initialisiert mit einer noch nicht vergebenen Farbe.|
-|cancelWait()|Diese Methode bricht die Spielesuche/ das Warten auf weitere Spieler ab|
-|startGame()|Diese Methode initialisiert und startet das eigentliche Spiel, sobald alle Spieler beigetreten sind.|
-|movePlayer()|Mit dieser Methode wird die Bewegung im Spiel modelliert. Tasteneingaben vom Spieler bestimmen seine Richtung. Hier wird außerdem mit internen Methoden weiter überprüft, ob es Kollisionen gab und demnach gehandelt.|
-|checkCollision()| Diese Methode überprüft, ob es eine Kollision zwischen einem Spieler und einem anderen Spieler, Spur oder Wand gegeben hat.|
-|clearPlayer()|Wenn ein Spieler kollidiert ist, soll er vom Spielfeld verschwinden.|
+|-|-|
+|||
 
 ### Whitebox View
 
@@ -351,9 +346,6 @@ Methodenliste
 
 ## Usecase 2 CancelWait
 ![UC2_CancelWait](images/UC2_CancelWait.png)
-
-## Usecase 3 Start
-![UC3_Start](images/UC3_Start.png)
 
 ## Usecase 3 Spielstart
 ![Sequenzdiagramm_Spielstart](images/SD_Spielstart.png)
