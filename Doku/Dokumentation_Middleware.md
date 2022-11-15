@@ -10,13 +10,25 @@ Template Version 8.1 DE. (basiert auf AsciiDoc Version), Mai 2022
 Created, maintained and © by Dr. Peter Hruschka, Dr. Gernot Starke and
 contributors. Siehe <https://arc42.org>.
 
-# Einführung und Ziele {#section-introduction-and-goals}
+# Einführung und Ziele
 
 ## Aufgabenstellung 
-![storyboard 1](Doku/images/tron1.jpg)
+
+**Grundlegende Aufgaben der Middleware**
+1. Funktionsaufrufe werden in Nachrichten umgewandelt
+2. Nachrichten werden in Funktionsaufrufe umgewandelt
+3. Die Middleware soll message-oriented sein
+4. Vereinheitlicht die Kommunikationsdatentypen durch RPC
+5. Application Stubs können sich als remote objects bei der Middleware anmelden
+
 
 
 ## Qualitätsziele {#_qualit_tsziele}
+
+| ID | Qualitätsziel | Kurzbeschreibung |
+| --- | --- | --- |
+| Q1 | Skalierbarkeit | Unser System sollte in de Anzahl der Nutzer skalierbar sein |
+
 
 ## Stakeholder {#_stakeholder}
 
