@@ -339,11 +339,11 @@ Der Controller bietet Funktionalitäten für die View v.a. zur Kommunikation mit
 
 **Controller Whitebox (Ebene 3)**
 
-![Controller_WB_complete.png](./images/Controller_WB_complete.png)
+![WB_C.png](./images/WB_C.png)
 <br>
 
 State Machine
-![Controller_WB.png](./images/Controller_WB.png)
+![WB_SM.png](./images/WB_SM.png)
 <br>
 
 
@@ -379,13 +379,15 @@ Methodenliste
 ## *\<Bezeichnung Laufzeitszenario n>* {#__emphasis_bezeichnung_laufzeitszenario_n_emphasis}
 
 ## Usecase 1 Create
-![UC1_Create](images/UC1_Create.png)
+![LFZ_create](images/LFZ_create.png)
+
+![LFZ_create_b](images/LFZ_create_b.png)
 
 ## Usecase 2 CancelWait
-![UC2_CancelWait](images/UC2_CancelWait.png)
+![LFZ_cancel](images/LFZ_cancel.png)
 
 ## Usecase 3 Start
-![UC3_Start](images/UC3_Start.png)
+![LFZ_start](images/LFZ_start.png)
 
 ## Usecase 3 Spielstart
 ![Sequenzdiagramm_Spielstart](images/SD_Spielstart.png)
