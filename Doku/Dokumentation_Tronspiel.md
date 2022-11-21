@@ -159,7 +159,6 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 |UC3 | View | Color getPlayerColor(int) |Es wurden Spielerinstanzen erzeugt. | Die Farbe wird zurückgegeben. |Die Methode gibt die Farbe des Spieler zurück, dessen ID als Parameter übergeben wurde |Wenn die übergebene ID keinem Spieler gehört, wird eine Exception mit Fehlerbeschribung geworfen |
 |UC3 | View | void showPlayerColor(Color) | Die Farbe des Spielers wurde ermittelt und wird als Aufrufparameter übergeben. | Dem Nutzer wird die übergebene Farbe im aktuellen Bildschirm angezeigt. |Die Methode zeigt die Spielerfarbe an, die als Parameter übergeben wird | | 
 |UC4 | Model | void movePlayers() | Der Nutzer befindet sich im Spielbildschirm. | Die Position der Spieler hat sich geändert. |Die Methode bewegt alle Spieler geradeaus entsprechend ihrer aktuellen Richtung und dem geladenen Geschwindigkeitsparameter. | |
-|UC4 |Controller| void updatePlayersInGameField(List<Player>) | Der Nutzer befindet sich im Spielbildschirm.| Es wurde eine Liste mit den noch lebenden Spielern zurückgegeben. |Die Methode liefert eine Liste mit allen Spielern, die noch nicht verloren haben und deshalb noch auf dem Spielfeld sind | |
 |UC4 | View | void drawPlayers() | Der Nutzer befindet sich im Spielbildschirm und die Spielfeldanzeige soll die aktuelle Positionen der Spieler zeigen | Auf dem Spielfeld werden die aktuell lebenden Spieler an ihren aktuellen Positionen angezeigt. |Die Methode ruft die Methode getPlayersinGameField() auf, um Informationen über die aktuellen Spieler zu erhalten. Anhand dieser Informationen werden die Spieler an ihrer aktuellen Position und Ausrichtung in Szene gesetzt. | Im Fehlerfall wird eine Exception mit Fehlerbeschreibung geworfen |
 |UC4 | View | void drawTileColors() | Der Nutzer befindet sich im Spielbildschirm und die Spielfeldanzeige soll die aktuelle Einfärbung des Spielfeldes zeigen | Auf dem Spielfeld wird die aktuell gültige Einfärbung des Spielfeldes angezeigt. |Die Methode holt von jedem Spieler im Spielfeld die eingefärbten Felder und die entsprechende Farbe. Anhand dieser Informationen wird jedes mit Farbe belegte Feld des Spielfeldes in der ermittelten Farbe angezigt. | |
 |UC4| Controller | String handleDirectionKeyboardInput() |Der Nutzer hat eine Taste füe die Steuerung seines Spielers gedrückt.| Die gewünschte Richtungsänderung wird zurückgegeben. | Die Methode liefert die Richtung, die über die Tastatur vom Nutzer eingegeben wurde. Wenn die entsprechende Tastenbelegung für die Steuerung des Motorrads nach links gedrückt wurde, gibt die Methode den String 'left' zurück. <br> Wenn die entsprechende Tastenbelegung für die Steuerung des Motorrads nach rechts gedrückt wurde, gibt die Methode den String 'right' zurück.| Im Fehlerfall wird eine Exception mit Fehlerbeschreibung geworfen |
@@ -170,8 +169,8 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 |UC8| Model | void saveCollisionTimeStamps() |Es befinden sich nur noch zwei Spieler im Spiel und eine Kollision hat stattgefunden. | Der Kollisionszeitpunkt wurde in einer globalen Variable gespeichert.| Die Methode speichert den Zeitpunkt der Kollision  | |
 |UC8| Model| boolean checkCollisionTimeStamps(Long, Long) | Es befinden sich nur noch zwei Spieler auf dem Spielfeld gibt ein Kollisionszeeitpunkt wurde gespeichert.| Liefert die Information, on zwei zeitgleiche Kollisionen stattgefunden haben. | Sie prüft, ob die Differenz der beiden übergebenen Zeitpunkte <= 0,1 ist. Wenn ja, dann gibt sie true zurück, sonst false.|Wenn einer der übergeben Parameter null ist, wird eine NullPointerException mit Fehlerbeschreibung geworfen. |
 |UC8| Model | void setGameAsTied() | ZWei Kollisionen haben gleichzeitig stattgefunden.| Die globale Variable "gameResult" wurde auf -1 gesetzt.| Die Methode setzt den Gewinner auf -1, um zu zeigen, dass das Spiel unentschieden ausgegangen ist.| |
-| UC1-8 | View |updateView(List<Player>) |Im Model wurden Daten zu den Spielern geändert. | Die View hat ihre Daten aktualisiert. | Die Methode aktualisiert die Spielerliste, die in der View gehalten wird. | |
-| UC3 | View | updateView(int)| Alle Spieler haben den Warteraum betreten.|Die Spielfeldgröße wird in der View gespeichert.  |Die Methode setzt die Spielfeldgröße in der View, die aus der Config-Datei geladen wurden| |
+| UC1-8 | View |updatePlayer(int[]) |Im Model wurden Daten zu den Spielern geändert. | Die View hat ihre Daten aktualisiert. | Die Methode aktualisiert die Spielerliste, die in der View gehalten wird. | |
+| UC3 | View | setGameFieldSize(int)| Alle Spieler haben den Warteraum betreten.|Die Spielfeldgröße wird in der View gespeichert.  |Die Methode setzt die Spielfeldgröße in der View, die aus der Config-Datei geladen wurden| |
 |UC6,7,8| Controller| endGame()| Im Model wurde ein Gewinner festgelegt oder das Spiel wurde als unentschieden entschieden. | Die State Maschne im Controller befindet sich im Zustand "End" | Die Methode ändert die State Maschine im Controller zum Zustand "End"| |
 |UC6,7,8|View|notifyGameResult(int)| Die State Maschine des Controllers befindet sich im Zustand "End"| Die View weiß, wie das Spiel ausgegangen ist und zeigt im nächsten Schitt den Endbildschirm an.| Die Methode setzt den Gewinner des Spiels in der View-Komponente.| |
 
@@ -227,15 +226,20 @@ Um die Tasteneingaben verarbeiten zu können benötigt das Model die angebotene 
 
 **Schnittstelle(n)**
 
-Die View bietet die Anzeigefunktionalitäten über die Schnittstelle **IView**
+Die View bietet die Anzeigefunktionalitäten, die Aktualisierung der Spielfeldgröße und das Setzen des Spielergebnisses über die Schnittstelle **IControllerView**
 
 
 | Methode | Kurzbeschreibung |
 | --- | --- |
 | showScreen(String) | Zeigt den Bildschirm an, der zum als String übergebenen Programmzustand passt |
-| updateView(List<Player>)| aktualisiert die Spielerliste in der View |
-| updateView(int)| setzt die Spielfeldgröße in der View|
-| notifyGameResult() | setzt ein Spielergebnis in der View |
+| setGameFieldSize(int)| setzt die Spielfeldgröße in der View|
+| notifyGameResult(int) | setzt ein Spielergebnis in der View |
+
+Die View erlaubt das Aktualisieren der Spielerdaten über die Schnittstelle **IModelView**
+
+| Methode | Kurzbeschreibung |
+| --- | --- |
+|updatePlayer(int[]) | Aktualisiert die Spielerliste, die in der View gehalten wird|
 
 
 
