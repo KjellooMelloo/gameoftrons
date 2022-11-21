@@ -238,17 +238,6 @@ Die View bietet die Anzeigefunktionalitäten über die Schnittstelle **IView**
 | notifyCountdownOver() | Teilt
 
 
- ** TODO** Zu Controller rüber
-Die View importiert Controller-Funktionalitäten über die Schnittstelle **IViewController**
-
-| Methode | Kurzbeschreibung |
-| --- | --- |
-|int handleInputPlayerCount() | |
-|void handleWaiting()| |
-|void handlechangeDirection()|  |
-| int getGameResult | |
-
-
 
 <a name="controllerblackbox"></a>
 ### Controller (Blackbox) 
