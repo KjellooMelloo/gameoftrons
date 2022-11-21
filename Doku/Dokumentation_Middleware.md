@@ -27,7 +27,7 @@ contributors. Siehe <https://arc42.org>.
 
 | ID | Qualitätsziel | Kurzbeschreibung |
 | --- | --- | --- |
-| Q1 | Skalierbarkeit | Unser System sollte in de Anzahl der Nutzer skalierbar sein |
+| Q1 | Verteilungstransparenz | Entfernte Zugriffe, Bewegungen, Migrationen und Replikationen sollten vor dme Nutzer versteckt werden |
 
 
 ## Stakeholder {#_stakeholder}
