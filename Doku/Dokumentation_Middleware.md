@@ -46,11 +46,11 @@ contributors. Siehe <https://arc42.org>.
 
 ## Fachlicher Kontext {#_fachlicher_kontext}
 
-**\<Diagramm und/oder Tabelle>**
-
-**\<optional: Erläuterung der externen fachlichen Schnittstellen>**
+![Fachlicher_Trontext](./images/middleware_fachlicher_trontext.png)
 
 ## Technischer Kontext {#_technischer_kontext}
+
+![Technischer_Trontext](./images/middleware_technischer_trontext.png)
 
 **\<Diagramm oder Tabelle>**
 
@@ -65,6 +65,8 @@ contributors. Siehe <https://arc42.org>.
 ## Whitebox Gesamtsystem {#_whitebox_gesamtsystem}
 
 ***\<Übersichtsdiagramm>***
+
+![Middleware_Ebene1](./images/Middleware_Ebene1.png)
 
 Begründung
 
