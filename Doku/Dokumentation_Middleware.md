@@ -27,7 +27,9 @@ contributors. Siehe <https://arc42.org>.
 
 | ID | Qualitätsziel | Kurzbeschreibung |
 | --- | --- | --- |
-| Q1 | Skalierbarkeit | Unser System sollte in de Anzahl der Nutzer skalierbar sein |
+| Q1 | erteilungstransparenz| Entfernte Zugriffe, Bewegungen, Migrationen und Replikationen werden vom Nutzer versteckt|
+| Q2 | Offenheit (Openness) |  Schnittstellen müssen gut definierte Ablauf- und Fehlersemantik haben, Komponenten sollten austauschbar sein, Erweiterung um Komponenten sollte möglich sein|
+|Q3| Ressourcen teilen | 
 
 
 ## Stakeholder {#_stakeholder}
@@ -45,6 +47,14 @@ contributors. Siehe <https://arc42.org>.
 # Kontextabgrenzung {#section-system-scope-and-context}
 
 ## Fachlicher Kontext {#_fachlicher_kontext}
+
+
+| Use Case |Vorbedingung |Ablaufsemantik |Nachbedingung |Fehlerfälle | Erweiterungsfälle |
+| --- | --- | --- | --- | --- | --- |
+| UC1 Register Method | |
+| UC2 Invoke Method |In der Anwendung wird eine Methode einer Remote-Komponente aufgerufen | **1.** Das System ruft den Application-Caller-Stub der aufrufenden Komponente auf <br> **2.** Der  Stub ruft die Middleware-Schnittstelle auf <br> **3.** Die Middleware wandelt den Methodenaufruf in eine Nachricht um (siehe UC3) <br> **4.** Die Middleware ruft das Betriebssystem auf| Die Nachricht wurde verschickt| | |
+| UC3 Marshaling Method Call| UC2 bis Schritt 2 | **1.** Der Marshaler serialisiert den Methodenaufruf wird in das Nachrichtenformat | Der Methodenaufruf ist als NAchricht vorhanden | | |
+| UC4 Unmarshaling Message | |
 
 ![Fachlicher_Trontext](./images/middleware_fachlicher_trontext.png)
 
