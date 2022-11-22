@@ -56,7 +56,11 @@ contributors. Siehe <https://arc42.org>.
 | UC3 Marshaling Method Call| UC2 bis Schritt 2 | **1.** Der Marshaler serialisiert den Methodenaufruf wird in das Nachrichtenformat | Der Methodenaufruf ist als NAchricht vorhanden | | |
 | UC4 Unmarshaling Message | |
 
+![Fachlicher_Trontext](./images/middleware_fachlicher_trontext.png)
+
 ## Technischer Kontext {#_technischer_kontext}
+
+![Technischer_Trontext](./images/middleware_technischer_trontext.png)
 
 **\<Diagramm oder Tabelle>**
 
@@ -71,6 +75,8 @@ contributors. Siehe <https://arc42.org>.
 ## Whitebox Gesamtsystem {#_whitebox_gesamtsystem}
 
 ***\<Übersichtsdiagramm>***
+
+![Middleware_Ebene1](./images/Middleware_Ebene1.png)
 
 Begründung
 
