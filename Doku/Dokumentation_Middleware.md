@@ -29,7 +29,7 @@ contributors. Siehe <https://arc42.org>.
 | --- | --- | --- |
 | Q1 | erteilungstransparenz| Entfernte Zugriffe, Bewegungen, Migrationen und Replikationen werden vom Nutzer versteckt|
 | Q2 | Offenheit (Openness) |  Schnittstellen müssen gut definierte Ablauf- und Fehlersemantik haben, Komponenten sollten austauschbar sein, Erweiterung um Komponenten sollte möglich sein|
-|Q3| Ressourcen teilen | 
+
 
 
 ## Stakeholder {#_stakeholder}
@@ -46,17 +46,18 @@ contributors. Siehe <https://arc42.org>.
 
 # Kontextabgrenzung {#section-system-scope-and-context}
 
-## Fachlicher Kontext {#_fachlicher_kontext}
+## Fachlicher Kontext 
 
 
 | Use Case |Vorbedingung |Ablaufsemantik |Nachbedingung |Fehlerfälle | Erweiterungsfälle |
 | --- | --- | --- | --- | --- | --- |
-| UC1 Register Method | |
+| UC1 Register Method | | | | | |
 | UC2 Invoke Method |In der Anwendung wird eine Methode einer Remote-Komponente aufgerufen | **1.** Das System ruft den Application-Caller-Stub der aufrufenden Komponente auf <br> **2.** Der  Stub ruft die Middleware-Schnittstelle auf <br> **3.** Die Middleware wandelt den Methodenaufruf in eine Nachricht um (siehe UC3) <br> **4.** Die Middleware ruft das Betriebssystem auf| Die Nachricht wurde verschickt| | |
-| UC3 Marshaling Method Call| UC2 bis Schritt 2 | **1.** Der Marshaler serialisiert den Methodenaufruf wird in das Nachrichtenformat | Der Methodenaufruf ist als NAchricht vorhanden | | |
-| UC4 Unmarshaling Message | |
+| UC3 Marshaling Method Call| UC2 bis Schritt 2 | **1.** Der Marshaler serialisiert den Methodenaufruf wird in das Nachrichtenformat  **2.** Weiter mit UC Schritt 4| Der Methodenaufruf ist als Nachricht vorhanden | | |
+| UC4 Unmarshaling Message | Die Middleware hat eine Nachricht empfangen| **1.** Der Unmarshaler wandelt die Nachricht in einen Methodenauf um <br> **2.** Der Unmarshler ruft den Application-Stub der Komponente auf, die den Methodenaufruf empfangen soll (siehe UC5)| Ein Methodenaufruf wurde erzeugt| | |
+| UC5 Call Method | UC 4 : Der Unmarsharler hat eine Nachricht in einen Methodenauf umgewandelt |**1.** Der Unmarshler ruft die Call-Schnittstelle des Application-Callee-Stubs <br> **2.** Der Application-Callee-Stub ruft die dazugehörige Komponente lokal auf. | Die aufgerufene Methode wird ausgeführt.|
 
-## Technischer Kontext {#_technischer_kontext}
+## Technischer Kontext 
 
 **\<Diagramm oder Tabelle>**
 
@@ -64,7 +65,9 @@ contributors. Siehe <https://arc42.org>.
 
 **\<Mapping fachliche auf technische Schnittstellen>**
 
-# Lösungsstrategie {#section-solution-strategy}
+# Lösungsstrategie 
+
+| Akteur | Vorbedingung | Methodensignatur | 
 
 # Bausteinsicht {#section-building-block-view}
 
