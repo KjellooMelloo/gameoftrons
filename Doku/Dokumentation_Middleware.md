@@ -57,7 +57,11 @@ contributors. Siehe <https://arc42.org>.
 | UC4 Unmarshaling Message | Die Middleware hat eine Nachricht empfangen| **1.** Der Unmarshaler wandelt die Nachricht in einen Methodenauf um <br> **2.** Der Unmarshler ruft den Application-Stub der Komponente auf, die den Methodenaufruf empfangen soll (siehe UC5)| Ein Methodenaufruf wurde erzeugt| | |
 | UC5 Call Method | UC 4 : Der Unmarsharler hat eine Nachricht in einen Methodenauf umgewandelt |**1.** Der Unmarshler ruft die Call-Schnittstelle des Application-Callee-Stubs <br> **2.** Der Application-Callee-Stub ruft die dazugehörige Komponente lokal auf. | Die aufgerufene Methode wird ausgeführt.|
 
-## Technischer Kontext 
+![Fachlicher_Trontext](./images/middleware_fachlicher_trontext.png)
+
+## Technischer Kontext {#_technischer_kontext}
+
+![Technischer_Trontext](./images/middleware_technischer_trontext.png)
 
 **\<Diagramm oder Tabelle>**
 
@@ -74,6 +78,8 @@ contributors. Siehe <https://arc42.org>.
 ## Whitebox Gesamtsystem {#_whitebox_gesamtsystem}
 
 ***\<Übersichtsdiagramm>***
+
+![Middleware_Ebene1](./images/Middleware_Ebene1.png)
 
 Begründung
 
