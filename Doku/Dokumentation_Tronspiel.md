@@ -166,7 +166,7 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 |UC4,5,6,7,8 | Model | void update() | Das Spiel befindet sich im Zustand RUNNING. | Alle lebenden Spieler wurden bewegt, das Spiel ist möglicherweise vorbei. | Diese Methode ist die tick-Methode/ der Gameloop des Spiels. Sie wird also in festen Zeitintervallen ausgeführt. Diese Methode ruft intern movePlayers() zum Bewegen und womöglichen Töten von Spielern auf. Dann wird der GameState geprüft. Ist das Spiel RUNNING, werden alle neuen Positionen der Spieler an die View mittels updatePlayer() übermittelt. Tote Spieler werden hier auch mitgeschickt mit der Info, dass sie entfernt werden sollen. Ist das Spiel OVER wird stattdessen der Sieger erfragt und an den Controller übermittelt, um das Spiel zu beenden.||
 |UC4,5,6,7,8 | Model | void movePlayers() | Das Spiel befindet sich im Zustand RUNNING. Diese Methode wurde in update() aufgerufen. | Alle Spieler wurden bewegt und eventuell Spieler getötet. | Es wird zu Beginn eine leere Liste initialisiert für Spieler, die diesen Zug sterben könnten. Dann wird über alle lebenden Spieler iteriert. Spieler werden der Liste hinzugefügt, wenn es eine Kollision an ihrer front gibt (durch checkForCollision()). Wenn es keine Kollision für den aktuell betrachteten Spieler gibt, wird move() aufgerufen, um den Spieler zu bewegen. Wurden alle Spieler abgehandelt, werden in der Methode killPlayers() alle Spieler in der Liste getötet. Ist die Liste leer, wird einfach zurückgekehrt. ||
 |UC5 | Model | boolean checkForCollision(Position) | Das Spiel befindet sich im Zustand RUNNING. Diese Methode wurde in movePlayers() aufgerufen. | Eine Kollision wurde korrekt erkannt und zurückgegeben. | Der Methode wird die front eines Spielers übergeben. Befindet sich diese außerhalb des Spielfelds - x > Anzahl Spalten oder y > Anzahl Reihen oder eins der beiden < 0 - wird true zurückgegeben. Wenn  front gleich der front eines anderen lebenden Spielers ist, wird auch true zurückgegeben. Ist das nicht der Fall wird geschaut, ob sich die front in einem trail eines lebenden Spielers (auch des Spielers selbst) befindet. Auch hier wird demnach true zurückgegeben, sonst false. ||
-|UC4 | Model | void move() | Das Spiel befindet sich im Zustand RUNNING. Diese Methode wurde in movePlayers() aufgerufen.| Der Spieler wurde bewegt. Eine neue front wurde gesetzt | Die front des Spielers wird an den trail angehangen. Die currentAction wird auf null gesetzt. Die nächste front wird auf Basis von der direction berechnet und gesetzt. Damit wird eine Bewegung für den nächsten Tick sichergestellt, falls keine Eingabe von dem Spieler kommt. ||
+|UC4 | Model | void move(Player) | Das Spiel befindet sich im Zustand RUNNING. Diese Methode wurde in movePlayers() aufgerufen.| Der Spieler wurde bewegt. Eine neue front wurde gesetzt | Die front des übergebenen Spielers wird an den trail angehangen. Die currentAction wird auf null gesetzt. Die nächste front wird auf Basis von der direction berechnet und gesetzt. Damit wird eine Bewegung für den nächsten Tick sichergestellt, falls keine Eingabe von dem Spieler kommt. ||
 |UC4,5,6,7,8 | Model | void killPlayers(List<Player>) | Das Spiel befindet sich im Zustand RUNNING. Diese Methode wurde in movePlayers() aufgerufen. | Zu tötende Spieler wurden getötet und eventuell ein Sieger des Spiels bestimmt. | Ist die übergebene Liste leer, wird einfach zurückgekehrt. Dann wir geprüft, ob die Größe Liste gleich Anzahl lebender Spieler ist. In dem Fall hat man ein Unentschieden, der gameWinner wird auf -1 und der GameState auf OVER gesetzt und es wird returned. Andernfalls werden durch setPlayerDead(id) alle Spieler der Liste getötet und ihr trail gelöscht. Ist danach nur noch ein Spieler übrig, ist dies der Gewinner, gameWinner wird auf seine ID und der GameState auf OVER gesetzt. ||
 |UC5 | Model | Position checkForCollision() | Die Position der Spieler wurde geändert. | Die Position der Kollision wurde ermittelt und zurückgegeben |Die Methode prüft, ob es eine Kollision auf dem Spielfeld gegeben hat. Sie gibt die Position zurück, wenn eine Kollision stattgefunden hat, sonst null. | Im Fehlerfall wird eine Exception mit Fehlerbeschreibung geworfen|
 |UC5, UC7|  Model| void setPlayerDead(int) | Es hat eine Kollision stattgefunden. | Der Nutzer, dessen Spieler entfernt wurde, ist nicht mehr auf dem Spielfeld zu sehen. Tastendrücken des Nutzers für die Steuerung werden nicht mehr registriert. Der Spieler wurde als tot markiert | Die Methode entfernt die Spur des Spielers mit der übergebenen Spieler-ID aus dem Spielfeld. Die Methode informUser("You lose...Du wurdest aus dem Spiel entfernt"), um den Nutzer zu informieren. | |
@@ -352,13 +352,17 @@ Methodenliste
 
 ## Usecase 4 Spieler steuern
 
-![Sequenzdiagramm_UC4](images/Sequenzdiagramm_UC4.png)
+![Sequenzdiagramm_Steer](images/SD_UC4Steer.png)
 
-## Usecase 4.a Erweiterungsfall Spieler steuern
-![Sequenzdiagramm_UC4a](images/Sequenzdiagramm_UC4_1a.png)
+## Usecase 4.a Erweiterungsfall Move
+![Sequenzdiagramm_Move](images/SD_UC4aMove.png)
 
 ## Usecase 5 gegen Spielobjekt kollidieren
-![Sequenzdiagramm_UC5](images/Sequenzdiagramm_UC5.png)
+![Sequenzdiagramm_Collide](images/SD_UC5Collide.png)
+
+## Usecase 5.a Erweiterungsfall Kollisionscheck
+
+![Sequenzdiagramm_Kollisionscheck](images/SD_UC5aCheckForCollision.png)
 
 ## UC6 Win
 ![Sequenzdiagramm_Spielende](images/SD_UC6Win.png)
