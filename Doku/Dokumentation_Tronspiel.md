@@ -17,6 +17,7 @@
     - [Model Blackbox](#modelblackbox)
     - [View Blackbox](#viewblackbox)
     - [Controller Blackbox](#controllerblackbox)
+    - [Application Stub Blackbox](#applicationstubblackblox)
   - [Whitebox Ebene 2](#ebene2)
   - [Whitebox Ebene 3](#ebene3)
 - [Laufzeitsicht](#laufzeitsicht)
@@ -273,6 +274,8 @@ Der Controller bietet Funktionalitäten für die View v.a. zur Kommunikation mit
 | void notifyGameResult(int) | |
 | void notifyCountdownOver() | |
 
+<a name="applicationstubblackblox"></a>
+### Application Stub (Blackbox) 
 
 
 <a name="ebene2"></a>
