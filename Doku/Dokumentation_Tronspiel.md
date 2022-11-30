@@ -354,9 +354,6 @@ Methodenliste
 
 ![Sequenzdiagramm_Steer](images/SD_UC4Steer.png)
 
-## Usecase 4.a Erweiterungsfall Move
-![Sequenzdiagramm_Move](images/SD_UC4aMove.png)
-
 ## Usecase 5 gegen Spielobjekt kollidieren
 ![Sequenzdiagramm_Collide](images/SD_UC5Collide.png)
 
@@ -373,6 +370,12 @@ Methodenliste
 ## UC8 Tie
 ![Sequenzdiagramm_Spielende](images/SD_UC8Tie.png)
 ...
+
+## AD update
+![Aktivitätsdiagramm_update](images/AD_update.png)
+
+## AD changePlayerDirection
+![Aktivitätsdiagramm_update](images/AD_changePlayerDirection.png)
 
 <a name="verteilungssicht"></a>
 # Verteilungssicht {#section-deployment-view}
