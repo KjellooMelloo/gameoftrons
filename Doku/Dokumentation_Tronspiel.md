@@ -357,10 +357,6 @@ Methodenliste
 ## Usecase 5 gegen Spielobjekt kollidieren
 ![Sequenzdiagramm_Collide](images/SD_UC5Collide.png)
 
-## Usecase 5.a Erweiterungsfall Kollisionscheck
-
-![Sequenzdiagramm_Kollisionscheck](images/SD_UC5aCheckForCollision.png)
-
 ## UC6 Win
 ![Sequenzdiagramm_Spielende](images/SD_UC6Win.png)
 
@@ -376,6 +372,19 @@ Methodenliste
 
 ## AD changePlayerDirection
 ![Aktivitätsdiagramm_update](images/AD_changePlayerDirection.png)
+
+## AD updatePlayers
+![Aktivitätsdiagramm_updatePlayers](images/AD_updatePlayers.png)
+
+## AD movePlayer
+![Aktivitätsdiagramm_movePlayer](images/AD_movePlayer.png)
+
+## AD checkForCollision
+![Aktivitätsdiagramm_checkForCollision](images/AD_checkForCollision.png)
+
+## AD killPlayers
+![Aktivitätsdiagramm_killPlayers](images/AD_killPlayers.png)
+
 
 <a name="verteilungssicht"></a>
 # Verteilungssicht {#section-deployment-view}
