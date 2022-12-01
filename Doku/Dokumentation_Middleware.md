@@ -71,7 +71,16 @@ contributors. Siehe <https://arc42.org>.
 
 # Lösungsstrategie 
 
-| Akteur | Vorbedingung | Methodensignatur | 
+| Akteur | Vorbedingung | Nachbedingung | Methodensignatur | Ablaufsemantik | Fehlersemantik |
+|---|---|---|---|---|---|
+| ClientStub | Eine Komponente ruft eine Remote-Komponente über eine Application Stub Schnittstelle auf | Der Aufruf wurde geprüft und die Methode marshall() wurde aufgerufen |invoke(int, String, Object[] )|  Prüft ob die übergebene Objekt-ID (erster Parameter) registriert ist. Dann wird die Methode marshall() aufgerufen | Wenn die Objekt-ID nicht registriert ist, wird eine Exception geworfen|
+| ServerStub | | | call() | | |
+| | register()|
+| | send() |
+| | receive() |
+| | marshall() |
+| | unmarshall() |
+
 
 # Bausteinsicht {#section-building-block-view}
 
