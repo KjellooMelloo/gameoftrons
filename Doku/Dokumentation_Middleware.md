@@ -10,15 +10,31 @@ Template Version 8.1 DE. (basiert auf AsciiDoc Version), Mai 2022
 Created, maintained and © by Dr. Peter Hruschka, Dr. Gernot Starke and
 contributors. Siehe <https://arc42.org>.
 
-# Einführung und Ziele {#section-introduction-and-goals}
+# Einführung und Ziele
 
 ## Aufgabenstellung 
-![storyboard 1](Doku/images/tron1.jpg)
+
+**Grundlegende Aufgaben der Middleware**
+1. Funktionsaufrufe werden in Nachrichten umgewandelt
+2. Nachrichten werden in Funktionsaufrufe umgewandelt
+3. Die Middleware soll message-oriented sein
+4. Vereinheitlicht die Kommunikationsdatentypen durch RPC
+5. Application Stubs können sich als Remote objects bei der Middleware anmelden
 
 
-## Qualitätsziele {#_qualit_tsziele}
 
-## Stakeholder {#_stakeholder}
+## Qualitätsziele 
+
+| ID | Qualitätsziel | Kurzbeschreibung |
+| --- | --- | --- |
+| Q1 | Verteilungstransparenz| Entfernte Zugriffe, Bewegungen, Migrationen und Replikationen werden vom Nutzer versteckt|
+| Q2 | Offenheit (Openness) |  Schnittstellen müssen gut definierte Ablauf- und Fehlersemantik haben, Komponenten sollten austauschbar sein, Erweiterung um Komponenten sollte möglich sein|
+| Q3 | Geographische Skalierung | Die Benutzer können sich überall auf der Welt befinden |
+
+
+
+
+## Stakeholder 
 
 +-----------------+-----------------+-----------------------------------+
 | Rolle           | Kontakt         | Erwartungshaltung                 |
@@ -28,39 +44,50 @@ contributors. Siehe <https://arc42.org>.
 | *\<Rolle-2>*    | *\<Kontakt-2>*  | *\<Erwartung-2>*                  |
 +-----------------+-----------------+-----------------------------------+
 
-# Randbedingungen {#section-architecture-constraints}
+# Randbedingungen 
 
-# Kontextabgrenzung {#section-system-scope-and-context}
+# Kontextabgrenzung 
 
-## Fachlicher Kontext {#_fachlicher_kontext}
+## Fachlicher Kontext 
 
-**\<Diagramm und/oder Tabelle>**
+![Fachlicher_Trontext](./images/middleware_fachlicher_trontext.png)
 
-**\<optional: Erläuterung der externen fachlichen Schnittstellen>**
+| Use Case |Vorbedingung |Ablaufsemantik |Nachbedingung |Fehlerfälle | Erweiterungsfälle |
+| --- | --- | --- | --- | --- | --- |
+| UC1 Register Method | | | | | |
+| UC2 Invoke Method |In der Anwendung wird eine Methode einer Remote-Komponente aufgerufen | **1.** Das System ruft den Application-Caller-Stub der aufrufenden Komponente auf <br> **2.** Der  Application Stub ruft die Middleware-Schnittstelle auf <br> **3.** Die Middleware prüft, ob die aufgerufene Komponente registriert ist <br> **4.** Die Middleware wandelt den Methodenaufruf in eine Nachricht um (siehe UC3) <br> **5.** Die Middleware ruft das Betriebssystem auf| Die Nachricht wurde verschickt|**3.a.1** Die aufgerufene Komponente ist nicht bei der Middleware registriert <br> **3.a.2** Das System wirft eine Exception auf.| |
+| UC3 Marshaling Method Call| UC2 bis Schritt 2 | **1.** Der Marshaler serialisiert den Methodenaufruf in ein Nachrichtenformat  **2.** Weiter mit UC Schritt 4| Der Methodenaufruf ist als Nachricht vorhanden | | |
+| UC4 Unmarshaling Message | Die Middleware hat eine Nachricht empfangen| **1.** Der Unmarshaler wandelt die Nachricht in einen Methodenaufruf um <br> **2.** Der Unmarshaler ruft den Application-Stub der Komponente auf, die den Methodenaufruf empfangen soll (siehe UC5)| Ein Methodenaufruf wurde erzeugt| | |
+| UC5 Call Method | UC 4 : Der Unmarshaler hat eine Nachricht in einen Methodenauf umgewandelt |**1.** Der Unmarshaler ruft die Call-Schnittstelle des Application-Callee-Stubs <br> **2.** Der Application-Callee-Stub ruft die dazugehörige Komponente lokal auf. | Die aufgerufene Methode wird ausgeführt.|
 
-## Technischer Kontext {#_technischer_kontext}
 
-**\<Diagramm oder Tabelle>**
+## Technischer Kontext 
 
-**\<optional: Erläuterung der externen technischen Schnittstellen>**
+![Technischer_Trontext](./images/middleware_technischer_trontext.png)
 
-**\<Mapping fachliche auf technische Schnittstellen>**
 
-# Lösungsstrategie {#section-solution-strategy}
 
-# Bausteinsicht {#section-building-block-view}
+# Lösungsstrategie 
 
-## Whitebox Gesamtsystem {#_whitebox_gesamtsystem}
+| Akteur | Vorbedingung | Nachbedingung | Methodensignatur | Ablaufsemantik | Fehlersemantik |
+|---|---|---|---|---|---|
+| ClientStub | Eine Komponente ruft eine Remote-Komponente über eine Application Stub Schnittstelle auf | Der Aufruf wurde geprüft und die Methode marshal() wurde aufgerufen |invoke(int, String, Object[] )|  Prüft ob die übergebene Objekt-ID (erster Parameter) registriert ist. Dann wird die Methode marshal() aufgerufen | Wenn die Objekt-ID nicht registriert ist, wird eine Exception geworfen|
+| ServerStub | | | call() | | |
+| | | |register()| | |
+| | | | send() | | |
+| | | receive() | | |
+| | | marshal() | | |
+| | | unmarshal() | | |
+| | | lookup(int) | aufrufparameter: ID, liefert die IP-Adresse und die Portnummer | |
 
-***\<Übersichtsdiagramm>***
 
-Begründung
+# Bausteinsicht 
 
-:   *\<Erläuternder Text>*
+## Whitebox Gesamtsystem 
 
-Enthaltene Bausteine
 
-:   *\<Beschreibung der enthaltenen Bausteine (Blackboxen)>*
+![Middleware_Ebene1](./images/Middleware_Ebene1.png)
+
 
 Wichtige Schnittstellen
 
@@ -95,6 +122,8 @@ Wichtige Schnittstellen
 ### \<Name Schnittstelle m> {#__name_schnittstelle_m}
 
 ## Ebene 2 {#_ebene_2}
+
+![Middleware_Ebene2](./images/Middleware_Ebene2.png)
 
 ### Whitebox *\<Baustein 1>* {#_whitebox_emphasis_baustein_1_emphasis}
 

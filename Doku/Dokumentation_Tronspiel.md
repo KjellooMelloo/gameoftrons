@@ -17,6 +17,7 @@
     - [Model Blackbox](#modelblackbox)
     - [View Blackbox](#viewblackbox)
     - [Controller Blackbox](#controllerblackbox)
+    - [Application Stub Blackbox](#applicationstubblackblox)
   - [Whitebox Ebene 2](#ebene2)
   - [Whitebox Ebene 3](#ebene3)
 - [Laufzeitsicht](#laufzeitsicht)
@@ -157,8 +158,6 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 |UC3 |Controller | void notifyCountdownOver() | Der Countdown wurde von der View dem Nutzer angezeigt. | Der Controller bekommt mit, dass der Countdown vorbei ist und ruft die Methode startGame() des Models auf. | Die Methode erzeugt einen Event für den Controller, dass der Countdown vorbei ist.|  |
 |UC3 | View | Color getPlayerColor(int) |Es wurden Spielerinstanzen erzeugt. | Die Farbe wird zurückgegeben. |Die Methode gibt die Farbe des Spieler zurück, dessen ID als Parameter übergeben wurde |Wenn die übergebene ID keinem Spieler gehört, wird eine Exception mit Fehlerbeschribung geworfen |
 |UC3 | View | void showPlayerColor(Color) | Die Farbe des Spielers wurde ermittelt und wird als Aufrufparameter übergeben. | Dem Nutzer wird die übergebene Farbe im aktuellen Bildschirm angezeigt. |Die Methode zeigt die Spielerfarbe an, die als Parameter übergeben wird | | 
-|UC4 | Model | void update() | Der Nutzer befindet sich im Spielbildschirm. | Die Position der Spieler hat sich geändert. |Die Methode bewegt alle Spieler geradeaus entsprechend ihrer aktuellen Richtung und dem geladenen Geschwindigkeitsparameter. | |
-|UC4 |Controller| void updatePlayersInGameField(List<Player>) | Der Nutzer befindet sich im Spielbildschirm.| Es wurde eine Liste mit den noch lebenden Spielern zurückgegeben. |Die Methode liefert eine Liste mit allen Spielern, die noch nicht verloren haben und deshalb noch auf dem Spielfeld sind | |
 |UC4 | View | void drawPlayers() | Der Nutzer befindet sich im Spielbildschirm und die Spielfeldanzeige soll die aktuelle Positionen der Spieler zeigen | Auf dem Spielfeld werden die aktuell lebenden Spieler an ihren aktuellen Positionen angezeigt. |Die Methode ruft die Methode getPlayersinGameField() auf, um Informationen über die aktuellen Spieler zu erhalten. Anhand dieser Informationen werden die Spieler an ihrer aktuellen Position und Ausrichtung in Szene gesetzt. | Im Fehlerfall wird eine Exception mit Fehlerbeschreibung geworfen |
 |UC4 | View | void drawTileColors() | Der Nutzer befindet sich im Spielbildschirm und die Spielfeldanzeige soll die aktuelle Einfärbung des Spielfeldes zeigen | Auf dem Spielfeld wird die aktuell gültige Einfärbung des Spielfeldes angezeigt. |Die Methode holt von jedem Spieler im Spielfeld die eingefärbten Felder und die entsprechende Farbe. Anhand dieser Informationen wird jedes mit Farbe belegte Feld des Spielfeldes in der ermittelten Farbe angezigt. | |
 |UC4| Controller | String handleDirectionKeyboardInput() |Der Nutzer hat eine Taste füe die Steuerung seines Spielers gedrückt.| Die gewünschte Richtungsänderung wird zurückgegeben. | Die Methode liefert die Richtung, die über die Tastatur vom Nutzer eingegeben wurde. Wenn die entsprechende Tastenbelegung für die Steuerung des Motorrads nach links gedrückt wurde, gibt die Methode den String 'left' zurück. <br> Wenn die entsprechende Tastenbelegung für die Steuerung des Motorrads nach rechts gedrückt wurde, gibt die Methode den String 'right' zurück.| Im Fehlerfall wird eine Exception mit Fehlerbeschreibung geworfen |
@@ -168,13 +167,17 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 |UC5 | Model | boolean checkForCollision(Position) | Das Spiel befindet sich im Zustand RUNNING. Diese Methode wurde in movePlayers() aufgerufen. | Eine Kollision wurde korrekt erkannt und zurückgegeben. | Der Methode wird die front eines Spielers übergeben. Befindet sich diese außerhalb des Spielfelds - x > Anzahl Spalten oder y > Anzahl Reihen oder eins der beiden < 0 - wird true zurückgegeben. Wenn  front gleich der front eines anderen lebenden Spielers ist, wird auch true zurückgegeben. Ist das nicht der Fall wird geschaut, ob sich die front in einem trail eines lebenden Spielers (auch des Spielers selbst) befindet. Auch hier wird demnach true zurückgegeben, sonst false. ||
 |UC4 | Model | void move(Player) | Das Spiel befindet sich im Zustand RUNNING. Diese Methode wurde in movePlayers() aufgerufen.| Der Spieler wurde bewegt. Eine neue front wurde gesetzt | Die front des übergebenen Spielers wird an den trail angehangen. Die currentAction wird auf null gesetzt. Die nächste front wird auf Basis von der direction berechnet und gesetzt. Damit wird eine Bewegung für den nächsten Tick sichergestellt, falls keine Eingabe von dem Spieler kommt. ||
 |UC4,5,6,7,8 | Model | void killPlayers(List<Player>) | Das Spiel befindet sich im Zustand RUNNING. Diese Methode wurde in movePlayers() aufgerufen. | Zu tötende Spieler wurden getötet und eventuell ein Sieger des Spiels bestimmt. | Ist die übergebene Liste leer, wird einfach zurückgekehrt. Dann wir geprüft, ob die Größe Liste gleich Anzahl lebender Spieler ist. In dem Fall hat man ein Unentschieden, der gameWinner wird auf -1 und der GameState auf OVER gesetzt und es wird returned. Andernfalls werden durch setPlayerDead(id) alle Spieler der Liste getötet und ihr trail gelöscht. Ist danach nur noch ein Spieler übrig, ist dies der Gewinner, gameWinner wird auf seine ID und der GameState auf OVER gesetzt. ||
-|UC5 | Model | Position checkForCollision() | Die Position der Spieler wurde geändert. | Die Position der Kollision wurde ermittelt und zurückgegeben |Die Methode prüft, ob es eine Kollision auf dem Spielfeld gegeben hat. Sie gibt die Position zurück, wenn eine Kollision stattgefunden hat, sonst null. | Im Fehlerfall wird eine Exception mit Fehlerbeschreibung geworfen|
 |UC5, UC7|  Model| void setPlayerDead(int) | Es hat eine Kollision stattgefunden. | Der Nutzer, dessen Spieler entfernt wurde, ist nicht mehr auf dem Spielfeld zu sehen. Tastendrücken des Nutzers für die Steuerung werden nicht mehr registriert. Der Spieler wurde als tot markiert | Die Methode entfernt die Spur des Spielers mit der übergebenen Spieler-ID aus dem Spielfeld. Die Methode informUser("You lose...Du wurdest aus dem Spiel entfernt"), um den Nutzer zu informieren. | |
 |UC5, UC7| View |removeTileColor(Color) | Ein Spieler ist gestorben und wurde aus dem Spiel entfernt. | Die Felder, die mit als Parameter eingegebenen Farbe eingefärbt waren, sind nicht mehr eingefärbt, sondern haben die gleiche Farbe wie der Spielhintergrund.| Die Methode ändert die Farbe von jedem Feld mit der als Parameter übergebenen Farbe zur Hintergrundfarbe. | |
-| UC1-8 | View |updateView(List<Player>) |Im Model wurden Daten zu den Spielern geändert. | Die View hat ihre Daten aktualisiert. | Die Methode aktualisiert die Spielerliste, die in der View gehalten wird. | |
 | UC3 | View | updateView(int)| Alle Spieler haben den Warteraum betreten.|Die Spielfeldgröße wird in der View gespeichert.  |Die Methode setzt die Spielfeldgröße in der View, die aus der Config-Datei geladen wurden| |
-|UC6,7,8| Controller| endGame()| Im Model wurde ein Gewinner festgelegt oder das Spiel wurde als unentschieden entschieden. | Die State Maschne im Controller befindet sich im Zustand "End" | Die Methode ändert die State Maschine im Controller zum Zustand "End"| |
-|UC6,7,8|View|notifyGameResult(int)| Die State Maschine des Controllers befindet sich im Zustand "End"| Die View weiß, wie das Spiel ausgegangen ist und zeigt im nächsten Schitt den Endbildschirm an.| Die Methode setzt|
+|UC4 | View | void drawPlayers() | Der Nutzer befindet sich im Spielbildschirm und die Spielfeldanzeige soll die aktuelle Positionen der Spieler zeigen | Auf dem Spielfeld werden die aktuell lebenden Spieler an ihren aktuellen Positionen angezeigt. |Die Methode ruft die Methode getPlayersinGameField() auf, um Informationen über die aktuellen Spieler zu erhalten. Anhand dieser Informationen werden die Spieler an ihrer aktuellen Position und Ausrichtung in Szene gesetzt. | Im Fehlerfall wird eine Exception mit Fehlerbeschreibung geworfen |
+|UC5, UC7|  Model| Player removePlayer(int) | Es hat eine Kollision stattgefunden. | Der Nutzer, dessen Spieler entfernt wurde, ist nicht mehr auf dem Spielfeld zu sehen. Tastendrücken des Nutzers für die Steuerung werden nicht mehr registriert. | Die Methode entfernt den Spieler mit der übergebenen Spieler-ID aus dem Spielfeld. Die Methode informUser("You lose...Du wurdest aus dem Spiel entfernt"), um den Nutzer zu informieren und gibt den entfernten Spieler zurück. | |
+|UC6 | Model |void setGameWinner(int) | Es gibt nur noch ein Spieler im Spiel. | Die ID des letzten Spielers wurde in einer globalen Variable "gameResult" gespeichert.|Der übergebene Player ist der letzte im Spiel. Seine Spieler-ID wird von der Methode als Sieger registriert. | |
+| UC1-8 | View |updatePlayer(int[]) |Im Model wurden Daten zu den Spielern geändert. | Die View hat ihre Daten aktualisiert. | Die Methode aktualisiert die Spielerliste, die in der View gehalten wird. | |
+| UC3 | View | setGameFieldSize(int)| Alle Spieler haben den Warteraum betreten.|Die Spielfeldgröße wird in der View gespeichert.  |Die Methode setzt die Spielfeldgröße in der View, die aus der Config-Datei geladen wurden| |
+|UC6,7,8| Controller| endGame(int)| Im Model wurde ein Gewinner festgelegt oder das Spiel wurde als unentschieden entschieden. | Die State Maschine im Controller befindet sich im Zustand "End" | Die Methode ändert die State Maschine im Controller zum Zustand "End"| |
+|UC6,7,8|View|notifyGameResult(int)| Die State Maschine des Controllers befindet sich im Zustand "End"| Die View weiß, wie das Spiel ausgegangen ist und zeigt im nächsten Schitt den Endbildschirm an.| Die Methode setzt den Gewinner des Spiels in der View-Komponente.| |
+
 
 
 
@@ -200,7 +203,7 @@ Die Komponentenaufteilung richtet sich nach dem eingesetzten MVC-Architekturmust
 | --- | --- |
 | Model | Enthält das Datenmodell und die Spielelogik |
 | View | Verantwortlich für die GUI-Anzeige|
-|Controller | Regelt die Ablaufsemantik außerhalb des Spielens des Spiels und vermittelt zwischen Model und View.|
+|Controller | Regelt die Ablaufsemantik außerhalb des Spiels und vermittelt zwischen Model und View.|
 
 
 <a name="modelblackbox"></a>
@@ -227,45 +230,84 @@ Um die Tasteneingaben verarbeiten zu können benötigt das Model die angebotene 
 
 **Schnittstelle(n)**
 
-Die View bietet die Anzeigefunktionalitäten über die Schnittstelle **IView**
+Die View bietet die Anzeigefunktionalitäten, die Aktualisierung der Spielfeldgröße und das Setzen des Spielergebnisses über die Schnittstelle **IControllerView**
 
 
 | Methode | Kurzbeschreibung |
 | --- | --- |
 | showScreen(String) | Zeigt den Bildschirm an, der zum als String übergebenen Programmzustand passt |
-| updateView(List<Player>)| aktualisiert die Spielerliste in der View |
-| updateView(int)| setzt ein Spielergebnis in der View|
-| notifyCountdownOver() | Teilt
+| setGameFieldSize(int)| setzt die Spielfeldgröße in der View|
+| notifyGameResult(int) | setzt ein Spielergebnis in der View |
 
 
- ** TODO** Zu Controller rüber
-Die View importiert Controller-Funktionalitäten über die Schnittstelle **IViewController**
+Die View erlaubt das Aktualisieren der Spielerdaten über die Schnittstelle **IModelView**
 
 | Methode | Kurzbeschreibung |
 | --- | --- |
-|int handleInputPlayerCount() | |
-|void handleWaiting()| |
-|void handlechangeDirection()|  |
-| int getGameResult | |
+|updatePlayer(int[]) | Aktualisiert die Spielerliste, die in der View gehalten wird|
 
+
+<a name="controllerblackbox"></a>
+### Controller (Blackbox) 
+
+**Zweck/ Verantwortung**
+
+Der Controller steuert den gesamten Ablauf rund um das Spiel. Dieser umfasst das Weiterleiten vom Startbildschirm in die Lobby, das Warten auf weitere Mitspieler, das Mitteilen des Siegers am Ende des Spiels, das Löschen der beendeten Runde und das Zurückleiten zum Startbildschirm. Außerdem setzt der Controller die Kommunikation zwischen der View- und der Modelkomponente sowohl vor und nach als auch während der laufenden Runde über mehrere Schnittstellen um.
+Während des Spiels nimmt der Controller die Benutzereingaben zur Steuerung des Spielers an und leitet diese an das Model weiter.
+
+**Schnittstelle(n)**
+
+Der Controller bietet Funktionalitäten für das Model v.a. zur Kommunikation mit der View über die Schnittstelle **IModelController** an.
+
+
+| Methode | Kurzbeschreibung |
+| --- | --- |
+| void updatePlayersInGameField(List<Player>) | Zeigt den Bildschirm an, der zum als String übergebenen Programmzustand passt |
+| void endGame(int?) | aktualisiert die Spielerliste in der View |
+| static Game createGameInstance() | setzt ein Spielergebnis in der View|
+
+
+Der Controller bietet Funktionalitäten für die View v.a. zur Kommunikation mit dem Model über die Schnittstelle **IViewController** an.
+
+| Methode | Kurzbeschreibung |
+| --- | --- |
+| int handleInputPlayerCount() | |
+| void handleWaitingButtonClick()| |
+| String handleDirectionKeyboardInput()|  |
+| void notifyGameResult(int) | |
+| void notifyCountdownOver() | |
+
+<a name="applicationstubblackblox"></a>
+### Application Stub (Blackbox) 
+
+**Zweck/ Verantwortung**
+
+Der Application Stub fängt Methodenaufrufe auf, die Schnittstellen von Remote-Komponenten aufrufen. Beim Auffangen wird die Middleware aufgerufen.
+
+
+
+Außerdem leitet der Application Stub einen durch die Middleware empfangenen Methodenaufruf an die richtuge Komponentenschnittstelle weiter, wo der Aufruf abgearbeitet wird.
+
+
+**Schnittstelle(n)**
+
+Die Schnittstelle **IRemoteObject** bietet die Funktionalität zum Empfangen von Remote-Methodenaufrufen an. 
+
+| Methode | Kurzbeschreibung |
+| --- | --- |
 
 <a name="ebene2"></a>
 ## Ebene 2 
 
-*\<Blackbox-Template>*
 
-### \<Name Schnittstelle 1> {#__name_schnittstelle_1}
 
-**Controller Blackbox (Ebene 1)**
+**Controller Whitebox (Ebene 1)**
 
 ![Controller_Blackbox.png](./images/Controller_Blackbox.png)
 <br>
 
-...
 
-### \<Name Schnittstelle m> {#__name_schnittstelle_m}
-
-## Ebene 2 {#_ebene_2}
+## Ebene 2 
 
 ### Whitebox Model
 
@@ -274,12 +316,13 @@ Die View importiert Controller-Funktionalitäten über die Schnittstelle **IView
 
 ### Whitebox View 
 
-![View_Whitebox](./images/Whitebox_View.png)
+![View_Ebene3](./images/Whitebox1_View.png)
 
-|Methode| Kurzbeschreibung|
-| --- | --- |
-|drawScreen() | Abstrakte Methode, die in den konkreten Klassen die Bildschirmanzeige zeichnet. |
 
+
+### Whitebox Application Stub
+
+![AppStub_Ebene2](./images/Whitebox_AppStub.png)
 
 
 <a name="ebene3"></a>
@@ -296,17 +339,26 @@ Die View importiert Controller-Funktionalitäten über die Schnittstelle **IView
 ### Whitebox View
 
 
-![Diagramme_VS__1_.jpg](Diagramme_VS__1_.jpg)
+![View_Ebene3](./images/Whitebox_View.png)
+
+|Methode| Kurzbeschreibung|
+| --- | --- |
+|drawScreen() | Abstrakte Methode, die in den konkreten Klassen die Bildschirmanzeige zeichnet. |
+|informUser(String) | konkrete Methode, die eine Meldung (als Aufrufparameter übergebe) dem Nutzer anzeigt. |
+|getPlayerColor(int) |?? |
+|showPlayerColor(int) | ??|
+|drawPlayers() | Zeigt die aktuell lebenden Spieler an ihrer aktuellen Position an. |
+|drawTileColors() | Zeigt die aktuelle Farbbelegung der Tiles an.|
 
 ### Whitebox Controller
 
 **Controller Whitebox (Ebene 3)**
 
-![Whitebox_Controller.png](./images/Whitebox_Controller.png)
+![WB_C.png](./images/WB_C.png)
 <br>
 
 State Machine
-![Whitebox_StateMachine.png](./images/Whitebox_StateMachine.png)
+![WB_SM.png](./images/WB_SM.png)
 <br>
 
 
@@ -342,11 +394,19 @@ Methodenliste
 ## *\<Bezeichnung Laufzeitszenario n>* {#__emphasis_bezeichnung_laufzeitszenario_n_emphasis}
 
 ## Usecase 1 Create
-![UC1_Create](images/UC1_Create.png)
+![LFZ_create](images/LFZ_create.png)
+
+![LFZ_create_b](images/LFZ_create_b.png)
 
 ## Usecase 2 CancelWait
-![UC2_CancelWait](images/UC2_CancelWait.png)
+![LFZ_cancel](images/LFZ_cancel.png)
 
+<<<<<<< Doku/Dokumentation_Tronspiel.md
+=======
+## Usecase 3 Start
+![LFZ_start](images/LFZ_start.png)
+
+>>>>>>> Doku/Dokumentation_Tronspiel.md
 ## Usecase 3 Spielstart
 ![Sequenzdiagramm_Spielstart](images/SD_Spielstart.png)
 
