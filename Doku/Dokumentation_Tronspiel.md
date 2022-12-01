@@ -149,8 +149,7 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 |UC1 | Controller | int loadDefaultPlayerCount() | Der Nutzer hat eine ungültige Spieleranzahl eingegeben. | Die Default-Spieleranzahl wird im Model gespeichert.  |Die Methode liefert den Default-Wert für die Spieleranzahl aus der Config-Datei und ruft die Methode informUser("Spieleranzahl muss eine Zahl zwischen 2 und 6 sein. Der Default-Wert <<Default-Wert>> wird gesetzt") | Wenn keine Zahl geladen werden konnte, wird eine Exception mit Fehlerbeschreibung geworfen. |
 |UC1 | Controller |int[] loadConfigParams() | Eine gültige Spieleranzahl wurd im Model gespeichert.  | Es wurde eine Liste mit Spielparametern erzeugt. |Die Methode liefert die Parameter aus der Config-Datei in einem int-Array der Länge 4. <br> **Index 0:** Die maximale Wartezeit <br> **Index 1:** Die Tastenbelegung (0: Steuerung über die Pfeiltasten rechts/links; 1: Steuerung über die Tasten 'A'/'D') <br> **Index 2:** Die Geschwindigkeit<br> **Index 3:** Die Spielfeldgröße | Wenn ein Parameter nicht im gültigen Wertebereich liegt oder nicht geladen werden konnte, wird der entsprechende Default-Wert gesetzt: <br> **Default maximale Wartezeit:** 120 Sekunden<br> **Default Geschwindkeit:** 100 (Einheit: Bewegungen/Sekunde) <br> **Default Spielfeldgröße:** Geschwindigkeit * 5 <br><br> Anschließend wird die Methode informUser("Ein oder mehr Parameter aus der Konfigurationsdatei waren ungültig oder konnten nicht geladen werden. Die betroffenen Parameter wurde auf Default-Werte gesetzt.") aufgerufen |
 |UC1 | Model | static Game createGameInstance() | Die Spielparameter wurde durch Benutzereingabe und Laden aus der Config-Datei gesetzt. | Es wird eine Spielinstanz mit der gespeicherten Spieleranzahl und den geladenen Spielparametern erstellt und im Model gespeichert. |Die Methode erstellt eine neue Spielinstanz mit den geladenen Parametern. Die Methode gibt die erstellte Spielinstanz zurück|  |
-|UC1 | Model | Player createPlayer() | Es wurde eine Spielinstanz erstellt. Der Nutzer wurde zum Warteraum weitergeleitet. | Es wurde eine neue Spielerinstanz erzeugt. | Die Methode erstellt einen neuen Spieler, indem dem Spieler eine noch nicht vergebene ID und Farbe vergeben wird. Die Methode gibt den erstellten Spieler zurück | |
-|UC1 | Model | void registerPlayer(Player) | Es wurde ein Spielerinstanz erzeugt. | Die zuletzt erzeugt Spielerinstanz in der SPielerliste im Model gespeichert worden. |Die Methode wird aufgerufen, nachdem ein Spieler erstellt wurde. Die Methode fügt die als Parameter übergebene Spielerinstanz in die Spielerliste hinzu.| Wenn der übergebene Player null ist, wird eine NullPointerException geworfen.<br>Wenn der übergebene Player eine Farbe hat, die bereits vergeben ist, wird eine Exception mit Fehlerbeschreibung geworfen<br>Wenn der übergebene Player eine bereits vergebene ID hat, wird eine Exception mit Fehlerbeschreibung geworfen|
+|UC3|Model|void startGame(int, int, int)|Es sind genug Spieler beigetreten|Das Spiel wurde initialisiert und alle Spieler befinden sich auf ihrer Startposition und sehen den Spielbildschirm|startGame() wird mit Anzahl Spielern, Anzahl Reihen und Anzahl Spalten aufgerufen. Das Spielfeld und die Spieler werden initialisert und die Spieler auf ihre Startpositionen gesetzt. Die Informationen über die Positionen werden an die View zur Darstellung geschickt||
 |UC1, UC2, UC5 | View | void informUser(String) | Eine Exception wurde geworfen. | Dem Nutzer wird ein Text mit der entsprechenden Fehlerbeschreibung angezeigt. |Zeigt Fehlerbeschreibung der Exception dem Nutzer an | |
 |UC1, UC2, UC6, UC8 | View |void showScreen(String) | Der Spielzustand wurde im Controller gewechselt. | Dem Nutzer wird einen anderen Bildschirm angezeigt. |Die Methode zeigt den Bildschirm an, der zum übergebenen Bildschirmzustand passt.  | Wenn zum übergebenen Zustandsparameter kein anzuzeigenden Bildschirm gehört, wird eine Exception mit einer Fehlerbeschreibung geworfen. |
 |UC2 | Controller | void handleWaitingButtonClick() | Der Nutzer befindet sich im Wartebildschirm und hat auf den Button "Cancel" geklickt.| Der Spieler wird im Erfolgsfall zum Startbildschirm weitergeleitet. |Die Methode bricht den Wartevorgang ab. | Wenn mehr als ein Spieler warten, wird die Methode informUser("Wartevorgang kann nicht abgebrochen werden, wenn mehrere Spieler warten") aufgerufen und anschließend eine Exception mit Fehlerbeschreibung geworfen.|
@@ -159,20 +158,24 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 |UC3 |Controller | void notifyCountdownOver() | Der Countdown wurde von der View dem Nutzer angezeigt. | Der Controller bekommt mit, dass der Countdown vorbei ist und ruft die Methode startGame() des Models auf. | Die Methode erzeugt einen Event für den Controller, dass der Countdown vorbei ist.|  |
 |UC3 | View | Color getPlayerColor(int) |Es wurden Spielerinstanzen erzeugt. | Die Farbe wird zurückgegeben. |Die Methode gibt die Farbe des Spieler zurück, dessen ID als Parameter übergeben wurde |Wenn die übergebene ID keinem Spieler gehört, wird eine Exception mit Fehlerbeschribung geworfen |
 |UC3 | View | void showPlayerColor(Color) | Die Farbe des Spielers wurde ermittelt und wird als Aufrufparameter übergeben. | Dem Nutzer wird die übergebene Farbe im aktuellen Bildschirm angezeigt. |Die Methode zeigt die Spielerfarbe an, die als Parameter übergeben wird | | 
-|UC4 | Model | void movePlayers() | Der Nutzer befindet sich im Spielbildschirm. | Die Position der Spieler hat sich geändert. |Die Methode bewegt alle Spieler geradeaus entsprechend ihrer aktuellen Richtung und dem geladenen Geschwindigkeitsparameter. | |
 |UC4 | View | void drawPlayers() | Der Nutzer befindet sich im Spielbildschirm und die Spielfeldanzeige soll die aktuelle Positionen der Spieler zeigen | Auf dem Spielfeld werden die aktuell lebenden Spieler an ihren aktuellen Positionen angezeigt. |Die Methode ruft die Methode getPlayersinGameField() auf, um Informationen über die aktuellen Spieler zu erhalten. Anhand dieser Informationen werden die Spieler an ihrer aktuellen Position und Ausrichtung in Szene gesetzt. | Im Fehlerfall wird eine Exception mit Fehlerbeschreibung geworfen |
 |UC4 | View | void drawTileColors() | Der Nutzer befindet sich im Spielbildschirm und die Spielfeldanzeige soll die aktuelle Einfärbung des Spielfeldes zeigen | Auf dem Spielfeld wird die aktuell gültige Einfärbung des Spielfeldes angezeigt. |Die Methode holt von jedem Spieler im Spielfeld die eingefärbten Felder und die entsprechende Farbe. Anhand dieser Informationen wird jedes mit Farbe belegte Feld des Spielfeldes in der ermittelten Farbe angezigt. | |
 |UC4| Controller | String handleDirectionKeyboardInput() |Der Nutzer hat eine Taste füe die Steuerung seines Spielers gedrückt.| Die gewünschte Richtungsänderung wird zurückgegeben. | Die Methode liefert die Richtung, die über die Tastatur vom Nutzer eingegeben wurde. Wenn die entsprechende Tastenbelegung für die Steuerung des Motorrads nach links gedrückt wurde, gibt die Methode den String 'left' zurück. <br> Wenn die entsprechende Tastenbelegung für die Steuerung des Motorrads nach rechts gedrückt wurde, gibt die Methode den String 'right' zurück.| Im Fehlerfall wird eine Exception mit Fehlerbeschreibung geworfen |
-|UC4 | Model | void changePlayerDirection(int, String) | Der Nutzer hat eine Taste für die Richtungsänderung gedrückt und die gewünscht Richtung wurde ermittelt. | Der Spieler wurde um 90° in die gewünschte Richtung gedreht.|Der wird als Parameter die Spieler-ID übergeben. Die Methode ändert die Richtung des Spielers mit der übergebenen Spieler-ID nach links oder rechts. Der übergebene String liefert die Information, ob der Spieler nach links oder nach rechts gesteuert wird. | Im Fehlerfall wird eine Exception mit Fehlerbeschreibung geworfen. |
-|UC5 | Model | boolean checkCollision(Position) | Die Position des Spielers wurde geändert. | Die Information über das Vorhandensein einer Kollision wurde ermittelt. |Die Methode prüft, ob es eine Kollision an der übergebenen Position gegeben hat. Sie gibt true zurück, wenn eine Kollision stattgefunden hat, sonst false. | Im Fehlerfall wird eine Exception mit Fehlerbeschreibung geworfen|
+|UC4 | Model | void changePlayerDirection(int, String) | Der Nutzer hat eine Taste für die Richtungsänderung gedrückt und die gewünschte Richtung wurde ermittelt. | Der Spieler wurde um 90° in die gewünschte Richtung gedreht.|Der Methode werden als Parameter die Spieler-ID und ein String übergeben, welche die Information liefert, ob der Spieler nach links oder nach rechts gesteuert wird. Der Spieler mit der ID wird in der Liste der Spieler gesucht. Es wird überprüft, ob der Spieler noch am Leben ist und ob er in diesem Tick bereits eine Aktion getätigt hat. Aus der aktuellen front und der Richtung des Spielers bezogen aufs Spielfeld werden die neue front und die neue Richtung berechnet und gesetzt. Außerdem wird gespeichert, dass der Spieler diesen Tick eine Aktion getätigt hat. | Wenn der Spieler mit der übergebenen ID nicht unter den Spielern gefunden wurde, nicht am Leben ist oder bereits eine Aktion diesen Tick gemacht hat, wird die Eingabe ignoriert. |
+|UC4,5,6,7,8 | Model | void update() | Das Spiel befindet sich im Zustand RUNNING. | Alle lebenden Spieler wurden bewegt, das Spiel ist möglicherweise vorbei. | Diese Methode ist die tick-Methode/ der Gameloop des Spiels. Sie wird also in festen Zeitintervallen ausgeführt. Diese Methode ruft intern movePlayers() zum Bewegen und womöglichen Töten von Spielern auf. Dann wird der GameState geprüft. Ist das Spiel RUNNING, werden alle neuen Positionen der Spieler an die View mittels updatePlayer() übermittelt. Tote Spieler werden hier auch mitgeschickt mit der Info, dass sie entfernt werden sollen. Ist das Spiel OVER wird stattdessen der Sieger erfragt und an den Controller übermittelt, um das Spiel zu beenden.||
+|UC4,5,6,7,8 | Model | void movePlayers() | Das Spiel befindet sich im Zustand RUNNING. Diese Methode wurde in update() aufgerufen. | Alle Spieler wurden bewegt und eventuell Spieler getötet. | Es wird zu Beginn eine leere Liste initialisiert für Spieler, die diesen Zug sterben könnten. Dann wird über alle lebenden Spieler iteriert. Spieler werden der Liste hinzugefügt, wenn es eine Kollision an ihrer front gibt (durch checkForCollision()). Wenn es keine Kollision für den aktuell betrachteten Spieler gibt, wird move() aufgerufen, um den Spieler zu bewegen. Wurden alle Spieler abgehandelt, werden in der Methode killPlayers() alle Spieler in der Liste getötet. Ist die Liste leer, wird einfach zurückgekehrt. ||
+|UC5 | Model | boolean checkForCollision(Position) | Das Spiel befindet sich im Zustand RUNNING. Diese Methode wurde in movePlayers() aufgerufen. | Eine Kollision wurde korrekt erkannt und zurückgegeben. | Der Methode wird die front eines Spielers übergeben. Befindet sich diese außerhalb des Spielfelds - x > Anzahl Spalten oder y > Anzahl Reihen oder eins der beiden < 0 - wird true zurückgegeben. Wenn  front gleich der front eines anderen lebenden Spielers ist, wird auch true zurückgegeben. Ist das nicht der Fall wird geschaut, ob sich die front in einem trail eines lebenden Spielers (auch des Spielers selbst) befindet. Auch hier wird demnach true zurückgegeben, sonst false. ||
+|UC4 | Model | void move(Player) | Das Spiel befindet sich im Zustand RUNNING. Diese Methode wurde in movePlayers() aufgerufen.| Der Spieler wurde bewegt. Eine neue front wurde gesetzt | Die front des übergebenen Spielers wird an den trail angehangen. Die currentAction wird auf null gesetzt. Die nächste front wird auf Basis von der direction berechnet und gesetzt. Damit wird eine Bewegung für den nächsten Tick sichergestellt, falls keine Eingabe von dem Spieler kommt. ||
+|UC4,5,6,7,8 | Model | void killPlayers(List<Player>) | Das Spiel befindet sich im Zustand RUNNING. Diese Methode wurde in movePlayers() aufgerufen. | Zu tötende Spieler wurden getötet und eventuell ein Sieger des Spiels bestimmt. | Ist die übergebene Liste leer, wird einfach zurückgekehrt. Dann wir geprüft, ob die Größe Liste gleich Anzahl lebender Spieler ist. In dem Fall hat man ein Unentschieden, der gameWinner wird auf -1 und der GameState auf OVER gesetzt und es wird returned. Andernfalls werden durch setPlayerDead(id) alle Spieler der Liste getötet und ihr trail gelöscht. Ist danach nur noch ein Spieler übrig, ist dies der Gewinner, gameWinner wird auf seine ID und der GameState auf OVER gesetzt. ||
+|UC5, UC7|  Model| void setPlayerDead(int) | Es hat eine Kollision stattgefunden. | Der Nutzer, dessen Spieler entfernt wurde, ist nicht mehr auf dem Spielfeld zu sehen. Tastendrücken des Nutzers für die Steuerung werden nicht mehr registriert. Der Spieler wurde als tot markiert | Die Methode entfernt die Spur des Spielers mit der übergebenen Spieler-ID aus dem Spielfeld. Die Methode informUser("You lose...Du wurdest aus dem Spiel entfernt"), um den Nutzer zu informieren. | |
+|UC5, UC7| View |removeTileColor(Color) | Ein Spieler ist gestorben und wurde aus dem Spiel entfernt. | Die Felder, die mit als Parameter eingegebenen Farbe eingefärbt waren, sind nicht mehr eingefärbt, sondern haben die gleiche Farbe wie der Spielhintergrund.| Die Methode ändert die Farbe von jedem Feld mit der als Parameter übergebenen Farbe zur Hintergrundfarbe. | |
+| UC3 | View | updateView(int)| Alle Spieler haben den Warteraum betreten.|Die Spielfeldgröße wird in der View gespeichert.  |Die Methode setzt die Spielfeldgröße in der View, die aus der Config-Datei geladen wurden| |
+|UC4 | View | void drawPlayers() | Der Nutzer befindet sich im Spielbildschirm und die Spielfeldanzeige soll die aktuelle Positionen der Spieler zeigen | Auf dem Spielfeld werden die aktuell lebenden Spieler an ihren aktuellen Positionen angezeigt. |Die Methode ruft die Methode getPlayersinGameField() auf, um Informationen über die aktuellen Spieler zu erhalten. Anhand dieser Informationen werden die Spieler an ihrer aktuellen Position und Ausrichtung in Szene gesetzt. | Im Fehlerfall wird eine Exception mit Fehlerbeschreibung geworfen |
 |UC5, UC7|  Model| Player removePlayer(int) | Es hat eine Kollision stattgefunden. | Der Nutzer, dessen Spieler entfernt wurde, ist nicht mehr auf dem Spielfeld zu sehen. Tastendrücken des Nutzers für die Steuerung werden nicht mehr registriert. | Die Methode entfernt den Spieler mit der übergebenen Spieler-ID aus dem Spielfeld. Die Methode informUser("You lose...Du wurdest aus dem Spiel entfernt"), um den Nutzer zu informieren und gibt den entfernten Spieler zurück. | |
 |UC6 | Model |void setGameWinner(int) | Es gibt nur noch ein Spieler im Spiel. | Die ID des letzten Spielers wurde in einer globalen Variable "gameResult" gespeichert.|Der übergebene Player ist der letzte im Spiel. Seine Spieler-ID wird von der Methode als Sieger registriert. | |
-|UC8| Model | void saveCollisionTimeStamps() |Es befinden sich nur noch zwei Spieler im Spiel und eine Kollision hat stattgefunden. | Der Kollisionszeitpunkt wurde in einer globalen Variable gespeichert.| Die Methode speichert den Zeitpunkt der Kollision  | |
-|UC8| Model| boolean checkCollisionTimeStamps(Long, Long) | Es befinden sich nur noch zwei Spieler auf dem Spielfeld gibt ein Kollisionszeeitpunkt wurde gespeichert.| Liefert die Information, on zwei zeitgleiche Kollisionen stattgefunden haben. | Sie prüft, ob die Differenz der beiden übergebenen Zeitpunkte <= 0,1 ist. Wenn ja, dann gibt sie true zurück, sonst false.|Wenn einer der übergeben Parameter null ist, wird eine NullPointerException mit Fehlerbeschreibung geworfen. |
-|UC8| Model | void setGameAsTied() | ZWei Kollisionen haben gleichzeitig stattgefunden.| Die globale Variable "gameResult" wurde auf -1 gesetzt.| Die Methode setzt den Gewinner auf -1, um zu zeigen, dass das Spiel unentschieden ausgegangen ist.| |
 | UC1-8 | View |updatePlayer(int[]) |Im Model wurden Daten zu den Spielern geändert. | Die View hat ihre Daten aktualisiert. | Die Methode aktualisiert die Spielerliste, die in der View gehalten wird. | |
 | UC3 | View | setGameFieldSize(int)| Alle Spieler haben den Warteraum betreten.|Die Spielfeldgröße wird in der View gespeichert.  |Die Methode setzt die Spielfeldgröße in der View, die aus der Config-Datei geladen wurden| |
-|UC6,7,8| Controller| endGame()| Im Model wurde ein Gewinner festgelegt oder das Spiel wurde als unentschieden entschieden. | Die State Maschne im Controller befindet sich im Zustand "End" | Die Methode ändert die State Maschine im Controller zum Zustand "End"| |
+|UC6,7,8| Controller| endGame(int)| Im Model wurde ein Gewinner festgelegt oder das Spiel wurde als unentschieden entschieden. | Die State Maschine im Controller befindet sich im Zustand "End" | Die Methode ändert die State Maschine im Controller zum Zustand "End"| |
 |UC6,7,8|View|notifyGameResult(int)| Die State Maschine des Controllers befindet sich im Zustand "End"| Die View weiß, wie das Spiel ausgegangen ist und zeigt im nächsten Schitt den Endbildschirm an.| Die Methode setzt den Gewinner des Spiels in der View-Komponente.| |
 
 
@@ -208,7 +211,7 @@ Die Komponentenaufteilung richtet sich nach dem eingesetzten MVC-Architekturmust
 
 **Zweck/ Verantwortung**
 
-Das Model ist in unserem Spiel sowohl für die Spielelogik, als auch die Lobbylogik zuständig. Es berechnet den aktuellen Spielstand anhand der Eingaben und gibt dies an die View weiter. Die Lobbylogik kümmert sich um das Erstellen und Starten von Spielen, also vom Start- über den Warte- zum Spielbildschirm.
+Das Model ist in unserem Spiel für die Spielelogik zuständig. Es berechnet den aktuellen Spielstand anhand der Eingaben und gibt die Informationen an die View weiter
 
 **Schnittstelle(n)**
 
@@ -327,16 +330,11 @@ Die Schnittstelle **IRemoteObject** bietet die Funktionalität zum Empfangen von
 
 ### Whitebox Model
 
-![Model_Ebene3](images/Model_Ebene3.png)
+![Model_Ebene3](images/Model_Ebene3_Refactor.png)
 
 |Methode    |Kurzbeschreibung|
-|-----------|----------------|
-|addPlayer()|Diese Methode kümmert sich um das Hinzufügen eines neuen Spielers zum Spiel. Dabei wird ein Player-Objekt initialisiert mit einer noch nicht vergebenen Farbe.|
-|cancelWait()|Diese Methode bricht die Spielesuche/ das Warten auf weitere Spieler ab|
-|startGame()|Diese Methode initialisiert und startet das eigentliche Spiel, sobald alle Spieler beigetreten sind.|
-|movePlayer()|Mit dieser Methode wird die Bewegung im Spiel modelliert. Tasteneingaben vom Spieler bestimmen seine Richtung. Hier wird außerdem mit internen Methoden weiter überprüft, ob es Kollisionen gab und demnach gehandelt.|
-|checkCollision()| Diese Methode überprüft, ob es eine Kollision zwischen einem Spieler und einem anderen Spieler, Spur oder Wand gegeben hat.|
-|clearPlayer()|Wenn ein Spieler kollidiert ist, soll er vom Spielfeld verschwinden.|
+|-|-|
+|||
 
 ### Whitebox View
 
@@ -403,21 +401,21 @@ Methodenliste
 ## Usecase 2 CancelWait
 ![LFZ_cancel](images/LFZ_cancel.png)
 
+<<<<<<< Doku/Dokumentation_Tronspiel.md
+=======
 ## Usecase 3 Start
 ![LFZ_start](images/LFZ_start.png)
 
+>>>>>>> Doku/Dokumentation_Tronspiel.md
 ## Usecase 3 Spielstart
 ![Sequenzdiagramm_Spielstart](images/SD_Spielstart.png)
 
 ## Usecase 4 Spieler steuern
 
-![Sequenzdiagramm_UC4](images/Sequenzdiagramm_UC4.png)
-
-## Usecase 4.a Erweiterungsfall Spieler steuern
-![Sequenzdiagramm_UC4a](images/Sequenzdiagramm_UC4_1a.png)
+![Sequenzdiagramm_Steer](images/SD_UC4Steer.png)
 
 ## Usecase 5 gegen Spielobjekt kollidieren
-![Sequenzdiagramm_UC5](images/Sequenzdiagramm_UC5.png)
+![Sequenzdiagramm_Collide](images/SD_UC5Collide.png)
 
 ## UC6 Win
 ![Sequenzdiagramm_Spielende](images/SD_UC6Win.png)
@@ -428,6 +426,25 @@ Methodenliste
 ## UC8 Tie
 ![Sequenzdiagramm_Spielende](images/SD_UC8Tie.png)
 ...
+
+## AD update
+![Aktivitätsdiagramm_update](images/AD_update.png)
+
+## AD changePlayerDirection
+![Aktivitätsdiagramm_update](images/AD_changePlayerDirection.png)
+
+## AD updatePlayers
+![Aktivitätsdiagramm_updatePlayers](images/AD_updatePlayers.png)
+
+## AD movePlayer
+![Aktivitätsdiagramm_movePlayer](images/AD_movePlayer.png)
+
+## AD checkForCollision
+![Aktivitätsdiagramm_checkForCollision](images/AD_checkForCollision.png)
+
+## AD killPlayers
+![Aktivitätsdiagramm_killPlayers](images/AD_killPlayers.png)
+
 
 <a name="verteilungssicht"></a>
 # Verteilungssicht {#section-deployment-view}
