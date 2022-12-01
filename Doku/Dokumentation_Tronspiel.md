@@ -17,6 +17,7 @@
     - [Model Blackbox](#modelblackbox)
     - [View Blackbox](#viewblackbox)
     - [Controller Blackbox](#controllerblackbox)
+    - [Application Stub Blackbox](#applicationstubblackblox)
   - [Whitebox Ebene 2](#ebene2)
   - [Whitebox Ebene 3](#ebene3)
 - [Laufzeitsicht](#laufzeitsicht)
@@ -273,7 +274,24 @@ Der Controller bietet Funktionalitäten für die View v.a. zur Kommunikation mit
 | void notifyGameResult(int) | |
 | void notifyCountdownOver() | |
 
+<a name="applicationstubblackblox"></a>
+### Application Stub (Blackbox) 
 
+**Zweck/ Verantwortung**
+
+Der Application Stub fängt Methodenaufrufe auf, die Schnittstellen von Remote-Komponenten aufrufen. Beim Auffangen wird die Middleware aufgerufen.
+
+
+
+Außerdem leitet der Application Stub einen durch die Middleware empfangenen Methodenaufruf an die richtuge Komponentenschnittstelle weiter, wo der Aufruf abgearbeitet wird.
+
+
+**Schnittstelle(n)**
+
+Die Schnittstelle **IRemoteObject** bietet die Funktionalität zum Empfangen von Remote-Methodenaufrufen an. 
+
+| Methode | Kurzbeschreibung |
+| --- | --- |
 
 <a name="ebene2"></a>
 ## Ebene 2 
@@ -286,7 +304,7 @@ Der Controller bietet Funktionalitäten für die View v.a. zur Kommunikation mit
 <br>
 
 
-## Ebene 2 {#_ebene_2}
+## Ebene 2 
 
 ### Whitebox Model
 
@@ -295,19 +313,13 @@ Der Controller bietet Funktionalitäten für die View v.a. zur Kommunikation mit
 
 ### Whitebox View 
 
-![View_Whitebox](./images/Whitebox_View.png)
-
-|Methode| Kurzbeschreibung|
-| --- | --- |
-|drawScreen() | Abstrakte Methode, die in den konkreten Klassen die Bildschirmanzeige zeichnet. |
-|informUser(String) | konkrete Methode, die eine Meldung (als Aufrufparameter übergebe) dem Nutzer anzeigt. |
-|getPlayerColor(int) | |
-|showPlayerColor(int) | |
-|drawPlayers() | |
-|drawTileColors() | |
+![View_Ebene3](./images/Whitebox1_View.png)
 
 
 
+### Whitebox Application Stub
+
+![AppStub_Ebene2](./images/Whitebox_AppStub.png)
 
 
 <a name="ebene3"></a>
@@ -329,7 +341,16 @@ Der Controller bietet Funktionalitäten für die View v.a. zur Kommunikation mit
 ### Whitebox View
 
 
-![Diagramme_VS__1_.jpg](Diagramme_VS__1_.jpg)
+![View_Ebene3](./images/Whitebox_View.png)
+
+|Methode| Kurzbeschreibung|
+| --- | --- |
+|drawScreen() | Abstrakte Methode, die in den konkreten Klassen die Bildschirmanzeige zeichnet. |
+|informUser(String) | konkrete Methode, die eine Meldung (als Aufrufparameter übergebe) dem Nutzer anzeigt. |
+|getPlayerColor(int) |?? |
+|showPlayerColor(int) | ??|
+|drawPlayers() | Zeigt die aktuell lebenden Spieler an ihrer aktuellen Position an. |
+|drawTileColors() | Zeigt die aktuelle Farbbelegung der Tiles an.|
 
 ### Whitebox Controller
 
