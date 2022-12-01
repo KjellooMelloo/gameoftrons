@@ -77,6 +77,7 @@ contributors. Siehe <https://arc42.org>.
 | | | receive() | | |
 | | | marshall() | | |
 | | | unmarshall() | | |
+| | | lookup(int) | aufrufparameter: ID, liefert die IP-Adresse und die Portnummer | |
 
 
 # Bausteinsicht 
