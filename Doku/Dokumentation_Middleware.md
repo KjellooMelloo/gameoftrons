@@ -123,6 +123,8 @@ Wichtige Schnittstellen
 
 ## Ebene 2 {#_ebene_2}
 
+![Middleware_Ebene2](./images/Middleware_Ebene2.png)
+
 ### Whitebox *\<Baustein 1>* {#_whitebox_emphasis_baustein_1_emphasis}
 
 *\<Whitebox-Template>*
