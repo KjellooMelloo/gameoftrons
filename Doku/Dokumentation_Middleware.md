@@ -19,11 +19,11 @@ contributors. Siehe <https://arc42.org>.
 2. Nachrichten werden in Funktionsaufrufe umgewandelt
 3. Die Middleware soll message-oriented sein
 4. Vereinheitlicht die Kommunikationsdatentypen durch RPC
-5. Application Stubs können sich als remote objects bei der Middleware anmelden
+5. Application Stubs können sich als Remote objects bei der Middleware anmelden
 
 
 
-## Qualitätsziele {#_qualit_tsziele}
+## Qualitätsziele 
 
 | ID | Qualitätsziel | Kurzbeschreibung |
 | --- | --- | --- |
@@ -33,7 +33,7 @@ contributors. Siehe <https://arc42.org>.
 
 
 
-## Stakeholder {#_stakeholder}
+## Stakeholder 
 
 +-----------------+-----------------+-----------------------------------+
 | Rolle           | Kontakt         | Erwartungshaltung                 |
@@ -49,6 +49,7 @@ contributors. Siehe <https://arc42.org>.
 
 ## Fachlicher Kontext 
 
+![Fachlicher_Trontext](./images/middleware_fachlicher_trontext.png)
 
 | Use Case |Vorbedingung |Ablaufsemantik |Nachbedingung |Fehlerfälle | Erweiterungsfälle |
 | --- | --- | --- | --- | --- | --- |
@@ -58,7 +59,6 @@ contributors. Siehe <https://arc42.org>.
 | UC4 Unmarshaling Message | Die Middleware hat eine Nachricht empfangen| **1.** Der Unmarshaler wandelt die Nachricht in einen Methodenauf um <br> **2.** Der Unmarshler ruft den Application-Stub der Komponente auf, die den Methodenaufruf empfangen soll (siehe UC5)| Ein Methodenaufruf wurde erzeugt| | |
 | UC5 Call Method | UC 4 : Der Unmarsharler hat eine Nachricht in einen Methodenauf umgewandelt |**1.** Der Unmarshler ruft die Call-Schnittstelle des Application-Callee-Stubs <br> **2.** Der Application-Callee-Stub ruft die dazugehörige Komponente lokal auf. | Die aufgerufene Methode wird ausgeführt.|
 
-![Fachlicher_Trontext](./images/middleware_fachlicher_trontext.png)
 
 ## Technischer Kontext {#_technischer_kontext}
 
