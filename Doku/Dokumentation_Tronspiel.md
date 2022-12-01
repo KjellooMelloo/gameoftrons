@@ -401,12 +401,9 @@ Methodenliste
 ## Usecase 2 CancelWait
 ![LFZ_cancel](images/LFZ_cancel.png)
 
-<<<<<<< Doku/Dokumentation_Tronspiel.md
-=======
 ## Usecase 3 Start
 ![LFZ_start](images/LFZ_start.png)
 
->>>>>>> Doku/Dokumentation_Tronspiel.md
 ## Usecase 3 Spielstart
 ![Sequenzdiagramm_Spielstart](images/SD_Spielstart.png)
 
