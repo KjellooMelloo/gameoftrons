@@ -404,11 +404,7 @@ Methodenliste
 ## Usecase 3 Start
 ![LFZ_start](images/LFZ_start.png)
 
-## Usecase 3 Spielstart
-![Sequenzdiagramm_Spielstart](images/SD_Spielstart.png)
-
 ## Usecase 4 Spieler steuern
-
 ![Sequenzdiagramm_Steer](images/SD_UC4Steer.png)
 
 ## Usecase 5 gegen Spielobjekt kollidieren
