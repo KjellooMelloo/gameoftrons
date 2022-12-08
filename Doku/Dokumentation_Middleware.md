@@ -72,13 +72,13 @@ contributors. Siehe <https://arc42.org>.
 | Akteur | Vorbedingung | Nachbedingung | Methodensignatur | Ablaufsemantik | Fehlersemantik |
 |---|---|---|---|---|---|
 | ClientStub | Eine Komponente ruft eine Remote-Komponente über eine Application Stub Schnittstelle auf | Der Aufruf wurde geprüft und die Methode marshal() wurde aufgerufen |invoke(int, String, Object[] )|  Prüft ob die übergebene Objekt-ID (erster Parameter) registriert ist. Dann wird die Methode marshal() aufgerufen | Wenn die Objekt-ID nicht registriert ist, wird eine Exception geworfen|
-| ServerStub | | | call() | | |
-| | | |register()| | |
-| | | | send() | | |
-| | | receive() | | |
-| | | marshal() | | |
-| | | unmarshal() | | |
-| | | lookup(int) | aufrufparameter: ID, liefert die IP-Adresse und die Portnummer | |
+| ServerStub | Nachricht wurde vom ServerStub empfangen und unmarshaled | RemoteObject mit der zugehörigen InetAddress wurde informiert | call(InetAddress, Object[]) | | |
+| ServerStub | Ein CalleeStub aus dem ApplicationStub möchte sich als RemoteObject registrieren | Das RemoteObject wurde im NameServer gespeichert | register(int, InetAddress) | NameServer wird aufgerufen und id mit IDAddress eingetragen | Eintrag mit der ID existiert bereits. Dann wird überschrieben(?) |
+| ClientStub | Funktionsaufruf wurde marshaled, zugehörige InetAddress druch NameResolver ermittelt | | send(Message, InetAddress) | | |
+| ServerStub | Ein Socket im Server Stub befindet sich im Lauschzustand | Nachricht wurde empfangen |receive() | | |
+| ClientStub | Funktionsaufruf über invoke wurde getätigt, zugehörige InetAddress wurde durch NameResolver ermittelt | |marshal(String, Object[]) | | |
+| ServerStub | Nachricht wurde über receive empfangen | Nachrichteninhalt wurde extrahiert und kann für call genutzt werden | unmarshal(Message) | | (checksum stimmt nicht überein -> ignorieren) |
+| ClientStub | invoke wurde aufgerufen | | lookup(int) | aufrufparameter: ID, liefert die Inet-Adresse und die Portnummer | |
 
 
 # Bausteinsicht 
