@@ -57,7 +57,9 @@ contributors. Siehe <https://arc42.org>.
 | UC1 Register Method | | | | | |
 | UC2 Invoke Method |In der Anwendung wird eine Methode einer Remote-Komponente aufgerufen | **1.** Das System ruft den Application-Caller-Stub der aufrufenden Komponente auf <br> **2.** Der  Application Stub ruft die Middleware-Schnittstelle auf <br> **3.** Die Middleware prüft, ob die aufgerufene Komponente registriert ist <br> **4.** Die Middleware wandelt den Methodenaufruf in eine Nachricht um (siehe UC3) <br> **5.** Die Middleware ruft das Betriebssystem auf| Die Nachricht wurde verschickt|**3.a.1** Die aufgerufene Komponente ist nicht bei der Middleware registriert <br> **3.a.2** Das System wirft eine Exception auf.| |
 | UC3 Marshaling Method Call| UC2 bis Schritt 2 | **1.** Der Marshaler serialisiert den Methodenaufruf in ein Nachrichtenformat  **2.** Weiter mit UC Schritt 4| Der Methodenaufruf ist als Nachricht vorhanden | | |
+| UC3.1 send ||||||
 | UC4 Unmarshaling Message | Die Middleware hat eine Nachricht empfangen| **1.** Der Unmarshaler wandelt die Nachricht in einen Methodenaufruf um <br> **2.** Der Unmarshaler ruft den Application-Stub der Komponente auf, die den Methodenaufruf empfangen soll (siehe UC5)| Ein Methodenaufruf wurde erzeugt| | |
+| UC4.1 receive ||||||
 | UC5 Call Method | UC 4 : Der Unmarshaler hat eine Nachricht in einen Methodenauf umgewandelt |**1.** Der Unmarshaler ruft die Call-Schnittstelle des Application-Callee-Stubs <br> **2.** Der Application-Callee-Stub ruft die dazugehörige Komponente lokal auf. | Die aufgerufene Methode wird ausgeführt.|
 
 
@@ -69,16 +71,16 @@ contributors. Siehe <https://arc42.org>.
 
 # Lösungsstrategie 
 
-| Akteur | Vorbedingung | Nachbedingung | Methodensignatur | Ablaufsemantik | Fehlersemantik |
-|---|---|---|---|---|---|
-| ClientStub | Eine Komponente ruft eine Remote-Komponente über eine Application Stub Schnittstelle auf | Der Aufruf wurde geprüft und die Methode marshal() wurde aufgerufen |invoke(int, String, Object[] )|  Prüft ob die übergebene Objekt-ID (erster Parameter) registriert ist. Dann wird die Methode marshal() aufgerufen | Wenn die Objekt-ID nicht registriert ist, wird eine Exception geworfen|
-| ServerStub | Nachricht wurde vom ServerStub empfangen und unmarshaled | RemoteObject mit der zugehörigen InetAddress wurde informiert | call(InetAddress, Object[]) | | |
-| ServerStub | Ein CalleeStub aus dem ApplicationStub möchte sich als RemoteObject registrieren | Das RemoteObject wurde im NameServer gespeichert | register(int, InetAddress) | NameServer wird aufgerufen und id mit IDAddress eingetragen | Eintrag mit der ID existiert bereits. Dann wird überschrieben(?) |
-| ClientStub | Funktionsaufruf wurde marshaled, zugehörige InetAddress druch NameResolver ermittelt | | send(Message, InetAddress) | | |
-| ServerStub | Ein Socket im Server Stub befindet sich im Lauschzustand | Nachricht wurde empfangen |receive() | | |
-| ClientStub | Funktionsaufruf über invoke wurde getätigt, zugehörige InetAddress wurde durch NameResolver ermittelt | |marshal(String, Object[]) | | |
-| ServerStub | Nachricht wurde über receive empfangen | Nachrichteninhalt wurde extrahiert und kann für call genutzt werden | unmarshal(Message) | | (checksum stimmt nicht überein -> ignorieren) |
-| ClientStub | invoke wurde aufgerufen | | lookup(int) | aufrufparameter: ID, liefert die Inet-Adresse und die Portnummer | |
+| Usecase | Akteur |Funktionssignatur| Vorbedingung | Nachbedingung | Ablaufsemantik | Fehlersemantik |
+|---|---|---|---|---|---|---|
+|UC1| ServerStub | void register(int, InetAddress) | Ein CalleeStub aus dem ApplicationStub möchte sich als RemoteObject registrieren | Das RemoteObject wurde im NameServer gespeichert |  NameServer wird aufgerufen und id mit INetAddress eingetragen | Eintrag mit der ID existiert bereits. Dann wird überschrieben(?) |
+|UC2| ClientStub | void invoke(int, String, Object[]) | Eine Komponente ruft eine Remote-Komponente über eine Application Stub Schnittstelle auf | Der Aufruf wurde geprüft und die Methode marshal() wurde aufgerufen |  Prüft ob die übergebene Objekt-ID (erster Parameter) registriert ist. Dann wird die Methode marshal() aufgerufen | Wenn die Objekt-ID nicht registriert ist, wird eine Exception geworfen|
+|UC2| ClientStub | lookup(int) | invoke wurde aufgerufen | | aufrufparameter: ID, liefert die Inet-Adresse und die Portnummer | |
+|UC3| ClientStub | void marshal(String, Object[]) | Funktionsaufruf über invoke wurde getätigt, zugehörige InetAddress wurde durch NameResolver ermittelt | | | |
+|UC3.1| ClientStub | void send(Message, InetAddress) | Funktionsaufruf wurde marshaled, zugehörige InetAddress druch NameResolver ermittelt | |  | |
+|UC4| ServerStub | unmarshal(Message) | Nachricht wurde über receive empfangen | Nachrichteninhalt wurde extrahiert und kann für call genutzt werden | | (checksum stimmt nicht überein -> ignorieren) |
+|UC4.1| ServerStub | receive() | Ein Socket im Server Stub befindet sich im Lauschzustand | Nachricht wurde empfangen | | |
+|UC5| ServerStub | void call(InetAddress, Object[]) | Nachricht wurde vom ServerStub empfangen und unmarshaled | RemoteObject mit der zugehörigen InetAddress wurde informiert | | |
 
 
 # Bausteinsicht 
