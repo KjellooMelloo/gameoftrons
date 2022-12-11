@@ -36,13 +36,12 @@ contributors. Siehe <https://arc42.org>.
 
 ## Stakeholder 
 
-+-----------------+-----------------+-----------------------------------+
-| Rolle           | Kontakt         | Erwartungshaltung                 |
-+=================+=================+===================================+
-| *\<Rolle-1>*    | *\<Kontakt-1>*  | *\<Erwartung-1>*                  |
-+-----------------+-----------------+-----------------------------------+
-| *\<Rolle-2>*    | *\<Kontakt-2>*  | *\<Erwartung-2>*                  |
-+-----------------+-----------------+-----------------------------------+
+|Rolle|Kontakt|Erwartungshaltung|
+|-|-|-|
+|Kunde  |Martin Becke   |Entwicklung eines Tron-Spiels als verteiltes System, gut dokumentiert (Code <-> Dokumentation), Konzepte aus der Vorlesung sinnvoll angewendet und verstanden|
+|Entwickler|Kathleen Neitzel, Kjell May, Viviam Ribeiro| - Funktionsfähige Middleware mit gewünschter Funktionalität entwickeln, dass das Spiel an mehreren Rechnern gespielt werden kann|
+|Kunde|GameOfTrons|Möglichkeit auf mehreren Rechnern gespielt werden zu können|
+
 
 # Randbedingungen 
 
@@ -73,13 +72,13 @@ contributors. Siehe <https://arc42.org>.
 
 | Usecase | Akteur |Funktionssignatur| Vorbedingung | Nachbedingung | Ablaufsemantik | Fehlersemantik |
 |---|---|---|---|---|---|---|
-|UC1| ServerStub | void register(int, InetAddress) | Ein CalleeStub aus dem ApplicationStub möchte sich als RemoteObject registrieren | Das RemoteObject wurde im NameServer gespeichert |  NameServer wird aufgerufen und id mit INetAddress eingetragen | Eintrag mit der ID existiert bereits. Dann wird überschrieben(?) |
-|UC2| ClientStub | void invoke(int, String, Object[]) | Eine Komponente ruft eine Remote-Komponente über eine Application Stub Schnittstelle auf | Der Aufruf wurde geprüft und die Methode marshal() wurde aufgerufen |  Prüft ob die übergebene Objekt-ID (erster Parameter) registriert ist. Dann wird die Methode marshal() aufgerufen | Wenn die Objekt-ID nicht registriert ist, wird eine Exception geworfen|
-|UC2| ClientStub | lookup(int) | invoke wurde aufgerufen | | aufrufparameter: ID, liefert die Inet-Adresse und die Portnummer | |
-|UC3| ClientStub | void marshal(String, Object[]) | Funktionsaufruf über invoke wurde getätigt, zugehörige InetAddress wurde durch NameResolver ermittelt | | | |
-|UC3.1| ClientStub | void send(Message, InetAddress) | Funktionsaufruf wurde marshaled, zugehörige InetAddress druch NameResolver ermittelt | |  | |
-|UC4| ServerStub | unmarshal(Message) | Nachricht wurde über receive empfangen | Nachrichteninhalt wurde extrahiert und kann für call genutzt werden | | (checksum stimmt nicht überein -> ignorieren) |
-|UC4.1| ServerStub | receive() | Ein Socket im Server Stub befindet sich im Lauschzustand | Nachricht wurde empfangen | | |
+|UC1| ServerStub | void register(int, InetAddress) | Ein CalleeStub aus dem ApplicationStub möchte sich als RemoteObject registrieren | Das RemoteObject wurde im NameServer gespeichert |  NameServer wird aufgerufen und id mit InetAddress eingetragen | Eintrag mit der ID existiert bereits. Dann wird überschrieben(?) |
+|UC2| ClientStub | void invoke(int, String, Object[]) | Eine Komponente ruft eine Remote-Komponente über eine Application Stub Schnittstelle auf | Der Aufruf wurde geprüft und die Methode marshal() wurde aufgerufen |  Prüft mithilfe von lookup() ob die übergebene Objekt-ID (erster Parameter) registriert ist. Dann wird die Methode marshal() aufgerufen | Wenn die Objekt-ID nicht registriert ist, wird eine Exception geworfen|
+|UC2| ClientStub | INetAddress lookup(int) | invoke wurde aufgerufen |  | Aufrufparameter: ID, liefert die Inet-Adresse und die Portnummer zum Eintrag mit ID im NameServer | Es gibt keinen Eintrag mit der ID. Es wird null zurückgegeben und der RPC abgebrochen |
+|UC3| ClientStub | Message marshal(String, Object[]) | Funktionsaufruf über invoke wurde getätigt, zugehörige InetAddress wurde durch NameResolver ermittelt | Funktionsaufruf wurde marshaled und zurückgegeben | | |
+|UC3.1| ClientStub | void send(Message, InetAddress) | Funktionsaufruf wurde marshaled, zugehörige InetAddress druch NameResolver ermittelt | Nachricht wurde verschickt | Die marshaled Nachricht wird über einen Socket an die passende InetAddress verschickt. | |
+|UC4| ServerStub | void unmarshal(Message) | Nachricht wurde über receive empfangen | Nachrichteninhalt wurde extrahiert und kann für call genutzt werden | | (checksum stimmt nicht überein -> ignorieren) |
+|UC4.1| ServerStub | receive() | Ein Socket im Server Stub befindet sich im Lauschzustand | Nachricht wurde empfangen | Nachricht am Socket wird empfangen und gespeichert. | |
 |UC5| ServerStub | void call(InetAddress, Object[]) | Nachricht wurde vom ServerStub empfangen und unmarshaled | RemoteObject mit der zugehörigen InetAddress wurde informiert | | |
 
 
