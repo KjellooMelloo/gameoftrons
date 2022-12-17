@@ -59,10 +59,11 @@ contributors. Siehe <https://arc42.org>.
 | UC3.1 send ||||||
 | UC4 Unmarshaling Message | Die Middleware hat eine Nachricht empfangen| **1.** Der Unmarshaler wandelt die Nachricht in einen Methodenaufruf um <br> **2.** Der Unmarshaler ruft den Application-Stub der Komponente auf, die den Methodenaufruf empfangen soll (siehe UC5)| Ein Methodenaufruf wurde erzeugt| | |
 | UC4.1 receive ||||||
-| UC5 Call Method | UC 4 : Der Unmarshaler hat eine Nachricht in einen Methodenauf umgewandelt |**1.** Der Unmarshaler ruft die Call-Schnittstelle des Application-Callee-Stubs <br> **2.** Der Application-Callee-Stub ruft die dazugehörige Komponente lokal auf. | Die aufgerufene Methode wird ausgeführt.|
+| UC5 lookup | invoke wurde mit einer ID für eine Funktion aufgerufen | Der Nameserver wird angefragt, ob er einen Eintrag mit der übergebenen ID hat und liefert die zugehörige IP-Adresse + Port zurück | IP-Adresse + Port zu der gesuchten Funktion wurden zurückgegeben | Es gibt keinen Eintrag mit dieser ID. Dann wird  null zurückgegeben und der Aufruf verworfen. ||
+| UC6 Call Method | UC 4 : Der Unmarshaler hat eine Nachricht in einen Methodenauf umgewandelt |**1.** Der Unmarshaler ruft die Call-Schnittstelle des Application-Callee-Stubs <br> **2.** Der Application-Callee-Stub ruft die dazugehörige Komponente lokal auf. | Die aufgerufene Methode wird ausgeführt.|
 
 
-## Technischer Kontext 
+## Technischer Kontext
 
 ![Technischer_Trontext](./images/middleware_technischer_trontext.png)
 
@@ -74,18 +75,17 @@ contributors. Siehe <https://arc42.org>.
 |---|---|---|---|---|---|---|
 |UC1| ServerStub | void register(int, InetAddress) | Ein CalleeStub aus dem ApplicationStub möchte sich als RemoteObject registrieren | Das RemoteObject wurde im NameServer gespeichert |  NameServer wird aufgerufen und id mit InetAddress eingetragen | Eintrag mit der ID existiert bereits. Dann wird überschrieben(?) |
 |UC2| ClientStub | void invoke(int, String, Object[]) | Eine Komponente ruft eine Remote-Komponente über eine Application Stub Schnittstelle auf | Der Aufruf wurde geprüft und die Methode marshal() wurde aufgerufen |  Prüft mithilfe von lookup() ob die übergebene Objekt-ID (erster Parameter) registriert ist. Dann wird die Methode marshal() aufgerufen | Wenn die Objekt-ID nicht registriert ist, wird eine Exception geworfen|
-|UC2| ClientStub | INetAddress lookup(int) | invoke wurde aufgerufen |  | Aufrufparameter: ID, liefert die Inet-Adresse und die Portnummer zum Eintrag mit ID im NameServer | Es gibt keinen Eintrag mit der ID. Es wird null zurückgegeben und der RPC abgebrochen |
 |UC3| ClientStub | Message marshal(String, Object[]) | Funktionsaufruf über invoke wurde getätigt, zugehörige InetAddress wurde durch NameResolver ermittelt | Funktionsaufruf wurde marshaled und zurückgegeben | | |
 |UC3.1| ClientStub | void send(Message, InetAddress) | Funktionsaufruf wurde marshaled, zugehörige InetAddress druch NameResolver ermittelt | Nachricht wurde verschickt | Die marshaled Nachricht wird über einen Socket an die passende InetAddress verschickt. | |
 |UC4| ServerStub | void unmarshal(Message) | Nachricht wurde über receive empfangen | Nachrichteninhalt wurde extrahiert und kann für call genutzt werden | | (checksum stimmt nicht überein -> ignorieren) |
 |UC4.1| ServerStub | receive() | Ein Socket im Server Stub befindet sich im Lauschzustand | Nachricht wurde empfangen | Nachricht am Socket wird empfangen und gespeichert. | |
-|UC5| ServerStub | void call(InetAddress, Object[]) | Nachricht wurde vom ServerStub empfangen und unmarshaled | RemoteObject mit der zugehörigen InetAddress wurde informiert | | |
+|UC5| ClientStub | INetAddress lookup(int) | invoke wurde aufgerufen |  | Aufrufparameter: ID, liefert die Inet-Adresse und die Portnummer zum Eintrag mit ID im NameServer | Es gibt keinen Eintrag mit der ID. Es wird null zurückgegeben und der RPC abgebrochen |
+|UC6| ServerStub | void call(InetAddress, Object[]) | Nachricht wurde vom ServerStub empfangen und unmarshaled | RemoteObject mit der zugehörigen InetAddress wurde informiert | | |
 
 
 # Bausteinsicht 
 
-## Whitebox Gesamtsystem 
-
+## Whitebox Gesamtsystem
 
 ![Middleware_Ebene1](./images/Middleware_Ebene1.png)
 
