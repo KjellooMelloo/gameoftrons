@@ -1,5 +1,6 @@
 package de.hawh.beta3.application.game.model.gamelogic;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GameLogic implements IGameLogic {
@@ -7,7 +8,7 @@ public class GameLogic implements IGameLogic {
     private int size;
     private List<Player> players;
     private int gameWinner;
-    private GameState gameState;
+    private GameState gameState = GameState.INIT;
 
     /**
      * Initializes game logic with params
@@ -57,6 +58,8 @@ public class GameLogic implements IGameLogic {
         for (int i = 0; i < numPlayers; i++) {
             players.add(new Player(i, startingPos[i], startingDir[i]));
         }
+
+        gameState = GameState.RUNNING;
     }
 
     /**
@@ -83,7 +86,18 @@ public class GameLogic implements IGameLogic {
      */
     @Override
     public void updatePlayers() {
+        List<Player> playersToKill = new ArrayList<>();
 
+        for (Player p : players) {
+            if (p.isAlive()) {
+                if (checkForCollision(p)) {
+                    playersToKill.add(p);
+                } else {
+                    movePlayer(p);
+                }
+            }
+        }
+        killPlayers(playersToKill);
     }
 
     /**
@@ -126,7 +140,7 @@ public class GameLogic implements IGameLogic {
      *
      * @param position   current position
      * @param pDirection direction of player
-     * @param action     "left", "right" or null
+     * @param action     "left", "right" or "stay"
      * @return new position
      */
     private Position calcNextPos(Position position, Direction pDirection, String action) {
@@ -147,24 +161,78 @@ public class GameLogic implements IGameLogic {
         return new Position(x, y);
     }
 
+    /**
+     * Method moves Player <code>p</code> by adding front to the tail.
+     * His <code>currentAction</code> gets reset and his new front gets set, in case there is no input next tick
+     *
+     * @param p player to move
+     */
     private void movePlayer(Player p) {
-        Direction d = Direction.RIGHT;
-
+        p.addFrontToTrail();
+        p.setCurrentAction(null);
+        p.setFront(calcNextPos(p.getFront(), p.getDirection(), "stay"));
     }
 
-    private void setGameState(GameState gameState) {
-
+    private void setGameOver() {
+        this.gameState = GameState.OVER;
     }
 
     private int getNumLivingPlayers() {
-        return 0;
+        int living = 0;
+
+        for (Player p : players) if (p.isAlive()) living++;
+
+        return living;
     }
 
+    /**
+     * Methods checks for a collision for Player <code>p</code>
+     * Possible collisions are: out of map bounds, drove in own trail, drove in other trail, drove in other front
+     *
+     * @param p player to check
+     * @return true, if collision detected, false else
+     */
     private boolean checkForCollision(Player p) {
+        Position front = p.getFront();
+
+        if (front.getX() > size - 1 || front.getX() < 0
+                || front.getY() > size - 1 || front.getY() < 0
+                || p.getTrail().contains(front)) return true;
+
+        for (Player player : players) {
+            if (player.isAlive()) {
+                if (player.getFront().equals(front)) return true;
+                if (player.getTrail().contains(front)) return true;
+            }
+        }
+
         return false;
     }
 
-    private void killPlayers(List<Player> players) {
+    /**
+     * Method kills every player in <code>players</code>
+     * If this results in a tie or only one player left, <code>gameWinner</code> gets set accordingly
+     *
+     * @param toBeKilled list of players to be killed
+     */
+    private void killPlayers(List<Player> toBeKilled) {
+        if (toBeKilled.size() == 0) return;
+        if (toBeKilled.size() == getNumLivingPlayers()) {
+            gameWinner = -1;
+            setGameOver();
+            return;
+        }
 
+        for (Player p : toBeKilled) p.setDead();
+
+        if (getNumLivingPlayers() != 1) return;
+
+        for (Player p : players) {
+            if (p.isAlive()) {
+                gameWinner = p.getColor();
+                setGameOver();
+                return;
+            }
+        }
     }
 }
