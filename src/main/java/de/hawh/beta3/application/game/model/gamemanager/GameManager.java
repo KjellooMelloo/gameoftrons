@@ -34,6 +34,7 @@ public class GameManager implements IModel {
      * @param size       size of game field
      * @param gameSpeed  speed of game
      */
+    //TODO Startpositionen an View schicken?
     @Override
     public void startGame(int numPlayers, int size, int gameSpeed) {
         gameLogic.init(numPlayers, size, gameSpeed);

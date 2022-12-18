@@ -46,7 +46,7 @@ public class Player {
     }
 
     public void addFrontToTrail() {
-
+        trail.add(front);
     }
 
     public Direction getDirection() {

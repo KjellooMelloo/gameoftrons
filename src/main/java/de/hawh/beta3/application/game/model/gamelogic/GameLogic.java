@@ -20,6 +20,7 @@ public class GameLogic implements IGameLogic {
     @Override
     public void init(int numPlayers, int size, int gameSpeed) {
         this.size = size;
+        players = new ArrayList<>();
         //this.gameSpeed = gameSpeed;
         Position[] startingPos;
         Direction[] startingDir;
