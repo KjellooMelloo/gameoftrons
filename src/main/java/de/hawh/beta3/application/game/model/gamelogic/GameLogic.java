@@ -18,7 +18,45 @@ public class GameLogic implements IGameLogic {
      */
     @Override
     public void init(int numPlayers, int size, int gameSpeed) {
+        this.size = size;
+        //this.gameSpeed = gameSpeed;
+        Position[] startingPos;
+        Direction[] startingDir;
+        if (numPlayers > 4) {
+            startingPos = new Position[]{
+                    new Position(0, (size-1)/3),
+                    new Position((size-1), (size-1)/3),
+                    new Position((size-1)/2, 0),
+                    new Position((size-1)/2, (size-1)),
+                    new Position(0, 2*(size-1)/3),
+                    new Position((size-1), 2*(size-1)/3)
+            };
+            startingDir = new Direction[] {
+                    Direction.RIGHT,
+                    Direction.LEFT,
+                    Direction.DOWN,
+                    Direction.UP,
+                    Direction.RIGHT,
+                    Direction.LEFT
+            };
+        } else {
+            startingPos = new Position[]{
+                    new Position(0, (size-1)/2),
+                    new Position((size-1), (size-1)/2),
+                    new Position((size-1)/2, 0),
+                    new Position((size-1)/2, (size-1))
+            };
+            startingDir = new Direction[] {
+                    Direction.RIGHT,
+                    Direction.LEFT,
+                    Direction.DOWN,
+                    Direction.UP
+            };
+        }
 
+        for (int i = 0; i < numPlayers; i++) {
+            players.add(new Player(i, startingPos[i], startingDir[i]));
+        }
     }
 
     /**

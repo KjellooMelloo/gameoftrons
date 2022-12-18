@@ -1,5 +1,6 @@
 package de.hawh.beta3.application.game.model.gamelogic;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
@@ -9,6 +10,14 @@ public class Player {
     private List<Position> trail;
     private Direction direction;
     private String currentAction;
+
+    public Player (int color, Position start, Direction direction) {
+        this.color = color;
+        this.front = start;
+        this.direction = direction;
+        isAlive = true;
+        trail = new ArrayList<>();
+    }
 
     /* Getter and Setter */
 
