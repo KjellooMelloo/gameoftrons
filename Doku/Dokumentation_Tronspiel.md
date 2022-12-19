@@ -215,8 +215,13 @@ Das Model ist in unserem Spiel für die Spielelogik zuständig. Es berechnet den
 
 **Schnittstelle(n)**
 
-Um die Tasteneingaben verarbeiten zu können benötigt das Model die angebotene Schnittstelle *ModelController* vom Controller. Um den neuen Spielstand an die View zu übergeben, bietet das Model selbst eine Schnittstelle *ViewModel* an.
+Um ein Spielende zu signalisieren, benötigt das Model die angebotene Schnittstelle *IModelController* vom Controller. Um die View zu aktualisieren, benötigt das Model die Schnittstelle *IModelView* von der View. Das Model selbst bietet die Schnittstelle *IModel* für den Controller an, um das Spiel zu starten und Tasteneingaben verarbeiten zu können.  
 
+| Methode | Kurzbeschreibung |
+| --- | --- |
+| getInstance() | Liefert die IModel-Instanz(Singleton-Pattern)|
+| startGame(int,int,int) | Lässt das Spiel mit den übergebenen Einstellungen (Anzahl Spieler, Spielfeldgröße und Spielgeschwindigkeit) starten|
+| changePlayerDirection(int,String) | Für Verarbeitung der Tasteneingaben für einen Spieler|
 
 <a name="viewblackbox"></a>
 ### View (Blackbox) 
