@@ -420,6 +420,9 @@ Methodenliste
 ![Sequenzdiagramm_Spielende](images/SD_UC8Tie.png)
 ...
 
+## AD startGame
+![Aktivitätsdiagramm_startGame](images/AD_startGame.png)
+
 ## AD update
 ![Aktivitätsdiagramm_update](images/AD_update.png)
 
