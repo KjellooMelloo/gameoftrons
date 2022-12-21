@@ -12,14 +12,16 @@ contributors. Siehe <https://arc42.org>.
 
 # Einführung und Ziele
 
+Es wird eine Middleware für die verteilte Anwendung Game Of Trons entwickelt.
+
 ## Aufgabenstellung 
 
-**Grundlegende Aufgaben der Middleware**
-1. Funktionsaufrufe werden in Nachrichten umgewandelt
-2. Nachrichten werden in Funktionsaufrufe umgewandelt
-3. Die Middleware soll message-oriented sein
+1. Umwandlung von Funktionsaufrufen in Nachrichten 
+2. Umwandlung von Nachrichten in Funktionsaufrufen
+3. Kommunikation mit dem Betriebssystem, um Nachrichten zu versenden und zu empfangen.
 4. Vereinheitlicht die Kommunikationsdatentypen durch RPC
-5. Application Stubs können sich als Remote objects bei der Middleware anmelden
+5. Application Stubs können sich als Remote Objects bei der Middleware anmelden
+6. Die physikalische Adresse von Diensten kann abgefragt werden.
 
 
 
@@ -53,14 +55,14 @@ contributors. Siehe <https://arc42.org>.
 
 | Use Case |Vorbedingung |Ablaufsemantik |Nachbedingung |Fehlerfälle | Erweiterungsfälle |
 | --- | --- | --- | --- | --- | --- |
-| UC1 Register Method | | | | | |
-| UC2 Invoke Method |In der Anwendung wird eine Methode einer Remote-Komponente aufgerufen | **1.** Das System ruft den Application-Caller-Stub der aufrufenden Komponente auf <br> **2.** Der  Application Stub ruft die Middleware-Schnittstelle auf <br> **3.** Die Middleware prüft, ob die aufgerufene Komponente registriert ist <br> **4.** Die Middleware wandelt den Methodenaufruf in eine Nachricht um (siehe UC3) <br> **5.** Die Middleware ruft das Betriebssystem auf| Die Nachricht wurde verschickt|**3.a.1** Die aufgerufene Komponente ist nicht bei der Middleware registriert <br> **3.a.2** Das System wirft eine Exception auf.| |
-| UC3 Marshaling Method Call| UC2 bis Schritt 2 | **1.** Der Marshaler serialisiert den Methodenaufruf in ein Nachrichtenformat  **2.** Weiter mit UC Schritt 4| Der Methodenaufruf ist als Nachricht vorhanden | | |
-| UC3.1 send ||||||
+| UC1 Register Method | Ein definiertes Interface soll für RPCs erreichbar sein | **1.** Der Application Stub ruft den Server-Stub der Middleware auf <br> **2.**  Der ServerStub ruft den Name-Server auf <br>**3.** Der NameServer prüft, ob die Schnittstelle nicht bereits in der Tabelle eingetragen ist.<br> **4.** Der NameServer trägt den Schnittstellenidentifikator und die dazugehörige Adresse in eine Tabelle ein<br> | In der Tabelle des NameServers ist die Schnittstelle und ihre Adresse eingetragen. | |**3.a.1** Die Schnittstelle ist bereits m NameServer eingetragen <br> **3.a.2** Die eingetragene Adresse wird mit der neuen überschrieben |
+| UC2 Invoke Method |In der Anwendung wird eine Methode einer Remote-Komponente aufgerufen | **1.** Das System ruft den Application-Caller-Stub der aufrufenden Komponente auf <br> **2.** Der  Application Stub ruft die Middleware-Schnittstelle auf <br> **3.** Die Adresse der aufgerufenen Methode wird angefragt (siehe UC5) <br> **4.** Die Middleware wandelt den Methodenaufruf in eine Nachricht um (siehe UC3) <br> **5.** Die Middleware ruft das Betriebssystem auf| Die Nachricht wurde verschickt|**3.a.1** Die aufgerufene Komponente ist nicht bei der Middleware registriert <br> **3.a.2** Das System wirft eine Exception auf.| |
+| UC3 Marshaling Method Call| UC2 bis Schritt 2 | **1.** Der Marshaler serialisiert den Methodenaufruf in ein Nachrichtenformat <br> **2.** Weiter mit UC Schritt 4| Der Methodenaufruf ist als Nachricht vorhanden | | |
+| UC3.1 send |Eine Nachricht wurde in der Middleware erzeugt und soll versendet werden.|**1.** Der Marshaler ruft den Sender auf <br> **2.** Der Sender versendet die Nachricht über einen Socket |Die Nachricht wurde versendet|||
 | UC4 Unmarshaling Message | Die Middleware hat eine Nachricht empfangen| **1.** Der Unmarshaler wandelt die Nachricht in einen Methodenaufruf um <br> **2.** Der Unmarshaler ruft den Application-Stub der Komponente auf, die den Methodenaufruf empfangen soll (siehe UC5)| Ein Methodenaufruf wurde erzeugt| | |
-| UC4.1 receive ||||||
-| UC5 lookup | invoke wurde mit einer ID für eine Funktion aufgerufen | Der Nameserver wird angefragt, ob er einen Eintrag mit der übergebenen ID hat und liefert die zugehörige IP-Adresse + Port zurück | IP-Adresse + Port zu der gesuchten Funktion wurden zurückgegeben | Es gibt keinen Eintrag mit dieser ID. Dann wird  null zurückgegeben und der Aufruf verworfen. ||
-| UC6 Call Method | UC 4 : Der Unmarshaler hat eine Nachricht in einen Methodenauf umgewandelt |**1.** Der Unmarshaler ruft die Call-Schnittstelle des Application-Callee-Stubs <br> **2.** Der Application-Callee-Stub ruft die dazugehörige Komponente lokal auf. | Die aufgerufene Methode wird ausgeführt.|
+| UC4.1 receive | |||||
+| UC5 lookup | UC2: Invoke Method bis Schritt 2 | **1.** Der Client Stub ruft den Nameserver auf <br> **2.** Der NameServer prüft,ob die aufgerufene Methode mit der zugehörigen Adresse in der Tabelle eingetragen ist **3.** Der NameServer liefert die zugehörige IP-Adresse zurück | Die  IP-Adresse zu der gesuchten Funktion wird zurückgegeben | Es gibt keinen Eintrag mit dieser ID. Dann wird  null zurückgegeben und der Aufruf verworfen. ||
+| UC6 Call Method | UC 4 : Der Unmarshaler hat eine Nachricht in einen Methodenaufruf umgewandelt |**1.** Der Unmarshaler ruft die Call-Schnittstelle des Application-Callee-Stubs <br> **2.** Der Application-Callee-Stub ruft die dazugehörige Komponente lokal auf. | Die aufgerufene Methode wird ausgeführt.|
 
 
 ## Technischer Kontext
@@ -70,6 +72,8 @@ contributors. Siehe <https://arc42.org>.
 
 
 # Lösungsstrategie 
+
+## Methodenliste
 
 | Usecase | Akteur |Funktionssignatur| Vorbedingung | Nachbedingung | Ablaufsemantik | Fehlersemantik |
 |---|---|---|---|---|---|---|
@@ -82,6 +86,7 @@ contributors. Siehe <https://arc42.org>.
 |UC5| ClientStub | INetAddress lookup(int) | invoke wurde aufgerufen |  | Aufrufparameter: ID, liefert die Inet-Adresse und die Portnummer zum Eintrag mit ID im NameServer | Es gibt keinen Eintrag mit der ID. Es wird null zurückgegeben und der RPC abgebrochen |
 |UC6| ServerStub | void call(InetAddress, Object[]) | Nachricht wurde vom ServerStub empfangen und unmarshaled | RemoteObject mit der zugehörigen InetAddress wurde informiert | | |
 
+## Nachrichtenformat
 
 # Bausteinsicht 
 
