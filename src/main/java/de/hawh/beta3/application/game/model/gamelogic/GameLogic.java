@@ -1,6 +1,7 @@
 package de.hawh.beta3.application.game.model.gamelogic;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class GameLogic implements IGameLogic {
@@ -22,39 +23,8 @@ public class GameLogic implements IGameLogic {
         this.size = size;
         players = new ArrayList<>();
         //this.gameSpeed = gameSpeed;
-        Position[] startingPos;
-        Direction[] startingDir;
-        if (numPlayers > 4) {
-            startingPos = new Position[]{
-                    new Position(0, (size - 1) / 3),
-                    new Position((size - 1), (size - 1) / 3),
-                    new Position((size - 1) / 2, 0),
-                    new Position((size - 1) / 2, (size - 1)),
-                    new Position(0, 2 * (size - 1) / 3),
-                    new Position((size - 1), 2 * (size - 1) / 3)
-            };
-            startingDir = new Direction[]{
-                    Direction.RIGHT,
-                    Direction.LEFT,
-                    Direction.DOWN,
-                    Direction.UP,
-                    Direction.RIGHT,
-                    Direction.LEFT
-            };
-        } else {
-            startingPos = new Position[]{
-                    new Position(0, (size - 1) / 2),
-                    new Position((size - 1), (size - 1) / 2),
-                    new Position((size - 1) / 2, 0),
-                    new Position((size - 1) / 2, (size - 1))
-            };
-            startingDir = new Direction[]{
-                    Direction.RIGHT,
-                    Direction.LEFT,
-                    Direction.DOWN,
-                    Direction.UP
-            };
-        }
+        Position[] startingPos = getStartingPositions(numPlayers);
+        Direction[] startingDir = getStartingDirections(numPlayers);
 
         for (int i = 0; i < numPlayers; i++) {
             players.add(new Player(i, startingPos[i], startingDir[i]));
@@ -124,6 +94,55 @@ public class GameLogic implements IGameLogic {
     @Override
     public List<Player> getPlayers() {
         return players;
+    }
+
+    /**
+     * Creates fair starting points for players for any player size
+     *
+     * @param numPlayers number of players
+     * @return Position Array with starting positions
+     */
+    private Position[] getStartingPositions(int numPlayers) {
+        Position[] startingPos;
+
+        if (numPlayers < 5) {
+            startingPos = new Position[]{
+                    new Position(0, (size - 1) / 2),
+                    new Position((size - 1), (size - 1) / 2),
+                    new Position((size - 1) / 2, 0),
+                    new Position((size - 1) / 2, (size - 1))
+            };
+        } else {
+            startingPos = new Position[]{
+                    new Position(0, (size - 1) / 3),
+                    new Position((size - 1), (size - 1) / 3),
+                    new Position((size - 1) / 2, 0),
+                    new Position((size - 1) / 2, (size - 1)),
+                    new Position(0, 2 * (size - 1) / 3),
+                    new Position((size - 1), 2 * (size - 1) / 3)
+            };
+        }
+
+        return Arrays.copyOf(startingPos, numPlayers);
+    }
+
+    /**
+     * Returns each <code>Direction</code> corresponding to starting position
+     *
+     * @param numPlayers number of players
+     * @return Direction Array with starting directions
+     */
+    private Direction[] getStartingDirections(int numPlayers) {
+        Direction[] startingDir = new Direction[]{
+                Direction.RIGHT,
+                Direction.LEFT,
+                Direction.DOWN,
+                Direction.UP,
+                Direction.RIGHT,
+                Direction.LEFT
+        };
+
+        return Arrays.copyOf(startingDir, numPlayers);
     }
 
     /**
