@@ -31,6 +31,7 @@ public class GameLogic implements IGameLogic {
         }
 
         gameState = GameState.RUNNING;
+        gameWinner = -1;
     }
 
     /**
@@ -152,7 +153,7 @@ public class GameLogic implements IGameLogic {
      * @return player with id
      */
     private Player getPlayerById(int id) {
-        return players.stream().filter(p -> p.getColor() == id).findFirst().get();
+        return players.get(id);
     }
 
     /**
