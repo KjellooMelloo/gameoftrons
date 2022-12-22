@@ -89,56 +89,52 @@ Es wird eine Middleware für die verteilte Anwendung Game Of Trons entwickelt.
 
 ## Nachrichtenformat
 Um RPCs durchzuführen müssen Methodenaufrufe in Nachrichten umgewandelt werden. Dafür bringen wir die Methodenaufrufe erstmal in ein JSON-Format.
-
 <br>
 <br>
-
 message = 
-
 <br>
 {
-    <br>
-    "interface" : Interface-ID als String,
-    <br>
-    "method": Methodenname als String,
-    <br>
-    "type1": primitiver Datentyp des ersten Aufrufparameters als String,
-    <br>
-    "value1" : der Wert des ersten Aufrufparameters,
-    <br>
-    ...,
-    <br>
-    "typeN": ,
-    <br>
-    "valueN":
-<br>
+        <br>
+        "interface" : Interface-ID als String,
+        <br>
+        "method": Methodenname als String,
+        <br>
+        "type1": primitiver Datentyp des ersten Aufrufparameters als String,
+        <br>
+        "value1" : der Wert des ersten Aufrufparameters,
+        <br>
+        ...,
+        <br>
+        "typeN": ,
+        <br>
+        "valueN":
+        <br>
 }
 
 Die Nachricht im JSON-Format wird dann in ein byte-Array umgewandelt, und über das Netzwerk verschickt.
 
 Für die Registrierung beim Name Server wird ein Callback benötigt. Somit liegen hier zusätzliche Anforderungen an die Kommunikation vor. Damit eine Antwort des angefragten Servers an den aufrufenden Client gesendet werden kann, wird die Interface-ID des Clients bereits bei der Anfrage mitgesendet. Die Returnwerte der aufgerufenen Methode werden im Server Stub als Strings in einem JSON-Objekt gespeichert, anschließend verpackt und als Byte-Array übers Netzwerk versendet. Die Nachrichten sehen so aus:
-
 <br>
 <br>
-
 message =
 {
-    "type": Rückgabetyp des Ergebnisses,
-    "value": Rückgabewert des Ergebnisses
+        <br>
+        "type": Rückgabetyp des Ergebnisses,
+        <br>
+        "value": Rückgabewert des Ergebnisses
+        <br>
 }
-
 <br>
 <br>
-
 Beispiel: message = 
 <br>
 {
-<br>
-    "type": int,
-    "value": 17
-<br>
+        <br>
+        "type": int,
+        <br>
+        "value": 17
+        <br>
 }
-
 <br><br>
 
 # Bausteinsicht 
