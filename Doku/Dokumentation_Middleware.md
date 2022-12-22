@@ -77,28 +77,95 @@ Es wird eine Middleware für die verteilte Anwendung Game Of Trons entwickelt.
 
 | Usecase | Akteur |Funktionssignatur| Vorbedingung | Nachbedingung | Ablaufsemantik | Fehlersemantik |
 |---|---|---|---|---|---|---|
-|UC1| ServerStub, NameServer | void register(int, String InetAddress, int) | Ein CalleeStub aus dem ApplicationStub möchte sich als RemoteObject registrieren | Das RemoteObject wurde im NameServer gespeichert | Der NameServer wird aufgerufen. Der NameServer prüft, ob zur mitgegebenen ID und Methodennamen bereits ein Eintrag vorhanden ist(Aufruf checkInterfaceInTable).  Die ID und der Methodenname wird mit der übergebenen InetAddress und Portnummer eingetragen | Eintrag mit der ID und dem Methodennamen existiert bereits. Dann wird der Eintrag überschrieben |
-|UC1| NameServer | boolean checkInterfaceInTable(int, String) | Ein CalleeStub möchte sich als RemoteObject eintragen und hat register() aufgerufen | Es wird true zurückgegeben, wenn bereits ein Eintrag existiert sonst false| Der Name Server prüft, ob zur übergebenen ID und Methodennamen bereits ein Eintrag in der Tabelle existiert| |
+|UC1| ServerStub, NameServer | void register(int, String, InetAddress, int) | Ein CalleeStub aus dem ApplicationStub möchte sich als RemoteObject registrieren | Das RemoteObject wurde im NameServer gespeichert | Der NameServer wird aufgerufen. Der NameServer prüft, ob zur mitgegebenen ID und Methodennamen bereits ein Eintrag vorhanden ist(Aufruf checkInterfaceInTable).  Die ID und der Methodenname wird mit der übergebenen InetAddress und Portnummer eingetragen | Eintrag mit der ID und dem Methodennamen existiert bereits. Dann wird der Eintrag überschrieben |
+|UC1, UC5| NameServer | boolean checkInterfaceInTable(int, String) | Ein CalleeStub möchte sich als RemoteObject eintragen und hat register() aufgerufen | Es wird true zurückgegeben, wenn bereits ein Eintrag existiert sonst false| Der Name Server prüft, ob zur übergebenen ID und Methodennamen bereits ein Eintrag in der Tabelle existiert| |
 |UC2| ClientStub | void invoke(int, String, Object[]) | Eine Komponente ruft eine Remote-Komponente über eine Application Stub Schnittstelle auf | Der Aufruf wurde geprüft und die Methode marshal() wurde aufgerufen |  Prüft mithilfe von lookup() ob die übergebene Objekt-ID (erster Parameter) und die Methode (zweiter Parameter) registriert ist. Dann wird die Methode marshal() aufgerufen | Wenn die Objekt-ID nicht registriert ist, wird eine Exception geworfen|
 |UC3| ClientStub | byte[] marshal(int,String, Object[]) | Funktionsaufruf über invoke wurde getätigt, zugehörige InetAddress und Portnummer wurde durch NameResolver ermittelt | Funktionsaufruf wurde marshaled und zurückgegeben | Es wird eine Nachricht im JSON-Format aus den übergebenen Parametern InterfaceID, Methodenname und Methodenparameter (Object[]) zusammengebaut. Das JSON-Objekt wird in ein byte-Array umgewandelt und zurückgegeben | |
 |UC3.1| ClientStub | void send(InetAdress, int, byte[]) | Funktionsaufruf wurde marshaled, zugehörige InetAddress und Portnummer druch NameResolver ermittelt | Nachricht wurde verschickt | Die marshaled Nachricht wird über einen Socket an die passende InetAddress und Portnummer verschickt. | |
-|UC4| ServerStub | JSON unmarshal(byte[]) | Nachricht wurde über receive empfangen | Nachrichteninhalt wurde extrahiert und kann für call genutzt werden | | (checksum stimmt nicht überein -> ignorieren) |
+|UC4| ServerStub | JSON unmarshal(byte[]) | Nachricht wurde über receive empfangen | Nachrichteninhalt wurde extrahiert und kann für call genutzt werden |Die Nachricht, die als Byte-Array übergeben wurden, wird in ein JSON-Format umgewandelt und zurückgegeben. | |
 |UC4.1| ServerStub |  receive(DatagramPacket)) | Ein Socket im Server Stub hat eine Nachricht empfangen | Nachricht wurde aus dem Packet entpackt und dem Marshaler übergeben. | Die Nachricht wird aus dem übergebenen Datagram-Paket herausgeholt und dem Unmarshaler übergeben | |
 |UC5| Client Stub | String cacheOrLookup(int,String) | Ein Application Stub hat invoke aufgerufen, um eine Remote-Methode aufzurufen. Der Client Stub muss im nächsten Schritt prüfen, ob die aufgerufene Methode im Cache des Client Stubs eingetragen ist. | Die Adresse und die Portnummer der angefragten Methode werden zurückgegeben.| | Es gibt keinen Eintrag mit der ID und dem Methodennamen. Der RPC abgebrochen|
 |UC5| Name Server | String lookup(int, String) | Eine angefragte Methode ist nicht im Cache des Client Stubs gespeichert| Die Adresse und die Portnummer der angefragten Methode werden zurückgegeben.|Der Name Server prüft, ob es einen Eintrag in der Tabelle mit der übergebenen Interface-ID und Methodenname gibt. Wenn ja, dann wird ein String zurückgegeben, der sich aus der IP-Adresse und der Portnummer zusammensetzt.| Es gibt keinen Eintrag mit der ID und dem Methodennamen. Der RPC abgebrochen |
+|UC5| ClientStub | void saveToCache(String,String)| Es wurde eine IP-Adresse und Portnummer beim NameServer angefragt und zurückgegeben| Die IP-Adresse und Portnummer sind im Cache vom Client-Stub gespeichert worden.| Die übergebenen Interface-ID, Methodenname, IP-Adresse und Portnummer werden dem Cache hinzugefügt.| |
 |UC6| ServerStub | void callRemoteObjectInterface(JSON) | Nachricht wurde vom ServerStub empfangen und unmarshaled | Der Server Stub holt die Interface-ID, den Methodennamen und die Aufrufparameter aus dem JSON-Objekt heraus und ruft das korrekte Remote-Object-Interface auf.|Das RemoteObject-Interface wurde aufgerufen  | | 
 
 ## Nachrichtenformat
-Um RPCs durchzuführen müssen Methodenaufrufe in Nachrichten umgewandelt werden. Dafür bringen wir die Methodenaufrufe erstmal in ein JSON-Format.
+
+**Um RPCs durchzuführen müssen Methodenaufrufe in Nachrichten umgewandelt werden. Dafür bringen wir die Methodenaufrufe erstmal in ein JSON-Format.**
 <br>
 <br>
-message = 
+**message = **
 <br>
 {
         <br>
-        "interface" : Interface-ID als String,
+        **"interface" :** Interface-ID als String,
         <br>
-        "method": Methodenname als String,
+        **"method":** Methodenname als String,
+        <br>
+        **"type1":** primitiver Datentyp des ersten Aufrufparameters als String,
+        <br>
+        **"value1" :** der Wert des ersten Aufrufparameters,
+        <br>
+        ...,
+        <br>
+        **"typeN":** ,
+        <br>
+        **"valueN":**
+        <br>
+}
+
+**Die Nachricht im JSON-Format wird dann in ein byte-Array umgewandelt, und über das Netzwerk verschickt.**
+<br>
+<br>
+<br>
+**Für die Registrierung beim Name Server muss ebenfalls eine Nachricht versendet werden, da die NameService-Komponente Remote in einem zentralen Node betrieben wird.**
+<br>
+**Wir definieren ein Nachrichtenformat mit JSON für die Registrierung beim Name Server**
+<br>
+<br>
+**register=**
+{
+        <br>
+        **"message_type"** : 0, wenn Nachricht ein register() Aufruf ist, 1, wenn Nachricht ein lookup()-Aufruf ist
+        <br>
+        **"interface"** : angefragte Interface-ID als String,
+        <br>
+        **"method":** Methodenname, der registriert werden soll als String,
+        <br>
+        **"ip":** IP-Adresse, die registriert werden soll als String,
+        <br>
+        **"port" :** Portnummer, die registriert werden soll als String
+        <br>
+        
+}
+<br>
+<br>
+
+**Um die IP-Adresse und Portnummer einer Methode beim Name Server anzufragen, wird die lookup-Methode an den Remote-NameServer geschickt. Dafür haben wir auch ein JSON-Nachrichtenformat definiert**
+lookup =
+{
+        <br>
+         **"message_type"** : 0, wenn Nachricht ein register() Aufruf ist, 1, wenn Nachricht ein look-up-Aufruf ist
+          <br>
+        **"interface"** : angefragte Interface-ID als String,
+        <br>
+        **"method":** Methodenname, der angefragt wird als String,
+        <br>
+}
+
+<br>
+<br>
+
+** Nachrichten-Format für Aufrufe mit Callback**
+
+**request =**
+{
+        <br>
+        **"sender-interface" :** Interface-ID des Senders als String,
+        <br>
+        **"interface"** : angefragte Interface-ID als String,
+        <br>
+        **"method":** Methodenname als String,
         <br>
         "type1": primitiver Datentyp des ersten Aufrufparameters als String,
         <br>
@@ -111,55 +178,6 @@ message =
         "valueN":
         <br>
 }
-
-Die Nachricht im JSON-Format wird dann in ein byte-Array umgewandelt, und über das Netzwerk verschickt.
-
-Für die Registrierung beim Name Server wird ein Callback benötigt. Somit liegen hier zusätzliche Anforderungen an die Kommunikation vor. Damit eine Antwort des angefragten Servers an den aufrufenden Client gesendet werden kann, wird die Interface-ID des Clients bereits bei der Anfrage mitgesendet. Die Returnwerte der aufgerufenen Methode werden im Server Stub als Strings in einem JSON-Objekt gespeichert, anschließend verpackt und als Byte-Array übers Netzwerk versendet. Die Nachrichten sehen so aus:
-
-request =
-{
-        <br>
-        "sender-interface" : Interface-ID des Senders als String,
-        <br>
-        "interface" : Interface-ID als String,
-        <br>
-        "method": Methodenname als String,
-        <br>
-        "type1": primitiver Datentyp des ersten Aufrufparameters als String,
-        <br>
-        "value1" : der Wert des ersten Aufrufparameters,
-        <br>
-        ...,
-        <br>
-        "typeN": ,
-        <br>
-        "valueN":
-        <br>
-}
-<br>
-<br>
-answer =
-{
-        <br>
-        "client-interface": Interface-ID des Clients als String,
-        <br>
-        "type": Rückgabetyp des Ergebnisses als String,
-        <br>
-        "value": Rückgabewert des Ergebnisses String
-        <br>
-}
-<br>
-<br>
-Beispiel: message = 
-<br>
-{
-        <br>
-        "type": int,
-        <br>
-        "value": 17
-        <br>
-}
-<br><br>
 
 # Bausteinsicht 
 
@@ -221,42 +239,31 @@ Wichtige Schnittstellen
 ## Ebene 3 {#_ebene_3}
 
 <br>
-Client Stub Implementierung
+###Client Stub Implementierung
 <br>
 ![MW_ClientStub](./images/MW_ClientStub.png)
 
 <br>
-Client Stub Sender
+###Client Stub Sender
 <br>
 ![MW_ClientStubSender](./images/MW_ClientStubSender.png)
 
 <br>
-Name Server
+###Name Server
 <br>
 ![MW_NameServer](./images/MW_NameServer.png)
 
 <br>
-Server Stub Implementierung
+###Server Stub Implementierung
 <br>
 ![MW_ServerStub](./images/MW_ServerStub.png)
 
 <br>
-Server Stub Receiver
+###Server Stub Receiver
 <br>
 ![MW_ServerStubReceiver](./images/MW_ServerStubReceiver.png)
 
 
-### Whitebox \<\_Baustein x.1\_\> {#_whitebox_baustein_x_1}
-
-*\<Whitebox-Template>*
-
-### Whitebox \<\_Baustein x.2\_\> {#_whitebox_baustein_x_2}
-
-*\<Whitebox-Template>*
-
-### Whitebox \<\_Baustein y.1\_\> {#_whitebox_baustein_y_1}
-
-*\<Whitebox-Template>*
 
 # Laufzeitsicht 
 
@@ -268,9 +275,6 @@ Server Stub Receiver
 
 ![MW_UC2_3](./images/MW_UC2_3.png)
 
-## *\<Bezeichnung Laufzeitszenario n>* {#__emphasis_bezeichnung_laufzeitszenario_n_emphasis}
-
-...
 
 # Verteilungssicht {#section-deployment-view}
 
