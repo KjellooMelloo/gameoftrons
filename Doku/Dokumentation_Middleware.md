@@ -162,6 +162,22 @@ Wichtige Schnittstellen
 
 ## Ebene 3 {#_ebene_3}
 
+Client Stub Implementierung
+![MW_ClientStub](./images/MW_ClientStub.png)
+
+Client Stub Sender
+![MW_ClientStubSender](./images/MW_ClientStubSender.png)
+
+Name Server
+![MW_NameServer](./images/MW_NameServer.png)
+
+Server Stub Implementierung
+![MW_ServerStub](./images/MW_ServerStub.png)
+
+Server Stub Receiver
+![MW_ServerStubReceiver](./images/MW_ServerStubReceiver.png)
+
+
 ### Whitebox \<\_Baustein x.1\_\> {#_whitebox_baustein_x_1}
 
 *\<Whitebox-Template>*
@@ -192,6 +208,12 @@ Wichtige Schnittstellen
 ...
 
 # Verteilungssicht {#section-deployment-view}
+
+Gesamtsystem
+![Deployment_Tron](./images/Deployment_Tron.png)
+
+Zoom in Middleware
+![Deployment_ZoomMW](./images/Deployment_ZoomMW.png)
 
 ## Infrastruktur Ebene 1 {#_infrastruktur_ebene_1}
 
