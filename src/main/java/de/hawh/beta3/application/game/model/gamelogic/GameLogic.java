@@ -221,7 +221,7 @@ public class GameLogic implements IGameLogic {
                 || p.getTrail().contains(front)) return true;
 
         for (Player player : players) {
-            if (player.isAlive()) {
+            if (player.isAlive() && player.getColor() != p.getColor()) {
                 if (player.getFront().equals(front)) return true;
                 if (player.getTrail().contains(front)) return true;
             }
