@@ -156,28 +156,6 @@ Um die IP-Adresse und Portnummer einer Methode beim Name Server anzufragen, wird
 <br>
 <br>
 
-Nachrichten-Format für Aufrufe mit Callback
-
-**request =**
-{
-        <br>
-        **"sender-interface" :** Interface-ID des Senders als String,
-        <br>
-        **"interface"** : angefragte Interface-ID als String,
-        <br>
-        **"method":** Methodenname als String,
-        <br>
-        **"type1":** primitiver Datentyp des ersten Aufrufparameters als String,
-        <br>
-        **"value1":** der Wert des ersten Aufrufparameters,
-        <br>
-        **...**
-        <br>
-        **"typeN":** 
-        <br>
-        **"valueN":**
-        <br>
-}
 
 # Bausteinsicht 
 
