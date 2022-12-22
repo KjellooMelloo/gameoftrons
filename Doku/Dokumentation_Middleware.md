@@ -114,14 +114,37 @@ message =
 Die Nachricht im JSON-Format wird dann in ein byte-Array umgewandelt, und über das Netzwerk verschickt.
 
 Für die Registrierung beim Name Server wird ein Callback benötigt. Somit liegen hier zusätzliche Anforderungen an die Kommunikation vor. Damit eine Antwort des angefragten Servers an den aufrufenden Client gesendet werden kann, wird die Interface-ID des Clients bereits bei der Anfrage mitgesendet. Die Returnwerte der aufgerufenen Methode werden im Server Stub als Strings in einem JSON-Objekt gespeichert, anschließend verpackt und als Byte-Array übers Netzwerk versendet. Die Nachrichten sehen so aus:
-<br>
-<br>
-message =
+
+request =
 {
         <br>
-        "type": Rückgabetyp des Ergebnisses,
+        "sender-interface" : Interface-ID des Senders als String,
         <br>
-        "value": Rückgabewert des Ergebnisses
+        "interface" : Interface-ID als String,
+        <br>
+        "method": Methodenname als String,
+        <br>
+        "type1": primitiver Datentyp des ersten Aufrufparameters als String,
+        <br>
+        "value1" : der Wert des ersten Aufrufparameters,
+        <br>
+        ...,
+        <br>
+        "typeN": ,
+        <br>
+        "valueN":
+        <br>
+}
+<br>
+<br>
+answer =
+{
+        <br>
+        "client-interface": Interface-ID des Clients als String,
+        <br>
+        "type": Rückgabetyp des Ergebnisses als String,
+        <br>
+        "value": Rückgabewert des Ergebnisses String
         <br>
 }
 <br>
