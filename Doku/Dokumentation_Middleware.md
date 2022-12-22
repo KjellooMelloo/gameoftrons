@@ -162,19 +162,29 @@ Wichtige Schnittstellen
 
 ## Ebene 3 {#_ebene_3}
 
+<br>
 Client Stub Implementierung
+<br>
 ![MW_ClientStub](./images/MW_ClientStub.png)
 
+<br>
 Client Stub Sender
+<br>
 ![MW_ClientStubSender](./images/MW_ClientStubSender.png)
 
+<br>
 Name Server
+<br>
 ![MW_NameServer](./images/MW_NameServer.png)
 
+<br>
 Server Stub Implementierung
+<br>
 ![MW_ServerStub](./images/MW_ServerStub.png)
 
+<br>
 Server Stub Receiver
+<br>
 ![MW_ServerStubReceiver](./images/MW_ServerStubReceiver.png)
 
 
