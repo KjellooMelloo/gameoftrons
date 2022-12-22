@@ -91,10 +91,10 @@ Es wird eine Middleware für die verteilte Anwendung Game Of Trons entwickelt.
 
 ## Nachrichtenformat
 
-**Um RPCs durchzuführen müssen Methodenaufrufe in Nachrichten umgewandelt werden. Dafür bringen wir die Methodenaufrufe erstmal in ein JSON-Format.**
+Um RPCs durchzuführen müssen Methodenaufrufe in Nachrichten umgewandelt werden. Dafür bringen wir die Methodenaufrufe erstmal in ein JSON-Format. Die Nachricht im JSON-Format wird dann in ein byte-Array umgewandelt, und über das Netzwerk verschickt.
 <br>
 <br>
-**message = **
+**message =**
 <br>
 {
         <br>
@@ -114,16 +114,16 @@ Es wird eine Middleware für die verteilte Anwendung Game Of Trons entwickelt.
         <br>
 }
 
-**Die Nachricht im JSON-Format wird dann in ein byte-Array umgewandelt, und über das Netzwerk verschickt.**
 <br>
 <br>
 <br>
-**Für die Registrierung beim Name Server muss ebenfalls eine Nachricht versendet werden, da die NameService-Komponente Remote in einem zentralen Node betrieben wird.**
+Für die Registrierung beim Name Server muss ebenfalls eine Nachricht versendet werden, da die NameService-Komponente Remote in einem zentralen Node betrieben wird.
 <br>
-**Wir definieren ein Nachrichtenformat mit JSON für die Registrierung beim Name Server**
+Wir definieren ein Nachrichtenformat mit JSON für die Registrierung beim Name Server
 <br>
 <br>
 **register=**
+<br>
 {
         <br>
         **"message_type"** : 0, wenn Nachricht ein register() Aufruf ist, 1, wenn Nachricht ein lookup()-Aufruf ist
@@ -141,8 +141,12 @@ Es wird eine Middleware für die verteilte Anwendung Game Of Trons entwickelt.
 <br>
 <br>
 
-**Um die IP-Adresse und Portnummer einer Methode beim Name Server anzufragen, wird die lookup-Methode an den Remote-NameServer geschickt. Dafür haben wir auch ein JSON-Nachrichtenformat definiert**
-lookup =
+Um die IP-Adresse und Portnummer einer Methode beim Name Server anzufragen, wird die lookup-Methode an den Remote-NameServer geschickt. Dafür haben wir auch ein JSON-Nachrichtenformat definiert
+
+<br>
+<br>
+**lookup =**
+<br>
 {
         <br>
          **"message_type"** : 0, wenn Nachricht ein register() Aufruf ist, 1, wenn Nachricht ein look-up-Aufruf ist
