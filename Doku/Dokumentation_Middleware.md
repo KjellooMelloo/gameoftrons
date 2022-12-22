@@ -238,6 +238,9 @@ Wichtige Schnittstellen
 
 ## Ebene 3 {#_ebene_3}
 
+### Facade
+![MW_Facade](./images/MW_Facade.png)
+
 <br>
 ###Client Stub Implementierung
 <br>
