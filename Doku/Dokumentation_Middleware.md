@@ -84,10 +84,24 @@ Es wird eine Middleware für die verteilte Anwendung Game Of Trons entwickelt.
 |UC3.1| ClientStub | void send(InetAdress, int, byte[]) | Funktionsaufruf wurde marshaled, zugehörige InetAddress und Portnummer druch NameResolver ermittelt | Nachricht wurde verschickt | Die marshaled Nachricht wird über einen Socket an die passende InetAddress und Portnummer verschickt. | |
 |UC4| ServerStub | JSON unmarshal(byte[]) | Nachricht wurde über receive empfangen | Nachrichteninhalt wurde extrahiert und kann für call genutzt werden | | (checksum stimmt nicht überein -> ignorieren) |
 |UC4.1| ServerStub | receive() | Ein Socket im Server Stub befindet sich im Lauschzustand | Nachricht wurde empfangen | Nachricht am Socket wird empfangen und gespeichert. | |
-|UC5| ClientStub | INetAddress lookup(int, String) | invoke wurde aufgerufen |  | Aufrufparameter: ID, liefert die Inet-Adresse und die Portnummer zum Eintrag mit ID im NameServer | Es gibt keinen Eintrag mit der ID. Es wird null zurückgegeben und der RPC abgebrochen |
-|UC6| ServerStub | void call(InetAddress, Object[]) | Nachricht wurde vom ServerStub empfangen und unmarshaled | RemoteObject mit der zugehörigen InetAddress wurde informiert | | |
+|UC5| Name Server | String lookup(int, String) | Ein Application Stub hat invoke aufgerufen, um eine Remote-Methode aufzurufen. Der Client Stub muss im nächsten Schritt prüfen, ob die aufgerufene Methode im Name Server eingetragen ist.|Der Name Server prüft, ob es einen Eintrag in der Tabelle mit der übergebenen Interface-ID und Methodenname gibt. Wenn ja, dann wird ein String zurückgegeben, der sich aus der IP-Adresse und der Portnummer zusammensetzt.| Es gibt keinen Eintrag mit der ID und dem Methodennamen. Der RPC abgebrochen |
+|UC6| ServerStub | void callRemoteObjectInterface(JSON) | Nachricht wurde vom ServerStub empfangen und unmarshaled | Der Server Stub holt die Interface-ID, den Methodennamen und die Aufrufparameter aus dem JSON-Objekt heraus und ruft das korrekte Remote-Object-Interface auf.|Das RemoteObject-Interface wurde aufgerufen  | | 
 
 ## Nachrichtenformat
+Um RPCs durchzuführen müssen Methodenaufrufe in Nachrichten umgewandelt werden. Dafür bringen wir die Methodenaufrufe erstmal in ein JSON-Format.
+
+message = 
+{
+    "interface" : Interface-ID als String
+    "method": Methodenname als String
+    "type1": primitiver Datentyp des ersten Aufrufparameters als String
+    "value1" : der Wert des ersten Aufrufparameters
+    ...
+    "typeN": 
+    "valueN":
+}
+
+Die Nachrricht im JSON-Format wird dann in ein byte-Array umgewandelt, und über das Netzwerk verschickt.
 
 # Bausteinsicht 
 
