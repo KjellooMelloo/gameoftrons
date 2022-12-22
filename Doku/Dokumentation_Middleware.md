@@ -101,7 +101,15 @@ message =
     "valueN":
 }
 
-Die Nachrricht im JSON-Format wird dann in ein byte-Array umgewandelt, und über das Netzwerk verschickt.
+Die Nachricht im JSON-Format wird dann in ein byte-Array umgewandelt, und über das Netzwerk verschickt.
+
+Die Antworten für unsere Requests, also die Returnwerte der aufgerufenen Methoden, werden im Server Stub als Strings in einem JSON-Objekt gespeichert, anschließend verpackt und als Byte-Array übers Netzwerk versendet. Die Nachrichten sehen so aus:
+
+message =
+{
+    "type": Rückgabetyp des Ergebnisses
+    "value": Rückgabewert des Ergebnisses
+}
 
 # Bausteinsicht 
 
