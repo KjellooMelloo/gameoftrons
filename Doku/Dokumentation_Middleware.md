@@ -122,19 +122,18 @@ Für die Registrierung beim Name Server muss ebenfalls eine Nachricht versendet 
 Wir definieren ein Nachrichtenformat mit JSON für die Registrierung beim Name Server
 <br>
 <br>
-**register=**
-<br>
+**register =**
 {
         <br>
-        **"message_type"** : 0, wenn Nachricht ein register() Aufruf ist, 1, wenn Nachricht ein lookup()-Aufruf ist
+        **"message_type":** 0, wenn Nachricht ein register() Aufruf ist, 1, wenn Nachricht ein lookup()-Aufruf ist
         <br>
-        **"interface"** : angefragte Interface-ID als String,
+        **"interface":** Angefragte Interface-ID als String,
         <br>
         **"method":** Methodenname, der registriert werden soll als String,
         <br>
         **"ip":** IP-Adresse, die registriert werden soll als String,
         <br>
-        **"port" :** Portnummer, die registriert werden soll als String
+        **"port":** Portnummer, die registriert werden soll als String
         <br>
         
 }
@@ -142,16 +141,13 @@ Wir definieren ein Nachrichtenformat mit JSON für die Registrierung beim Name S
 <br>
 
 Um die IP-Adresse und Portnummer einer Methode beim Name Server anzufragen, wird die lookup-Methode an den Remote-NameServer geschickt. Dafür haben wir auch ein JSON-Nachrichtenformat definiert
-
-<br>
 <br>
 **lookup =**
-<br>
 {
         <br>
-         **"message_type"** : 0, wenn Nachricht ein register() Aufruf ist, 1, wenn Nachricht ein look-up-Aufruf ist
-          <br>
-        **"interface"** : angefragte Interface-ID als String,
+         **"message_type":** 0, wenn Nachricht ein register() Aufruf ist, 1, wenn Nachricht ein look-up-Aufruf ist
+        <br>
+        **"interface":** angefragte Interface-ID als String,
         <br>
         **"method":** Methodenname, der angefragt wird als String,
         <br>
@@ -160,7 +156,7 @@ Um die IP-Adresse und Portnummer einer Methode beim Name Server anzufragen, wird
 <br>
 <br>
 
-** Nachrichten-Format für Aufrufe mit Callback**
+Nachrichten-Format für Aufrufe mit Callback
 
 **request =**
 {
@@ -171,15 +167,15 @@ Um die IP-Adresse und Portnummer einer Methode beim Name Server anzufragen, wird
         <br>
         **"method":** Methodenname als String,
         <br>
-        "type1": primitiver Datentyp des ersten Aufrufparameters als String,
+        **"type1":** primitiver Datentyp des ersten Aufrufparameters als String,
         <br>
-        "value1" : der Wert des ersten Aufrufparameters,
+        **"value1":** der Wert des ersten Aufrufparameters,
         <br>
-        ...,
+        **...**
         <br>
-        "typeN": ,
+        **"typeN":** 
         <br>
-        "valueN":
+        **"valueN":**
         <br>
 }
 
