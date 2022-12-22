@@ -84,7 +84,7 @@ Es wird eine Middleware für die verteilte Anwendung Game Of Trons entwickelt.
 |UC3.1| ClientStub | void send(InetAdress, int, byte[]) | Funktionsaufruf wurde marshaled, zugehörige InetAddress und Portnummer druch NameResolver ermittelt | Nachricht wurde verschickt | Die marshaled Nachricht wird über einen Socket an die passende InetAddress und Portnummer verschickt. | |
 |UC4| ServerStub | JSON unmarshal(byte[]) | Nachricht wurde über receive empfangen | Nachrichteninhalt wurde extrahiert und kann für call genutzt werden | | (checksum stimmt nicht überein -> ignorieren) |
 |UC4.1| ServerStub |  receive(DatagramPacket)) | Ein Socket im Server Stub hat eine Nachricht empfangen | Nachricht wurde aus dem Packet entpackt und dem Marshaler übergeben. | Die Nachricht wird aus dem übergebenen Datagram-Paket herausgeholt und dem Unmarshaler übergeben | |
-|UC5| Client Stub | String cacheFirstLookup(int,String) | Ein Application Stub hat invoke aufgerufen, um eine Remote-Methode aufzurufen. Der Client Stub muss im nächsten Schritt prüfen, ob die aufgerufene Methode im Cache des Client Stubs eingetragen ist. | Die Adresse und die Portnummer der angefragten Methode werden zurückgegeben.| | Es gibt keinen Eintrag mit der ID und dem Methodennamen. Der RPC abgebrochen|
+|UC5| Client Stub | String cacheOrLookup(int,String) | Ein Application Stub hat invoke aufgerufen, um eine Remote-Methode aufzurufen. Der Client Stub muss im nächsten Schritt prüfen, ob die aufgerufene Methode im Cache des Client Stubs eingetragen ist. | Die Adresse und die Portnummer der angefragten Methode werden zurückgegeben.| | Es gibt keinen Eintrag mit der ID und dem Methodennamen. Der RPC abgebrochen|
 |UC5| Name Server | String lookup(int, String) | Eine angefragte Methode ist nicht im Cache des Client Stubs gespeichert| Die Adresse und die Portnummer der angefragten Methode werden zurückgegeben.|Der Name Server prüft, ob es einen Eintrag in der Tabelle mit der übergebenen Interface-ID und Methodenname gibt. Wenn ja, dann wird ein String zurückgegeben, der sich aus der IP-Adresse und der Portnummer zusammensetzt.| Es gibt keinen Eintrag mit der ID und dem Methodennamen. Der RPC abgebrochen |
 |UC6| ServerStub | void callRemoteObjectInterface(JSON) | Nachricht wurde vom ServerStub empfangen und unmarshaled | Der Server Stub holt die Interface-ID, den Methodennamen und die Aufrufparameter aus dem JSON-Objekt heraus und ruft das korrekte Remote-Object-Interface auf.|Das RemoteObject-Interface wurde aufgerufen  | | 
 
@@ -175,18 +175,15 @@ Wichtige Schnittstellen
 
 *\<Whitebox-Template>*
 
-# Laufzeitsicht {#section-runtime-view}
+# Laufzeitsicht 
 
-## *\<Bezeichnung Laufzeitszenario 1>* {#__emphasis_bezeichnung_laufzeitszenario_1_emphasis}
+## Use Case 1 Register Method
 
--   \<hier Laufzeitdiagramm oder Ablaufbeschreibung einfügen>
+![MW_UC1](./images/MW_UC1.png)
 
--   \<hier Besonderheiten bei dem Zusammenspiel der Bausteine in diesem
-    Szenario erläutern>
+## Use Case 2/3 Invoke Method / Lookup Method
 
-## *\<Bezeichnung Laufzeitszenario 2>* {#__emphasis_bezeichnung_laufzeitszenario_2_emphasis}
-
-...
+![MW_UC2_3](./images/MW_UC2_3.png)
 
 ## *\<Bezeichnung Laufzeitszenario n>* {#__emphasis_bezeichnung_laufzeitszenario_n_emphasis}
 
