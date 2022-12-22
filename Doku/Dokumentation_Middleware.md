@@ -90,19 +90,76 @@ Es wird eine Middleware für die verteilte Anwendung Game Of Trons entwickelt.
 
 ## Nachrichtenformat
 Um RPCs durchzuführen müssen Methodenaufrufe in Nachrichten umgewandelt werden. Dafür bringen wir die Methodenaufrufe erstmal in ein JSON-Format.
-
+<br>
+<br>
 message = 
+<br>
 {
-    "interface" : Interface-ID als String
-    "method": Methodenname als String
-    "type1": primitiver Datentyp des ersten Aufrufparameters als String
-    "value1" : der Wert des ersten Aufrufparameters
-    ...
-    "typeN": 
-    "valueN":
+        <br>
+        "interface" : Interface-ID als String,
+        <br>
+        "method": Methodenname als String,
+        <br>
+        "type1": primitiver Datentyp des ersten Aufrufparameters als String,
+        <br>
+        "value1" : der Wert des ersten Aufrufparameters,
+        <br>
+        ...,
+        <br>
+        "typeN": ,
+        <br>
+        "valueN":
+        <br>
 }
 
-Die Nachrricht im JSON-Format wird dann in ein byte-Array umgewandelt, und über das Netzwerk verschickt.
+Die Nachricht im JSON-Format wird dann in ein byte-Array umgewandelt, und über das Netzwerk verschickt.
+
+Für die Registrierung beim Name Server wird ein Callback benötigt. Somit liegen hier zusätzliche Anforderungen an die Kommunikation vor. Damit eine Antwort des angefragten Servers an den aufrufenden Client gesendet werden kann, wird die Interface-ID des Clients bereits bei der Anfrage mitgesendet. Die Returnwerte der aufgerufenen Methode werden im Server Stub als Strings in einem JSON-Objekt gespeichert, anschließend verpackt und als Byte-Array übers Netzwerk versendet. Die Nachrichten sehen so aus:
+
+request =
+{
+        <br>
+        "sender-interface" : Interface-ID des Senders als String,
+        <br>
+        "interface" : Interface-ID als String,
+        <br>
+        "method": Methodenname als String,
+        <br>
+        "type1": primitiver Datentyp des ersten Aufrufparameters als String,
+        <br>
+        "value1" : der Wert des ersten Aufrufparameters,
+        <br>
+        ...,
+        <br>
+        "typeN": ,
+        <br>
+        "valueN":
+        <br>
+}
+<br>
+<br>
+answer =
+{
+        <br>
+        "client-interface": Interface-ID des Clients als String,
+        <br>
+        "type": Rückgabetyp des Ergebnisses als String,
+        <br>
+        "value": Rückgabewert des Ergebnisses String
+        <br>
+}
+<br>
+<br>
+Beispiel: message = 
+<br>
+{
+        <br>
+        "type": int,
+        <br>
+        "value": 17
+        <br>
+}
+<br><br>
 
 # Bausteinsicht 
 
@@ -163,6 +220,32 @@ Wichtige Schnittstellen
 
 ## Ebene 3 {#_ebene_3}
 
+<br>
+Client Stub Implementierung
+<br>
+![MW_ClientStub](./images/MW_ClientStub.png)
+
+<br>
+Client Stub Sender
+<br>
+![MW_ClientStubSender](./images/MW_ClientStubSender.png)
+
+<br>
+Name Server
+<br>
+![MW_NameServer](./images/MW_NameServer.png)
+
+<br>
+Server Stub Implementierung
+<br>
+![MW_ServerStub](./images/MW_ServerStub.png)
+
+<br>
+Server Stub Receiver
+<br>
+![MW_ServerStubReceiver](./images/MW_ServerStubReceiver.png)
+
+
 ### Whitebox \<\_Baustein x.1\_\> {#_whitebox_baustein_x_1}
 
 *\<Whitebox-Template>*
@@ -190,6 +273,12 @@ Wichtige Schnittstellen
 ...
 
 # Verteilungssicht {#section-deployment-view}
+
+Gesamtsystem
+![Deployment_Tron](./images/Deployment_Tron.png)
+
+Zoom in Middleware
+![Deployment_ZoomMW](./images/Deployment_ZoomMW.png)
 
 ## Infrastruktur Ebene 1 {#_infrastruktur_ebene_1}
 
