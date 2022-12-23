@@ -62,12 +62,10 @@ public class GameLogic implements IGameLogic {
     public void updatePlayers() {
         List<Player> playersToKill = new ArrayList<>();
 
+        movePlayersNoInput();
+
         for (Player p : players) {
             if (p.isAlive()) {
-                //move player, if he didn't press anything this tick
-                if(p.getCurrentAction() == null) {
-                    p.setFront(calcNextPos(p.getFront(), p.getDirection(), "stay"));
-                }
                 if (checkForCollision(p)) {
                     playersToKill.add(p);
                 } else {
@@ -197,6 +195,15 @@ public class GameLogic implements IGameLogic {
     private void movePlayer(Player p) {
         p.addFrontToTrail();
         p.setCurrentAction(null);
+    }
+
+    /**
+     * Method moves all players who didn't have inputs this tick
+     */
+    private void movePlayersNoInput() {
+        for (Player p : players) {
+            if(p.getCurrentAction() == null) p.setFront(calcNextPos(p.getFront(), p.getDirection(), "stay"));
+        }
     }
 
     private void setGameOver() {

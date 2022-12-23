@@ -182,6 +182,29 @@ class GameLogicTest {
     }
 
     @Test
+    void updatePlayersCollisionWithOtherFront() {
+        /**
+         * Gamefield at collision of 0 and 1
+         * x x 2 x x
+         * x 2 2 x x
+         * 0 0 X 1 1
+         * x x 3 3 x
+         * x x 3 x x
+         */
+        gameLogic.init(4, 5, 3);
+        players = gameLogic.getPlayers();
+        gameLogic.updatePlayers();  //tick 1
+        gameLogic.changePlayerDirection(2, "right");
+        gameLogic.changePlayerDirection(3, "right");
+        gameLogic.updatePlayers();  //tick 2 --> collision in the middle
+        assertSame(gameLogic.getGameState(), GameState.RUNNING);    //only one player died
+        assertFalse(players.get(0).isAlive());
+        assertFalse(players.get(1).isAlive());
+        assertTrue(players.get(2).isAlive());
+        assertTrue(players.get(3).isAlive());
+    }
+
+    @Test
     void updatePlayersPlayerWinCollision() {
         //one player steers right twice and drives into wall --> other player wins
         gameLogic.init(2, 40, 3);
