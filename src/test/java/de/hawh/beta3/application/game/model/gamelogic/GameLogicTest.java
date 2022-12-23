@@ -157,4 +157,41 @@ class GameLogicTest {
         assertFalse(players.get(0).isAlive());
         assertFalse(players.get(1).isAlive());
     }
+
+    @Test
+    void updatePlayersCollisionWithOtherTrail() {
+        /**
+         * Gamefield at collision of 0 with trail of 2
+         * x x 2 x x
+         * 0 0 2 x x
+         * 0 x 2 x 1
+         * x x 2 x 1
+         * x x x 1 1
+         */
+        gameLogic.init(3, 5, 3);
+        players = gameLogic.getPlayers();
+        gameLogic.changePlayerDirection(0, "left");
+        gameLogic.changePlayerDirection(1, "left");
+        gameLogic.updatePlayers();  //tick 1
+        gameLogic.changePlayerDirection(0, "right");
+        gameLogic.updatePlayers();  //tick 2
+        gameLogic.changePlayerDirection(1, "right");
+        gameLogic.updatePlayers();  //tick 3
+        assertSame(gameLogic.getGameState(), GameState.RUNNING);    //only one player died
+        assertTrue(players.stream().anyMatch(p -> !p.isAlive()));
+    }
+
+    @Test
+    void updatePlayersPlayerWinCollision() {
+        //one player steers right twice and drives into wall --> other player wins
+        gameLogic.init(2, 40, 3);
+        players = gameLogic.getPlayers();
+        gameLogic.changePlayerDirection(0, "right");
+        gameLogic.updatePlayers();
+        gameLogic.changePlayerDirection(0, "right");
+        gameLogic.updatePlayers();
+        assertFalse(players.get(0).isAlive());
+        assertSame(gameLogic.getGameState(), GameState.OVER);
+        assertEquals(1, gameLogic.getGameWinner()); //player 0 died so player 1 should be winner
+    }
 }

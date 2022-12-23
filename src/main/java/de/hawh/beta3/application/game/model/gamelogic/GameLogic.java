@@ -27,7 +27,9 @@ public class GameLogic implements IGameLogic {
         Direction[] startingDir = getStartingDirections(numPlayers);
 
         for (int i = 0; i < numPlayers; i++) {
-            players.add(new Player(i, startingPos[i], startingDir[i]));
+            Player p = new Player(i, startingPos[i], startingDir[i]);
+            p.addFrontToTrail();
+            players.add(p);
         }
 
         gameState = GameState.RUNNING;
@@ -62,6 +64,10 @@ public class GameLogic implements IGameLogic {
 
         for (Player p : players) {
             if (p.isAlive()) {
+                //move player, if he didn't press anything this tick
+                if(p.getCurrentAction() == null) {
+                    p.setFront(calcNextPos(p.getFront(), p.getDirection(), "stay"));
+                }
                 if (checkForCollision(p)) {
                     playersToKill.add(p);
                 } else {
@@ -191,7 +197,6 @@ public class GameLogic implements IGameLogic {
     private void movePlayer(Player p) {
         p.addFrontToTrail();
         p.setCurrentAction(null);
-        p.setFront(calcNextPos(p.getFront(), p.getDirection(), "stay"));
     }
 
     private void setGameOver() {
@@ -199,11 +204,7 @@ public class GameLogic implements IGameLogic {
     }
 
     private int getNumLivingPlayers() {
-        int living = 0;
-
-        for (Player p : players) if (p.isAlive()) living++;
-
-        return living;
+        return (int) players.stream().filter(Player::isAlive).count();
     }
 
     /**
