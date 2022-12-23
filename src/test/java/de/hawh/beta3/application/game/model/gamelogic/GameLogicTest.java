@@ -20,10 +20,6 @@ class GameLogicTest {
         players = gameLogic.getPlayers();
     }
 
-    @AfterEach
-    void tearDown() {
-    }
-
     @Test
     void init() {
         assertSame(gameLogic.getGameState(), GameState.RUNNING);
@@ -118,15 +114,10 @@ class GameLogicTest {
     @Test
     void updatePlayersOneDead() {
         //Kill one player
-        List<Position> posPre = new ArrayList<>();
-        for (Player p : players) posPre.add(p.getFront());
         players.get(0).setDead();
         gameLogic.updatePlayers();
-        List<Position> posPost = new ArrayList<>();
-        for (Player p : players) posPost.add(p.getFront());
-        posPre.retainAll(posPost);   //only keeps any same values from two lists
-        assertNotEquals(posPre.size(), posPost.size());
-        assertEquals(posPost.size() - 3, posPre.size());
+        assertTrue(players.stream().anyMatch(p -> !p.isAlive()));
+        assertEquals(3, players.stream().filter(p -> p.getTrail().size() == 2).count());
         assertFalse(players.get(0).isAlive());
     }
 
@@ -216,5 +207,62 @@ class GameLogicTest {
         assertFalse(players.get(0).isAlive());
         assertSame(gameLogic.getGameState(), GameState.OVER);
         assertEquals(1, gameLogic.getGameWinner()); //player 0 died so player 1 should be winner
+    }
+
+    @Test
+    void updatePlayersPlayerWinTwoCollisions() {
+        //players 0 and 1 drive into one another --> player 2 wins
+        gameLogic.init(3, 5, 3);
+        players = gameLogic.getPlayers();
+        gameLogic.updatePlayers();  //tick 1
+        gameLogic.changePlayerDirection(2, "left"); //player 2 is clever
+        gameLogic.updatePlayers();  //tick 2 --> collision in the middle
+        assertFalse(players.get(0).isAlive());
+        assertFalse(players.get(1).isAlive());
+        assertTrue(players.get(2).isAlive());
+        assertSame(gameLogic.getGameState(), GameState.OVER);
+        assertEquals(2, gameLogic.getGameWinner()); //players 0 and 1 died so player 2 should be winner
+    }
+
+    @Test
+    void updatePlayersTie() {
+        //every player drives into one another
+        gameLogic.init(4, 5, 3);
+        players = gameLogic.getPlayers();
+        gameLogic.updatePlayers();  //tick 1
+        gameLogic.updatePlayers();  //tick 2 --> collision in the middle so big its a Karambolage
+        assertSame(gameLogic.getGameState(), GameState.OVER);
+        assertEquals(-1, gameLogic.getGameWinner());
+
+        //tie every (5) different collision type
+        /**
+         * x x x 2 x x x
+         * 0 0 0 2 x x x
+         * 0 x X 2 2 1 1
+         * 4 4 4 X x 1 1
+         * 4 x x x x x x
+         * x x x 3 3 x x
+         * x x x 3 3 x x
+         */
+        gameLogic.init(5, 7, 3);
+        players = gameLogic.getPlayers();
+        gameLogic.changePlayerDirection(0, "left");
+        gameLogic.changePlayerDirection(4, "left");
+        gameLogic.updatePlayers();  //tick 1
+        gameLogic.changePlayerDirection(0, "right");
+        gameLogic.changePlayerDirection(1, "right");
+        gameLogic.changePlayerDirection(3, "right");
+        gameLogic.changePlayerDirection(4, "right");
+        gameLogic.updatePlayers();  //tick 2
+        gameLogic.changePlayerDirection(1, "right");
+        gameLogic.changePlayerDirection(2, "left");
+        gameLogic.changePlayerDirection(3, "right");
+        gameLogic.updatePlayers();  //tick 3
+        gameLogic.changePlayerDirection(0, "right");
+        gameLogic.changePlayerDirection(3, "right");
+        gameLogic.changePlayerDirection(4, "left");
+        gameLogic.updatePlayers();  //tick 4 --> 0:coll 4, 1:coll wall, 2:coll trail, 3:coll self, 4:coll 0
+        assertSame(gameLogic.getGameState(), GameState.OVER);
+        assertEquals(-1, gameLogic.getGameWinner());
     }
 }
