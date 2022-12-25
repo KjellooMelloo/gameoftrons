@@ -3,7 +3,6 @@ package de.hawh.beta3.application.game.model.gamemanager;
 import de.hawh.beta3.application.game.controller.IModelController;
 import de.hawh.beta3.application.game.model.gamelogic.GameLogic;
 import de.hawh.beta3.application.game.model.gamelogic.IGameLogic;
-import de.hawh.beta3.application.game.model.gamelogic.Player;
 import de.hawh.beta3.application.game.view.IModelView;
 
 public class GameManager implements IModel {
@@ -54,15 +53,11 @@ public class GameManager implements IModel {
      * Gameloop of the game/ tick-method
      * Updates all players and sends update information to the view or controller, if game ended
      */
-    //TODO Entkopplung von gameState und Player durch Ändern der Returns in GameLogic?
     private void update() {
         gameLogic.updatePlayers();
         if (gameLogic.getGameState().equals("RUNNING")) {
-            for (Player p : gameLogic.getPlayers()) {
-                int[] updateAry = p.isAlive() ? new int[]{p.getColor(), p.getFront().getX(), p.getFront().getY()}
-                        : new int[]{p.getColor(), -1, -1};
-
-                //modelView.updatePlayer(updateAry);
+            for (int[] p : gameLogic.getPlayerPositions()) {
+                //modelView.updatePlayer(p[0], p[1], p[2]);
             }
         } else if (gameLogic.getGameState().equals("OVER")) {
             //modelController.endGame(gameLogic.getGameWinner());

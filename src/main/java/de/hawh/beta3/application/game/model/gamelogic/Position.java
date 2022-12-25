@@ -2,7 +2,7 @@ package de.hawh.beta3.application.game.model.gamelogic;
 
 import java.util.Objects;
 
-public class Position {
+class Position {
     private int x;
     private int y;
 

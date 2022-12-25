@@ -96,9 +96,26 @@ public class GameLogic implements IGameLogic {
         return gameWinner;
     }
 
+    /**
+     * Collects every current position (front) of players.
+     * Each entry in array consists of <code>{playerID, playerXPos, playerYPos}</code>
+     *
+     * @return int[][] with player IDs + current x and y
+     */
     @Override
-    public List<Player> getPlayers() {
-        return players;
+    public int[][] getPlayerPositions() {
+        int[][] positions = new int[players.size()][3];
+
+        for (int i = 0; i < players.size(); i++) {
+            Player p = players.get(i);
+            if (p.isAlive()) {
+                positions[i] = new int[]{p.getColor(), p.getFront().getX(), p.getFront().getY()};
+            } else {
+                positions[i] = new int[]{p.getColor(), -1, -1};
+            }
+        }
+
+        return positions;
     }
 
     /**
@@ -156,7 +173,7 @@ public class GameLogic implements IGameLogic {
      * @param id id of player to find
      * @return player with id
      */
-    private Player getPlayerById(int id) {
+    protected Player getPlayerById(int id) {
         return players.get(id);
     }
 
@@ -202,7 +219,7 @@ public class GameLogic implements IGameLogic {
      */
     private void movePlayersNoInput() {
         for (Player p : players) {
-            if(p.getCurrentAction() == null) p.setFront(calcNextPos(p.getFront(), p.getDirection(), "stay"));
+            if (p.getCurrentAction() == null) p.setFront(calcNextPos(p.getFront(), p.getDirection(), "stay"));
         }
     }
 

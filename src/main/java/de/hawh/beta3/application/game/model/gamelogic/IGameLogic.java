@@ -7,17 +7,17 @@ public interface IGameLogic {
     /**
      * Initializes game logic with params
      *
-     * @param numPlayers    number of Players (2-6)
-     * @param size          size of game field
-     * @param gameSpeed     speed of game
+     * @param numPlayers number of Players (2-6)
+     * @param size       size of game field
+     * @param gameSpeed  speed of game
      */
     void init(int numPlayers, int size, int gameSpeed);
 
     /**
      * Method for changing direction of a player with <code>id</code>
      *
-     * @param id        id of player
-     * @param action    "left" or "right"
+     * @param id     id of player
+     * @param action "left" or "right"
      */
     void changePlayerDirection(int id, String action);
 
@@ -40,5 +40,11 @@ public interface IGameLogic {
      */
     int getGameWinner();
 
-    List<Player> getPlayers();
+    /**
+     * Collects every current position (front) of players.
+     * Each entry in array consists of <code>{playerID, playerXPos, playerYPos}</code>
+     *
+     * @return int[][] with player IDs + current x and y
+     */
+    int[][] getPlayerPositions();
 }
