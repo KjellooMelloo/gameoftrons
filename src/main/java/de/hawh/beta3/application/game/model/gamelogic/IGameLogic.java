@@ -31,7 +31,7 @@ public interface IGameLogic {
      *
      * @return game state enum
      */
-    GameState getGameState();
+    String getGameState();
 
     /**
      * Returns the id of the winner or -1 if tied

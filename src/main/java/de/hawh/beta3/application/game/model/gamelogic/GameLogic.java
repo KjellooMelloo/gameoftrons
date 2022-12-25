@@ -82,8 +82,8 @@ public class GameLogic implements IGameLogic {
      * @return game state enum
      */
     @Override
-    public GameState getGameState() {
-        return gameState;
+    public String getGameState() {
+        return gameState.toString();
     }
 
     /**

@@ -1,6 +1,5 @@
 package de.hawh.beta3.application.game.model.gamelogic;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -22,7 +21,7 @@ class GameLogicTest {
 
     @Test
     void init() {
-        assertSame(gameLogic.getGameState(), GameState.RUNNING);
+        assertSame(gameLogic.getGameState(), "RUNNING");
         assertTrue(players.stream().allMatch(Player::isAlive));
 
         List<Position> startingPos = new ArrayList<>();
@@ -168,7 +167,7 @@ class GameLogicTest {
         gameLogic.updatePlayers();  //tick 2
         gameLogic.changePlayerDirection(1, "right");
         gameLogic.updatePlayers();  //tick 3
-        assertSame(gameLogic.getGameState(), GameState.RUNNING);    //only one player died
+        assertSame(gameLogic.getGameState(), "RUNNING");    //only one player died
         assertTrue(players.stream().anyMatch(p -> !p.isAlive()));
     }
 
@@ -188,7 +187,7 @@ class GameLogicTest {
         gameLogic.changePlayerDirection(2, "right");
         gameLogic.changePlayerDirection(3, "right");
         gameLogic.updatePlayers();  //tick 2 --> collision in the middle
-        assertSame(gameLogic.getGameState(), GameState.RUNNING);    //only one player died
+        assertSame(gameLogic.getGameState(), "RUNNING");    //only one player died
         assertFalse(players.get(0).isAlive());
         assertFalse(players.get(1).isAlive());
         assertTrue(players.get(2).isAlive());
@@ -205,7 +204,7 @@ class GameLogicTest {
         gameLogic.changePlayerDirection(0, "right");
         gameLogic.updatePlayers();
         assertFalse(players.get(0).isAlive());
-        assertSame(gameLogic.getGameState(), GameState.OVER);
+        assertSame(gameLogic.getGameState(), "OVER");
         assertEquals(1, gameLogic.getGameWinner()); //player 0 died so player 1 should be winner
     }
 
@@ -220,7 +219,7 @@ class GameLogicTest {
         assertFalse(players.get(0).isAlive());
         assertFalse(players.get(1).isAlive());
         assertTrue(players.get(2).isAlive());
-        assertSame(gameLogic.getGameState(), GameState.OVER);
+        assertSame(gameLogic.getGameState(), "OVER");
         assertEquals(2, gameLogic.getGameWinner()); //players 0 and 1 died so player 2 should be winner
     }
 
@@ -231,7 +230,7 @@ class GameLogicTest {
         players = gameLogic.getPlayers();
         gameLogic.updatePlayers();  //tick 1
         gameLogic.updatePlayers();  //tick 2 --> collision in the middle so big its a Karambolage
-        assertSame(gameLogic.getGameState(), GameState.OVER);
+        assertSame(gameLogic.getGameState(), "OVER");
         assertEquals(-1, gameLogic.getGameWinner());
 
         //tie every (5) different collision type
@@ -262,7 +261,7 @@ class GameLogicTest {
         gameLogic.changePlayerDirection(3, "right");
         gameLogic.changePlayerDirection(4, "left");
         gameLogic.updatePlayers();  //tick 4 --> 0:coll 4, 1:coll wall, 2:coll trail, 3:coll self, 4:coll 0
-        assertSame(gameLogic.getGameState(), GameState.OVER);
+        assertSame(gameLogic.getGameState(), "OVER");
         assertEquals(-1, gameLogic.getGameWinner());
     }
 }
