@@ -434,6 +434,9 @@ Methodenliste
 ## AD changePlayerDirection
 ![Aktivitätsdiagramm_update](images/AD_changePlayerDirection.png)
 
+## AD getPlayerPositions
+![Aktivitätsdiagramm_getPlayerPositions](images/AD_getPlayerPositions.png)
+
 ## AD updatePlayers
 ![Aktivitätsdiagramm_updatePlayers](images/AD_updatePlayers.png)
 

@@ -1,6 +1,7 @@
 package de.hawh.beta3.application.game.model.gamelogic;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class GameLogic implements IGameLogic {
@@ -22,45 +23,17 @@ public class GameLogic implements IGameLogic {
         this.size = size;
         players = new ArrayList<>();
         //this.gameSpeed = gameSpeed;
-        Position[] startingPos;
-        Direction[] startingDir;
-        if (numPlayers > 4) {
-            startingPos = new Position[]{
-                    new Position(0, (size - 1) / 3),
-                    new Position((size - 1), (size - 1) / 3),
-                    new Position((size - 1) / 2, 0),
-                    new Position((size - 1) / 2, (size - 1)),
-                    new Position(0, 2 * (size - 1) / 3),
-                    new Position((size - 1), 2 * (size - 1) / 3)
-            };
-            startingDir = new Direction[]{
-                    Direction.RIGHT,
-                    Direction.LEFT,
-                    Direction.DOWN,
-                    Direction.UP,
-                    Direction.RIGHT,
-                    Direction.LEFT
-            };
-        } else {
-            startingPos = new Position[]{
-                    new Position(0, (size - 1) / 2),
-                    new Position((size - 1), (size - 1) / 2),
-                    new Position((size - 1) / 2, 0),
-                    new Position((size - 1) / 2, (size - 1))
-            };
-            startingDir = new Direction[]{
-                    Direction.RIGHT,
-                    Direction.LEFT,
-                    Direction.DOWN,
-                    Direction.UP
-            };
-        }
+        Position[] startingPos = getStartingPositions(numPlayers);
+        Direction[] startingDir = getStartingDirections(numPlayers);
 
         for (int i = 0; i < numPlayers; i++) {
-            players.add(new Player(i, startingPos[i], startingDir[i]));
+            Player p = new Player(i, startingPos[i], startingDir[i]);
+            p.addFrontToTrail();
+            players.add(p);
         }
 
         gameState = GameState.RUNNING;
+        gameWinner = -1;
     }
 
     /**
@@ -89,6 +62,8 @@ public class GameLogic implements IGameLogic {
     public void updatePlayers() {
         List<Player> playersToKill = new ArrayList<>();
 
+        movePlayersNoInput();
+
         for (Player p : players) {
             if (p.isAlive()) {
                 if (checkForCollision(p)) {
@@ -107,8 +82,8 @@ public class GameLogic implements IGameLogic {
      * @return game state enum
      */
     @Override
-    public GameState getGameState() {
-        return gameState;
+    public String getGameState() {
+        return gameState.toString();
     }
 
     /**
@@ -121,9 +96,75 @@ public class GameLogic implements IGameLogic {
         return gameWinner;
     }
 
+    /**
+     * Collects every current position (front) of players.
+     * Each entry in array consists of <code>{playerID, playerXPos, playerYPos}</code>
+     *
+     * @return int[][] with player IDs + current x and y
+     */
     @Override
-    public List<Player> getPlayers() {
-        return players;
+    public int[][] getPlayerPositions() {
+        int[][] positions = new int[players.size()][3];
+
+        for (int i = 0; i < players.size(); i++) {
+            Player p = players.get(i);
+            if (p.isAlive()) {
+                positions[i] = new int[]{p.getColor(), p.getFront().getX(), p.getFront().getY()};
+            } else {
+                positions[i] = new int[]{p.getColor(), -1, -1};
+            }
+        }
+
+        return positions;
+    }
+
+    /**
+     * Creates fair starting points for players for any player size
+     *
+     * @param numPlayers number of players
+     * @return Position Array with starting positions
+     */
+    private Position[] getStartingPositions(int numPlayers) {
+        Position[] startingPos;
+
+        if (numPlayers < 5) {
+            startingPos = new Position[]{
+                    new Position(0, (size - 1) / 2),
+                    new Position((size - 1), (size - 1) / 2),
+                    new Position((size - 1) / 2, 0),
+                    new Position((size - 1) / 2, (size - 1))
+            };
+        } else {
+            startingPos = new Position[]{
+                    new Position(0, (size - 1) / 3),
+                    new Position((size - 1), (size - 1) / 3),
+                    new Position((size - 1) / 2, 0),
+                    new Position((size - 1) / 2, (size - 1)),
+                    new Position(0, 2 * (size - 1) / 3),
+                    new Position((size - 1), 2 * (size - 1) / 3)
+            };
+        }
+
+        return Arrays.copyOf(startingPos, numPlayers);
+    }
+
+    /**
+     * Returns each <code>Direction</code> corresponding to starting position
+     *
+     * @param numPlayers number of players
+     * @return Direction Array with starting directions
+     */
+    private Direction[] getStartingDirections(int numPlayers) {
+        Direction[] startingDir = new Direction[]{
+                Direction.RIGHT,
+                Direction.LEFT,
+                Direction.DOWN,
+                Direction.UP,
+                Direction.RIGHT,
+                Direction.LEFT
+        };
+
+        return Arrays.copyOf(startingDir, numPlayers);
     }
 
     /**
@@ -132,8 +173,8 @@ public class GameLogic implements IGameLogic {
      * @param id id of player to find
      * @return player with id
      */
-    private Player getPlayerById(int id) {
-        return players.stream().filter(p -> p.getColor() == id).findFirst().get();
+    protected Player getPlayerById(int id) {
+        return players.get(id);
     }
 
     /**
@@ -171,7 +212,15 @@ public class GameLogic implements IGameLogic {
     private void movePlayer(Player p) {
         p.addFrontToTrail();
         p.setCurrentAction(null);
-        p.setFront(calcNextPos(p.getFront(), p.getDirection(), "stay"));
+    }
+
+    /**
+     * Method moves all players who didn't have inputs this tick
+     */
+    private void movePlayersNoInput() {
+        for (Player p : players) {
+            if (p.getCurrentAction() == null) p.setFront(calcNextPos(p.getFront(), p.getDirection(), "stay"));
+        }
     }
 
     private void setGameOver() {
@@ -179,11 +228,7 @@ public class GameLogic implements IGameLogic {
     }
 
     private int getNumLivingPlayers() {
-        int living = 0;
-
-        for (Player p : players) if (p.isAlive()) living++;
-
-        return living;
+        return (int) players.stream().filter(Player::isAlive).count();
     }
 
     /**
@@ -201,7 +246,7 @@ public class GameLogic implements IGameLogic {
                 || p.getTrail().contains(front)) return true;
 
         for (Player player : players) {
-            if (player.isAlive()) {
+            if (player.isAlive() && player.getColor() != p.getColor()) {
                 if (player.getFront().equals(front)) return true;
                 if (player.getTrail().contains(front)) return true;
             }

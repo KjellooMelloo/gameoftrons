@@ -3,7 +3,7 @@ package de.hawh.beta3.application.game.model.gamelogic;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Player {
+class Player {
     private int color;
     private boolean isAlive;
     private Position front;
