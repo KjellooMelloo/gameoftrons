@@ -268,9 +268,13 @@ Server Stub Receiver
 
 ![MW_UC2_3](./images/MW_UC2_3.png)
 
-## *\<Bezeichnung Laufzeitszenario n>* {#__emphasis_bezeichnung_laufzeitszenario_n_emphasis}
+## AD register
 
-...
+![MW_AD_register](./images/MW_AD_register.png)
+
+## AD lookup
+
+![MW_AD_lookup](./images/MW_AD_lookup.png)
 
 # Verteilungssicht {#section-deployment-view}
 
