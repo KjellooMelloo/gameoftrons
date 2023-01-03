@@ -75,9 +75,10 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 
 | Usecase | Objekt/Klasse | Vorbedingungen | Nachbedingungen |Erfolgsfall | Erweiterungsfälle| Fehlerfälle |
 |---|---|---|---|---|---|---|
-|**UC1** Create|Game|Der Spieler befindet sich im Startbildschirm.|Ein Spiel wurde erstellt und es wird auf weitere Spieler gewartet. Der Wartebildschirm wird angezeigt. Dem Spieler wird seine Farbe im Spiel angezeigt|**1.** Der Nutzer gibt die gewünschte Spieleranzahl in das Eingabefeld ein und klickt den Start-Knopf an. <br><br>**2.** Das System erzeugt eine Spielinstanz mit den Parametern aus der Config-Datei und dem Feld vom Startbildschirm.<br><br>**3.** Das System registriert den Nutzer im Spiel.<br><br> **4.** Das System zeigt den Wartebildschirm an||**1a** Die vom Nutzer eingegebene Spieleranzahl ist nicht zwischen 2-6. <br><br> **1a.1** Das System übernimmt den Default-Wert aus der Config-Datei <br><br> **1a.2** Das System informiert den Nutzer über die altenative Spieleranzahl über eine Fehlermeldung<br><br> **2a** Ein Parameter in der Config-Datei ist nicht gültig <br><br> **2a.1** Für alle ungültigen Parameter werden Default-Werte eingesetzt<br><br> **2a.2** Der Nutzer wird über eine Meldung darüber informiert, dass Parameter auf ihren Default-Wert gesetzt wurden|
-|**UC2** Cancel Wait|Game|Der Spieler befindet sich alleine in der Lobby (Wartebildschirm).|Der Spieler befindet sich wieder im Startbildschirm. Die Spielinstanz wurde gelöscht.|**1.** Der Nutzer drückt auf den Button "Cancel".<br><br>**2.** Das System leitet ihn zum Startbildschirm zurück.<br><br>**3.** Das System löscht die Spielinstanz inkl. des Spielers.|**1a.1** Die maximale Wartezeit aus der Config-Datei ist abgelaufen. <br><br> **1a.2** Das System informiert den Nutzer über eine Meldung, dass die maximale Wartezeit abgelaufen ist. | |
-|**UC3** Start|Game|Alle bis auf den letzten Mitspieler befinden sich im Warteraum. Der letzte fehlende Spieler betritt den Warteraum.|Das Spiel wurde gestartet und allen Spielern wird der Spielbildschirm angezeigt.|**1.** Das System fügt den letzten Spieler der Spielerliste der Spielinstanz hinzu.<br><br>**2.** Das System zeigt den 3-Sekunden-Countdown an.<br><br>**3.** Das System wechselt zum Spielbildschirm und zeigt die Farbe des Spielers an.|||
+|**UC1** Create|Game|Der Spieler befindet sich im Startbildschirm.|Der Spieler befindet sich in der Lobby und wartet auf weitere Spieler. Der Wartebildschirm wird angezeigt. Die Spieleranzahl in der Lobby wurde aktualisiert. Dem Spieler wird seine Farbe im Spiel angezeigt|**1.** Der Nutzer gibt die gewünschte Spieleranzahl in das Eingabefeld ein und klickt den Start-Knopf an. <br><br>**2.** Falls der betreffende Spieler der Erste ist, eröffnet das System eine Lobby für die entsprechende Spieleranzahl und startet einen Timer mit der maximalen Wartezeit aus der Config.<br><br> **3.** Es wird geprüft, ob die festgelegte Spieleranzahl bereits erreicht wurde. Falls dies nicht der Fall ist, tritt der Spieler der Lobby bei und ihm wird der Wartebildschirm angezeigt.<br><br> **4.** Das System zeigt den Wartebildschirm an||**1a** Die vom Nutzer eingegebene Spieleranzahl ist nicht zwischen 2-6. <br><br> **1a.1** Das System übernimmt den Default-Wert aus der Config-Datei <br><br> **1a.2** Das System informiert den Nutzer über die altenative Spieleranzahl über eine Fehlermeldung<br><br> **2a** Die maximale Wartezeit in der Config-Datei ist nicht gültig <br><br> **2a.1** Der hinterlegte Default-Wert wird eingesetzt.<br><br> **2a.2** Der Nutzer wird über eine Meldung darüber informiert, dass die Wartezeit auf ihren Default-Wert gesetzt wurde.|
+|**UC2a** Cancel Wait|Game|Der Spieler befindet sich alleine in der Lobby (Wartebildschirm).|Der Spieler befindet sich wieder im Startbildschirm. Die Spielinstanz wurde gelöscht.|**1.** Der Nutzer drückt auf den Button "Cancel".<br><br>**2.** Das System leitet ihn zum Startbildschirm zurück.<br><br>**3.** Das System löscht die Spielinstanz inkl. des Spielers. | |
+|**UC2b** Time Up|Game|Eine unzureichende Spieleranzahl befindet sich in der Lobby (Wartebildschirm).|Alle Spieler befinden sich wieder im Startbildschirm. Die Spielinstanz inkl. der Spieler wurde gelöscht.|**1.** Die maximale Wartezeit aus der Config-Datei ist abgelaufen.<br><br>**2.** Das System informiert alle wartenden Spieler, dass die Wartezeit überschritten wurde.<br><br>**3.** Das System löscht die Spielinstanz und alle Spieler. | |
+|**UC3** Start|Game|Alle bis auf den letzten Mitspieler befinden sich im Warteraum. Der letzte fehlende Spieler betritt den Warteraum.|Das Spiel wurde gestartet und allen Spielern wird der Spielbildschirm angezeigt.|**1.** Die benötigte Spieleranzahl wird erreicht.<br><br>**2.** Das System zeigt den 3-Sekunden-Countdown an.<br><br>**3.** Das System wechselt zum Spielbildschirm und zeigt die Farbe des Spielers an.|||
 |**UC4** Steer|Spieler|Der Spieler befindet sich im Spiel und ist noch am Leben.|Das Motorrad des Spielers bewegt sich in einer Richtung weiter|**1.** Der Nutzer drückt keine Taste an <br><br> **2.** Das System zeigt die Bewegung des Motorrades in der aktuellen Richtung und Geschwindigkeit an| **1.a** Der Nutzer drückt auf eine der Steuerungstasten gemäß der angegebenen Tastenbelegung in der Config-Datei. <br><br> **1.a.2** Das System registriert den Tastendruck <br><br> **1.a.3** Das System berechnet die neue Richtung und aktualisiert die Richtung des Spielers entsprechend der gedrückten Taste <br><br> **1.a.4** Das System zeigt die neue Richtung des Motorrads des Spielers an.||
 |**UC5** Collide on|Game Field|Der Spieler ist noch am Leben und bewegt sich auf dem Spielfeld|Der Spieler ist gestorben und wurde aus dem Spiel inkl. seiner Spur entfernt.|**1.** Das System stellt fest, dass sich auf der neuen Position des Motorrads des Spielers eine Wand, eine Spur oder ein anderes Motorrad befindet.<br><br> **2.** Das System entfernt die Spur des Spielers und entfernt den Spieler aus dem Spiel.<br><br> **3.** Das System zeigt eine Meldung an, um den Nutzer zu informieren, dass er gestorben ist.|||
 |**UC6** Win |Game|Der Spieler befindet sich mit nur einem weiteren Spieler auf dem Spielfeld|Das Spiel wurde gelöscht und alle Nutzer wurden zum Startbildschirm weitergeleitet.|**1.** Der andere Spieler kollidiert (siehe UC5).<br><br> **2.** Das System legt den letzten überlebenden Spieler als Sieger fest <br><br> **3.** Das System zeigt allen Nutzern den Endschirm an, wo angezeigt wird, welcher Spieler gewonnen hat.<br><br> **4.** Nach 3 Sekunden löscht das System die Spielinstanz und zeigt allen wieder den Startbildschirm an.| |
@@ -398,15 +399,16 @@ Methodenliste
 ## *\<Bezeichnung Laufzeitszenario n>* {#__emphasis_bezeichnung_laufzeitszenario_n_emphasis}
 
 ## Usecase 1 Create
-![LFZ_create](images/LFZ_create.png)
+![uc1](images/uc1.png)
+   
+## Usecase 2a CancelWait
+![uc2a](images/uc2a.png)
 
-![LFZ_create_b](images/LFZ_create_b.png)
-
-## Usecase 2 CancelWait
-![LFZ_cancel](images/LFZ_cancel.png)
+## Usecase 2b TimeUp
+![uc2b](images/uc2b.png)
 
 ## Usecase 3 Start
-![LFZ_start](images/LFZ_start.png)
+![uc3](images/uc3.png)
 
 ## Usecase 4 Spieler steuern
 ![Sequenzdiagramm_Steer](images/SD_UC4Steer.png)
