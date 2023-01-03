@@ -359,11 +359,11 @@ Die Schnittstelle **IRemoteObject** bietet die Funktionalität zum Empfangen von
 
 **Controller Whitebox (Ebene 3)**
 
-![WB_C.png](./images/WB_C.png)
+![Controller_WB3.png](./images/Controller_WB3.png)
 <br>
 
 State Machine
-![WB_SM.png](./images/WB_SM.png)
+![SM_WB3.png](./images/SM_WB3.png)
 <br>
 
 
