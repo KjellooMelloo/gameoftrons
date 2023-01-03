@@ -5,37 +5,87 @@ import de.hawh.beta3.application.game.model.gamelogic.GameLogic;
 import de.hawh.beta3.application.game.model.gamelogic.IGameLogic;
 import de.hawh.beta3.application.game.view.IModelView;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
+//import javafx.animation.Animation;
+//import javafx.animation.KeyFrame;
+//import javafx.animation.Timeline;
+
 public class GameManager implements IModel {
-    private GameManager gameInstance = new GameManager();
+    private static GameManager gameInstance = new GameManager();
     private IGameLogic gameLogic;
     private IModelController modelController;
     private IModelView modelView;
+    private int fullPlayerCount;
+    private int numPlayers;
+    private Timer timer = new Timer();
+    //private Timeline timeline
 
     private GameManager() {
         gameLogic = new GameLogic();
     }
 
     /**
-     * Method returns singleton IModel instance
+     * Method returns singleton GameManager instance
      *
-     * @return instance of IModel
+     * @return instance of GameManager
+     */
+    public static GameManager getInstance() {
+        return gameInstance;
+    }
+
+    /**
+     * Methods adds player to the game and checks if game is ready or waiting timer ended
+     * First call decides size of lobby
+     *
+     * @param playerCount number of players to play with
      */
     @Override
-    public IModel getInstance() {
-        return gameInstance;
+    public void join(int playerCount) {
+        if (fullPlayerCount != 0) {
+            //IModelView.informUser("Deine Eingabe ist uns egal, wir spielen mit {fullPlayerCount} Spielern!")
+        } else {
+            fullPlayerCount = playerCount;
+            //IModelController.setCurrentState("WAITING");
+        }
+        numPlayers++;
+
+        if (numPlayers == fullPlayerCount) {
+            //IModelController.setCurrentState("GAME");
+        } else {
+            //IModelView.updateNumPlayers(numPlayers);
+            timer.cancel();
+            timer = new Timer();
+            TimerTask task = new WaitingTimer();
+            timer.schedule(task, 2*60*1000);    //waiting timer to 120s
+        }
+    }
+
+    /**
+     * Method is called when Cancel Button is clicked or when waiting timer ended
+     * It resets the lobby
+     */
+    @Override
+    public void cancelWait() {
+        fullPlayerCount = 0;
+        numPlayers = 0;
+        timer.cancel();
+        //IModelView.informUser("Spiel wurde abgebrochen");
+        //IModelController.setCurrentState("DELETE");
     }
 
     /**
      * Method for starting the game with starting params
      *
-     * @param numPlayers number of Players (2-6)
      * @param size       size of game field
      * @param gameSpeed  speed of game
      */
-    //TODO Startpositionen an View schicken?
     @Override
-    public void startGame(int numPlayers, int size, int gameSpeed) {
+    public void startGame(int size, int gameSpeed) {
         gameLogic.init(numPlayers, size, gameSpeed);
+        //timeline = new Timeline(new KeyFrame(Duration.millis(200), e -> update()));
+        //timeline.setCycleCount(Animation.INDEFINITE);
     }
 
     /**

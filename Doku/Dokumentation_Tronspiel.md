@@ -426,6 +426,12 @@ Methodenliste
 ![Sequenzdiagramm_Spielende](images/SD_UC8Tie.png)
 ...
 
+## AD join
+![Aktivitätsdiagramm_join](images/AD_join.png)
+
+## AD cancelWait
+![Aktivitätsdiagramm_cancelWait](images/AD_cancelWait.png)
+
 ## AD startGame
 ![Aktivitätsdiagramm_startGame](images/AD_startGame.png)
 
