@@ -399,15 +399,16 @@ Methodenliste
 ## *\<Bezeichnung Laufzeitszenario n>* {#__emphasis_bezeichnung_laufzeitszenario_n_emphasis}
 
 ## Usecase 1 Create
-![LFZ_create](images/LFZ_create.png)
+![uc1](images/uc1.png)
+   
+## Usecase 2a CancelWait
+![uc2a](images/uc2a.png)
 
-![LFZ_create_b](images/LFZ_create_b.png)
-
-## Usecase 2 CancelWait
-![LFZ_cancel](images/LFZ_cancel.png)
+## Usecase 2b TimeUp
+![uc2b](images/uc2b.png)
 
 ## Usecase 3 Start
-![LFZ_start](images/LFZ_start.png)
+![uc3](images/uc3.png)
 
 ## Usecase 4 Spieler steuern
 ![Sequenzdiagramm_Steer](images/SD_UC4Steer.png)
