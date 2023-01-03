@@ -30,6 +30,7 @@ public class GameLogic implements IGameLogic {
             Player p = new Player(i, startingPos[i], startingDir[i]);
             p.addFrontToTrail();
             players.add(p);
+            //IModelView.updatePlayer(i, p.getFront().getX(), p.getFront().getY());
         }
 
         gameState = GameState.RUNNING;

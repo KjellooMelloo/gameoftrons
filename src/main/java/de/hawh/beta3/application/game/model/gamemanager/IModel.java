@@ -3,19 +3,25 @@ package de.hawh.beta3.application.game.model.gamemanager;
 public interface IModel {
 
     /**
-     * Method returns singleton IModel instance
-     * @return instance of IModel
+     * Methods adds player to the game and checks if game is ready or waiting timer ended
+     * First call decides size of lobby
+     *
+     * @param playerCount number of players to play with
      */
-    IModel getInstance();
+    void join(int playerCount);
+
+    /**
+     * Method is called when Cancel Button is clicked or when waiting timer ended
+     */
+    void cancelWait();
 
     /**
      * Method for starting the game with starting params
      *
-     * @param numPlayers    number of Players (2-6)
      * @param size          size of game field
      * @param gameSpeed     speed of game
      */
-    void startGame(int numPlayers, int size, int gameSpeed);
+    void startGame(int size, int gameSpeed);
 
     /**
      * Method for changing direction of a player with <code>id</code>
