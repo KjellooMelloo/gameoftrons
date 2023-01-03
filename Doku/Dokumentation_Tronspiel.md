@@ -267,20 +267,17 @@ Der Controller bietet Funktionalitäten für das Model v.a. zur Kommunikation mi
 
 | Methode | Kurzbeschreibung |
 | --- | --- |
-| void updatePlayersInGameField(List<Player>) | Zeigt den Bildschirm an, der zum als String übergebenen Programmzustand passt |
-| void endGame(int?) | aktualisiert die Spielerliste in der View |
-| static Game createGameInstance() | setzt ein Spielergebnis in der View|
+| void endGame(int) | Das Model ruft die Methode endGame() auf und übergibt als Parameter das Spielergebnis in Form eines int. Die State Machine wechselt vom Zustand GAME in den Zustand END. | |
 
 
 Der Controller bietet Funktionalitäten für die View v.a. zur Kommunikation mit dem Model über die Schnittstelle **IViewController** an.
 
 | Methode | Kurzbeschreibung |
 | --- | --- |
-| int handleInputPlayerCount() | |
-| void handleWaitingButtonClick()| |
-| String handleDirectionKeyboardInput()|  |
-| void notifyGameResult(int) | |
-| void notifyCountdownOver() | |
+| int handleInputPlayerCount() | Der Nutzer drückt den Start-Button. Falls eine gültige Eingabe für die Spieleranzahl vom Nutzer getätigt wurde, wird der Wert in einer Variable gespeichert. Andernfalls wird die Methode loadDefaultPlayerCount() aufgerufen. |
+| void handleWaitingButtonClick()| Der Nutzer drückt den Cancel-Button. Wartevorgang wird abgebrochen, falls der Nutzer alleinein der Lobby wartet. Andernfalls wird mit informUser() eine Nachricht versendet, dass der Wartevorgang nicht abgebrochen werden kann. |
+| String handleDirectionKeyboardInput()| Der Nutzer tätigt  eine Tastatureingabe zur Steuerung seines Spielers. Zurückgegeben wird die für die Taste hinterlegte Richtung. Bei keiner Belegung wird eine Exception geworfen. |
+| void notifyCountdownOver() | Die View hat die Countdownanzeige abgeschlossen und benachrichtigt den Controller, dass der Countdown vorbei ist. Der Controller ruft die Methode startGame() des Models auf. |
 
 <a name="applicationstubblackblox"></a>
 ### Application Stub (Blackbox) 
