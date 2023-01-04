@@ -16,12 +16,15 @@ Es wird eine Middleware für die verteilte Anwendung Game Of Trons entwickelt.
 
 ## Aufgabenstellung 
 
-1. Umwandlung von Funktionsaufrufen in Nachrichten 
-2. Umwandlung von Nachrichten in Funktionsaufrufen
-3. Kommunikation mit dem Betriebssystem, um Nachrichten zu versenden und zu empfangen.
-4. Vereinheitlicht Nachrichten in ein RPC-Nachrichtenformat
-5. Callees in Application Stubs können sich als Remote Objects bei der Middleware anmelden
-6. Die physikalische Adresse von Diensten kann abgefragt werden.
+1. Callees in Application Stubs können sich als Remote Objects bei der Middleware mit ihrer physikalischen Adresse registrieren
+2. Entgegennehmen und Weiterleitung eines Methodenaufrufs auf ein Remote Object
+3. Umwandlung von Funktionsaufrufen in Nachrichten 
+4. Vereinheitlicht Methodenaufrufe in ein vordefiniertes Nachrichtenformat
+5. Die physikalische Adresse von Diensten kann abgefragt werden.
+6. Kommunikation mit dem Betriebssystem, um Nachrichten zu versenden und zu empfangen
+7. Nachrichten, die vom Betriebssystem empfangen wurden, können entgegengenommen werden
+8. Umwandlung von Nachrichten in Funktionssignaturen
+9. Funktionssignaturen werden an die ausführende Komponente weitergegeben
 
 
 
