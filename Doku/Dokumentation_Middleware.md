@@ -92,6 +92,7 @@ Es wird eine Middleware für die verteilte Anwendung Game Of Trons entwickelt.
 |UC5| Name Server | void lookup(int, String) | Eine angefragte Methode ist nicht im Cache des Client Stubs gespeichert. Der Client Stub schickt eine Nachricht an den Name Server mit einer Lookup-Anfrage.| Die Adresse und die Portnummer der angefragten Methode werden über eine Nachricht zurückgeschickt.|Der Name Server prüft, ob es einen Eintrag in der Tabelle mit der übergebenen Interface-ID und Methodenname gibt. Wenn ja, dann werden die IP-Adresse und die Portnummer an den anfragenden Client Stub zurückgeschickt.| Es gibt keinen Eintrag mit der ID und dem Methodennamen. Es werden leere Strings zurückgeschickt. |
 |UC6| ServerStub | void callRemoteObjectInterface(JSON) | Nachricht wurde vom ServerStub empfangen und unmarshaled | Der Server Stub holt die Interface-ID, den Methodennamen und die Aufrufparameter aus dem JSON-Objekt heraus und ruft das korrekte Remote-Object-Interface auf.|Das RemoteObject-Interface wurde aufgerufen  | | 
 
+
 ## Nachrichtenformat
 Um RPCs durchzuführen müssen Methodenaufrufe in Nachrichten umgewandelt werden. Dafür bringen wir die Methodenaufrufe erstmal in ein einheitliches JSON-Format.
 <br>
@@ -320,10 +321,62 @@ Zuordnung von Bausteinen zu Infrastruktur
 *\<Diagramm + Erläuterungen>*
 
 # Querschnittliche Konzepte {#section-concepts}
+Auf folgende querschnittlichen Konzepte haben wir uns gemeinsam mit unserer Partnergruppe Gamma 4 geeinigt:
 
-## *\<Konzept 1>* {#__emphasis_konzept_1_emphasis}
+## Nachrichtenformat
+Um RPCs durchführen zu können müssen Methodenaufrufe in Nachrichten umgewandelt werden. Dafür werden die Methodenaufrufe in ein einheitliches JSON-Format transformiert. Verschickt wird ein JSON-Objekt mit der Interface-ID des adressierten Interfaces, der Methodenname und die Aufrufparameter der Methode mit jeweiligem Typ und Wert in einem Array.
 
-*\<Erklärung>*
+
+(JsonObjectMessage = {
+    "interfaceID": Interface-ID als int,
+    "methodName": Methodenname als String,
+     "args": [
+        "type1": primitiver Datentyp des ersten Aufrufparameters als String,
+        "val1": der Wert des ersten Aufrufparameters,
+        "typeN": primitiver Datentyp des n-ten Aufrufparameters als String,
+        "valN": der Wert des n-ten Aufrufparameters
+    ]
+})
+
+Das JSON-Objekt wird in ein Byte-Array umgewandelt, und über das Netzwerk verschickt.
+Einige beispielhafte RPCs sind im Folgenden skizziert:
+
+(JsonObjectInvoke = {
+    "interfaceID": 12,
+    "methodName": "changeDir",
+    "args": [
+        "playerNumber": 1,
+        "direction": 2
+    ]
+})
+JsonObjectInvoke = {
+    "interfaceID": 12,
+    "methodName": "changeDir",
+    "args": [
+        "type1": "int",
+        "val1": 1,
+        "typeN": "TYP",
+        "valN": val
+    ]
+}
+JsonObjectLookUp = {
+    "method": 0(lookup),
+    "args": [
+        "ifaceID": Int,
+        "methodName": Str,
+        ("playerID": Int)
+    ]
+}
+JsonObjectRegister = {
+    "method": 1(register),
+    "args": [
+        "ifaceID": Int,
+        "methodName": Str,
+        "IpAddr": "XXX.XXX.XXX.XXX",
+        "Port": "YYYYY"
+    ]
+}
+
 
 ## *\<Konzept 2>* {#__emphasis_konzept_2_emphasis}
 
