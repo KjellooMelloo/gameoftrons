@@ -216,7 +216,7 @@ Nachrichtenfromate unter Lösungsstrategie.
 
 ### Whitebox Client Stub
 <br>
-![MW_ClientStub](./images/MW_ClientStub.png)
+![MW_ClientStub](./images/MW_Ebene3_ClientStub.png)
 <br>
 
 |Methode| Kurzbeschreibung|
@@ -232,7 +232,7 @@ Nachrichtenfromate unter Lösungsstrategie.
 
 ### Whitebox Server Stub
 <br>
-![MW_ServerStub](./images/MW_ServerStub.png)
+![MW_ServerStub](./images/MW_Ebene3_ServerStub.png)
 <br>
 
 |Methode| Kurzbeschreibung|
