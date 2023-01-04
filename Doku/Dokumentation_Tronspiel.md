@@ -300,17 +300,7 @@ Die Schnittstelle **IRemoteObject** bietet die Funktionalität zum Empfangen von
 
 <a name="ebene2"></a>
 ## Ebene 2 
-
-
-
-**Controller Whitebox (Ebene 1)**
-
-![Controller_Blackbox.png](./images/Controller_Blackbox.png)
-<br>
-
-
-## Ebene 2 
-
+   
 ### Whitebox Model
 
 ![Model_Ebene2](./images/Model_Ebene2.png)
@@ -320,6 +310,11 @@ Die Schnittstelle **IRemoteObject** bietet die Funktionalität zum Empfangen von
 
 ![View_Ebene3](./images/Whitebox1_View.png)
 
+
+### Whitbox Controller
+
+![Controller_Blackbox.png](./images/Controller_Blackbox.png)
+<br>
 
 
 ### Whitebox Application Stub
@@ -338,8 +333,8 @@ Die Schnittstelle **IRemoteObject** bietet die Funktionalität zum Empfangen von
 |-|-|
 |||
 
+   
 ### Whitebox View
-
 
 ![View_Ebene3](./images/Whitebox_View.png)
 
@@ -352,9 +347,8 @@ Die Schnittstelle **IRemoteObject** bietet die Funktionalität zum Empfangen von
 |drawPlayers() | Zeigt die aktuell lebenden Spieler an ihrer aktuellen Position an. |
 |drawTileColors() | Zeigt die aktuelle Farbbelegung der Tiles an.|
 
+   
 ### Whitebox Controller
-
-**Controller Whitebox (Ebene 3)**
 
 ![Controller_WB3.png](./images/Controller_WB3.png)
 <br>
@@ -378,32 +372,20 @@ Methodenliste
 | ...() | ... |
 
 
-   ### Whitebox AppStub
+### Whitebox AppStub
    
-   **Caller-Whitebox**
-   ![Appstub_Caller.png](./images/caller_whitebox.png)
-   <br>
+**Caller-Whitebox**
+![Appstub_Caller.png](./images/caller_whitebox.png)
+<br>
    
    
-    **Callee-Whitebox**
-   ![Appstub_Callee.png](./images/callee_whitebox.png)
-   <br>
+ **Callee-Whitebox**
+![Appstub_Callee.png](./images/callee_whitebox.png)
+<br>
 
 <a name="laufzeitsicht"></a>
 # Laufzeitsicht
 
-## *\<Bezeichnung Laufzeitszenario 1>* {#__emphasis_bezeichnung_laufzeitszenario_1_emphasis}
-
--   \<hier Laufzeitdiagramm oder Ablaufbeschreibung einfügen>
-
--   \<hier Besonderheiten bei dem Zusammenspiel der Bausteine in diesem
-    Szenario erläutern>
-
-## *\<Bezeichnung Laufzeitszenario 2>* {#__emphasis_bezeichnung_laufzeitszenario_2_emphasis}
-
-...
-
-## *\<Bezeichnung Laufzeitszenario n>* {#__emphasis_bezeichnung_laufzeitszenario_n_emphasis}
 
 ## Usecase 1 Create
 ![uc1](images/uc1.png)
