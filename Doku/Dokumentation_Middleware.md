@@ -220,8 +220,10 @@ Nachrichtenfromate unter Lösungsstrategie.
 |Methode| Kurzbeschreibung|
 | --- | --- |
 |invoke(int, String, Object[]) | Ruft die Methoden marshal(), dann cacheOrLookup(), dann send() auf|
+|serializeNS(int, String) | Packt die Aufurfparameter in ein JSON-Nachrichtenformat. Wandelt das JSON-Objekt in ein byte-Array um.|
+| deserializeNS(byte[]) | Entpackt die Daten aus der Nachricht und gibt sie in einem String[]-Array der Länge 2 (Index 0: IP-Adresse, Index 1: Portnummer) zurück.|
 |byte[] marshal(int,String,Object[]) | erzeugt ein JSON-Objekt aus den übergebenen Parametern und wandelt es in ein byte-Array um, das zurückgegeben wird. |
-|cacheOrLookup(int,String,String[]):String[]| Gibt ein String-Array mit der IP-Adresse und Portnummer des gesuchten Remote-Objects zurück. Sucht erstmal im lokalen Cache-Speicher und wenn der Eintrag dort nicht vorhanden ist, wird der Name Server über eine Nachricht angefragt und das Ergebnis wird im Cache gespeichert (Aufruf cache() ). |
+|cacheOrLookup(int,String,String[]):String[]| Gibt ein String-Array mit der IP-Adresse und Portnummer des gesuchten Remote-Objects zurück. Sucht erstmal im lokalen Cache-Speicher und wenn der Eintrag dort nicht vorhanden ist, wird eine Nachricht erstellt (Aufruf serializeNS() ) und an den Name Server geschickt. Das Ergebnis wird aus der Nachricht entpackt (Aufruf deserialize() )im Cache gespeichert (Aufruf cache() ) und zurückgegeben. |
 |cache(int, String, String[]| Trägt den String-Array mit IP-Adresse und Portnummer unter der angegebenen ID und Methodennamen im Cache-Speicher ein.
 |send(InetAddress, int, byte[]| Verpackt die angegebene Nachricht in ein UDP-Datagramm und schickt die das Paket an die angegebne IP-Adresse und Portnummer.|
 
@@ -232,20 +234,31 @@ Nachrichtenfromate unter Lösungsstrategie.
 <br>
 |Methode| Kurzbeschreibung|
 | --- | --- |
-|register(int, String, InetAddress, int)| Schickt eine Nachricht an den Name Server mit den notwendigen Registrierungsdaten. Empfängt und entpackt die Antwort vom Name Server und gibt diese zurück.|
-| callRemoteObjectInterface(JSON)| Entpackt die Daten aus dem angegebenen JSON-Objekt, sucht in der lokalen Tabelle nach dem Remote Object, das unter der im JSON angegebenen ID eingetragen ist. Ruft mit Methode call() des eingetragenen 
-| receive(DatagramPacket) |
-| unmarshal(byte[])
-| receive(DatagramPacket) :void
-| run():void
+|register(int, IRemoteObject, String, InetAddress, int)| Packt Aufrufparameter in eine Nachricht (Aufruf serializeNS() ) und schickt sie an den Name Server mit den notwendigen Registrierungsdaten. Empfängt und entpackt (Aufruf deserializeNS() die Antwort vom Name Server, wenn die Antwort nicht -1 ist, wird das RemoteObject in den Aufrufparametern zusammen mit der ID in den Aufrufparametern in der lokalen Tabelle eingetragen. Die erhaltene Antwort vom Name Server wird zurückgegeben.|
+|serializeNS(int, String,String,int)| Erstellt eine Nachricht im JSON-Format aus den Aufrufparametern und wandelt das JSON-Objekt in ein byte-Array um, das zurückgegeben wird.|
+|deserializeNS(byte[])| Wandelt das angegebene byte[]-Array in ein int um, der zurückgegeben wird.|
+| run() | Eine Endlosschleife, die auf ankommende Pakete wartet. Wenn ein Paket ankommt, wird ein neuer Thread erzeugt, der die Methode receive() aufruft und das angekommene Paket übergibt.|
+| receive(DatagramPacket) | Entpackt den Nachrichtinhalt aus dem UDP-Paket und ruft die Methode unmarshal() auf.|
+| unmarshal(byte[]) | Wandelt das übergebene byte-Array in ein JSON-Objekt um und ruft die Methode callRemoteObjectInterface() auf. |
+| callRemoteObjectInterface(JSON)| Entpackt die Daten aus dem angegebenen JSON-Objekt, sucht in der lokalen Tabelle nach dem Remote Object, das unter der im JSON angegebenen ID eingetragen ist. Ruft mit Methode call() des eingetragenen Remote Objects.|
+
 
 
 ### Whitebox Name Service
 <br>
-![MW_NameServer](./images/MW_NameServer.png)
+![MW_NameService](./images/MW_NameService.png)
 <br>
 
-
+|Methode| Kurzbeschreibung|
+| --- | --- |
+|lookup(int, String)| Prüft ob gesuchtes Interface und Methode eingetragen sind (Aufruf checkInterfaceInTable). Wenn ja, wird ein String-Array der Länge 2 (Index 0: IP-Adresse, Index 1: Portnummer) zurückgegeben.|
+|bind(int, String, InetAddress, int)| Prüft, ob das zu registrierende Interface bereits in der Tabelle ist. Prüft, ob das zu registrierende Interface ein Model ist (Aufruf checkIfModel() ). Wenn beide Fälle zutreffen, dann wird die Tabelle nicht verändert und es wird -1 zurückgegeben. Sonst wird das Interface unter der eingegeben IP-Adresse und Portnummer eingetragen.|
+|checkInterfaceInTable(int, String)|Prüft, ob das zu registrierende Interface und die Methode bereits in der Tabelle ist|
+|checkIfModel(int)| Prüft, ob die das zu registrierende Interface ein Model ist |
+|run()| Endlosschleife, die TCP-Pakete entgegennimmt. Wenn ein Paket ankommt, wird ein neuer Thread zur Behandlung erzeugt. Der neue Thread entpackt den Nachrichteninhalt aus dem Paket (Aufruf deserialize() ), prüft, welche Anfrage geschickt wurde (lookup oder register), ruft die entsprechende Methode auf. Packt das Ergebnis in eine Nachricht (Aufruf serialize() ) und schickt die Nachricht zurück an den Sender.|
+|deserialize(byte[])|entpackt den Nachrichteninhalt aus dem Paket|
+|serialize(JSON)|Packt das Ergebnis von lookup() in eine Nachricht. Gibt ein byte-Array zurück.|
+|serialize(int)|Packt das Ergebnis von register() in eine Nachricht. Gibt ein byte-Array zurück.|
 
 
 # Laufzeitsicht 
