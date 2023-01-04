@@ -175,10 +175,10 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 |UC6 | Model |void setGameWinner(int) | Es gibt nur noch ein Spieler im Spiel. | Die ID des letzten Spielers wurde in einer globalen Variable "gameResult" gespeichert.|Der übergebene Player ist der letzte im Spiel. Seine Spieler-ID wird von der Methode als Sieger registriert. | |
 | UC1-8 | View |updatePlayer(int[]) |Im Model wurden Daten zu den Spielern geändert. | Die View hat ihre Daten aktualisiert. | Die Methode aktualisiert die Spielerliste, die in der View gehalten wird. | |
 | UC3 | View | setGameFieldSize(int)| Alle Spieler haben den Warteraum betreten.|Die Spielfeldgröße wird in der View gespeichert.  |Die Methode setzt die Spielfeldgröße in der View, die aus der Config-Datei geladen wurden| |
-|UC6,7,8| Controller| endGame(int)| Im Model wurde ein Gewinner festgelegt oder das Spiel wurde als unentschieden entschieden. | Die State Maschine im Controller befindet sich im Zustand "End" | Die Methode ändert die State Maschine im Controller zum Zustand "End"| |
+|UC6,7,8| Controller| void endGame(int)| Im Model wurde ein Gewinner festgelegt oder das Spiel wurde als unentschieden entschieden. | Die State Maschine im Controller befindet sich im Zustand "End" | Die Methode ändert die State Maschine im Controller zum Zustand "End"| |
 |UC6,7,8|View|notifyGameResult(int)| Die State Maschine des Controllers befindet sich im Zustand "End"| Die View weiß, wie das Spiel ausgegangen ist und zeigt im nächsten Schitt den Endbildschirm an.| Die Methode setzt den Gewinner des Spiels in der View-Komponente.| |
-| UC1,2a,2b,3,6,7,8 | Controller | setCurrentState(String) | Der Controller wurde gestartet oder ist bereits am laufen und befindet sich in einem State.  | Der State des Controllers wurde gewechselt und die behavior() Methode des aktuellen States kann ausgeführt werden. | Die Methode kann vom Controller (bzw. der State Machine) selbst innerhalb der behavior() Methode aufgerufen werden oder von außen durch das Model. In einem String wird der Folgezustand übergeben. Beim setzen des nächsten States wird direkt die behavior()-Methode ausgeführt. |  |   
-| UC1,2a,2b,3,6,7,8 | Controller | behavior() | Die State Machine hat ihren Zustand gewechselt und führt die behavior Methode aus. | Die behvaior()-Methode wurde ausgeführt und ggf. der Zustand gewechselt. | Je nachdem in welchem State sich die State Machine aktuell befindet, wird die entsprechende behvior()-Methodenimplementierung ausgewählt und ausgeführt. |  |   
+| UC1,2a,2b,3,6,7,8 | Controller | void setCurrentState(String) | Der Controller wurde gestartet oder ist bereits am laufen und befindet sich in einem State.  | Der State des Controllers wurde gewechselt und die behavior() Methode des aktuellen States kann ausgeführt werden. | Die Methode kann vom Controller (bzw. der State Machine) selbst innerhalb der behavior() Methode aufgerufen werden oder von außen durch das Model. In einem String wird der Folgezustand übergeben. Beim setzen des nächsten States wird direkt die behavior()-Methode ausgeführt. |  |   
+| UC1,2a,2b,3,6,7,8 | Controller | void behavior() | Die State Machine hat ihren Zustand gewechselt und führt die behavior Methode aus. | Die behvaior()-Methode wurde ausgeführt und ggf. der Zustand gewechselt. | Je nachdem in welchem State sich die State Machine aktuell befindet, wird die entsprechende behvior()-Methodenimplementierung ausgewählt und ausgeführt. |  |   
 
 
 
@@ -361,6 +361,7 @@ State Machine
 
 Controller
 | Methode | Kurzbeschreibung |
+| --- | --- |
 | behavior() | Führt nach einem Zustandswechsel die dem aktuellen State entsprechende behavior()-Implementierung aus. |
 | deleteGameInstance() | Löscht die aktuelle Spielinstanz. |
 
