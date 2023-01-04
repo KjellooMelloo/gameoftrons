@@ -428,7 +428,7 @@ Die komplette Methodenliste ist bereits in der Blackbox-Sicht (#applicationstubb
 ![uc2b](images/uc2b.png)
 
 ## Usecase 3 Start
-![uc3](images/uc3.png)
+![uc3_](images/uc3_.png)
 
 ## Usecase 4 Spieler steuern
 ![Sequenzdiagramm_Steer](images/SD_UC4Steer.png)
