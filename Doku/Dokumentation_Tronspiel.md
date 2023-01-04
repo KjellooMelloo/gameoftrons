@@ -377,7 +377,17 @@ Methodenliste
 | updateField() | Aktualisiert alle Farben des Spielfelds. |
 | ...() | ... |
 
-? Model und Controller auseinanderpflücken --> Use Cases überlegen.
+
+   ### Whitebox AppStub
+   
+   **Caller-Whitebox**
+   ![Appstub_Caller.png](./images/caller_whitebox.png)
+   <br>
+   
+   
+    **Callee-Whitebox**
+   ![Appstub_Callee.png](./images/callee_whitebox.png)
+   <br>
 
 <a name="laufzeitsicht"></a>
 # Laufzeitsicht
