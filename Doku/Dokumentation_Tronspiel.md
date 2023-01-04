@@ -306,7 +306,7 @@ Die Schnittstelle **IRemoteObject** bietet die Funktionalität zum Empfangen von
 ![Model_Ebene2](./images/Model_Ebene2.png)
 
 
-### View Ebene 2
+### Whitebox View
 
 ![View_Ebene2](./images/View_Ebene_2.png)
 
@@ -317,7 +317,7 @@ Die Schnittstelle **IRemoteObject** bietet die Funktionalität zum Empfangen von
 <br>
 
 
-### Application Stub Ebene 2
+### Whitebox Application Stub
 
 ![AppStub_Ebene2](./images/Whitebox_AppStub.png)
 
@@ -325,7 +325,7 @@ Die Schnittstelle **IRemoteObject** bietet die Funktionalität zum Empfangen von
 <a name="ebene3"></a>
 ## Ebene 3 
 
-### Model Ebene 3
+### Whitebox Model
 
 ![Model_Ebene3](images/Model_Ebene3_Refactor.png)
 
