@@ -186,9 +186,10 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 
 <a name="bausteinsicht"></a>
 # Bausteinsicht
+## Ebene 1
 
 <a name="whiteboxgesamt"></a>
-## Whitebox Gesamtsystem
+### Whitebox Gesamtsystem
 
 Game Of Trons ist in drei Komponenten aufgeteilt, die in der unteren Abbildung zu sehen sind.
 Die Komponenten bieten über Schnittstellen ihre Funktionalitäten an und nutzen ebenso über Schnittstellen die Funktionalitäten anderer Komponenten.
@@ -302,16 +303,7 @@ Die Schnittstelle **IRemoteObject** bietet die Funktionalität zum Empfangen von
 <a name="ebene2"></a>
 ## Ebene 2 
 
-
-
-**Controller Ebene 2**
-
-![Controller_Blackbox.png](./images/Controller_Blackbox.png)
-<br>
-
-
-
-### Model Ebene 2
+### Whitebox Model
 
 ![Model_Ebene2](./images/Model_Ebene2.png)
 
@@ -320,6 +312,11 @@ Die Schnittstelle **IRemoteObject** bietet die Funktionalität zum Empfangen von
 
 ![View_Ebene2](./images/View_Ebene_2.png)
 
+
+### Whitbox Controller
+
+![Controller_Blackbox.png](./images/Controller_Blackbox.png)
+<br>
 
 
 ### Application Stub Ebene 2
@@ -338,8 +335,8 @@ Die Schnittstelle **IRemoteObject** bietet die Funktionalität zum Empfangen von
 |-|-|
 |||
 
-### View Ebene 3
-
+   
+### Whitebox View
 
 ![View_Ebene3](./images/Whitebox_View.png)
 
@@ -352,9 +349,8 @@ Die Schnittstelle **IRemoteObject** bietet die Funktionalität zum Empfangen von
 |drawPlayers() | Zeigt die aktuell lebenden Spieler an ihrer aktuellen Position an. |
 |drawTileColors() | Zeigt die aktuelle Farbbelegung der Tiles an.|
 
+   
 ### Whitebox Controller
-
-**Controller Whitebox (Ebene 3)**
 
 ![Controller_WB3.png](./images/Controller_WB3.png)
 <br>
@@ -378,16 +374,20 @@ Methodenliste
 | ...() | ... |
 
 
-   ### Application Stub Ebene 3
+### Whitebox AppStub
    
-   **Caller*
-   ![Appstub_Caller.png](./images/caller_whitebox.png)
-   <br>
+**Caller-Whitebox**
+![Appstub_Caller.png](./images/caller_whitebox.png)
+<br>
    
    
-    **Callee**
-   ![Appstub_Callee.png](./images/callee_whitebox.png)
-   <br>
+ **Callee-Whitebox**
+![Appstub_Callee.png](./images/callee_whitebox.png)
+<br>
+
+
+<a name="laufzeitsicht"></a>
+# Laufzeitsicht
 
 
 ## Usecase 1 Create
