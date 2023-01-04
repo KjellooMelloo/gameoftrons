@@ -91,78 +91,6 @@ Es wird eine Middleware für die verteilte Anwendung Game Of Trons entwickelt.
 |UC5| Name Server | String lookup(int, String) | Eine angefragte Methode ist nicht im Cache des Client Stubs gespeichert| Die Adresse und die Portnummer der angefragten Methode werden zurückgegeben.|Der Name Server prüft, ob es einen Eintrag in der Tabelle mit der übergebenen Interface-ID und Methodenname gibt. Wenn ja, dann wird ein String zurückgegeben, der sich aus der IP-Adresse und der Portnummer zusammensetzt.| Es gibt keinen Eintrag mit der ID und dem Methodennamen. Der RPC abgebrochen |
 |UC6| ServerStub | void callRemoteObjectInterface(JSON) | Nachricht wurde vom ServerStub empfangen und unmarshaled | Der Server Stub holt die Interface-ID, den Methodennamen und die Aufrufparameter aus dem JSON-Objekt heraus und ruft das korrekte Remote-Object-Interface auf.|Das RemoteObject-Interface wurde aufgerufen  | | 
 
-## Nachrichtenformat
-Um RPCs durchzuführen müssen Methodenaufrufe in Nachrichten umgewandelt werden. Dafür bringen wir die Methodenaufrufe erstmal in ein JSON-Format.
-<br>
-<br>
-message = 
-<br>
-{
-        <br>
-        "interface" : Interface-ID als String,
-        <br>
-        "method": Methodenname als String,
-        <br>
-        "type1": primitiver Datentyp des ersten Aufrufparameters als String,
-        <br>
-        "value1" : der Wert des ersten Aufrufparameters,
-        <br>
-        ...,
-        <br>
-        "typeN": ,
-        <br>
-        "valueN":
-        <br>
-}
-
-Die Nachricht im JSON-Format wird dann in ein byte-Array umgewandelt, und über das Netzwerk verschickt.
-
-Für die Registrierung beim Name Server wird ein Callback benötigt. Somit liegen hier zusätzliche Anforderungen an die Kommunikation vor. Damit eine Antwort des angefragten Servers an den aufrufenden Client gesendet werden kann, wird die Interface-ID des Clients bereits bei der Anfrage mitgesendet. Die Returnwerte der aufgerufenen Methode werden im Server Stub als Strings in einem JSON-Objekt gespeichert, anschließend verpackt und als Byte-Array übers Netzwerk versendet. Die Nachrichten sehen so aus:
-
-request =
-{
-        <br>
-        "sender-interface" : Interface-ID des Senders als String,
-        <br>
-        "interface" : Interface-ID als String,
-        <br>
-        "method": Methodenname als String,
-        <br>
-        "type1": primitiver Datentyp des ersten Aufrufparameters als String,
-        <br>
-        "value1" : der Wert des ersten Aufrufparameters,
-        <br>
-        ...,
-        <br>
-        "typeN": ,
-        <br>
-        "valueN":
-        <br>
-}
-<br>
-<br>
-answer =
-{
-        <br>
-        "client-interface": Interface-ID des Clients als String,
-        <br>
-        "type": Rückgabetyp des Ergebnisses als String,
-        <br>
-        "value": Rückgabewert des Ergebnisses String
-        <br>
-}
-<br>
-<br>
-Beispiel: message = 
-<br>
-{
-        <br>
-        "type": int,
-        <br>
-        "value": 17
-        <br>
-}
-<br><br>
 
 # Bausteinsicht 
 
@@ -323,7 +251,79 @@ Zuordnung von Bausteinen zu Infrastruktur
 
 ## *\<Konzept 1>* {#__emphasis_konzept_1_emphasis}
 
-*\<Erklärung>*
+## Nachrichtenformat
+Um RPCs durchzuführen müssen Methodenaufrufe in Nachrichten umgewandelt werden. Dafür bringen wir die Methodenaufrufe erstmal in ein JSON-Format.
+<br>
+<br>
+message = 
+<br>
+{
+        <br>
+        "interface" : Interface-ID als String,
+        <br>
+        "method": Methodenname als String,
+        <br>
+        "type1": primitiver Datentyp des ersten Aufrufparameters als String,
+        <br>
+        "value1" : der Wert des ersten Aufrufparameters,
+        <br>
+        ...,
+        <br>
+        "typeN": ,
+        <br>
+        "valueN":
+        <br>
+}
+
+Die Nachricht im JSON-Format wird dann in ein byte-Array umgewandelt, und über das Netzwerk verschickt.
+
+Für die Registrierung beim Name Server wird ein Callback benötigt. Somit liegen hier zusätzliche Anforderungen an die Kommunikation vor. Damit eine Antwort des angefragten Servers an den aufrufenden Client gesendet werden kann, wird die Interface-ID des Clients bereits bei der Anfrage mitgesendet. Die Returnwerte der aufgerufenen Methode werden im Server Stub als Strings in einem JSON-Objekt gespeichert, anschließend verpackt und als Byte-Array übers Netzwerk versendet. Die Nachrichten sehen so aus:
+
+request =
+{
+        <br>
+        "sender-interface" : Interface-ID des Senders als String,
+        <br>
+        "interface" : Interface-ID als String,
+        <br>
+        "method": Methodenname als String,
+        <br>
+        "type1": primitiver Datentyp des ersten Aufrufparameters als String,
+        <br>
+        "value1" : der Wert des ersten Aufrufparameters,
+        <br>
+        ...,
+        <br>
+        "typeN": ,
+        <br>
+        "valueN":
+        <br>
+}
+<br>
+<br>
+answer =
+{
+        <br>
+        "client-interface": Interface-ID des Clients als String,
+        <br>
+        "type": Rückgabetyp des Ergebnisses als String,
+        <br>
+        "value": Rückgabewert des Ergebnisses String
+        <br>
+}
+<br>
+<br>
+Beispiel: message = 
+<br>
+{
+        <br>
+        "type": int,
+        <br>
+        "value": 17
+        <br>
+}
+<br><br>
+
 
 ## *\<Konzept 2>* {#__emphasis_konzept_2_emphasis}
 
