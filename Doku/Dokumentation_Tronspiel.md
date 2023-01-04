@@ -186,9 +186,10 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 
 <a name="bausteinsicht"></a>
 # Bausteinsicht
+## Ebene 1
 
 <a name="whiteboxgesamt"></a>
-## Whitebox Gesamtsystem
+### Whitebox Gesamtsystem
 
 Game Of Trons ist in drei Komponenten aufgeteilt, die in der unteren Abbildung zu sehen sind.
 Die Komponenten bieten über Schnittstellen ihre Funktionalitäten an und nutzen ebenso über Schnittstellen die Funktionalitäten anderer Komponenten.
