@@ -290,11 +290,10 @@ Nachrichtenfromate unter Lösungsstrategie.
 
 # Verteilungssicht {#section-deployment-view}
 
-Gesamtsystem
+** Einordnung der Middleware im Gesamtsystem**
 ![Deployment_Tron](./images/Deployment_Tron.png)
 
-Zoom in Middleware
-![Deployment_ZoomMW](./images/Deployment_ZoomMW.png)
+
 
 ## Infrastruktur Ebene 1 {#_infrastruktur_ebene_1}
 
