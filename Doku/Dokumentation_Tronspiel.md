@@ -334,10 +334,33 @@ Die Schnittstelle **IRemoteObject** bietet die Funktionalität zum Empfangen von
 
 ![Model_Ebene3](images/Model_Ebene3_Refactor.png)
 
-|Methode    |Kurzbeschreibung|
-|-|-|
-|||
+*Öffentlich (GameManager und GameLogic):*
+| Methode | Kurzbeschreibung |
+| --- | --- |
+| ``getInstance()`` | Liefert die IModel-Instanz(Singleton-Pattern)|
+| ``join(int)`` | Zum Erstellen oder Beitreten einer Lobby |
+| ``cancelWait()`` | Zum Abbrechen der Lobby durch Ablaufen der Wartezeit oder Drücken auf 'Cancel' |
+| ``startGame(int,int)`` | Lässt das Spiel mit den übergebenen Einstellungen (Spielfeldgröße und Spielgeschwindigkeit) starten|
+| ``changePlayerDirection(int,String)`` | Für Verarbeitung der Tasteneingaben für einen Spieler|
+| ``init(int,int,int)`` | Wird in `startGame()` aufgerufen und initialisert das Spiel |
+| ``updatePlayers()`` | Aktualisiert die Position aller Spieler und bereitet tote Spieler auf ihre Entfernung vor |
+| ``getGameState()`` | Liefert den GameState für den Manager als String |
+| ``getGameWinner()`` | Liefert die id des Siegers oder -1 bei Unentschieden |
+| ``getPlayerPositions()`` | Liefert die Positionen aller Spieler im Format int[3] mit {Spieler-ID,x,y} für die aktuelle Position und {Spieler-ID,-1,-1} wenn der Spieler tot ist |
 
+``Player`` und ``Position`` haben nur Getter/ Setter als öffentliche Methoden. ``prev()`` und ``next()`` von ``Direction`` liefern die ordinal vorherige/ nächste Richtung von LEFT,UP,RIGHT,DOWN. In ``run()`` von ``WaitingTimer`` wird ``cancelWait()`` von ``GameManager`` aufgerufen, um das Spiel abzubrechen.
+
+*Privat:*
+| Methode | Kurzbeschreibung |
+| --- | --- |
+| ``update()`` | Der Gameloop/ die tick-Methode des Spiels. Aktualisiert alle Spieler und schickt Updates/ Spielergebnis an die View/ den Controller |
+| ``getPlayerById(int)`` | Liefert das Player-Objekt mit der übergebenen id |
+| ``calcNextPos(Position,Direction,String)`` | Liefert die berechnete Position aus den übergebenen Parametern |
+| ``movePlayer(Player)`` | Bewegt den übergebenen Spieler weiter, indem seine front an den trail gehangen wird |
+| ``setGameOver()`` | Setzt den GameState auf OVER |
+| ``getNumLivingPlayers()`` | Liefert die Anzahl der noch lebenden (``isAlive=true``) Spielern |
+| ``checkForCollision(Player)`` | Gibt zurück, ob ein Spieler eine Kollision hat |
+| ``killPlayers(List<Player>)`` | Tötet alle Spieler die sich in der übergebenen Liste befinden |
    
 ### Whitebox View
 
