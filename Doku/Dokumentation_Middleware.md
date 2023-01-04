@@ -248,81 +248,61 @@ Zuordnung von Bausteinen zu Infrastruktur
 *\<Diagramm + Erläuterungen>*
 
 # Querschnittliche Konzepte {#section-concepts}
-
-## *\<Konzept 1>* {#__emphasis_konzept_1_emphasis}
+Auf folgende querschnittlichen Konzepte haben wir uns gemeinsam mit unserer Partnergruppe Gamma 4 geeinigt:
 
 ## Nachrichtenformat
-Um RPCs durchzuführen müssen Methodenaufrufe in Nachrichten umgewandelt werden. Dafür bringen wir die Methodenaufrufe erstmal in ein JSON-Format.
-<br>
-<br>
-message = 
-<br>
-{
-        <br>
-        "interface" : Interface-ID als String,
-        <br>
-        "method": Methodenname als String,
-        <br>
+Um RPCs durchführen zu können müssen Methodenaufrufe in Nachrichten umgewandelt werden. Dafür werden die Methodenaufrufe in ein einheitliches JSON-Format transformiert. Verschickt wird ein JSON-Objekt mit der Interface-ID des adressierten Interfaces, der Methodenname und die Aufrufparameter der Methode mit jeweiligem Typ und Wert in einem Array.
+
+
+(JsonObjectMessage = {
+    "interfaceID": Interface-ID als int,
+    "methodName": Methodenname als String,
+     "args": [
         "type1": primitiver Datentyp des ersten Aufrufparameters als String,
-        <br>
-        "value1" : der Wert des ersten Aufrufparameters,
-        <br>
-        ...,
-        <br>
-        "typeN": ,
-        <br>
-        "valueN":
-        <br>
-}
+        "val1": der Wert des ersten Aufrufparameters,
+        "typeN": primitiver Datentyp des n-ten Aufrufparameters als String,
+        "valN": der Wert des n-ten Aufrufparameters
+    ]
+})
 
-Die Nachricht im JSON-Format wird dann in ein byte-Array umgewandelt, und über das Netzwerk verschickt.
+Das JSON-Objekt wird in ein Byte-Array umgewandelt, und über das Netzwerk verschickt.
+Einige beispielhafte RPCs sind im Folgenden skizziert:
 
-Für die Registrierung beim Name Server wird ein Callback benötigt. Somit liegen hier zusätzliche Anforderungen an die Kommunikation vor. Damit eine Antwort des angefragten Servers an den aufrufenden Client gesendet werden kann, wird die Interface-ID des Clients bereits bei der Anfrage mitgesendet. Die Returnwerte der aufgerufenen Methode werden im Server Stub als Strings in einem JSON-Objekt gespeichert, anschließend verpackt und als Byte-Array übers Netzwerk versendet. Die Nachrichten sehen so aus:
-
-request =
-{
-        <br>
-        "sender-interface" : Interface-ID des Senders als String,
-        <br>
-        "interface" : Interface-ID als String,
-        <br>
-        "method": Methodenname als String,
-        <br>
-        "type1": primitiver Datentyp des ersten Aufrufparameters als String,
-        <br>
-        "value1" : der Wert des ersten Aufrufparameters,
-        <br>
-        ...,
-        <br>
-        "typeN": ,
-        <br>
-        "valueN":
-        <br>
+(JsonObjectInvoke = {
+    "interfaceID": 12,
+    "methodName": "changeDir",
+    "args": [
+        "playerNumber": 1,
+        "direction": 2
+    ]
+})
+JsonObjectInvoke = {
+    "interfaceID": 12,
+    "methodName": "changeDir",
+    "args": [
+        "type1": "int",
+        "val1": 1,
+        "typeN": "TYP",
+        "valN": val
+    ]
 }
-<br>
-<br>
-answer =
-{
-        <br>
-        "client-interface": Interface-ID des Clients als String,
-        <br>
-        "type": Rückgabetyp des Ergebnisses als String,
-        <br>
-        "value": Rückgabewert des Ergebnisses String
-        <br>
+JsonObjectLookUp = {
+    "method": 0(lookup),
+    "args": [
+        "ifaceID": Int,
+        "methodName": Str,
+        ("playerID": Int)
+    ]
 }
-<br>
-<br>
-Beispiel: message = 
-<br>
-{
-        <br>
-        "type": int,
-        <br>
-        "value": 17
-        <br>
+JsonObjectRegister = {
+    "method": 1(register),
+    "args": [
+        "ifaceID": Int,
+        "methodName": Str,
+        "IpAddr": "XXX.XXX.XXX.XXX",
+        "Port": "YYYYY"
+    ]
 }
-<br><br>
 
 
 ## *\<Konzept 2>* {#__emphasis_konzept_2_emphasis}
