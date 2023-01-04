@@ -111,14 +111,14 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 | Randbedingung           | Erläuterung                                 |
 |-------------------------|---------------------------------------------|
 | Programmiersprache | Die Vorgabe der Aufgabenstellung erfordert die Nutzung einer objektorientierten Programmiersprache. Die Nutzung von Java wird empfohlen, da in dieser Sprache Code-Beispiele in den Vorlesungen gezeigt werden. Wir haben uns aus diesem Grund für Java entschieden. |
-| Versionsverwaltung | Die Nutzung von unserem hochschuleigenen Gitlab ist ebenfalls vorgeschrieben. Wir arbeiten gerne mit dieser Versionsverwaltung, da ein effizientes Zusammenarbeiten im Team ermöglicht und zu intensivem Austausch angeregt wird. |
-| Schnittstellen     | Kommunikation RPC und REST |
+| Versionsverwaltung | Die Nutzung von unserem hochschuleigenen Gitlab ist ebenfalls vorgeschrieben. Aufgrund eines Hackerangriffs in der Hochschule sind wir später im Projekt auf GitHub umgestiegen. |
+| Schnittstellen     | Kommunikation mit RPC  |
 
 **\<Organisatorische Randbedingungen>**
 | Randbedingung   | Erläuterung |
 |-----------------|-------------|
 | Team            | Kjell May, Viviam Ribeiro und Kathleen Neitzel aus dem Studiengang der Angewandten Informatik. Fachsemester 6 und 7. |
-| Zeit            | Standalone Applikation bis Mitte November, endgültige Abgabe Ende Januar 2023. |
+| Zeit            |Abgabe am 19. Januar 2023. |
 
 
 <a name="kontextabgrenzung"></a>
@@ -203,8 +203,9 @@ Die Komponentenaufteilung richtet sich nach dem eingesetzten MVC-Architekturmust
 | Baustein | Kurzbeschreibung |
 | --- | --- |
 | Model | Enthält das Datenmodell und die Spielelogik |
-| View | Verantwortlich für die GUI-Anzeige|
+| View | Verantwortlich für die GUI-Anzeige und das Empfangen von Nutzereingaben|
 |Controller | Regelt die Ablaufsemantik außerhalb des Spiels und vermittelt zwischen Model und View.|
+| Application Stub | Fängt Methodenaufrufe auf und leite sie an die Middleware weiter. Wird von der Middleware aufgerufen, um Methodenaufrufe an die aufgerufene Klasse weiterzuleiten. |
 
 
 <a name="modelblackbox"></a>
@@ -216,7 +217,7 @@ Das Model ist in unserem Spiel für die Spielelogik zuständig. Es berechnet den
 
 **Schnittstelle(n)**
 
-Um ein Spielende zu signalisieren, benötigt das Model die angebotene Schnittstelle *IModelController* vom Controller. Um die View zu aktualisieren, benötigt das Model die Schnittstelle *IModelView* von der View. Das Model selbst bietet die Schnittstelle *IModel* für den Controller an, um das Spiel zu starten und Tasteneingaben verarbeiten zu können.  
+Um einen Spielstart und ein Spielende zu signalisieren, benötigt das Model die angebotene Schnittstelle *IModelController* vom Controller. Um die angezeigten Daten in der View zu aktualisieren, benötigt das Model die Schnittstelle *IModelView* von der View. Das Model selbst bietet die Schnittstelle *IModel* für den Controller an, um das Spiel zu initialisieren und über Tasteneingaben informiert zu werden.
 
 | Methode | Kurzbeschreibung |
 | --- | --- |
@@ -230,27 +231,27 @@ Um ein Spielende zu signalisieren, benötigt das Model die angebotene Schnittste
 **Zweck/ Verantwortung**
 
  Das View-Subsystem implementiert die gleichnamige View des eingesetzten MVC-Patterns.
- Das Subsystem stellt die grafische Benutzeroberfläche bereit. Es nimmt Aktionen vom Nutzer entgegen und leitet diese zum Controller weiter. 
+ Die Komponente stellt die grafische Benutzeroberfläche bereit. Es nimmt Aktionen vom Nutzer entgegen und leitet diese zum Controller weiter. 
 
- Bei Bedarf, im Falle einer Änderung im Datenmodell (Datenmodell wird im Subsystem Model verwaltet), informiert der Controller die View über die Änderung. Daraufhin passt die View die angezeigten Inhalte an.
+ Bei Bedarf, im Falle einer Änderung im Datenmodell (Datenmodell wird im Subsystem Model verwaltet), wird die View darüber informiert und passt die angezeigten Inhalte an.
 
 **Schnittstelle(n)**
 
-Die View bietet die Anzeigefunktionalitäten, die Aktualisierung der Spielfeldgröße und das Setzen des Spielergebnisses über die Schnittstelle **IControllerView**
+Die View bietet die Bildschirmanzeigefunktionalität, das Setzen der Spielfeldgröße und das Setzen des Spielergebnisses über die Schnittstelle **IControllerView** an.
 
 
 | Methode | Kurzbeschreibung |
 | --- | --- |
-| showScreen(String) | Zeigt den Bildschirm an, der zum als String übergebenen Programmzustand passt |
-| setGameFieldSize(int)| setzt die Spielfeldgröße in der View|
-| notifyGameResult(int) | setzt ein Spielergebnis in der View |
+| showScreen(String) | Zeigt den Bildschirm an, der zum als String übergebenen Programmzustand passt. |
+| setGameFieldSize(int)| setzt die Spielfeldgröße in der View. Der Aufrufparameter bestimmt die Anzahl der Reihen und Spalten des rasterförmigen Spielfeldes.|
+| notifyGameResult(int) | setzt ein Spielergebnis in der View. Die Methode wird mit der SpielerID des Gewinners aufgerufen oder mit -1, wenn das Spiel unentschieden ist. |
 
 
 Die View erlaubt das Aktualisieren der Spielerdaten über die Schnittstelle **IModelView**
 
 | Methode | Kurzbeschreibung |
 | --- | --- |
-|updatePlayer(int[]) | Aktualisiert die Spielerliste, die in der View gehalten wird|
+|updatePlayer(int, int, int) | Aktualisiert die Spielerliste, die in der View gehalten wird. Der erste Parameter ist die ID des zu aktualisierenden Spielers. Der zweite und dritte Parameter sind die neuen X- und Y-Koordinate des Spielers. Wenn die Koordinaten -1 und -1 betragen, dann ist der Spieler tot. |
 
 
 <a name="controllerblackbox"></a>
@@ -301,15 +302,15 @@ Die Schnittstelle **IRemoteObject** bietet die Funktionalität zum Empfangen von
 
 <a name="ebene2"></a>
 ## Ebene 2 
-   
+
 ### Whitebox Model
 
 ![Model_Ebene2](./images/Model_Ebene2.png)
 
 
-### Whitebox View 
+### View Ebene 2
 
-![View_Ebene3](./images/Whitebox1_View.png)
+![View_Ebene2](./images/View_Ebene_2.png)
 
 
 ### Whitbox Controller
@@ -318,7 +319,7 @@ Die Schnittstelle **IRemoteObject** bietet die Funktionalität zum Empfangen von
 <br>
 
 
-### Whitebox Application Stub
+### Application Stub Ebene 2
 
 ![AppStub_Ebene2](./images/Whitebox_AppStub.png)
 
@@ -326,7 +327,7 @@ Die Schnittstelle **IRemoteObject** bietet die Funktionalität zum Empfangen von
 <a name="ebene3"></a>
 ## Ebene 3 
 
-### Whitebox Model
+### Model Ebene 3
 
 ![Model_Ebene3](images/Model_Ebene3_Refactor.png)
 
@@ -383,6 +384,7 @@ Methodenliste
  **Callee-Whitebox**
 ![Appstub_Callee.png](./images/callee_whitebox.png)
 <br>
+
 
 <a name="laufzeitsicht"></a>
 # Laufzeitsicht
