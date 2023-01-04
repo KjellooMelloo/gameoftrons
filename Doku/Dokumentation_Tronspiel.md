@@ -111,14 +111,14 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 | Randbedingung           | Erläuterung                                 |
 |-------------------------|---------------------------------------------|
 | Programmiersprache | Die Vorgabe der Aufgabenstellung erfordert die Nutzung einer objektorientierten Programmiersprache. Die Nutzung von Java wird empfohlen, da in dieser Sprache Code-Beispiele in den Vorlesungen gezeigt werden. Wir haben uns aus diesem Grund für Java entschieden. |
-| Versionsverwaltung | Die Nutzung von unserem hochschuleigenen Gitlab ist ebenfalls vorgeschrieben. Wir arbeiten gerne mit dieser Versionsverwaltung, da ein effizientes Zusammenarbeiten im Team ermöglicht und zu intensivem Austausch angeregt wird. |
-| Schnittstellen     | Kommunikation RPC und REST |
+| Versionsverwaltung | Die Nutzung von unserem hochschuleigenen Gitlab ist ebenfalls vorgeschrieben. Aufgrund eines Hackerangriffs in der Hochschule sind wir später im Projekt auf GitHub umgestiegen. |
+| Schnittstellen     | Kommunikation mit RPC  |
 
 **\<Organisatorische Randbedingungen>**
 | Randbedingung   | Erläuterung |
 |-----------------|-------------|
 | Team            | Kjell May, Viviam Ribeiro und Kathleen Neitzel aus dem Studiengang der Angewandten Informatik. Fachsemester 6 und 7. |
-| Zeit            | Standalone Applikation bis Mitte November, endgültige Abgabe Ende Januar 2023. |
+| Zeit            |Abgabe am 19. Januar 2023. |
 
 
 <a name="kontextabgrenzung"></a>
@@ -202,7 +202,7 @@ Die Komponentenaufteilung richtet sich nach dem eingesetzten MVC-Architekturmust
 | Baustein | Kurzbeschreibung |
 | --- | --- |
 | Model | Enthält das Datenmodell und die Spielelogik |
-| View | Verantwortlich für die GUI-Anzeige|
+| View | Verantwortlich für die GUI-Anzeige und das Empfangen von Nutzereingaben|
 |Controller | Regelt die Ablaufsemantik außerhalb des Spiels und vermittelt zwischen Model und View.|
 
 
@@ -215,7 +215,7 @@ Das Model ist in unserem Spiel für die Spielelogik zuständig. Es berechnet den
 
 **Schnittstelle(n)**
 
-Um ein Spielende zu signalisieren, benötigt das Model die angebotene Schnittstelle *IModelController* vom Controller. Um die View zu aktualisieren, benötigt das Model die Schnittstelle *IModelView* von der View. Das Model selbst bietet die Schnittstelle *IModel* für den Controller an, um das Spiel zu starten und Tasteneingaben verarbeiten zu können.  
+Um einen Spielstart und ein Spielende zu signalisieren, benötigt das Model die angebotene Schnittstelle *IModelController* vom Controller. Um die angezeigten Daten in der View zu aktualisieren, benötigt das Model die Schnittstelle *IModelView* von der View. Das Model selbst bietet die Schnittstelle *IModel* für den Controller an, um das Spiel zu initialisieren und über Tasteneingaben informiert zu werden.
 
 | Methode | Kurzbeschreibung |
 | --- | --- |
@@ -379,21 +379,6 @@ Methodenliste
 
 ? Model und Controller auseinanderpflücken --> Use Cases überlegen.
 
-<a name="laufzeitsicht"></a>
-# Laufzeitsicht
-
-## *\<Bezeichnung Laufzeitszenario 1>* {#__emphasis_bezeichnung_laufzeitszenario_1_emphasis}
-
--   \<hier Laufzeitdiagramm oder Ablaufbeschreibung einfügen>
-
--   \<hier Besonderheiten bei dem Zusammenspiel der Bausteine in diesem
-    Szenario erläutern>
-
-## *\<Bezeichnung Laufzeitszenario 2>* {#__emphasis_bezeichnung_laufzeitszenario_2_emphasis}
-
-...
-
-## *\<Bezeichnung Laufzeitszenario n>* {#__emphasis_bezeichnung_laufzeitszenario_n_emphasis}
 
 ## Usecase 1 Create
 ![uc1](images/uc1.png)
