@@ -155,7 +155,7 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 |UC2 | Controller | void handleWaitingButtonClick() | Der Nutzer befindet sich alleine in der Lobby und hat auf den Button "Cancel" geklickt.| Der Spieler wird  zum Startbildschirm zurückgeleitet. |Die Methode bricht den Wartevorgang ab. | |
 |UC2, UC6, UC8 | Controller | void deleteGameInstance() | Der Wartevorgang wurde durch Nutezraktion oder Timerablauf abgebrochen oder das Spiel wurde zu Ende gespielt. | Die Spielinstanz wurde gelöscht. |Die Methode löscht die aktuelle Spielinstanz. |  |
 |UC2 | Controller| void cancelWaitingTimer() | Der Nutzer befindet sich im Warteraum und der Timer des Warteraums ist abgelaufen, weil zu lange auf anderen Spieler gewartet wurde. |Der Nutzer wird zum Startbildschirm weitergeleitet. |Die Methode bricht den Wartevorgang ab und informiert den Nutzer über den Aufruf der Methode informUser("Wartezeit zu lang. Der Wartevorgang wird abgebrochen ...").| |
-|UC3 |Controller | void notifyCountdownOver() | Der Countdown wurde von der View dem Nutzer angezeigt. | Der Controller bekommt mit, dass der Countdown vorbei ist und ruft die Methode startGame() des Models auf. | Die Methode erzeugt einen Event für den Controller, dass der Countdown vorbei ist.|  |
+|UC3 | Controller | void notifyCountdownOver() | Der Countdown wurde von der View dem Nutzer angezeigt. | Der Controller bekommt mit, dass der Countdown vorbei ist und ruft die Methode startGame() des Models auf. | Die Methode erzeugt einen Event für den Controller, dass der Countdown vorbei ist.|  |
 |UC3 | View | Color getPlayerColor(int) |Es wurden Spielerinstanzen erzeugt. | Die Farbe wird zurückgegeben. |Die Methode gibt die Farbe des Spieler zurück, dessen ID als Parameter übergeben wurde |Wenn die übergebene ID keinem Spieler gehört, wird eine Exception mit Fehlerbeschribung geworfen |
 |UC3 | View | void showPlayerColor(Color) | Die Farbe des Spielers wurde ermittelt und wird als Aufrufparameter übergeben. | Dem Nutzer wird die übergebene Farbe im aktuellen Bildschirm angezeigt. |Die Methode zeigt die Spielerfarbe an, die als Parameter übergeben wird | | 
 |UC4 | View | void drawPlayers() | Der Nutzer befindet sich im Spielbildschirm und die Spielfeldanzeige soll die aktuelle Positionen der Spieler zeigen | Auf dem Spielfeld werden die aktuell lebenden Spieler an ihren aktuellen Positionen angezeigt. |Die Methode ruft die Methode getPlayersinGameField() auf, um Informationen über die aktuellen Spieler zu erhalten. Anhand dieser Informationen werden die Spieler an ihrer aktuellen Position und Ausrichtung in Szene gesetzt. | Im Fehlerfall wird eine Exception mit Fehlerbeschreibung geworfen |
@@ -177,7 +177,8 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 | UC3 | View | setGameFieldSize(int)| Alle Spieler haben den Warteraum betreten.|Die Spielfeldgröße wird in der View gespeichert.  |Die Methode setzt die Spielfeldgröße in der View, die aus der Config-Datei geladen wurden| |
 |UC6,7,8| Controller| endGame(int)| Im Model wurde ein Gewinner festgelegt oder das Spiel wurde als unentschieden entschieden. | Die State Maschine im Controller befindet sich im Zustand "End" | Die Methode ändert die State Maschine im Controller zum Zustand "End"| |
 |UC6,7,8|View|notifyGameResult(int)| Die State Maschine des Controllers befindet sich im Zustand "End"| Die View weiß, wie das Spiel ausgegangen ist und zeigt im nächsten Schitt den Endbildschirm an.| Die Methode setzt den Gewinner des Spiels in der View-Komponente.| |
-
+| UC1,2a,2b,3,6,7,8 | Controller | setCurrentState(String) | Der Controller wurde gestartet oder ist bereits am laufen und befindet sich in einem State.  | Der State des Controllers wurde gewechselt und die behavior() Methode des aktuellen States kann ausgeführt werden. | Die Methode kann vom Controller (bzw. der State Machine) selbst innerhalb der behavior() Methode aufgerufen werden oder von außen durch das Model. In einem String wird der Folgezustand übergeben. Beim setzen des nächsten States wird direkt die behavior()-Methode ausgeführt. |  |   
+| UC1,2a,2b,3,6,7,8 | Controller | behavior() | Die State Machine hat ihren Zustand gewechselt und führt die behavior Methode aus. | Die behvaior()-Methode wurde ausgeführt und ggf. der Zustand gewechselt. | Je nachdem in welchem State sich die State Machine aktuell befindet, wird die entsprechende behvior()-Methodenimplementierung ausgewählt und ausgeführt. |  |   
 
 
 
@@ -270,6 +271,7 @@ Der Controller bietet Funktionalitäten für das Model v.a. zur Kommunikation mi
 | Methode | Kurzbeschreibung |
 | --- | --- |
 | void endGame(int) | Das Model ruft die Methode endGame() auf und übergibt als Parameter das Spielergebnis in Form eines int. Die State Machine wechselt vom Zustand GAME in den Zustand END. | |
+| void setCurrentState(String) | Das Model einen Zustandswechsel der State Machine mit dieser Methode bewirken. Der nächste Zustand wird hierbei in einem String übergeben. |
 
 
 Der Controller bietet Funktionalitäten für die View v.a. zur Kommunikation mit dem Model über die Schnittstelle **IViewController** an.
@@ -357,21 +359,17 @@ State Machine
 ![SM_WB3.png](./images/SM_WB3.png)
 <br>
 
+Controller
+| Methode | Kurzbeschreibung |
+| behavior() | Führt nach einem Zustandswechsel die dem aktuellen State entsprechende behavior()-Implementierung aus. |
+| deleteGameInstance() | Löscht die aktuelle Spielinstanz. |
 
-Methodenliste
-| Methode           | Beschreibung                                 |
-|-------------------------|---------------------------------------------|
-| createGame() | Erstellt eine neue Spielinstanz, nutzt User Input der View für die Spielerzahl und lädt die Config-Datei. Falls bereits eine vorhanden --> bestehende ersetzt. |
-| deleteGame() | Löscht die bestehende Spielinstanz. Falls keine vorhanden --> Exception |
-| checkState() | Prüft, ob eine gültige Anzahl an Spielern vorhanden sind. Prüft, ob benötigte Spielinstanz für angefragte Operation vorhanden. |
-| next() | Wechselt in den gültigen angefragten Zustand. Aktualisierung des aktuellen States. Vorheriger State wird auf Stack gespeichert. |
-| back() | Lädt den letzten (gültigen) Zustand auf dem Stack als aktuellen State. |
-| resetStateMachine() | Löscht alle auf dem Stack gespeicherten States und lädt den Default State als aktuellen State. |
-| updateSpieler() | Aktualisiert die Spielerliste. |
-| updateField() | Aktualisiert alle Farben des Spielfelds. |
-| ...() | ... |
-
-
+IConfig
+| Methode | Kurzbeschreibung|
+| --- | --- |
+| loadConfigParameters() | Liefert die für das Spiel relevanten Parameter aus der Config-Datei in einem Array. |   
+| loadDefaultPlayerCount() | Lädt den in der Config gespeicherten Defaultwert für die Spieleranzahl |   
+   
 ### Whitebox AppStub
    
 **Caller-Whitebox**
@@ -383,6 +381,7 @@ Methodenliste
 ![Appstub_Callee.png](./images/callee_whitebox.png)
 <br>
 
+Die komplette Methodenliste ist bereits in der Blackbox-Sicht (#applicationstubblackblox) des Application Stubs beschrieben, da alle Methoden über Schnittstellen nach außen hin angeboten werden.
 
 <a name="laufzeitsicht"></a>
 # Laufzeitsicht
