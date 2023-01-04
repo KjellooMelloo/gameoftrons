@@ -204,6 +204,7 @@ Die Komponentenaufteilung richtet sich nach dem eingesetzten MVC-Architekturmust
 | Model | Enthält das Datenmodell und die Spielelogik |
 | View | Verantwortlich für die GUI-Anzeige und das Empfangen von Nutzereingaben|
 |Controller | Regelt die Ablaufsemantik außerhalb des Spiels und vermittelt zwischen Model und View.|
+| Application Stub | Fängt Methodenaufrufe auf und leite sie an die Middleware weiter. Wird von der Middleware aufgerufen, um Methodenaufrufe an die aufgerufene Klasse weiterzuleiten. |
 
 
 <a name="modelblackbox"></a>
@@ -229,27 +230,27 @@ Um einen Spielstart und ein Spielende zu signalisieren, benötigt das Model die 
 **Zweck/ Verantwortung**
 
  Das View-Subsystem implementiert die gleichnamige View des eingesetzten MVC-Patterns.
- Das Subsystem stellt die grafische Benutzeroberfläche bereit. Es nimmt Aktionen vom Nutzer entgegen und leitet diese zum Controller weiter. 
+ Die Komponente stellt die grafische Benutzeroberfläche bereit. Es nimmt Aktionen vom Nutzer entgegen und leitet diese zum Controller weiter. 
 
- Bei Bedarf, im Falle einer Änderung im Datenmodell (Datenmodell wird im Subsystem Model verwaltet), informiert der Controller die View über die Änderung. Daraufhin passt die View die angezeigten Inhalte an.
+ Bei Bedarf, im Falle einer Änderung im Datenmodell (Datenmodell wird im Subsystem Model verwaltet), wird die View darüber informiert und passt die angezeigten Inhalte an.
 
 **Schnittstelle(n)**
 
-Die View bietet die Anzeigefunktionalitäten, die Aktualisierung der Spielfeldgröße und das Setzen des Spielergebnisses über die Schnittstelle **IControllerView**
+Die View bietet die Bildschirmanzeigefunktionalität, das Setzen der Spielfeldgröße und das Setzen des Spielergebnisses über die Schnittstelle **IControllerView** an.
 
 
 | Methode | Kurzbeschreibung |
 | --- | --- |
-| showScreen(String) | Zeigt den Bildschirm an, der zum als String übergebenen Programmzustand passt |
-| setGameFieldSize(int)| setzt die Spielfeldgröße in der View|
-| notifyGameResult(int) | setzt ein Spielergebnis in der View |
+| showScreen(String) | Zeigt den Bildschirm an, der zum als String übergebenen Programmzustand passt. |
+| setGameFieldSize(int)| setzt die Spielfeldgröße in der View. Der Aufrufparameter bestimmt die Anzahl der Reihen und Spalten des rasterförmigen Spielfeldes.|
+| notifyGameResult(int) | setzt ein Spielergebnis in der View. Die Methode wird mit der SpielerID des Gewinners aufgerufen oder mit -1, wenn das Spiel unentschieden ist. |
 
 
 Die View erlaubt das Aktualisieren der Spielerdaten über die Schnittstelle **IModelView**
 
 | Methode | Kurzbeschreibung |
 | --- | --- |
-|updatePlayer(int[]) | Aktualisiert die Spielerliste, die in der View gehalten wird|
+|updatePlayer(int, int, int) | Aktualisiert die Spielerliste, die in der View gehalten wird. Der erste Parameter ist die ID des zu aktualisierenden Spielers. Der zweite und dritte Parameter sind die neuen X- und Y-Koordinate des Spielers. Wenn die Koordinaten -1 und -1 betragen, dann ist der Spieler tot. |
 
 
 <a name="controllerblackbox"></a>
@@ -303,26 +304,25 @@ Die Schnittstelle **IRemoteObject** bietet die Funktionalität zum Empfangen von
 
 
 
-**Controller Whitebox (Ebene 1)**
+**Controller Ebene 2**
 
 ![Controller_Blackbox.png](./images/Controller_Blackbox.png)
 <br>
 
 
-## Ebene 2 
 
-### Whitebox Model
+### Model Ebene 2
 
 ![Model_Ebene2](./images/Model_Ebene2.png)
 
 
-### Whitebox View 
+### View Ebene 2
 
-![View_Ebene3](./images/Whitebox1_View.png)
+![View_Ebene2](./images/View_Ebene_2.png)
 
 
 
-### Whitebox Application Stub
+### Application Stub Ebene 2
 
 ![AppStub_Ebene2](./images/Whitebox_AppStub.png)
 
@@ -330,7 +330,7 @@ Die Schnittstelle **IRemoteObject** bietet die Funktionalität zum Empfangen von
 <a name="ebene3"></a>
 ## Ebene 3 
 
-### Whitebox Model
+### Model Ebene 3
 
 ![Model_Ebene3](images/Model_Ebene3_Refactor.png)
 
@@ -338,7 +338,7 @@ Die Schnittstelle **IRemoteObject** bietet die Funktionalität zum Empfangen von
 |-|-|
 |||
 
-### Whitebox View
+### View Ebene 3
 
 
 ![View_Ebene3](./images/Whitebox_View.png)
@@ -378,14 +378,14 @@ Methodenliste
 | ...() | ... |
 
 
-   ### Whitebox AppStub
+   ### Application Stub Ebene 3
    
-   **Caller-Whitebox**
+   **Caller*
    ![Appstub_Caller.png](./images/caller_whitebox.png)
    <br>
    
    
-    **Callee-Whitebox**
+    **Callee**
    ![Appstub_Callee.png](./images/callee_whitebox.png)
    <br>
 
