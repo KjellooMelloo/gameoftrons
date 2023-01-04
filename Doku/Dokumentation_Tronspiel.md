@@ -215,17 +215,19 @@ Die Komponentenaufteilung richtet sich nach dem eingesetzten MVC-Architekturmust
 
 **Zweck/ Verantwortung**
 
-Das Model ist in unserem Spiel für die Spielelogik zuständig. Es berechnet den aktuellen Spielstand anhand der Eingaben und gibt die Informationen an die View weiter
+Das Model ist in unserem Spiel für die Lobby- und die Spielelogik zuständig. Für die Lobby registriert es neue Spieler und startet das Spiel bei voller Lobby oder bricht es im Bedarfsfall ab. Für das Spiel berechnet es den aktuellen Spielstand anhand der Eingaben und gibt die Informationen an die View weiter
 
 **Schnittstelle(n)**
 
-Um einen Spielstart und ein Spielende zu signalisieren, benötigt das Model die angebotene Schnittstelle *IModelController* vom Controller. Um die angezeigten Daten in der View zu aktualisieren, benötigt das Model die Schnittstelle *IModelView* von der View. Das Model selbst bietet die Schnittstelle *IModel* für den Controller an, um das Spiel zu initialisieren und über Tasteneingaben informiert zu werden.
+Um einen Spielstart und ein Spielende zu signalisieren, benötigt das Model die angebotene Schnittstelle *IModelController* vom Controller. Um die angezeigten Daten in der View zu aktualisieren, benötigt das Model die Schnittstelle *IModelView* von der View. Das Model selbst bietet die Schnittstelle *IModel* für den Controller an, um die Lobby zu steuern, das Spiel zu initialisieren und über Tasteneingaben informiert zu werden.
 
 | Methode | Kurzbeschreibung |
 | --- | --- |
-| getInstance() | Liefert die IModel-Instanz(Singleton-Pattern)|
-| startGame(int,int,int) | Lässt das Spiel mit den übergebenen Einstellungen (Anzahl Spieler, Spielfeldgröße und Spielgeschwindigkeit) starten|
-| changePlayerDirection(int,String) | Für Verarbeitung der Tasteneingaben für einen Spieler|
+| ``getInstance()`` | Liefert die IModel-Instanz(Singleton-Pattern)|
+| ``join(int)`` | Zum Erstellen oder Beitreten einer Lobby |
+| ``cancelWait()`` | Zum Abbrechen der Lobby durch Ablaufen der Wartezeit oder Drücken auf 'Cancel' |
+| ``startGame(int,int)`` | Lässt das Spiel mit den übergebenen Einstellungen (Spielfeldgröße und Spielgeschwindigkeit) starten|
+| ``changePlayerDirection(int,String)`` | Für Verarbeitung der Tasteneingaben für einen Spieler|
 
 <a name="viewblackbox"></a>
 ### View (Blackbox) 
