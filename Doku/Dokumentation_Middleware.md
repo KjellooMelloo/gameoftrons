@@ -80,15 +80,16 @@ Es wird eine Middleware für die verteilte Anwendung Game Of Trons entwickelt.
 
 | Usecase | Akteur |Funktionssignatur| Vorbedingung | Nachbedingung | Ablaufsemantik | Fehlersemantik |
 |---|---|---|---|---|---|---|
-|UC1| ServerStub, NameServer | void register(int, String InetAddress, int) | Ein CalleeStub aus dem ApplicationStub möchte sich als RemoteObject registrieren | Das RemoteObject wurde im NameServer gespeichert | Der NameServer wird aufgerufen. Der NameServer prüft, ob zur mitgegebenen ID und Methodennamen bereits ein Eintrag vorhanden ist(Aufruf checkInterfaceInTable).  Die ID und der Methodenname wird mit der übergebenen InetAddress und Portnummer eingetragen | Eintrag mit der ID und dem Methodennamen existiert bereits. Dann wird der Eintrag überschrieben |
+|UC1| ServerStub, NameServer | int register(int, String InetAddress, int) | Ein CalleeStub aus dem ApplicationStub möchte sich als RemoteObject registrieren | Der Name Server hat eine Antwort zurückgeschickt | Der Server Stub schickt eine Nachricht mit den notwendigen Daten (Aufrufparameter) zur Registrierung nach dem TCP-Protokoll an den Name Server. Der Name Server schickt die eingetragene ID über eine Nachricht zurück. Die ID wird zurückgegeben. | Eine Registrierung war nicht möglich, weil die Komponente sich nur einmal registrieren darf, wenn es sich um das Model handelt. In dem Fall wird -1 zurückgegeben.|
+|UC1|  NameServer | void register(int, String InetAddress, int) | Eine Nachricht ist aus einem ServerStub angekommen | Das RemoteObject wurde im NameServer gespeichert | Der NameServer entpackt die Daten aus der Nachricht und prüft, ob zur mitgegebenen ID und Methodennamen bereits ein Eintrag vorhanden ist(Aufruf checkInterfaceInTable).  Aus der übergebenen Interface-ID wird eine eindeutige Object-ID erzeugt. Die Object-ID und der Methodenname werden mit der übergebenen InetAddress und Portnummer eingetragen. Die erzeugte Object-ID wird an den anfragenden Server Stub zurückgeschickt.| Eintrag mit der ID und dem Methodennamen existiert bereits. Dann wird der Eintrag überschrieben. Wenn es sich um eine Modelschnittstelle handelt und eine andere Model-Komponente hat sich bereits eingetragen, dann wird keine weitere Model-Komponente registriert. Der Name Server schickt in dem Fall -1 an den Server Stub zurück. |
 |UC1| NameServer | boolean checkInterfaceInTable(int, String) | Ein CalleeStub möchte sich als RemoteObject eintragen und hat register() aufgerufen | Es wird true zurückgegeben, wenn bereits ein Eintrag existiert sonst false| Der Name Server prüft, ob zur übergebenen ID und Methodennamen bereits ein Eintrag in der Tabelle existiert| |
 |UC2| ClientStub | void invoke(int, String, Object[]) | Eine Komponente ruft eine Remote-Komponente über eine Application Stub Schnittstelle auf | Der Aufruf wurde geprüft und die Methode marshal() wurde aufgerufen |  Prüft mithilfe von lookup() ob die übergebene Objekt-ID (erster Parameter) und die Methode (zweiter Parameter) registriert ist. Dann wird die Methode marshal() aufgerufen | Wenn die Objekt-ID nicht registriert ist, wird eine Exception geworfen|
 |UC3| ClientStub | byte[] marshal(int,String, Object[]) | Funktionsaufruf über invoke wurde getätigt, zugehörige InetAddress und Portnummer wurde durch NameResolver ermittelt | Funktionsaufruf wurde marshaled und zurückgegeben | Es wird eine Nachricht im JSON-Format aus den übergebenen Parametern InterfaceID, Methodenname und Methodenparameter (Object[]) zusammengebaut. Das JSON-Objekt wird in ein byte-Array umgewandelt und zurückgegeben | |
 |UC3.1| ClientStub | void send(InetAdress, int, byte[]) | Funktionsaufruf wurde marshaled, zugehörige InetAddress und Portnummer druch NameResolver ermittelt | Nachricht wurde verschickt | Die marshaled Nachricht wird über einen Socket an die passende InetAddress und Portnummer verschickt. | |
 |UC4| ServerStub | JSON unmarshal(byte[]) | Nachricht wurde über receive empfangen | Nachrichteninhalt wurde extrahiert und kann für call genutzt werden | | (checksum stimmt nicht überein -> ignorieren) |
 |UC4.1| ServerStub |  receive(DatagramPacket)) | Ein Socket im Server Stub hat eine Nachricht empfangen | Nachricht wurde aus dem Packet entpackt und dem Marshaler übergeben. | Die Nachricht wird aus dem übergebenen Datagram-Paket herausgeholt und dem Unmarshaler übergeben | |
-|UC5| Client Stub | String cacheOrLookup(int,String) | Ein Application Stub hat invoke aufgerufen, um eine Remote-Methode aufzurufen. Der Client Stub muss im nächsten Schritt prüfen, ob die aufgerufene Methode im Cache des Client Stubs eingetragen ist. | Die Adresse und die Portnummer der angefragten Methode werden zurückgegeben.| | Es gibt keinen Eintrag mit der ID und dem Methodennamen. Der RPC abgebrochen|
-|UC5| Name Server | String lookup(int, String) | Eine angefragte Methode ist nicht im Cache des Client Stubs gespeichert| Die Adresse und die Portnummer der angefragten Methode werden zurückgegeben.|Der Name Server prüft, ob es einen Eintrag in der Tabelle mit der übergebenen Interface-ID und Methodenname gibt. Wenn ja, dann wird ein String zurückgegeben, der sich aus der IP-Adresse und der Portnummer zusammensetzt.| Es gibt keinen Eintrag mit der ID und dem Methodennamen. Der RPC abgebrochen |
+|UC5| Client Stub | String[] cacheOrLookup(int,String) | Ein Application Stub hat invoke aufgerufen, um eine Remote-Methode aufzurufen. Der Client Stub muss im nächsten Schritt prüfen, ob die aufgerufene Methode im Cache des Client Stubs eingetragen ist. | Die Adresse und die Portnummer der angefragten Methode werden zurückgegeben.| Es wird in der Cache-Tabelle des Client-Stubs nachgeschaut, ob es einen Eintrag zur angegebenen ID(int) und dem angegebenen Methodenname(String) existiert. Wenn ja, dann wird ein Array mit der eingetragenen IP-Adresse (Index 0) und Portnummer (Index 1) zurückgegeben. Wenn nicht, dann wird der Name Server über eine Nachricht (Kommunikation mit TCP) angefragt. Das erhaltene das Ergebnis wird im selben Array-Format zurückgegeben.| Es gibt auch im Name Server keinen Eintrag mit der ID und dem Methodennamen. Der RPC abgebrochen|
+|UC5| Name Server | void lookup(int, String) | Eine angefragte Methode ist nicht im Cache des Client Stubs gespeichert. Der Client Stub schickt eine Nachricht an den Name Server mit einer Lookup-Anfrage.| Die Adresse und die Portnummer der angefragten Methode werden über eine Nachricht zurückgeschickt.|Der Name Server prüft, ob es einen Eintrag in der Tabelle mit der übergebenen Interface-ID und Methodenname gibt. Wenn ja, dann werden die IP-Adresse und die Portnummer an den anfragenden Client Stub zurückgeschickt.| Es gibt keinen Eintrag mit der ID und dem Methodennamen. Der RPC abgebrochen |
 |UC6| ServerStub | void callRemoteObjectInterface(JSON) | Nachricht wurde vom ServerStub empfangen und unmarshaled | Der Server Stub holt die Interface-ID, den Methodennamen und die Aufrufparameter aus dem JSON-Objekt heraus und ruft das korrekte Remote-Object-Interface auf.|Das RemoteObject-Interface wurde aufgerufen  | | 
 
 ## Nachrichtenformat
@@ -170,96 +171,93 @@ Beispiel: message =
 
 ![Middleware_Ebene1](./images/Middleware_Ebene1.png)
 
+Die Middleware ist in drei Komponenten aufgeteilt: Client Stub, Server Stub und Name Service. Des Weiteren werden die Middleware-Schnittstellen hinter einer Fassade gekapselt.
+Die Funktionen der einzelnen Komponenten werden im weiteren Verlauf aufgeführt.
 
-Wichtige Schnittstellen
+
+### Blackbox Client Stub
+
+Der Client Stub nimmt Funktionsaufrufe vom Application Stub entgegen und wandelt diese in ein vordefiniertes Nachrichtenformat um.
+Die Nachricht wird an eine Remote-Komponente über das Betriebssystem geschickt. Dafür fragt der Client-Stub erstmal nach der physikalischen Adresse der Remote-Komponente.
+
+*Schnittstelle IRemoteInvocation*
+
+Die Schnittstelle IRemoteInvocation kann aufgerufen werden, um eine Remote-Methode aufruzufen.
+
+|Methode| Kurzbeschreibung |
+| --- | --- |
+|invoke(int interfaceID, String methodName, Object[] args) | Erzeugt eine Nachricht aus dem Funktionsaufruf und ruft die Betriebssystemschnittstelle zum Versenden der Nachricht auf. |
+
+### Blackbox Server Stub
+
+Der Server Stub empfängt Nachrichten über das Betriebssystem und wandelt sie in Funktionsaufrufe um. Die Funktion wird dann an das zuständige Remote Object im Application Stub weitergeleitet. Dafür müssen sich die Remote Objects erstmal über den Server Stub beim Name Service registrieren.
+
+*Schnittstelle IRegister**
+
+Die Schnittstelle IRegister kann aufgerufen werden, um sich als Remote-Object im Name Server einzutragen.
+
+|Methode| Kurzbeschreibung |
+|---|---|
+| register(int interfaceID, String, InetAdress, int)| Schickt eine Nachricht an die NameService-Komponenten mit den Informationen, die für das Eintragen notwendig sind. Diese Informationen werden über die Aufrufparameter übergeben.|
+
+### Blackbox Name Service
+
+Der NameService verwaltet die IDs der Remote Objects, die sich registriert haben und die dazugehörigen IP-Adressen und Portnummern.
+Beim Name Service kann man die physikalische Adresse eines Remote Objects anfragen oder sich als Remote Object registrieren. Dafür werden Nachrichten über TCP ausgetauscht.
+
+**Diese Komponente bietet keine Schnittstellen an. Die Dienste können über Nachrichtenaustausch genutzt werden**
+
+Nachrichten werden im folgenden JSON-Format ausgetauscht:
+
+JsonObjectLookUp = {
+"method": 0,
+"args": [
+"ifaceID": Int,
+"methodName": Str,
+("playerID": Int)
+]
+}
+
+JsonObjectRegister = {
+"method": 1,
+"args": [
+"ifaceID": Int,
+"methodName": Str,
+"IpAddr": "XXX.XXX.XXX.XXX",
+"Port": "YYYYY"
+]
+}
 
 
 
-### \<Name Blackbox 1> {#__name_blackbox_1}
+## Ebene 2 
 
-*\<Zweck/Verantwortung>*
 
-*\<Schnittstelle(n)>*
-
-*\<(Optional) Qualitäts-/Leistungsmerkmale>*
-
-*\<(Optional) Ablageort/Datei(en)>*
-
-*\<(Optional) Erfüllte Anforderungen>*
-
-*\<(optional) Offene Punkte/Probleme/Risiken>*
-
-### \<Name Blackbox 2> {#__name_blackbox_2}
-
-*\<Blackbox-Template>*
-
-### \<Name Blackbox n> {#__name_blackbox_n}
-
-*\<Blackbox-Template>*
-
-### \<Name Schnittstelle 1> {#__name_schnittstelle_1}
-
-...
-
-### \<Name Schnittstelle m> {#__name_schnittstelle_m}
-
-## Ebene 2 {#_ebene_2}
-
-![Middleware_Ebene2](./images/Middleware_Ebene2.png)
-
-### Whitebox *\<Baustein 1>* {#_whitebox_emphasis_baustein_1_emphasis}
-
-*\<Whitebox-Template>*
-
-### Whitebox *\<Baustein 2>* {#_whitebox_emphasis_baustein_2_emphasis}
-
-*\<Whitebox-Template>*
-
-...
-
-### Whitebox *\<Baustein m>* {#_whitebox_emphasis_baustein_m_emphasis}
-
-*\<Whitebox-Template>*
-
-## Ebene 3 {#_ebene_3}
-
-<br>
-Client Stub Implementierung
+### Whitebox Client Stub
 <br>
 ![MW_ClientStub](./images/MW_ClientStub.png)
+<br>
 
-<br>
-Client Stub Sender
-<br>
-![MW_ClientStubSender](./images/MW_ClientStubSender.png)
+|Methode| Kurzbeschreibung|
+| --- | --- |
+|invoke(int, String, Object[]) | Ruft die Methoden marshal(), dann cacheOrLookup(), dann send() auf|
+|byte[] marshal(int,String,Object[]) | erzeugt ein JSON-Objekt aus den übergebenen Parametern und wandelt es in ein byte-Array um, das zurückgegeben wird. |
+|cacheOrLookup(int,String,String[])| 
+|send(InetAddress, int, byte[]|
 
-<br>
-Name Server
-<br>
-![MW_NameServer](./images/MW_NameServer.png)
 
-<br>
-Server Stub Implementierung
+### Whitebox Server Stub
 <br>
 ![MW_ServerStub](./images/MW_ServerStub.png)
-
 <br>
-Server Stub Receiver
+
+### Whitebox Name Service
 <br>
-![MW_ServerStubReceiver](./images/MW_ServerStubReceiver.png)
+![MW_NameServer](./images/MW_NameServer.png)
+<br>
 
 
-### Whitebox \<\_Baustein x.1\_\> {#_whitebox_baustein_x_1}
 
-*\<Whitebox-Template>*
-
-### Whitebox \<\_Baustein x.2\_\> {#_whitebox_baustein_x_2}
-
-*\<Whitebox-Template>*
-
-### Whitebox \<\_Baustein y.1\_\> {#_whitebox_baustein_y_1}
-
-*\<Whitebox-Template>*
 
 # Laufzeitsicht 
 
