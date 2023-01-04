@@ -287,8 +287,6 @@ Der Controller bietet Funktionalitäten für die View v.a. zur Kommunikation mit
 
 Der Application Stub fängt Methodenaufrufe auf, die Schnittstellen von Remote-Komponenten aufrufen. Beim Auffangen wird die Middleware aufgerufen.
 
-
-
 Außerdem leitet der Application Stub einen durch die Middleware empfangenen Methodenaufruf an die richtuge Komponentenschnittstelle weiter, wo der Aufruf abgearbeitet wird.
 
 
@@ -297,7 +295,7 @@ Außerdem leitet der Application Stub einen durch die Middleware empfangenen Met
 Die Schnittstelle **IRemoteObject** bietet die Funktionalität zum Empfangen von Remote-Methodenaufrufen an. 
 
 | Methode | Kurzbeschreibung |
-| --- | --- |
+|call(String methodName, Object[] args) | Eine zu importierende Schnittstelle wird gefragt, ob eine Methode mit dem Namen "methodName" vorhanden ist. Wenn ja, dann wird diese Methode mit den Aufrufparametern im Array "args" aufgerufen.|
 
 <a name="ebene2"></a>
 ## Ebene 2 
