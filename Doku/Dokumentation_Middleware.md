@@ -97,16 +97,17 @@ Es wird eine Middleware für die verteilte Anwendung Game Of Trons entwickelt.
 Um RPCs durchzuführen müssen Methodenaufrufe in Nachrichten umgewandelt werden. Dafür bringen wir die Methodenaufrufe erstmal in ein einheitliches JSON-Format.
 <br>
 <br>
-JsonObjectInvoke = {
-    "interfaceID": 12,
-    "methodName": "changeDir",
-    "args": [
-        "type1": "int",
-        "val1": 1,
-        "typeN": "TYP",
-        "valN": val
-    ]
+JsonObjectInvoke = {<br>
+    "interfaceID": 12,<br>
+    "methodName": "changeDir",<br>
+    "args": [<br>
+        "type1": "int",<br>
+        "val1": 1,<br>
+        "typeN": "TYP",<br>
+        "valN": val<br>
+    ]<br>
 }
+<br>
 
 Die Nachricht im JSON-Format wird dann in ein byte-Array umgewandelt und über das Netzwerk verschickt.
 <br>
@@ -180,7 +181,7 @@ Der Client Stub nimmt Funktionsaufrufe vom Application Stub entgegen und wandelt
 Die Nachricht wird an eine Remote-Komponente über das Betriebssystem geschickt. Dafür fragt der Client-Stub erstmal nach der physikalischen Adresse der Remote-Komponente.
 
 *Schnittstelle IRemoteInvocation*
-
+<br>
 Die Schnittstelle IRemoteInvocation kann aufgerufen werden, um eine Remote-Methode aufruzufen.
 
 |Methode| Kurzbeschreibung |
@@ -225,7 +226,7 @@ Nachrichtenfromate unter Lösungsstrategie.
 | deserializeNS(byte[]) | Entpackt die Daten aus der Nachricht und gibt sie in einem String[]-Array der Länge 2 (Index 0: IP-Adresse, Index 1: Portnummer) zurück.|
 |byte[] marshal(int,String,Object[]) | erzeugt ein JSON-Objekt aus den übergebenen Parametern und wandelt es in ein byte-Array um, das zurückgegeben wird. |
 |cacheOrLookup(int,String,String[]):String[]| Gibt ein String-Array mit der IP-Adresse und Portnummer des gesuchten Remote-Objects zurück. Sucht erstmal im lokalen Cache-Speicher und wenn der Eintrag dort nicht vorhanden ist, wird eine Nachricht erstellt (Aufruf serializeNS() ) und an den Name Server geschickt. Das Ergebnis wird aus der Nachricht entpackt (Aufruf deserialize() )im Cache gespeichert (Aufruf cache() ) und zurückgegeben. |
-|cache(int, String, String[]| Trägt den String-Array mit IP-Adresse und Portnummer unter der angegebenen ID und Methodennamen im Cache-Speicher ein.
+|cache(int, String, String[]| Trägt den String-Array mit IP-Adresse und Portnummer unter der angegebenen ID und Methodennamen im Cache-Speicher ein.|
 |send(InetAddress, int, byte[]| Verpackt die angegebene Nachricht in ein UDP-Datagramm und schickt die das Paket an die angegebne IP-Adresse und Portnummer.|
 
 
@@ -233,6 +234,7 @@ Nachrichtenfromate unter Lösungsstrategie.
 <br>
 ![MW_ServerStub](./images/MW_ServerStub.png)
 <br>
+
 |Methode| Kurzbeschreibung|
 | --- | --- |
 |register(int, IRemoteObject, String, InetAddress, int)| Packt Aufrufparameter in eine Nachricht (Aufruf serializeNS() ) und schickt sie an den Name Server mit den notwendigen Registrierungsdaten. Empfängt und entpackt (Aufruf deserializeNS() die Antwort vom Name Server, wenn die Antwort nicht -1 ist, wird das RemoteObject in den Aufrufparametern zusammen mit der ID in den Aufrufparametern in der lokalen Tabelle eingetragen. Die erhaltene Antwort vom Name Server wird zurückgegeben.|
