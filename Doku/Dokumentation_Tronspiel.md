@@ -341,11 +341,10 @@ Die Schnittstelle **IRemoteObject** bietet die Funktionalität zum Empfangen von
 |Methode| Kurzbeschreibung|
 | --- | --- |
 |drawScreen() | Abstrakte Methode, die in den konkreten Klassen die Bildschirmanzeige zeichnet. |
-|informUser(String) | konkrete Methode, die eine Meldung (als Aufrufparameter übergebe) dem Nutzer anzeigt. |
-|getPlayerColor(int) |?? |
-|showPlayerColor(int) | ??|
+|informUser(String) | konkrete Methode, die eine Meldung (als String-Aufrufparameter übergebe) dem Nutzer anzeigt. |
+|getPlayerColor(int) |Bildet Spieler-IDs eindeutig auf Anzeigefarben ab und liefert die Farbe zur angefragten ID.|
 |drawPlayers() | Zeigt die aktuell lebenden Spieler an ihrer aktuellen Position an. |
-|drawTileColors() | Zeigt die aktuelle Farbbelegung der Tiles an.|
+|drawTileColors(int, int, int, int, int) | Wird mit der Spieler-ID, mit den alten Spielerkoodinaten und den neuen Spielerkoordinaten aufgerufen. Die Methode berechnet die Spielfelder, die von dem Spieler besetzt wurden und aktualisiert die Spielfelddaten entsprechend.|
 
    
 ### Whitebox Controller
