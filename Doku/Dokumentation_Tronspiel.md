@@ -377,11 +377,16 @@ Methodenliste
 **Caller-Whitebox**
 ![Appstub_Caller.png](./images/caller_whitebox.png)
 <br>
-   
-   
+|Methode| Kurzbeschreibung|
+| --- | --- |
+|join(int) <br> cancelWait() <br> startGame(int, int)<br> changePlayerDirection(int, String) <br> setCurrentState(String<br> endGame(int)<br>| Ruft die invoke(int interfaceID, String methodName, Object[] args)-Schnittstelle der Middleware auf. Für den Aufruf wird das InterfaceID der Caller-Klasse genommen, und die Aufrufparameter der Methode werden in ein Object-Array gepackt.|
+
  **Callee-Whitebox**
 ![Appstub_Callee.png](./images/callee_whitebox.png)
 <br>
+|Methode| Kurzbeschreibung|
+| --- | --- |
+|call(String methodName, Object[])| Eine zu importierende Schnittstelle wird gefragt, ob eine Methode mit dem Namen "methodName" vorhanden ist. Wenn ja, dann wird diese Methode mit den Aufrufparametern im Array "args" aufgerufen.|
 
 
 <a name="laufzeitsicht"></a>
