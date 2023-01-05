@@ -107,6 +107,7 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 <a name="randbedingungen"></a>
 # Randbedingungen
 
+## Technisch
 
 | Randbedingung           | Erläuterung                                 |
 |-------------------------|---------------------------------------------|
@@ -114,11 +115,13 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 | Versionsverwaltung | Die Nutzung von unserem hochschuleigenen Gitlab ist ebenfalls vorgeschrieben. Aufgrund eines Hackerangriffs in der Hochschule sind wir später im Projekt auf GitHub umgestiegen. |
 | Schnittstellen     | Kommunikation mit RPC  |
 
-**\<Organisatorische Randbedingungen>**
+## Organisatorisch
+
 | Randbedingung   | Erläuterung |
 |-----------------|-------------|
 | Team            | Kjell May, Viviam Ribeiro und Kathleen Neitzel aus dem Studiengang der Angewandten Informatik. Fachsemester 6 und 7. |
 | Zeit            |Abgabe am 19. Januar 2023. |
+| Vorgehensmodell | Die Entwicklung wird iterativ und inkrementell betrieben. Zur Dokumentation wird arc42 genutzt|
 
 
 <a name="kontextabgrenzung"></a>
