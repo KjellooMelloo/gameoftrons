@@ -284,6 +284,10 @@ Nachrichtenfromate unter Lösungsstrategie.
 
 ![MW_AD_register](./images/MW_AD_register.png)
 
+## AD bind
+
+![MW_AD_bind](images/MW_AD_bind.png)
+
 ## AD lookup
 
 ![MW_AD_lookup](./images/MW_AD_lookup.png)
@@ -333,7 +337,7 @@ Auf folgende querschnittlichen Konzepte haben wir uns gemeinsam mit unserer Part
 ## Nachrichtenformat
 Um RPCs durchführen zu können müssen Methodenaufrufe in Nachrichten umgewandelt werden. Dafür werden die Methodenaufrufe in ein einheitliches JSON-Format transformiert. Verschickt wird ein JSON-Objekt mit der Interface-ID des adressierten Interfaces, der Methodenname und die Aufrufparameter der Methode mit jeweiligem Typ und Wert in einem Array.
 
-
+```json
 (JsonObjectMessage = {
     "interfaceID": Interface-ID als int,
     "methodName": Methodenname als String,
@@ -344,10 +348,12 @@ Um RPCs durchführen zu können müssen Methodenaufrufe in Nachrichten umgewande
         "valN": der Wert des n-ten Aufrufparameters
     ]
 })
+```
 
 Das JSON-Objekt wird in ein Byte-Array umgewandelt, und über das Netzwerk verschickt.
 Einige beispielhafte RPCs sind im Folgenden skizziert:
 
+```json
 (JsonObjectInvoke = {
     "interfaceID": 12,
     "methodName": "changeDir",
@@ -383,7 +389,7 @@ JsonObjectRegister = {
         "Port": "YYYYY"
     ]
 }
-
+```
 
 ## *\<Konzept 2>* {#__emphasis_konzept_2_emphasis}
 
