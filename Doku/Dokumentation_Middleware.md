@@ -294,7 +294,8 @@ Nachrichtenfromate unter Lösungsstrategie.
 
 # Verteilungssicht {#section-deployment-view}
 
-** Einordnung der Middleware im Gesamtsystem**
+**Einordnung der Middleware im Gesamtsystem**
+
 ![Deployment_Tron](./images/Deployment_Tron.png)
 
 
