@@ -314,7 +314,7 @@ Die Schnittstelle **IRemoteObject** bietet die Funktionalität zum Empfangen von
 
 ### Whitbox Controller
 
-![Controller_Blackbox.png](./images/Controller_Blackbox.png)
+![Controller_WB2](./images/Controller_WB2.png)
 <br>
 
 
@@ -373,11 +373,11 @@ Die Schnittstelle **IRemoteObject** bietet die Funktionalität zum Empfangen von
    
 ### Whitebox Controller
 
-![Controller_WB3.png](./images/Controller_WB3.png)
+![Controller_WB3_1](./images/Controller_WB3.png)
 <br>
 
 State Machine
-![SM_WB3.png](./images/SM_WB3.png)
+![SM_WB3_1](./images/SM_WB3.png)
 <br>
 
 Controller
