@@ -212,6 +212,9 @@ Nachrichtenfromate unter Lösungsstrategie.
 
 
 ## Ebene 2 
+![MW_Ebene2](./images/MW_Ebene2.png) 
+
+## Ebene 3
 
 
 ### Whitebox Client Stub
