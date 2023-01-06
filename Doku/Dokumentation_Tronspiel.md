@@ -438,6 +438,15 @@ Die komplette Methodenliste ist bereits in der Blackbox-Sicht (#applicationstubb
 ## Usecase 5 gegen Spielobjekt kollidieren
 ![Sequenzdiagramm_Collide](images/SD_UC5Collide.png)
 
+### AD View: updatePlayer()
+![AD_View_updatePlayer](images/AD_View_update.png)
+
+### AD View:  kill()
+![AD_View_kill](images/AD_View_kill.png)
+
+### AD View: drawTileColors()
+![AD_View_drawTiles](images/AD_View_drawTiles.png)
+
 ## UC6 Win
 ![Sequenzdiagramm_Spielende](images/SD_UC6Win.png)
 
