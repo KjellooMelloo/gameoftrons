@@ -1,20 +1,54 @@
-# 
+# **Dokumentation Middleware für Game of Trons**
 
-**Über arc42**
+**Autoren**: Kathleen Neitzel, Kjell May, Viviam Ribeiro
 
-arc42, das Template zur Dokumentation von Software- und
-Systemarchitekturen.
+**Modul**: Verteilte Systeme
 
-Template Version 8.1 DE. (basiert auf AsciiDoc Version), Mai 2022
-
-Created, maintained and © by Dr. Peter Hruschka, Dr. Gernot Starke and
-contributors. Siehe <https://arc42.org>.
+- [**Dokumentation Middleware für Game of Trons**](#dokumentation-middleware-für-game-of-trons)
+- [Einführung und Ziele](#einführung-und-ziele)
+  - [Aufgabenstellung](#aufgabenstellung)
+  - [Qualitätsziele](#qualitätsziele)
+  - [Stakeholder](#stakeholder)
+- [Randbedingungen](#randbedingungen)
+  - [Technisch](#technisch)
+  - [Organisatorisch](#organisatorisch)
+- [Kontextabgrenzung](#kontextabgrenzung)
+  - [Fachlicher Kontext](#fachlicher-kontext)
+  - [Technischer Kontext](#technischer-kontext)
+- [Lösungsstrategie](#lösungsstrategie)
+  - [Methodenliste](#methodenliste)
+  - [Nachrichtenformat](#nachrichtenformat)
+- [Bausteinsicht](#bausteinsicht)
+  - [Whitebox Gesamtsystem](#whitebox-gesamtsystem)
+    - [Blackbox Client Stub](#blackbox-client-stub)
+    - [Blackbox Server Stub](#blackbox-server-stub)
+    - [Blackbox Name Service](#blackbox-name-service)
+  - [Ebene 2](#ebene-2)
+  - [Ebene 3](#ebene-3)
+    - [Whitebox Client Stub](#whitebox-client-stub)
+    - [Whitebox Server Stub](#whitebox-server-stub)
+    - [Whitebox Name Service](#whitebox-name-service)
+- [Laufzeitsicht](#laufzeitsicht)
+  - [Use Case 1 Register Method](#use-case-1-register-method)
+  - [Use Case 2/3 Invoke Method / Lookup Method](#use-case-23-invoke-method--lookup-method)
+  - [AD register](#ad-register)
+  - [AD bind](#ad-bind)
+  - [AD lookup](#ad-lookup)
+- [Verteilungssicht](#verteilungssicht)
+- [Querschnittliche Konzepte](#querschnittliche-konzepte)
+  - [Nachrichtenformat](#nachrichtenformat-1)
+- [Architekturentscheidungen](#architekturentscheidungen)
+- [Qualitätsanforderungen](#qualitätsanforderungen)
+  - [Qualitätsbaum](#qualitätsbaum)
+  - [Qualitätsszenarien](#qualitätsszenarien)
+- [Risiken und technische Schulden](#risiken-und-technische-schulden)
+- [Glossar](#glossar)
 
 # Einführung und Ziele
 
 Es wird eine Middleware für die verteilte Anwendung Game Of Trons entwickelt.
 
-## Aufgabenstellung 
+## Aufgabenstellung
 
 1. Callees in Application Stubs können sich als Remote Objects bei der Middleware mit ihrer physikalischen Adresse registrieren
 2. Entgegennehmen und Weiterleitung eines Methodenaufrufs auf ein Remote Object
@@ -26,9 +60,7 @@ Es wird eine Middleware für die verteilte Anwendung Game Of Trons entwickelt.
 8. Umwandlung von Nachrichten in Funktionssignaturen
 9. Funktionssignaturen werden an die ausführende Komponente weitergegeben
 
-
-
-## Qualitätsziele 
+## Qualitätsziele
 
 | ID | Qualitätsziel | Kurzbeschreibung |
 | --- | --- | --- |
@@ -36,10 +68,7 @@ Es wird eine Middleware für die verteilte Anwendung Game Of Trons entwickelt.
 | Q2 | Offenheit (Openness) |  Schnittstellen müssen gut definierte Ablauf- und Fehlersemantik haben, Komponenten sollten austauschbar sein, Erweiterung um Komponenten sollte möglich sein|
 | Q3 | Geographische Skalierung | Die Benutzer können sich überall auf der Welt befinden |
 
-
-
-
-## Stakeholder 
+## Stakeholder
 
 |Rolle|Kontakt|Erwartungshaltung|
 |-|-|-|
@@ -47,12 +76,28 @@ Es wird eine Middleware für die verteilte Anwendung Game Of Trons entwickelt.
 |Entwickler|Kathleen Neitzel, Kjell May, Viviam Ribeiro| - Funktionsfähige Middleware mit gewünschter Funktionalität entwickeln, dass das Spiel an mehreren Rechnern gespielt werden kann|
 |Kunde|GameOfTrons|Möglichkeit auf mehreren Rechnern gespielt werden zu können|
 
+# Randbedingungen
 
-# Randbedingungen 
+## Technisch
 
-# Kontextabgrenzung 
+| Randbedingung           | Erläuterung                                 |
+|-------------------------|---------------------------------------------|
+| Programmiersprache | Die Vorgabe der Aufgabenstellung erfordert die Nutzung einer objektorientierten Programmiersprache. Die Nutzung von Java wird empfohlen, da in dieser Sprache Code-Beispiele in den Vorlesungen gezeigt werden. Wir haben uns aus diesem Grund für Java entschieden. |
+| Versionsverwaltung | Die Nutzung von unserem hochschuleigenen Gitlab ist ebenfalls vorgeschrieben. Aufgrund eines Hackerangriffs in der Hochschule sind wir später im Projekt auf GitHub umgestiegen. |
+| Schnittstellen     | Kommunikation mit RPC  |
+| Netzwerksvoraussetzungen | Aufgrund des Hackerangriffs findet die Abnahme nicht im LAN des Labors statt, sondern online über VPN. Wir haben uns dabei für ZeroTier entschieden |
 
-## Fachlicher Kontext 
+## Organisatorisch
+
+| Randbedingung   | Erläuterung |
+|-----------------|-------------|
+| Team            | Kjell May, Viviam Ribeiro und Kathleen Neitzel aus dem Studiengang der Angewandten Informatik. Fachsemester 6 und 7. |
+| Zeit            |Abgabe am 19. Januar 2023. |
+| Vorgehensmodell | Die Entwicklung wird iterativ und inkrementell betrieben. Zur Dokumentation wird arc42 genutzt|
+
+# Kontextabgrenzung
+
+## Fachlicher Kontext
 
 ![Fachlicher_Trontext](./images/middleware_fachlicher_trontext.png)
 
@@ -71,8 +116,6 @@ Es wird eine Middleware für die verteilte Anwendung Game Of Trons entwickelt.
 ## Technischer Kontext
 
 ![Technischer_Trontext](./images/middleware_technischer_trontext.png)
-
-
 
 # Lösungsstrategie 
 
@@ -208,7 +251,7 @@ Beim Name Service kann man die physikalische Adresse eines Remote Objects anfrag
 
 **Diese Komponente bietet keine Schnittstellen an. Die Dienste können über Nachrichtenaustausch genutzt werden**
 
-Nachrichtenfromate unter Lösungsstrategie.
+Siehe [Querschnittliche Konzepte](#querschnittliche-konzepte).
 
 
 
@@ -297,47 +340,13 @@ Nachrichtenfromate unter Lösungsstrategie.
 
 ![MW_AD_lookup](./images/MW_AD_lookup.png)
 
-# Verteilungssicht {#section-deployment-view}
+# Verteilungssicht
 
 **Einordnung der Middleware im Gesamtsystem**
 
 ![Deployment_Tron](./images/Deployment_Tron.png)
 
-
-
-## Infrastruktur Ebene 1 {#_infrastruktur_ebene_1}
-
-***\<Übersichtsdiagramm>***
-
-Begründung
-
-:   *\<Erläuternder Text>*
-
-Qualitäts- und/oder Leistungsmerkmale
-
-:   *\<Erläuternder Text>*
-
-Zuordnung von Bausteinen zu Infrastruktur
-
-:   *\<Beschreibung der Zuordnung>*
-
-## Infrastruktur Ebene 2 {#_infrastruktur_ebene_2}
-
-### *\<Infrastrukturelement 1>* {#__emphasis_infrastrukturelement_1_emphasis}
-
-*\<Diagramm + Erläuterungen>*
-
-### *\<Infrastrukturelement 2>* {#__emphasis_infrastrukturelement_2_emphasis}
-
-*\<Diagramm + Erläuterungen>*
-
-...
-
-### *\<Infrastrukturelement n>* {#__emphasis_infrastrukturelement_n_emphasis}
-
-*\<Diagramm + Erläuterungen>*
-
-# Querschnittliche Konzepte {#section-concepts}
+# Querschnittliche Konzepte
 Auf folgende querschnittlichen Konzepte haben wir uns gemeinsam mit unserer Partnergruppe Gamma 4 geeinigt:
 
 ## Nachrichtenformat
@@ -397,19 +406,9 @@ JsonObjectRegister = {
 }
 ```
 
-## *\<Konzept 2>* {#__emphasis_konzept_2_emphasis}
+# Architekturentscheidungen
 
-*\<Erklärung>*
-
-...
-
-## *\<Konzept n>* {#__emphasis_konzept_n_emphasis}
-
-*\<Erklärung>*
-
-# Architekturentscheidungen {#section-design-decisions}
-
-# Qualitätsanforderungen {#section-quality-scenarios}
+# Qualitätsanforderungen
 
 ::: formalpara-title
 **Weiterführende Informationen**
@@ -418,13 +417,13 @@ JsonObjectRegister = {
 Siehe [Qualitätsanforderungen](https://docs.arc42.org/section-10/) in
 der online-Dokumentation (auf Englisch!).
 
-## Qualitätsbaum {#_qualit_tsbaum}
+## Qualitätsbaum
 
-## Qualitätsszenarien {#_qualit_tsszenarien}
+## Qualitätsszenarien
 
-# Risiken und technische Schulden {#section-technical-risks}
+# Risiken und technische Schulden
 
-# Glossar {#section-glossary}
+# Glossar
 
 +-----------------------+-----------------------------------------------+
 | Begriff               | Definition                                    |
