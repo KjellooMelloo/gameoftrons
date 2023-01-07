@@ -52,7 +52,7 @@ Es wird eine Middleware für die verteilte Anwendung Game Of Trons entwickelt.
 
 1. Callees in Application Stubs können sich als Remote Objects bei der Middleware mit ihrer physikalischen Adresse registrieren
 2. Entgegennehmen und Weiterleitung eines Methodenaufrufs auf ein Remote Object
-3. Umwandlung von Funktionsaufrufen in Nachrichten 
+3. Umwandlung von Funktionsaufrufen in Nachrichten
 4. Vereinheitlicht Methodenaufrufe in ein vordefiniertes Nachrichtenformat
 5. Die physikalische Adresse von Diensten kann abgefragt werden.
 6. Kommunikation mit dem Betriebssystem, um Nachrichten zu versenden und zu empfangen
@@ -64,9 +64,10 @@ Es wird eine Middleware für die verteilte Anwendung Game Of Trons entwickelt.
 
 | ID | Qualitätsziel | Kurzbeschreibung |
 | --- | --- | --- |
-| Q1 | Verteilungstransparenz| Entfernte Zugriffe, Bewegungen, Migrationen und Replikationen werden vom Nutzer versteckt|
-| Q2 | Offenheit (Openness) |  Schnittstellen müssen gut definierte Ablauf- und Fehlersemantik haben, Komponenten sollten austauschbar sein, Erweiterung um Komponenten sollte möglich sein|
-| Q3 | Geographische Skalierung | Die Benutzer können sich überall auf der Welt befinden |
+| Q1 | Gemeinsame Ressourcennutzung | Um das System nicht mit Replikation und Synchronisation zu belasten wollen wir eine Node mit Datenhoheit nutzen, welche die anderen informiert und aktualisiert |
+| Q2 | Verteilungstransparenz| <ul><li>Access: Gleiche Darstellung von Objekten soll durch taktgebende Node sichergestellt werden</li><li>Location: Der Nutzer weiß nicht, auf welcher Node sich die Datenhoheit und damit die Objekte befinden</li><li>Relocation: Soll sichergestellt werden sein, weil die Objekte auf der taktgebenden Node bleiben</li><li>Migration: Wenn ein Spieler während des Spielens seine IP-Adresse ändern würde, könnte er nicht mehr mitspielen.</li><li>Replication: Alle Nodes werden aktualisiert, Replikation wird  nicht sichtbar sein</li><li>Concurrency: Objekte befinden sich in der Node mit Datenhoheit und werden daher nicht von mehreren Spielern gleichzeitig genutzt</li><li>Failure: Wird leider nicht sichergestellt werden, denn wenn unsere zentrale Node abstürzt, funktioniert das Spiel für alle nicht mehr. Da die Spieldauer aber immer sehr kurz sein wird, kann schnell ein neues gestartet werden</li></ul>|
+| Q3 | Offenheit (Openness) | Schnittstellen müssen gut definierte Ablauf- und Fehlersemantik haben, Komponenten sollten austauschbar sein, Erweiterung um Komponenten sollte möglich sein |
+| Q4 | Skalierbarkeit | <ul><li>Größe: 2-6 Spieler sollten miteinander spielen können</li><li>geografisch: Bisher wird unser Spiel nur in einem lokalen Netzwerk oder über VPN spielbar sein</li><li>administrativ: Eine Node soll die Datenhoheit besitzen</li></ul> |
 
 ## Stakeholder
 
