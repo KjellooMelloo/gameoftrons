@@ -1,15 +1,12 @@
-package de.hawh.beta3.application.game.view;
+package de.hawh.beta3.application.game.view.Screen;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 
 public class HelloApplication extends Application {
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage){
 
         stage.setTitle("Hello!");
 
