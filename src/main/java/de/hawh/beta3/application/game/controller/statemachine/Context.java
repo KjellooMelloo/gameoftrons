@@ -10,6 +10,12 @@ public class Context implements State {
     IConfig iconfig;
     IModel imodel;
     IControllerView icontrollerview;
+    Start start;
+    Waiting waiting;
+    Game game;
+    End end;
+    Delete delete;
+
 
     @Override
     public void behavior(){
@@ -18,6 +24,30 @@ public class Context implements State {
 
     @Override
     public void setCurrentState(String state) {
-
+        switch (state) {
+            case "Start" -> {
+                currentState = start;
+                start.behavior();
+            }
+            case "Waiting" -> {
+                currentState = waiting;
+                waiting.behavior();
+            }
+            case "Game" -> {
+                currentState = game;
+                game.behavior();
+            }
+            case "End" -> {
+                currentState = end;
+                end.behavior();
+            }
+            case "Delete" -> {
+                currentState = delete;
+                delete.behavior();
+            }
+            /*default:
+                currentState = start;
+                start.behavior();*/
+        }
     }
 }

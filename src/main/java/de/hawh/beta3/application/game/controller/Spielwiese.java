@@ -1,26 +1,18 @@
 package de.hawh.beta3.application.game.controller;
 
 import de.hawh.beta3.application.game.view.IControllerView;
-import org.w3c.dom.ranges.Range;
 
-import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.*;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.function.*;
-import java.util.stream.DoubleStream;
-import java.util.stream.IntStream;
-import java.util.stream.LongStream;
-import java.util.stream.Stream;
 
-public class Controller {
+public class Spielwiese {
 
     IControllerView controllerView;
     StateMachine stateMachine;
     ArrayList<Object> configParameters;
 
-    public Controller() {
+    public Spielwiese() {
     }
 
     private class StateMachine {
