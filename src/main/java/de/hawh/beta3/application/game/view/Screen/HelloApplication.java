@@ -8,8 +8,12 @@ public class HelloApplication extends Application {
     @Override
     public void start(Stage stage){
 
-        stage.setTitle("Hello!");
+        Screen gameScreen = new Screen();
+        gameScreen.drawScreen("start");
 
+        // configure and show stage
+        stage.setTitle("TRON - Light Cycles");
+        stage.setScene(gameScreen.getScene());
         stage.show();
     }
 
