@@ -1,0 +1,41 @@
+@font-face {
+    font-family: 'TRON';
+    src: url('../fonts/TRON.TTF');
+}
+
+
+.root{
+    -fx-background-size: contain;
+    -fx-background-position: bottom;
+    -fx-background-repeat: repeat-x;
+    -fx-background-image:
+            url("../images/tron_start_screen.png")
+
+
+}
+
+.label {
+    -fx-font: bold 20px "TRON";
+    -fx-text-fill: #e0f3f9;
+}
+
+.button {
+    -fx-font: bold 20px "TRON";
+    -fx-text-fill: #bde4f2;
+    -fx-border-color: #bde4f2;
+    -fx-border-width: 3px;
+    -fx-background-color: transparent;
+}
+.button:hover {
+    -fx-background-color:
+            linear-gradient(from 0% 93% to 0% 100%, #dbf1f8 0%, #94d4ea 100%);
+    -fx-text-fill: #41b2da;
+
+}
+
+.text-field {
+    -fx-font: bold 10px "TRON";
+    -fx-border-color: #bde4f2;
+    -fx-border-width: 3px;
+    -fx-background-color: #f1f9fc;
+}
