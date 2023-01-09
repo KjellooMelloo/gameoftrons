@@ -3,6 +3,10 @@ package de.hawh.beta3.application.game.controller;
 import de.hawh.beta3.application.game.view.IControllerView;
 import org.w3c.dom.ranges.Range;
 
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.net.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.function.*;
 import java.util.stream.DoubleStream;
@@ -16,6 +20,9 @@ public class Controller {
     StateMachine stateMachine;
     ArrayList<Object> configParameters;
 
+    public Controller() {
+    }
+
     private class StateMachine {
         Config config;
 
@@ -25,36 +32,24 @@ public class Controller {
     }
 
     private class Config {
-        int playerCount = stateMachine.handleInputPlayerCount();
-        //IntStream range = IntStream.of(2, 6);
-        List<Integer> range = List.of(2,3,4,5,6);
-        int defaultPlayerCount = 4;
-        float maxWaitingTime;
-        CONTROLS controls;
-        float speed;
-        DIMENSIONS gridSize;
+
+    }
 
 
-        public int[] loadConfigParameters(){
-            if (!range.contains(playerCount)){
-                loadDefaultPlayerCount();
-            }
+    public static void main(String[] args) throws IOException {
+        DatagramSocket socket = new DatagramSocket(4321);
 
+        while (true){
+            // get their responses!
 
-            return new int[7];
+            System.out.println(socket.getRemoteSocketAddress());
+            System.out.println(socket.getLocalSocketAddress());
+            byte[] buf = new byte[1000];
+            DatagramPacket recv = new DatagramPacket(buf, buf.length);
+            socket.receive(recv);
+            System.out.println(Arrays.toString(recv.getData()));
         }
 
-        public int loadDefaultPlayerCount(){
-            playerCount=defaultPlayerCount;
-            return playerCount;
-        }
     }
 
-    enum CONTROLS {
-
-    }
-
-    enum DIMENSIONS {
-
-    }
 }
