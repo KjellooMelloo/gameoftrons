@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'TRON';
-    src: url('../fonts/TRON.TTF');
+    src: url('fonts/TRON.TTF');
 }
 
 
@@ -9,7 +9,7 @@
     -fx-background-position: bottom;
     -fx-background-repeat: repeat-x;
     -fx-background-image:
-            url("../images/tron_start_screen.png")
+            url("images/tron_start_screen.png")
 
 
 }
@@ -29,7 +29,7 @@
 .button:hover {
     -fx-background-color:
             linear-gradient(from 0% 93% to 0% 100%, #dbf1f8 0%, #94d4ea 100%);
-    -fx-text-fill: #41b2da;
+    -fx-text-fill: black;
 
 }
 

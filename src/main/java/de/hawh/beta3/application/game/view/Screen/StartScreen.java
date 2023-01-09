@@ -9,30 +9,27 @@ import javafx.scene.effect.Glow;
 import javafx.scene.layout.VBox;
 
 public class StartScreen extends VBox {
-    private final Label labelReadyText;
-    private final Button btnStart;
-
-    private final TextField inputPlayerCountField;
-
     public StartScreen() {
 
         //Initialize VBox
         super(20.0);
         this.getStyleClass().add("root");
-        this.getStylesheets().add("css/start.css");
+        this.getStylesheets().add("start.css");
 
 
 
         // initialize control elements
-        labelReadyText = new Label("Are you ready to enter a new reality?");
-        inputPlayerCountField = new TextField("Player Count between 2-6");
-        inputPlayerCountField.setAlignment(Pos.CENTER);//Align text to center
+        Label labelReadyText = new Label("Are you ready to enter a new reality?");
+        TextField inputPlayerCountField = new TextField("Player Count between 2-6");
+        Button btnStart = new Button("Start Game");
+
+
+
+        // Edit style
         inputPlayerCountField.setPrefWidth(270);
         inputPlayerCountField.setMaxWidth(270);
-        btnStart = new Button("Start Game");
         Effect glow = new Glow(1.0);
         btnStart.setEffect(glow);
-
 
         // Align elements
         this.setAlignment(Pos.BOTTOM_CENTER);
