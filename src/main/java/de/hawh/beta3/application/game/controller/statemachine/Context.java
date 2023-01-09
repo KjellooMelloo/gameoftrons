@@ -26,24 +26,34 @@ public class Context implements State {
     public void setCurrentState(String state) {
         switch (state) {
             case "Start" -> {
-                currentState = start;
-                start.behavior();
+                if (currentState == null || currentState == delete){
+                    currentState = start;
+                    start.behavior();
+                }
             }
             case "Waiting" -> {
-                currentState = waiting;
-                waiting.behavior();
+                if (currentState == start) {
+                    currentState = waiting;
+                    waiting.behavior();
+                }
             }
             case "Game" -> {
-                currentState = game;
-                game.behavior();
+                if (currentState == start || currentState == waiting) {
+                    currentState = game;
+                    game.behavior();
+                }
             }
             case "End" -> {
-                currentState = end;
-                end.behavior();
+                if (currentState == game) {
+                    currentState = end;
+                    end.behavior();
+                }
             }
             case "Delete" -> {
-                currentState = delete;
-                delete.behavior();
+                if (currentState == null || currentState == waiting || currentState == end) {
+                    currentState = delete;
+                    delete.behavior();
+                }
             }
             /*default:
                 currentState = start;
