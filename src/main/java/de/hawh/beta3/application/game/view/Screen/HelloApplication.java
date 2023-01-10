@@ -1,6 +1,7 @@
 package de.hawh.beta3.application.game.view.Screen;
 
 import javafx.application.Application;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.stage.Stage;
 
 
@@ -9,7 +10,14 @@ public class HelloApplication extends Application {
     public void start(Stage stage){
 
         Screen gameScreen = new Screen();
-        gameScreen.drawScreen("start");
+        gameScreen.resetScreen();
+        gameScreen.drawScreen("lobby");
+        System.out.println("Wait a bit...");
+        System.out.println("Wait a bit...");
+        System.out.println("Wait a bit..");
+        LobbyScreen lobby = (LobbyScreen) gameScreen.getScreens().get("lobby");
+        lobby.setPlayersInLobby(2);
+
 
         // configure and show stage
         stage.setTitle("TRON - Light Cycles");

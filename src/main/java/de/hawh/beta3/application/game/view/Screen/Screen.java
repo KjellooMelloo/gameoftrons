@@ -14,34 +14,25 @@ import java.util.Map;
  */
 public class Screen {
 
-    private int currentPlayerID;
-    private int numPlayers;
-    private Color[] colors;
-
+    private int numPlayers = 0;
+    private int windowSize=100;
     private Scene scene;
     private StackPane base;
     private Map<String, Node> screens = new HashMap<>();
+    private int currentPlayerID=-1;
 
     public Screen(){
-        this.currentPlayerID=-1;
-        this.colors=new Color[]{Color.AQUA, Color.CRIMSON, Color.YELLOW, Color.LIME, Color.FUCHSIA, Color.ORANGE};
         this.base = new StackPane();
         this.scene = new Scene(base);
+
+        // register screen states
         screens.put("start",new StartScreen());
+        screens.put("lobby", new LobbyScreen(currentPlayerID,numPlayers));
     }
 
-    /**
-     * Liefert die Farbe, die in der Farbtabelle unter dem Index ist, der der übergebenen SpielerID entspricht.
-     * @param playerID Die SpielerID des Spielers, dessen Farbe zurückgegeben werden soll
-     * @return Die gesuchte Farbe als JAVAFX-Color
-     */
-    protected Color getColor(int playerID){
-        if(playerID > 5) throw new IllegalArgumentException("PlayerIDs can't be larger than 5");
-        return colors[playerID];
-    }
 
     public void updateCurrentPlayerID(int newPlayerID){
-        if(currentPlayerID < 0) currentPlayerID = newPlayerID;
+        //if(currentPlayerID < 0) currentPlayerID = newPlayerID;
     }
 
     public void drawScreen(String screenName){
@@ -55,13 +46,13 @@ public class Screen {
         screenToShow.setVisible(true);
     }
 
-    public int getCurrentPlayerID() {
-        return currentPlayerID;
+    public void resetScreen() {
+        for(Map.Entry<String,Node> entry : screens.entrySet()){
+            entry.getValue().setVisible(false);
+        }
     }
 
-    public void setCurrentPlayerID(int currentPlayerID) {
-        this.currentPlayerID = currentPlayerID;
-    }
+
 
     public int getNumPlayers() {
         return numPlayers;
@@ -75,7 +66,5 @@ public class Screen {
         return scene;
     }
 
-    public StackPane getBase() {
-        return base;
-    }
+    public Map<String, Node> getScreens (){ return screens;}
 }

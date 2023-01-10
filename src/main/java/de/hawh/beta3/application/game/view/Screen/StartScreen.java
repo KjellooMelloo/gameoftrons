@@ -9,6 +9,8 @@ import javafx.scene.effect.Glow;
 import javafx.scene.layout.VBox;
 
 public class StartScreen extends VBox {
+
+    private ScreenCommons screenCommons = new ScreenCommons();
     public StartScreen() {
 
         //Initialize VBox
@@ -42,10 +44,11 @@ public class StartScreen extends VBox {
         btnStart.setOnAction(event -> {
             String inputString = inputPlayerCountField.getText();
             if(inputString.equals("")){
-                //call informUser: Please input a player count!
+                //TODO: call informUser: Please input a player count!
                 System.out.println("Button was pressed");
             } else {
                 int playerCount = Integer.valueOf(inputString);
+                //TODO add call to controller interface
                 System.out.println("Input player count: " + playerCount);
             }
 
