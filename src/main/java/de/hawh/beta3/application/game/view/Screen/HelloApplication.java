@@ -17,6 +17,7 @@ public class HelloApplication extends Application {
 
 
 
+
         // configure and show stage
         stage.setTitle("TRON - Light Cycles");
         stage.setScene(gameScreen.getScene());

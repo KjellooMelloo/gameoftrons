@@ -3,12 +3,16 @@ package de.hawh.beta3.application.game.view.Screen;
 import de.hawh.beta3.application.game.view.Player.Coordinate;
 import de.hawh.beta3.application.game.view.Player.Player;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.transform.Rotate;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -18,7 +22,6 @@ public class GameScreen extends Canvas {
 
     private int currentPlayerID=-1;
     private int fieldSize=40;
-    private int[][] gameField = new int[fieldSize][fieldSize];
 
     private Map<Integer, Player> playerMap = new HashMap<>();
     private int windowSize = 800;
@@ -27,11 +30,11 @@ public class GameScreen extends Canvas {
     private Color backgroundColor = Color.BLUEVIOLET.darker().darker().darker().desaturate();
 
 
+
     public GameScreen(int currentPlayerID, int initialNumPlayers, int fieldSize){
         this.currentPlayerID = currentPlayerID;
         this.initialNumPlayers = initialNumPlayers;
         this.fieldSize = 10;
-        this.gameField = new int[fieldSize][fieldSize];
 
 
         this.setWidth(windowSize);
@@ -51,11 +54,33 @@ public class GameScreen extends Canvas {
         GraphicsContext g = this.getGraphicsContext2D();
         g.setFill(backgroundColor);
 
+        g.clearRect(0, 0, getWidth(), getHeight());
+
+        // vertical lines
+        g.setStroke(Color.GRAY);
+        for(int i = 0 ; i <= getWidth() ; i+=windowSize/fieldSize){
+            g.strokeLine(i, 0, i, getHeight() - (getHeight()%30));
+        }
+
+        // horizontal lines
+        g.setStroke(Color.GRAY);
+        for(int i = windowSize/fieldSize ; i < getHeight() ; i+=windowSize/fieldSize){
+            g.strokeLine(0, i, getWidth(), i);
+        }
+
         // Comment after tests are over
         prepareTest();
         for(Player p:playerMap.values()){
             drawTileColors(p);
         }
+        for(Player p:playerMap.values()){
+            p.updateTrailAndOrientation(p.getPos().x+2,p.getPos().y,"DOWN");
+        }
+        for(Player p:playerMap.values()){
+            drawTileColors(p);
+        }
+
+
     }
 
     public GameScreen(){}
@@ -68,6 +93,8 @@ public class GameScreen extends Canvas {
         if(playerToDraw == null || playerToDraw.getTrail()==null){
             throw new NullPointerException();
         }
+        GraphicsContext g = this.getGraphicsContext2D();
+
         for(Coordinate pos : playerToDraw.getTrail()){
             if(pos.x < 0 || pos.x >= fieldSize){
                 throw new IllegalArgumentException("x value out of bounds: x is " + pos.x + ", but should be 0 <= x < " + fieldSize);
@@ -77,11 +104,14 @@ public class GameScreen extends Canvas {
             }
 
             // paint new bike position
-            GraphicsContext g = this.getGraphicsContext2D();
             g.setFill(screenCommons.getColor(playerToDraw.getId())); //Color.PAPAYAWHIP);
             g.fillRect(pos.x*windowSize/fieldSize, pos.y*windowSize/fieldSize, windowSize/fieldSize, windowSize/fieldSize);
         }
+
+
+        g.drawImage(playerToDraw.getImage(), playerToDraw.getPos().x*windowSize/fieldSize, playerToDraw.getPos().y*windowSize/fieldSize, windowSize/fieldSize,windowSize/fieldSize);
     }
+
     private void kill(int playerToKill){}
 
     public void prepareTest(){
