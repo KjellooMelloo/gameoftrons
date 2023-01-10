@@ -5,7 +5,7 @@ import de.hawh.beta3.middleware.IMiddleware;
 
 public class IModelCaller implements IModel {
 
-    private IMiddleware mw; //=new Middleware
+    private IMiddleware mw; //=new Middleware();
     private int id = 0;
 
     /**
