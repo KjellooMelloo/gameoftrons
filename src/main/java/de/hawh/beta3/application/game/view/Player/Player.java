@@ -62,37 +62,37 @@ public class Player {
     public void updateTrailAndOrientation(int newX, int newY, String newOrientation){
        int difX = newX-pos.x;
        int difY = newY-pos.y;
+
+
+
         if(orientation.equals("UP")||orientation.equals("DOWN")){
-            if(difY>0) {
-                for (int i = pos.y + 1; i <= difY; i++) {
-                    trail.add(new Coordinate(pos.x, i));
-                    pos.y=i;
+            if(difY!=0) {
+                for (int i = 1; i <= Math.abs(difY); i++) {
+                    trail.add(new Coordinate(pos.x, pos.y+= ( 1 * (Math.abs(difY) / difY ) ) ) );
                 }
             }
-            if(difX>0){
-                for (int i = pos.x+1; i <= difX; i++) {
-                    trail.add(new Coordinate(i, pos.y));
-                    pos.x=i;
+
+            if(difX!=0){
+                for (int i = 1; i <= Math.abs(difX); i++) {
+                    trail.add(new Coordinate(pos.x+= ( 1 * (Math.abs(difX) / difX ) ), pos.y));
                 }
             }
-            orientation=newOrientation;
+
 
        } else if(orientation.equals("LEFT") || orientation.equals("RIGHT")){
-            if(difX>0){
-                for (int i = pos.x+1; i <= difX; i++) {
-                    trail.add(new Coordinate(i, pos.y));
-                    pos.x=i;
+            if(difX!=0){
+                for (int i = 1; i <= Math.abs(difX); i++) {
+                    trail.add(new Coordinate(pos.x+= ( 1 * (Math.abs(difX) / difX ) ), pos.y));
                 }
             }
-            if(difY>0) {
-                for (int i = pos.y + 1; i <= difY; i++) {
-                    trail.add(new Coordinate(pos.x, i));
-                    pos.y=i;
+            if(difY!=0) {
+                for (int i = 1; i <= Math.abs(difY); i++) {
+                    trail.add(new Coordinate(pos.x, pos.y+= ( 1 * (Math.abs(difY) / difY ) ) ) );
                 }
             }
-            orientation=newOrientation;
-            rotateImage();
         }
+        orientation=newOrientation;
+        rotateImage();
     }
 
     private void rotateImage() {

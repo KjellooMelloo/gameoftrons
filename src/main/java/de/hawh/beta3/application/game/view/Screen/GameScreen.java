@@ -74,7 +74,19 @@ public class GameScreen extends Canvas {
             drawTileColors(p);
         }
         for(Player p:playerMap.values()){
-            p.updateTrailAndOrientation(p.getPos().x+2,p.getPos().y,"DOWN");
+           // System.out.println("Player " + p.getId() + " - " + "x: " + p.getPos().x + " , y: " + p.getPos().y );
+            //System.out.println("-------------------------------");
+            p.updateTrailAndOrientation(p.getPos().x+3,p.getPos().y,"DOWN");
+            //System.out.println("Player " + p.getId() + " - " + "x: " + p.getPos().x + " , y: " + p.getPos().y );
+            //System.out.println("-------------------------------");
+        }
+
+        for(Player p:playerMap.values()){
+            System.out.println("Player " + p.getId() + " - " + "x: " + p.getPos().x + " , y: " + p.getPos().y );
+            System.out.println("-------------------------------");
+            p.updateTrailAndOrientation(p.getPos().x+3,p.getPos().y+1,"DOWN");
+            System.out.println("Player " + p.getId() + " - " + "x: " + p.getPos().x + " , y: " + p.getPos().y );
+            System.out.println("-------------------------------");
         }
         for(Player p:playerMap.values()){
             drawTileColors(p);
