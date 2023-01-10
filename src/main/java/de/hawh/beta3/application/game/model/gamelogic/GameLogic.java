@@ -105,14 +105,14 @@ public class GameLogic implements IGameLogic {
      */
     @Override
     public int[][] getPlayerPositions() {
-        int[][] positions = new int[players.size()][3];
+        int[][] positions = new int[players.size()][4];
 
         for (int i = 0; i < players.size(); i++) {
             Player p = players.get(i);
             if (p.isAlive()) {
-                positions[i] = new int[]{p.getColor(), p.getFront().getX(), p.getFront().getY()};
+                positions[i] = new int[]{p.getColor(), p.getFront().getX(), p.getFront().getY(), p.getDirection().ordinal()};
             } else {
-                positions[i] = new int[]{p.getColor(), -1, -1};
+                positions[i] = new int[]{p.getColor(), -1, -1, -1};
             }
         }
 
