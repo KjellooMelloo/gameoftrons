@@ -1,7 +1,6 @@
 package de.hawh.beta3.application.game.view.Screen;
 
 import javafx.application.Application;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.stage.Stage;
 
 
@@ -11,12 +10,10 @@ public class HelloApplication extends Application {
 
         Screen gameScreen = new Screen();
         gameScreen.resetScreen();
-        gameScreen.drawScreen("lobby");
-        System.out.println("Wait a bit...");
-        System.out.println("Wait a bit...");
-        System.out.println("Wait a bit..");
-        LobbyScreen lobby = (LobbyScreen) gameScreen.getScreens().get("lobby");
-        lobby.setPlayersInLobby(2);
+        gameScreen.drawScreen("start");
+
+
+
 
 
         // configure and show stage

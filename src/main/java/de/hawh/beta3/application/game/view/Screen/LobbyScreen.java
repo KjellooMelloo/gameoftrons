@@ -1,9 +1,6 @@
 package de.hawh.beta3.application.game.view.Screen;
 
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableIntegerValue;
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -16,10 +13,16 @@ public class LobbyScreen extends VBox {
     private int currentPlayerID;
     Label playerCounterLabel;
 
-    public LobbyScreen(int currentPlayerID, int playersInLobby){
+    public LobbyScreen(SimpleIntegerProperty currentPlayerIDArg, int playersInLobby){
         //Felder initialisieren
         super(20.0);
-        this.currentPlayerID = currentPlayerID;
+
+        // Add listener to ID
+        this.currentPlayerID = currentPlayerIDArg.get();
+        currentPlayerIDArg.addListener(e->{
+            this.currentPlayerID = currentPlayerIDArg.get();
+        });
+
         this.observablePlayersInLobby = new SimpleIntegerProperty(playersInLobby);
         this.playerCounterLabel = new Label(this.observablePlayersInLobby.get() + " players have joined the game");
 
@@ -58,11 +61,5 @@ public class LobbyScreen extends VBox {
         );
     }
 
-    public void setPlayersInLobby(int playersInLobby) {
-        this.observablePlayersInLobby.set(playersInLobby);
-    }
 
-    public void setCurrentPlayerID(int currentPlayerID) {
-        this.currentPlayerID = currentPlayerID;
-    }
 }

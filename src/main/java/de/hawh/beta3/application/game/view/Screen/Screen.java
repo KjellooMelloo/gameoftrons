@@ -1,9 +1,9 @@
 package de.hawh.beta3.application.game.view.Screen;
 
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,7 +19,7 @@ public class Screen {
     private Scene scene;
     private StackPane base;
     private Map<String, Node> screens = new HashMap<>();
-    private int currentPlayerID=-1;
+    private SimpleIntegerProperty currentPlayerID = new SimpleIntegerProperty(-1);
 
     public Screen(){
         this.base = new StackPane();
@@ -27,13 +27,17 @@ public class Screen {
 
         // register screen states
         screens.put("start",new StartScreen());
-        screens.put("lobby", new LobbyScreen(currentPlayerID,numPlayers));
+        //screens.put("lobby", new LobbyScreen(currentPlayerID,numPlayers));
+        screens.put("game", new GameScreen(currentPlayerID));
     }
 
 
     public void updateCurrentPlayerID(int newPlayerID){
-        //if(currentPlayerID < 0) currentPlayerID = newPlayerID;
+        if(currentPlayerID.get() < 0) {
+            currentPlayerID.set(newPlayerID);
+        }
     }
+
 
     public void drawScreen(String screenName){
         if(!screens.keySet().contains(screenName)){
