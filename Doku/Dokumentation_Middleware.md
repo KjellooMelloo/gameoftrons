@@ -1,24 +1,58 @@
-# 
+# **Dokumentation Middleware für Game of Trons**
 
-**Über arc42**
+**Autoren**: Kathleen Neitzel, Kjell May, Viviam Ribeiro
 
-arc42, das Template zur Dokumentation von Software- und
-Systemarchitekturen.
+**Modul**: Verteilte Systeme
 
-Template Version 8.1 DE. (basiert auf AsciiDoc Version), Mai 2022
-
-Created, maintained and © by Dr. Peter Hruschka, Dr. Gernot Starke and
-contributors. Siehe <https://arc42.org>.
+- [**Dokumentation Middleware für Game of Trons**](#dokumentation-middleware-für-game-of-trons)
+- [Einführung und Ziele](#einführung-und-ziele)
+  - [Aufgabenstellung](#aufgabenstellung)
+  - [Qualitätsziele](#qualitätsziele)
+  - [Stakeholder](#stakeholder)
+- [Randbedingungen](#randbedingungen)
+  - [Technisch](#technisch)
+  - [Organisatorisch](#organisatorisch)
+- [Kontextabgrenzung](#kontextabgrenzung)
+  - [Fachlicher Kontext](#fachlicher-kontext)
+  - [Technischer Kontext](#technischer-kontext)
+- [Lösungsstrategie](#lösungsstrategie)
+  - [Methodenliste](#methodenliste)
+  - [Nachrichtenformat](#nachrichtenformat)
+- [Bausteinsicht](#bausteinsicht)
+  - [Whitebox Gesamtsystem](#whitebox-gesamtsystem)
+    - [Blackbox Client Stub](#blackbox-client-stub)
+    - [Blackbox Server Stub](#blackbox-server-stub)
+    - [Blackbox Name Service](#blackbox-name-service)
+  - [Ebene 2](#ebene-2)
+  - [Ebene 3](#ebene-3)
+    - [Whitebox Client Stub](#whitebox-client-stub)
+    - [Whitebox Server Stub](#whitebox-server-stub)
+    - [Whitebox Name Service](#whitebox-name-service)
+- [Laufzeitsicht](#laufzeitsicht)
+  - [Use Case 1 Register Method](#use-case-1-register-method)
+  - [Use Case 2/3 Invoke Method / Lookup Method](#use-case-23-invoke-method--lookup-method)
+  - [AD register](#ad-register)
+  - [AD bind](#ad-bind)
+  - [AD lookup](#ad-lookup)
+- [Verteilungssicht](#verteilungssicht)
+- [Querschnittliche Konzepte](#querschnittliche-konzepte)
+  - [Nachrichtenformat](#nachrichtenformat-1)
+- [Architekturentscheidungen](#architekturentscheidungen)
+- [Qualitätsanforderungen](#qualitätsanforderungen)
+  - [Qualitätsbaum](#qualitätsbaum)
+  - [Qualitätsszenarien](#qualitätsszenarien)
+- [Risiken und technische Schulden](#risiken-und-technische-schulden)
+- [Glossar](#glossar)
 
 # Einführung und Ziele
 
 Es wird eine Middleware für die verteilte Anwendung Game Of Trons entwickelt.
 
-## Aufgabenstellung 
+## Aufgabenstellung
 
 1. Callees in Application Stubs können sich als Remote Objects bei der Middleware mit ihrer physikalischen Adresse registrieren
 2. Entgegennehmen und Weiterleitung eines Methodenaufrufs auf ein Remote Object
-3. Umwandlung von Funktionsaufrufen in Nachrichten 
+3. Umwandlung von Funktionsaufrufen in Nachrichten
 4. Vereinheitlicht Methodenaufrufe in ein vordefiniertes Nachrichtenformat
 5. Die physikalische Adresse von Diensten kann abgefragt werden.
 6. Kommunikation mit dem Betriebssystem, um Nachrichten zu versenden und zu empfangen
@@ -26,20 +60,16 @@ Es wird eine Middleware für die verteilte Anwendung Game Of Trons entwickelt.
 8. Umwandlung von Nachrichten in Funktionssignaturen
 9. Funktionssignaturen werden an die ausführende Komponente weitergegeben
 
-
-
-## Qualitätsziele 
+## Qualitätsziele
 
 | ID | Qualitätsziel | Kurzbeschreibung |
 | --- | --- | --- |
-| Q1 | Verteilungstransparenz| Entfernte Zugriffe, Bewegungen, Migrationen und Replikationen werden vom Nutzer versteckt|
-| Q2 | Offenheit (Openness) |  Schnittstellen müssen gut definierte Ablauf- und Fehlersemantik haben, Komponenten sollten austauschbar sein, Erweiterung um Komponenten sollte möglich sein|
-| Q3 | Geographische Skalierung | Die Benutzer können sich überall auf der Welt befinden |
+| Q1 | Gemeinsame Ressourcennutzung | Um das System nicht mit Replikation und Synchronisation zu belasten wollen wir eine Node mit Datenhoheit nutzen, welche die anderen informiert und aktualisiert |
+| Q2 | Verteilungstransparenz| <ul><li>Access: Gleiche Darstellung von Objekten soll durch taktgebende Node sichergestellt werden</li><li>Location: Der Nutzer weiß nicht, auf welcher Node sich die Datenhoheit und damit die Objekte befinden</li><li>Relocation: Soll sichergestellt werden sein, weil die Objekte auf der taktgebenden Node bleiben</li><li>Migration: Wenn ein Spieler während des Spielens seine IP-Adresse ändern würde, könnte er nicht mehr mitspielen.</li><li>Replication: Alle Nodes werden aktualisiert, Replikation wird  nicht sichtbar sein</li><li>Concurrency: Objekte befinden sich in der Node mit Datenhoheit und werden daher nicht von mehreren Spielern gleichzeitig genutzt</li><li>Failure: Wird leider nicht sichergestellt werden, denn wenn unsere zentrale Node abstürzt, funktioniert das Spiel für alle nicht mehr. Da die Spieldauer aber immer sehr kurz sein wird, kann schnell ein neues gestartet werden</li></ul>|
+| Q3 | Offenheit (Openness) | Schnittstellen müssen gut definierte Ablauf- und Fehlersemantik haben, Komponenten sollten austauschbar sein, Erweiterung um Komponenten sollte möglich sein |
+| Q4 | Skalierbarkeit | <ul><li>Größe: 2-6 Spieler sollten miteinander spielen können</li><li>geografisch: Bisher wird unser Spiel nur in einem lokalen Netzwerk oder über VPN spielbar sein</li><li>administrativ: Eine Node soll die Datenhoheit besitzen</li></ul> |
 
-
-
-
-## Stakeholder 
+## Stakeholder
 
 |Rolle|Kontakt|Erwartungshaltung|
 |-|-|-|
@@ -47,12 +77,28 @@ Es wird eine Middleware für die verteilte Anwendung Game Of Trons entwickelt.
 |Entwickler|Kathleen Neitzel, Kjell May, Viviam Ribeiro| - Funktionsfähige Middleware mit gewünschter Funktionalität entwickeln, dass das Spiel an mehreren Rechnern gespielt werden kann|
 |Kunde|GameOfTrons|Möglichkeit auf mehreren Rechnern gespielt werden zu können|
 
+# Randbedingungen
 
-# Randbedingungen 
+## Technisch
 
-# Kontextabgrenzung 
+| Randbedingung           | Erläuterung                                 |
+|-------------------------|---------------------------------------------|
+| Programmiersprache | Die Vorgabe der Aufgabenstellung erfordert die Nutzung einer objektorientierten Programmiersprache. Die Nutzung von Java wird empfohlen, da in dieser Sprache Code-Beispiele in den Vorlesungen gezeigt werden. Wir haben uns aus diesem Grund für Java entschieden. |
+| Versionsverwaltung | Die Nutzung von unserem hochschuleigenen Gitlab ist ebenfalls vorgeschrieben. Aufgrund eines Hackerangriffs in der Hochschule sind wir später im Projekt auf GitHub umgestiegen. |
+| Schnittstellen     | Kommunikation mit RPC  |
+| Netzwerksvoraussetzungen | Aufgrund des Hackerangriffs findet die Abnahme nicht im LAN des Labors statt, sondern online über VPN. Wir haben uns dabei für ZeroTier entschieden |
 
-## Fachlicher Kontext 
+## Organisatorisch
+
+| Randbedingung   | Erläuterung |
+|-----------------|-------------|
+| Team            | Kjell May, Viviam Ribeiro und Kathleen Neitzel aus dem Studiengang der Angewandten Informatik. Fachsemester 6 und 7. |
+| Zeit            |Abgabe am 19. Januar 2023. |
+| Vorgehensmodell | Die Entwicklung wird iterativ und inkrementell betrieben. Zur Dokumentation wird arc42 genutzt|
+
+# Kontextabgrenzung
+
+## Fachlicher Kontext
 
 ![Fachlicher_Trontext](./images/middleware_fachlicher_trontext.png)
 
@@ -72,15 +118,14 @@ Es wird eine Middleware für die verteilte Anwendung Game Of Trons entwickelt.
 
 ![Technischer_Trontext](./images/middleware_technischer_trontext.png)
 
-
-
 # Lösungsstrategie 
 
 ## Methodenliste
 
 | Usecase | Akteur |Funktionssignatur| Vorbedingung | Nachbedingung | Ablaufsemantik | Fehlersemantik |
 |---|---|---|---|---|---|---|
-|UC1| ServerStub| int register(int, IRemoteObject remoteObject, String InetAddress, int) | Ein CalleeStub aus dem ApplicationStub möchte sich als RemoteObject registrieren | Das Remote Object wurde im Name Server und in der lokalen Tabelle im Server Stub aufgenommen.| Der Server Stub erstellt eine Nachricht aus den Daten in den Aufrufparameter (Aufruf serializeNS()) und schickt eine Nachricht nach dem TCP-Protokoll an den Name Server. Der Name Server schickt die eingetragene ID über eine Nachricht zurück. Die ID wird aus der Nachricht entpackt (Aufruf deserializeNS() ). Die im Aufrufparameter angegebene Interface-ID und das angegebene RemoteObject werden in der lokalen Tabelle eingetragen. Die vom Name Server erhaltene ID wird zurückgegeben. | Eine Registrierung war nicht möglich, weil die Komponente sich nur einmal registrieren darf, wenn es sich um das Model handelt. In dem Fall wird -1 zurückgegeben.|
+|UC1| ServerStub| void register(int, IRemoteObject remoteObject, String, InetAddress, int, bool) | Ein CalleeStub aus dem ApplicationStub möchte sich als RemoteObject registrieren | Das Remote Object wurde im Name Server und in der lokalen Tabelle im Server Stub aufgenommen.| Der Server Stub erstellt eine Nachricht aus den Daten in den Aufrufparametern (Aufruf serializeNS()) und schickt eine Nachricht nach dem TCP-Protokoll an den Name Server. Der Name Server schickt die eingetragene Multicast-Adresse, wenn eine neue Multicast-Adresse zugewiesen wurde, ein leerer String über eine Nachricht zurück. Die Adresse (oder leerer String) wird aus der Nachricht entpackt (Aufruf deserializeNS() ). Die im Aufrufparameter angegebene Interface-ID und das angegebene RemoteObject werden in der lokalen Tabelle eingetragen (wenn die ID noch nicht vorhanden ist). Wenn die vom Name Server erhaltene Antwort kein leerer String ist, wird die Methode addGroup(InetAddress) aufgerufen. | |
+|UC1| ServerStub | void addGroup(InetAddress)| Ein Remote-Object 
 |UC1|  NameServer | int bind(int, String InetAddress, int) | Eine Nachricht ist aus einem ServerStub angekommen, die Daten wurde aus der Nachricht entpackt und als Aufrufparameter genutzt | Das RemoteObject wurde im NameServer gespeichert | Der NameServer prüft, ob zur mitgegebenen ID und Methodennamen bereits ein Eintrag vorhanden ist(Aufruf checkInterfaceInTable).  Aus der übergebenen Interface-ID wird eine eindeutige Object-ID erzeugt. Die Object-ID und der Methodenname werden mit der übergebenen InetAddress und Portnummer eingetragen. Die erzeugte Object-ID wird an den anfragenden Server Stub zurückgeschickt.| Eintrag mit der ID und dem Methodennamen existiert bereits. Dann wird der Eintrag überschrieben. Wenn es sich um eine Modelschnittstelle handelt und eine andere Model-Komponente hat sich bereits eingetragen, dann wird keine weitere Model-Komponente registriert. Der Name Server schickt in dem Fall -1 an den Server Stub zurück. |
 |UC1| NameServer | boolean checkInterfaceInTable(int, String) | Ein CalleeStub möchte sich als RemoteObject eintragen und hat register() aufgerufen | Es wird true zurückgegeben, wenn bereits ein Eintrag existiert sonst false| Der Name Server prüft, ob zur übergebenen ID und Methodennamen bereits ein Eintrag in der Tabelle existiert| |
 |UC2| ClientStub | void invoke(int, String, Object[]) | Eine Komponente ruft eine Remote-Komponente über eine Application Stub Schnittstelle auf | Der Aufruf wurde geprüft und die Methode marshal() wurde aufgerufen |  Prüft mithilfe von lookup() ob die übergebene Objekt-ID (erster Parameter) und die Methode (zweiter Parameter) registriert ist. Dann wird die Methode marshal() aufgerufen | Wenn die Objekt-ID nicht registriert ist, wird eine Exception geworfen|
@@ -207,7 +252,7 @@ Beim Name Service kann man die physikalische Adresse eines Remote Objects anfrag
 
 **Diese Komponente bietet keine Schnittstellen an. Die Dienste können über Nachrichtenaustausch genutzt werden**
 
-Nachrichtenfromate unter Lösungsstrategie.
+Siehe [Querschnittliche Konzepte](#querschnittliche-konzepte).
 
 
 
@@ -244,11 +289,12 @@ Nachrichtenfromate unter Lösungsstrategie.
 
 |Methode| Kurzbeschreibung|
 | --- | --- |
-|register(int, IRemoteObject, String, InetAddress, int)| Packt Aufrufparameter in eine Nachricht (Aufruf serializeNS() ) und schickt sie an den Name Server mit den notwendigen Registrierungsdaten. Empfängt und entpackt (Aufruf deserializeNS() die Antwort vom Name Server, wenn die Antwort nicht -1 ist, wird das RemoteObject in den Aufrufparametern zusammen mit der ID in den Aufrufparametern in der lokalen Tabelle eingetragen. Die erhaltene Antwort vom Name Server wird zurückgegeben.|
+|register(int, IRemoteObject, String, InetAddress, int, bool)| Packt Aufrufparameter in eine Nachricht (Aufruf serializeNS() ) und schickt sie an den Name Server mit den notwendigen Registrierungsdaten. Empfängt und entpackt (Aufruf deserializeNS() die Antwort vom Name Server, wenn die Antwort nicht -1 ist, wird das RemoteObject in den Aufrufparametern zusammen mit der ID in den Aufrufparametern in der lokalen Tabelle eingetragen. Wenn die erhaltene Antwort kein leerer String ist, wird sie für den Aufruf von addGroup(InetAddress) genutzt, wen.|
 |serializeNS(int, String,String,int)| Erstellt eine Nachricht im JSON-Format aus den Aufrufparametern und wandelt das JSON-Objekt in ein byte-Array um, das zurückgegeben wird.|
 |deserializeNS(byte[])| Wandelt das angegebene byte[]-Array in ein int um, der zurückgegeben wird.|
 | run() | Eine Endlosschleife, die auf ankommende Pakete wartet. Wenn ein Paket ankommt, wird ein neuer Thread erzeugt, der die Methode receive() aufruft und das angekommene Paket übergibt.|
 | receive(DatagramPacket) | Entpackt den Nachrichtinhalt aus dem UDP-Paket und ruft die Methode unmarshal() auf.|
+|addGroup(InetAdress multicastAddres)| Ruft die MultiSocket-Methode joinGroup(multicastAddress) auf. |
 | unmarshal(byte[]) | Wandelt das übergebene byte-Array in ein JSON-Objekt um und ruft die Methode callRemoteObjectInterface() auf. |
 | callRemoteObjectInterface(JSON)| Entpackt die Daten aus dem angegebenen JSON-Objekt, sucht in der lokalen Tabelle nach dem Remote Object, das unter der im JSON angegebenen ID eingetragen ist. Ruft mit Methode call() des eingetragenen Remote Objects.|
 
@@ -270,7 +316,7 @@ Nachrichtenfromate unter Lösungsstrategie.
 |run()| Endlosschleife, die TCP-Pakete entgegennimmt. Wenn ein Paket ankommt, wird ein neuer Thread zur Behandlung erzeugt. Der neue Thread entpackt den Nachrichteninhalt aus dem Paket (Aufruf deserialize() ), prüft, welche Anfrage geschickt wurde (lookup oder register), ruft die entsprechende Methode auf. Packt das Ergebnis in eine Nachricht (Aufruf serialize() ) und schickt die Nachricht zurück an den Sender.|
 |deserialize(byte[])|entpackt den Nachrichteninhalt aus dem Paket|
 |serialize(JSON)|Packt das Ergebnis von lookup() in eine Nachricht. Gibt ein byte-Array zurück.|
-|serialize(int)|Packt das Ergebnis von register() in eine Nachricht. Gibt ein byte-Array zurück.|
+
 
 
 # Laufzeitsicht 
@@ -295,47 +341,13 @@ Nachrichtenfromate unter Lösungsstrategie.
 
 ![MW_AD_lookup](./images/MW_AD_lookup.png)
 
-# Verteilungssicht {#section-deployment-view}
+# Verteilungssicht
 
 **Einordnung der Middleware im Gesamtsystem**
 
 ![Deployment_Tron](./images/Deployment_Tron.png)
 
-
-
-## Infrastruktur Ebene 1 {#_infrastruktur_ebene_1}
-
-***\<Übersichtsdiagramm>***
-
-Begründung
-
-:   *\<Erläuternder Text>*
-
-Qualitäts- und/oder Leistungsmerkmale
-
-:   *\<Erläuternder Text>*
-
-Zuordnung von Bausteinen zu Infrastruktur
-
-:   *\<Beschreibung der Zuordnung>*
-
-## Infrastruktur Ebene 2 {#_infrastruktur_ebene_2}
-
-### *\<Infrastrukturelement 1>* {#__emphasis_infrastrukturelement_1_emphasis}
-
-*\<Diagramm + Erläuterungen>*
-
-### *\<Infrastrukturelement 2>* {#__emphasis_infrastrukturelement_2_emphasis}
-
-*\<Diagramm + Erläuterungen>*
-
-...
-
-### *\<Infrastrukturelement n>* {#__emphasis_infrastrukturelement_n_emphasis}
-
-*\<Diagramm + Erläuterungen>*
-
-# Querschnittliche Konzepte {#section-concepts}
+# Querschnittliche Konzepte
 Auf folgende querschnittlichen Konzepte haben wir uns gemeinsam mit unserer Partnergruppe Gamma 4 geeinigt:
 
 ## Nachrichtenformat
@@ -395,19 +407,9 @@ JsonObjectRegister = {
 }
 ```
 
-## *\<Konzept 2>* {#__emphasis_konzept_2_emphasis}
+# Architekturentscheidungen
 
-*\<Erklärung>*
-
-...
-
-## *\<Konzept n>* {#__emphasis_konzept_n_emphasis}
-
-*\<Erklärung>*
-
-# Architekturentscheidungen {#section-design-decisions}
-
-# Qualitätsanforderungen {#section-quality-scenarios}
+# Qualitätsanforderungen
 
 ::: formalpara-title
 **Weiterführende Informationen**
@@ -416,13 +418,13 @@ JsonObjectRegister = {
 Siehe [Qualitätsanforderungen](https://docs.arc42.org/section-10/) in
 der online-Dokumentation (auf Englisch!).
 
-## Qualitätsbaum {#_qualit_tsbaum}
+## Qualitätsbaum
 
-## Qualitätsszenarien {#_qualit_tsszenarien}
+## Qualitätsszenarien
 
-# Risiken und technische Schulden {#section-technical-risks}
+# Risiken und technische Schulden
 
-# Glossar {#section-glossary}
+# Glossar
 
 +-----------------------+-----------------------------------------------+
 | Begriff               | Definition                                    |
