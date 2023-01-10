@@ -10,7 +10,8 @@ public class HelloApplication extends Application {
 
         Screen gameScreen = new Screen();
         gameScreen.resetScreen();
-        gameScreen.drawScreen("start");
+        gameScreen.drawScreen("game");
+
 
 
 

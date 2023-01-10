@@ -34,7 +34,7 @@ public class LobbyScreen extends VBox {
         // Vbox einrichten
         this.getStyleClass().add("root");
         this.getStylesheets().add("lobby.css");
-        this.setAlignment(Pos.BOTTOM_CENTER);
+        this.setAlignment(Pos.TOP_CENTER);
 
 
 

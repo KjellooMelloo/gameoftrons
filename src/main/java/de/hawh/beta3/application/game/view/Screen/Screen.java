@@ -27,8 +27,9 @@ public class Screen {
 
         // register screen states
         screens.put("start",new StartScreen());
-        //screens.put("lobby", new LobbyScreen(currentPlayerID,numPlayers));
-        screens.put("game", new GameScreen(currentPlayerID));
+        screens.put("lobby", new LobbyScreen(currentPlayerID, numPlayers));
+        screens.put("game", new GameScreen(1,2,40));
+
     }
 
 
