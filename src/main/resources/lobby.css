@@ -1,0 +1,27 @@
+.root{
+    -fx-background-size: contain;
+    -fx-background-position: bottom;
+    -fx-background-repeat: repeat-x;
+    -fx-background-image:
+            url("images/field_tron.jpg")
+}
+
+.label {
+    -fx-font: bold 40px "Sans";
+    -fx-text-fill: #bde4f2;
+}
+
+.button {
+    -fx-font: bold 20px "Sans";
+    -fx-text-fill: #bde4f2;
+    -fx-border-color: #bde4f2;
+    -fx-border-width: 3px;
+    -fx-background-color: transparent;
+}
+.button:hover {
+    -fx-background-color:
+            linear-gradient(from 0% 93% to 0% 100%, #dbf1f8 0%, #94d4ea 100%);
+    -fx-text-fill: black;
+}
+
+
