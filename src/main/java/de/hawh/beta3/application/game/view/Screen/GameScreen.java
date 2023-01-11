@@ -2,19 +2,10 @@ package de.hawh.beta3.application.game.view.Screen;
 
 import de.hawh.beta3.application.game.view.Player.Coordinate;
 import de.hawh.beta3.application.game.view.Player.Player;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-import javafx.scene.transform.Rotate;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
