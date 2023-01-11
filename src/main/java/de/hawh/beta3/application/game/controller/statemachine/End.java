@@ -13,7 +13,5 @@ public class End implements State {
         context.setCurrentState(new Delete(context));
     }
 
-    public void endGame(int result){
-
-    }
+    public void endGame(int result){}
 }

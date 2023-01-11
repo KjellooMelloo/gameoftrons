@@ -9,6 +9,13 @@ public class Game implements State {
     @Override
     public void behavior(Context context){
         //to do
+        //showScreen("Countdown")
+        //--> if (iViewController.notifyCountdownOver())
+        //      opt: setGameFieldParameters()
+        //      iModel.startGame(int size, int speed)
+        //      iView.setGameFieldSize(int size)
+        // schleife handleDirectionKeyboardInput()
+        // if (endGame(int result))
         context.setCurrentState(new End(context));
     }
 

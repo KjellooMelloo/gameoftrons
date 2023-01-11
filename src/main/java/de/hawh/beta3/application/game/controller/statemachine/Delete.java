@@ -12,7 +12,5 @@ public class Delete implements State {
         context.setCurrentState(new Start(context));
     }
 
-    void deleteGameInstance(){
-
-    }
+    void deleteGameInstance(){}
 }

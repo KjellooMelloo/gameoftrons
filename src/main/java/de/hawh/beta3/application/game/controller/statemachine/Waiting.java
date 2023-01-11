@@ -9,8 +9,19 @@ public class Waiting implements State {
     @Override
     public void behavior(Context context){
         //to do
-        context.setCurrentState(new Game(context));
-        context.setCurrentState(new Delete(context));
+        //showScreen("Waiting");
+        //if (handleWaitingButtonClick){
+        //      iModel.cancelWait(); LOKAL
+        //      context.setCurrentState(new Delete(context));
+        //}
+        //else if (notifyTimerstopped()){
+        //      iModel.cancelWait() REMOTE BEI ALLEN
+        //else if (fullPlayerCountReached()){
+        //      context.setCurrentState(new Game(context));
+        //}
+        //else {
+        //      WAIT
+        //}
     }
 
     public void handleWaitingButtonClick(){}
