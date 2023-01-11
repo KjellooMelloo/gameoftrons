@@ -67,40 +67,37 @@ public class GameScreen extends Canvas {
         for(int i = windowSize/fieldSize ; i < getHeight() ; i+=windowSize/fieldSize){
             g.strokeLine(0, i, getWidth(), i);
         }
-
-        // Comment after tests are over
+        //TODO erase after test
         prepareTest();
-        for(Player p:playerMap.values()){
-            drawTileColors(p);
-        }
-        for(Player p:playerMap.values()){
-           // System.out.println("Player " + p.getId() + " - " + "x: " + p.getPos().x + " , y: " + p.getPos().y );
-            //System.out.println("-------------------------------");
-            p.updateTrailAndOrientation(p.getPos().x+3,p.getPos().y,"DOWN");
-            //System.out.println("Player " + p.getId() + " - " + "x: " + p.getPos().x + " , y: " + p.getPos().y );
-            //System.out.println("-------------------------------");
-        }
+
 
         for(Player p:playerMap.values()){
-            System.out.println("Player " + p.getId() + " - " + "x: " + p.getPos().x + " , y: " + p.getPos().y );
-            System.out.println("-------------------------------");
-            p.updateTrailAndOrientation(p.getPos().x+3,p.getPos().y+1,"DOWN");
-            System.out.println("Player " + p.getId() + " - " + "x: " + p.getPos().x + " , y: " + p.getPos().y );
-            System.out.println("-------------------------------");
-        }
-        for(Player p:playerMap.values()){
             drawTileColors(p);
         }
+
+
+
+        updatePlayer(0,1,2,"DOWN");
+
 
 
     }
 
     public GameScreen(){}
 
-    private void drawPlayers(){}
-    private void updatePlayer(int playerID,int newX, int newY, int newOrientation){}
+
+    private void updatePlayer(int playerID,int newX, int newY, String newOrientation){
+        if(newX==-1 || newY==-1){
+            kill(playerID);
+            return;
+        }
+        Player playerToUpdate = playerMap.get(playerID);
+        this.getGraphicsContext2D().clearRect(playerToUpdate.getPos().x*windowSize/fieldSize, playerToUpdate.getPos().y*windowSize/fieldSize,
+                windowSize/fieldSize, windowSize/fieldSize);
+        playerToUpdate.updateTrailAndOrientation(newX,newY,newOrientation);
+        drawTileColors(playerToUpdate);
+    }
     private void removeTileColors(int playerID){}
-    private void updateTileColors(int playerID, int oldx, int oldY, int difX, int difY, String oldOrientation){}
     private void drawTileColors(Player playerToDraw){
         if(playerToDraw == null || playerToDraw.getTrail()==null){
             throw new NullPointerException();
@@ -124,14 +121,19 @@ public class GameScreen extends Canvas {
         g.drawImage(playerToDraw.getImage(), playerToDraw.getPos().x*windowSize/fieldSize, playerToDraw.getPos().y*windowSize/fieldSize, windowSize/fieldSize,windowSize/fieldSize);
     }
 
-    private void kill(int playerToKill){}
+    private void kill(int playerToKill){
+        playerMap.remove(playerToKill);
+        removeTileColors(playerToKill);
+    }
 
     public void prepareTest(){
-        int i=0;
-        for (Player p : playerMap.values()) {
+        int i = 0;
+        for(Player p:playerMap.values()){
             p.setPos(i,i);
+            p.getTrail().add(p.getPos());
             i+=2;
         }
+
     }
 
 

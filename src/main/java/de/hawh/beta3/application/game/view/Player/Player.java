@@ -21,7 +21,7 @@ public class Player {
       this.id = id;
       pos = new Coordinate(1,1);
       trail=new ArrayList<>();
-      trail.add(pos);
+      //trail.add(pos);
       orientation = "RIGHT";
       //TODO change to relative path
         //TODO bike image depends on ID
