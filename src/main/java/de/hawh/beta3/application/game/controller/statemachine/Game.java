@@ -1,11 +1,24 @@
 package de.hawh.beta3.application.game.controller.statemachine;
 
-public interface Game extends State {
-    @Override
-    void behavior();
+public class Game implements State {
+
+    public Game(Context context){
+        this.behavior(context);
+    }
 
     @Override
-    void setCurrentState(String state);
+    public void behavior(Context context){
+        //to do
+        context.setCurrentState(new End(context));
+    }
 
-    String handleDirectionKeyboardInput();
+    /**@Override
+    public void setCurrentState(String state){
+
+    }**/
+
+
+    public String handleDirectionKeyboardInput(){
+        return "";
+    }
 }

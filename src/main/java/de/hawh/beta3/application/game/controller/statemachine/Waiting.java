@@ -1,11 +1,22 @@
 package de.hawh.beta3.application.game.controller.statemachine;
 
-public interface Waiting extends State {
-    @Override
-    void behavior();
+public class Waiting implements State {
+
+    public Waiting(Context context){
+        this.behavior(context);
+    }
 
     @Override
-    void setCurrentState(String state);
+    public void behavior(Context context){
+        //to do
+        context.setCurrentState(new Game(context));
+        context.setCurrentState(new Delete(context));
+    }
 
-    void handleWaitingButtonClick();
+    /**@Override
+    public void setCurrentState(String state){
+
+    }**/
+
+    public void handleWaitingButtonClick(){}
 }

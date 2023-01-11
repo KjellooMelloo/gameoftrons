@@ -1,15 +1,23 @@
 package de.hawh.beta3.application.game.controller.statemachine;
 
-import de.hawh.beta3.application.game.controller.config.Config;
-import de.hawh.beta3.application.game.controller.config.IConfig;
+public class Start implements State {
 
-public interface Start extends State {
-
-    @Override
-    void behavior();
+    public Start(Context context){
+        this.behavior(context);
+    }
 
     @Override
-    void setCurrentState(String state);
+    public void behavior(Context context){
+        //to do
+        context.setCurrentState(new Waiting(context));
+    }
 
-    int handleInputPlayerCount();
+    /**@Override
+    public void setCurrentState(String state){
+
+    }**/
+
+    public int handleInputPlayerCount(){
+        return 0;
+    }
 }

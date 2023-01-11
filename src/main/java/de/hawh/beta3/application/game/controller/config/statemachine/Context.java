@@ -1,46 +1,29 @@
-package de.hawh.beta3.application.game.controller.statemachine;
+package de.hawh.beta3.application.game.controller.config.statemachine;
 
 import de.hawh.beta3.application.game.controller.config.IConfig;
 import de.hawh.beta3.application.game.model.gamemanager.IModel;
 import de.hawh.beta3.application.game.view.IControllerView;
 
-public class Context {
+public class Context implements State {
 
-    Context context;
-
-    private State currentState;
-
-   /* IConfig iconfig;
+    State currentState;
+    IConfig iconfig;
     IModel imodel;
     IControllerView icontrollerview;
     Start start;
     Waiting waiting;
     Game game;
     End end;
-    Delete delete;*/
+    Delete delete;
 
 
-    public Context(){
-        context = this;
-        currentState = new Start(context);
-    }
-    public State getState(){
-        return currentState;
-    }
-
-    public void setCurrentState(State state){
-        this.currentState = state;
-    }
-
-
-
-
-
-    /**@Override
+    @Override
     public void behavior(){
 
-    }**/
-    /**public void setCurrentState(String state) {
+    }
+
+    @Override
+    public void setCurrentState(String state) {
         switch (state) {
             case "Start" -> {
                 if (currentState == null || currentState == delete){
@@ -74,7 +57,7 @@ public class Context {
             }
             /*default:
                 currentState = start;
-                start.behavior();
+                start.behavior();*/
         }
-    }**/
+    }
 }

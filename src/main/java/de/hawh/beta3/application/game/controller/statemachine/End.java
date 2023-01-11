@@ -1,11 +1,24 @@
 package de.hawh.beta3.application.game.controller.statemachine;
 
-public interface End extends State {
-    @Override
-    void behavior();
+public class End implements State {
+
+
+    public End(Context context){
+        this.behavior(context);
+    }
 
     @Override
-    void setCurrentState(String state);
+    public void behavior(Context context){
+        //to do
+        context.setCurrentState(new Delete(context));
+    }
 
-    void endGame(int result);
+    /**@Override
+    public void setCurrentState(String state){
+
+    }**/
+
+    public void endGame(int result){
+
+    }
 }

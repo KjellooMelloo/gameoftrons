@@ -2,38 +2,38 @@ package de.hawh.beta3.application.game.controller.statemachine;
 
 import de.hawh.beta3.application.game.controller.config.Config;
 
-public class IViewControllerImpl extends Context implements IViewController, Start, Waiting, Game {
+public class IViewControllerImpl extends Context implements IViewController {
 
     State currentState;
     Config config;
 
-    @Override
+    /**@Override
     public void behavior(){
 
-    }
+    }**/
+
+    /**@Override
+    public void setCurrentState(String state){
+
+    }**/
 
     @Override
-    public void setCurrentState(String State){
-
-    }
-
-    @Override
-    public int handleInputPlayerCount(){
+    public int handleInputPlayerCount() {
         return 0;
     }
 
     @Override
-    public void handleWaitingButtonClick(){
+    public void handleWaitingButtonClick() {
 
     }
 
     @Override
-    public String handleDirectionKeyboardInput(){
-        return "";
+    public String handleDirectionKeyboardInput() {
+        return null;
     }
 
     @Override
-    public void notifyCountdownOver(){
+    public void notifyCountdownOver() {
 
     }
 }

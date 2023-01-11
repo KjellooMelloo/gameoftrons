@@ -1,11 +1,23 @@
 package de.hawh.beta3.application.game.controller.statemachine;
 
-public interface Delete extends State {
-    @Override
-    void behavior();
+public class Delete implements State {
+
+    public Delete(Context context){
+        this.behavior(context);
+    }
 
     @Override
-    void setCurrentState(String state);
+    public void behavior(Context context){
+        //to do
+        context.setCurrentState(new Start(context));
+    }
 
-    void deleteGameInstance();
+    /**@Override
+    public void setCurrentState(String state){
+
+    }**/
+
+    void deleteGameInstance(){
+
+    }
 }
