@@ -2,10 +2,12 @@ package de.hawh.beta3.application.game.view.Screen;
 
 import de.hawh.beta3.application.game.view.Player.Coordinate;
 import de.hawh.beta3.application.game.view.Player.Player;
+import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,10 +15,9 @@ public class GameScreen extends Canvas {
 
     private int currentPlayerID=-1;
     private int fieldSize=40;
-
     private Map<Integer, Player> playerMap = new HashMap<>();
     private int windowSize = 800;
-    private int initialNumPlayers = 2;
+    private int numPlayers = 2;
     private ScreenCommons screenCommons = new ScreenCommons();
     private Color backgroundColor = Color.BLUEVIOLET.darker().darker().darker().desaturate();
 
@@ -24,28 +25,41 @@ public class GameScreen extends Canvas {
 
     public GameScreen(int currentPlayerID, int initialNumPlayers, int fieldSize){
         this.currentPlayerID = currentPlayerID;
-        this.initialNumPlayers = initialNumPlayers;
+        this.numPlayers = initialNumPlayers;
         this.fieldSize = 10;
 
-
+       // Set up canvas size
         this.setWidth(windowSize);
         this.setHeight(windowSize);
 
+        // Register Key Event Handler
+        registerKeyEventHandler();
+
+        // Initialize players
         for(int i=0; i < initialNumPlayers; i++){
             playerMap.put(i,new Player(i));
         }
 
 
-        this.getGraphicsContext2D().strokeText("Playing", 150, 20);
         initializeGameField();
 
+    }
+
+    private void registerKeyEventHandler() {
+        this.setFocusTraversable(true);
+        this.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                KeyCode keyCode = keyEvent.getCode();
+                //TODO Send keyCode (or keyCode.toString()) to Controller
+            }
+        });
     }
 
     private void initializeGameField() {
         GraphicsContext g = this.getGraphicsContext2D();
         g.setFill(backgroundColor);
 
-        g.clearRect(0, 0, getWidth(), getHeight());
 
         // vertical lines
         g.setStroke(Color.GRAY);
@@ -61,15 +75,10 @@ public class GameScreen extends Canvas {
         //TODO erase after test
         prepareTest();
 
-
+    // Draw players to gameField
         for(Player p:playerMap.values()){
             drawTileColors(p);
         }
-
-
-
-        updatePlayer(0,-1,-1,"DOWN");
-
 
 
     }
@@ -77,7 +86,7 @@ public class GameScreen extends Canvas {
     public GameScreen(){}
 
 
-    private void updatePlayer(int playerID,int newX, int newY, String newOrientation){
+    public void updatePlayer(int playerID,int newX, int newY, String newOrientation){
         if(newX==-1 || newY==-1){
             kill(playerID);
             return;
