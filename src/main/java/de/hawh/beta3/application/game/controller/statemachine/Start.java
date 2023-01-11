@@ -12,11 +12,6 @@ public class Start implements State {
         context.setCurrentState(new Waiting(context));
     }
 
-    /**@Override
-    public void setCurrentState(String state){
-
-    }**/
-
     public int handleInputPlayerCount(){
         return 0;
     }

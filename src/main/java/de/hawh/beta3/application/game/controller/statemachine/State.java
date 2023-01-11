@@ -5,5 +5,4 @@ public interface State {
 
     void behavior(Context context);
 
-    //void setCurrentState(String state);
 }

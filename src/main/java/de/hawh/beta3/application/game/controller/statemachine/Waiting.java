@@ -13,10 +13,5 @@ public class Waiting implements State {
         context.setCurrentState(new Delete(context));
     }
 
-    /**@Override
-    public void setCurrentState(String state){
-
-    }**/
-
     public void handleWaitingButtonClick(){}
 }

@@ -12,12 +12,6 @@ public class Game implements State {
         context.setCurrentState(new End(context));
     }
 
-    /**@Override
-    public void setCurrentState(String state){
-
-    }**/
-
-
     public String handleDirectionKeyboardInput(){
         return "";
     }
