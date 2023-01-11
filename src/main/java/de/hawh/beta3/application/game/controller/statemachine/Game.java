@@ -14,12 +14,15 @@ public class Game implements State {
         //      opt: setGameFieldParameters()
         //      iModel.startGame(int size, int speed)
         //      iView.setGameFieldSize(int size)
-        // schleife handleDirectionKeyboardInput()
-        // if (endGame(int result))
-        context.setCurrentState(new End(context));
+        //schleife handleDirectionKeyboardInput()
+        //if (endGame(int result))
+        //      context.setCurrentState(new End(context));
     }
 
     public String handleDirectionKeyboardInput(){
         return "";
     }
+
+    public void endGame(int result){}
+
 }

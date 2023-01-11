@@ -9,8 +9,13 @@ public class Delete implements State {
     @Override
     public void behavior(Context context){
         //to do
+        //opt: showScreen("Delete")
+        //deleteGameInstance()
         context.setCurrentState(new Start(context));
     }
 
-    void deleteGameInstance(){}
+    void deleteGameInstance(){
+        //iModel.playerList.reset();
+        //iModel.lobby.numPlayers = 0;
+    }
 }
