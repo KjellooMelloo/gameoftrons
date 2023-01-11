@@ -16,7 +16,7 @@ class GameLogicTest {
     @BeforeEach
     void setUp() {
         gameLogic = new GameLogic();
-        gameLogic.init(4, 40, 3);
+        gameLogic.init(4, 40);
         players = gameLogic.getPlayerPositions();
     }
 
@@ -30,7 +30,7 @@ class GameLogicTest {
         assertEquals(startingPos.stream().distinct().count(), startingPos.size());
 
         //6 players
-        gameLogic.init(6, 40, 3);
+        gameLogic.init(6, 40);
         players = gameLogic.getPlayerPositions();
 
         startingPos = new ArrayList<>();
@@ -49,7 +49,7 @@ class GameLogicTest {
         assertEquals(startingPos.get(3), new Position(19, 39));
 
         //3 players size 53
-        gameLogic.init(4, 53, 3);
+        gameLogic.init(4, 53);
         players = gameLogic.getPlayerPositions();
         startingPos = new ArrayList<>();
         for (int[] p : players) startingPos.add(new Position(p[1], p[2]));
@@ -58,7 +58,7 @@ class GameLogicTest {
         assertEquals(startingPos.get(2), new Position(26, 0));
 
         //6 players size 40
-        gameLogic.init(6, 40, 3);
+        gameLogic.init(6, 40);
         players = gameLogic.getPlayerPositions();
         startingPos = new ArrayList<>();
         for (int[] p : players) startingPos.add(new Position(p[1], p[2]));
@@ -154,7 +154,7 @@ class GameLogicTest {
          * x x 2 x 1
          * x x x 1 1
          */
-        gameLogic.init(3, 5, 3);
+        gameLogic.init(3, 5);
         players = gameLogic.getPlayerPositions();
         gameLogic.changePlayerDirection(0, "left");
         gameLogic.changePlayerDirection(1, "left");
@@ -178,7 +178,7 @@ class GameLogicTest {
          * x x 3 3 x
          * x x 3 x x
          */
-        gameLogic.init(4, 5, 3);
+        gameLogic.init(4, 5);
         players = gameLogic.getPlayerPositions();
         gameLogic.updatePlayers();  //tick 1
         gameLogic.changePlayerDirection(2, "right");
@@ -196,7 +196,7 @@ class GameLogicTest {
     @Test
     void updatePlayersPlayerWinCollision() {
         //one player steers right twice and drives into wall --> other player wins
-        gameLogic.init(2, 40, 3);
+        gameLogic.init(2, 40);
         players = gameLogic.getPlayerPositions();
         gameLogic.changePlayerDirection(0, "right");
         gameLogic.updatePlayers();
@@ -211,7 +211,7 @@ class GameLogicTest {
     @Test
     void updatePlayersPlayerWinTwoCollisions() {
         //players 0 and 1 drive into one another --> player 2 wins
-        gameLogic.init(3, 5, 3);
+        gameLogic.init(3, 5);
         players = gameLogic.getPlayerPositions();
         gameLogic.updatePlayers();  //tick 1
         gameLogic.changePlayerDirection(2, "left"); //player 2 is clever
@@ -227,7 +227,7 @@ class GameLogicTest {
     @Test
     void updatePlayersTie() {
         //every player drives into one another
-        gameLogic.init(4, 5, 3);
+        gameLogic.init(4, 5);
         gameLogic.updatePlayers();  //tick 1
         gameLogic.updatePlayers();  //tick 2 --> collision in the middle so big its a Karambolage
         assertSame(gameLogic.getGameState(), "OVER");
@@ -243,7 +243,7 @@ class GameLogicTest {
          * x x x 3 3 x x
          * x x x 3 3 x x
          */
-        gameLogic.init(5, 7, 3);
+        gameLogic.init(5, 7);
         gameLogic.changePlayerDirection(0, "left");
         gameLogic.changePlayerDirection(4, "left");
         gameLogic.updatePlayers();  //tick 1
