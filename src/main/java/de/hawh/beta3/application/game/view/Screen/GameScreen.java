@@ -77,7 +77,7 @@ public class GameScreen extends Canvas {
 
 
 
-        updatePlayer(0,1,2,"DOWN");
+        updatePlayer(0,-1,-1,"DOWN");
 
 
 
@@ -97,7 +97,22 @@ public class GameScreen extends Canvas {
         playerToUpdate.updateTrailAndOrientation(newX,newY,newOrientation);
         drawTileColors(playerToUpdate);
     }
-    private void removeTileColors(int playerID){}
+    private void removeTileColors(Player playerToRemove){
+
+        GraphicsContext g = this.getGraphicsContext2D();
+
+        for(Coordinate pos : playerToRemove.getTrail()){
+            if(pos.x < 0 || pos.x >= fieldSize){
+                throw new IllegalArgumentException("x value out of bounds: x is " + pos.x + ", but should be 0 <= x < " + fieldSize);
+            }
+            if(pos.y < 0 || pos.y >= fieldSize) {
+                throw new IllegalArgumentException("y value out of bounds: y is " + pos.y + ", but should be 0 <= y < " + fieldSize);
+            }
+
+            // erase trail position
+             g.clearRect(pos.x*windowSize/fieldSize, pos.y*windowSize/fieldSize, windowSize/fieldSize, windowSize/fieldSize);
+        }
+    }
     private void drawTileColors(Player playerToDraw){
         if(playerToDraw == null || playerToDraw.getTrail()==null){
             throw new NullPointerException();
@@ -121,9 +136,10 @@ public class GameScreen extends Canvas {
         g.drawImage(playerToDraw.getImage(), playerToDraw.getPos().x*windowSize/fieldSize, playerToDraw.getPos().y*windowSize/fieldSize, windowSize/fieldSize,windowSize/fieldSize);
     }
 
-    private void kill(int playerToKill){
-        playerMap.remove(playerToKill);
-        removeTileColors(playerToKill);
+    private void kill(int playerToKillID){
+        Player playerToRemove = playerMap.get(playerToKillID);
+        playerMap.remove(playerToKillID);
+        removeTileColors(playerToRemove);
     }
 
     public void prepareTest(){

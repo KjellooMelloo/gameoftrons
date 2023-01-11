@@ -93,8 +93,10 @@ public class Player {
                 }
             }
         }
-        orientation=newOrientation;
-        rotateImage();
+        if(!newOrientation.equals(orientation)) {
+            orientation = newOrientation;
+            rotateImage();
+        }
     }
 
     private void rotateImage() {
