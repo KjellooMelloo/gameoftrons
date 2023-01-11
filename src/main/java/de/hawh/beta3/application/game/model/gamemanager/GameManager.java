@@ -107,7 +107,7 @@ public class GameManager implements IModel {
         gameLogic.updatePlayers();
         if (gameLogic.getGameState().equals("RUNNING")) {
             for (int[] p : gameLogic.getPlayerPositions()) {
-                //modelView.updatePlayer(p[0], p[1], p[2]);
+                //modelView.updatePlayer(p[0], p[1], p[2], p[3]);
             }
         } else if (gameLogic.getGameState().equals("OVER")) {
             //modelController.endGame(gameLogic.getGameWinner());

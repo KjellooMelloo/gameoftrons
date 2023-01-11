@@ -1,42 +1,75 @@
-# 
+# **Dokumentation Middleware für Game of Trons**
 
-**Über arc42**
+**Autoren**: Kathleen Neitzel, Kjell May, Viviam Ribeiro
 
-arc42, das Template zur Dokumentation von Software- und
-Systemarchitekturen.
+**Modul**: Verteilte Systeme
 
-Template Version 8.1 DE. (basiert auf AsciiDoc Version), Mai 2022
-
-Created, maintained and © by Dr. Peter Hruschka, Dr. Gernot Starke and
-contributors. Siehe <https://arc42.org>.
+- [**Dokumentation Middleware für Game of Trons**](#dokumentation-middleware-für-game-of-trons)
+- [Einführung und Ziele](#einführung-und-ziele)
+  - [Aufgabenstellung](#aufgabenstellung)
+  - [Qualitätsziele](#qualitätsziele)
+  - [Stakeholder](#stakeholder)
+- [Randbedingungen](#randbedingungen)
+  - [Technisch](#technisch)
+  - [Organisatorisch](#organisatorisch)
+- [Kontextabgrenzung](#kontextabgrenzung)
+  - [Fachlicher Kontext](#fachlicher-kontext)
+  - [Technischer Kontext](#technischer-kontext)
+- [Lösungsstrategie](#lösungsstrategie)
+  - [Methodenliste](#methodenliste)
+  - [Nachrichtenformat](#nachrichtenformat)
+- [Bausteinsicht](#bausteinsicht)
+  - [Whitebox Gesamtsystem](#whitebox-gesamtsystem)
+    - [Blackbox Client Stub](#blackbox-client-stub)
+    - [Blackbox Server Stub](#blackbox-server-stub)
+    - [Blackbox Name Service](#blackbox-name-service)
+  - [Ebene 2](#ebene-2)
+  - [Ebene 3](#ebene-3)
+    - [Whitebox Client Stub](#whitebox-client-stub)
+    - [Whitebox Server Stub](#whitebox-server-stub)
+    - [Whitebox Name Service](#whitebox-name-service)
+- [Laufzeitsicht](#laufzeitsicht)
+  - [Use Case 1 Register Method](#use-case-1-register-method)
+  - [Use Case 2/3 Invoke Method / Lookup Method](#use-case-23-invoke-method--lookup-method)
+  - [AD register](#ad-register)
+  - [AD bind](#ad-bind)
+  - [AD lookup](#ad-lookup)
+- [Verteilungssicht](#verteilungssicht)
+- [Querschnittliche Konzepte](#querschnittliche-konzepte)
+  - [Nachrichtenformat](#nachrichtenformat-1)
+- [Architekturentscheidungen](#architekturentscheidungen)
+- [Qualitätsanforderungen](#qualitätsanforderungen)
+  - [Qualitätsbaum](#qualitätsbaum)
+  - [Qualitätsszenarien](#qualitätsszenarien)
+- [Risiken und technische Schulden](#risiken-und-technische-schulden)
+- [Glossar](#glossar)
 
 # Einführung und Ziele
 
 Es wird eine Middleware für die verteilte Anwendung Game Of Trons entwickelt.
 
-## Aufgabenstellung 
+## Aufgabenstellung
 
-1. Umwandlung von Funktionsaufrufen in Nachrichten 
-2. Umwandlung von Nachrichten in Funktionsaufrufen
-3. Kommunikation mit dem Betriebssystem, um Nachrichten zu versenden und zu empfangen.
-4. Vereinheitlicht Nachrichten in ein RPC-Nachrichtenformat
-5. Callees in Application Stubs können sich als Remote Objects bei der Middleware anmelden
-6. Die physikalische Adresse von Diensten kann abgefragt werden.
+1. Callees in Application Stubs können sich als Remote Objects bei der Middleware mit ihrer physikalischen Adresse registrieren
+2. Entgegennehmen und Weiterleitung eines Methodenaufrufs auf ein Remote Object
+3. Umwandlung von Funktionsaufrufen in Nachrichten
+4. Vereinheitlicht Methodenaufrufe in ein vordefiniertes Nachrichtenformat
+5. Die physikalische Adresse von Diensten kann abgefragt werden.
+6. Kommunikation mit dem Betriebssystem, um Nachrichten zu versenden und zu empfangen
+7. Nachrichten, die vom Betriebssystem empfangen wurden, können entgegengenommen werden
+8. Umwandlung von Nachrichten in Funktionssignaturen
+9. Funktionssignaturen werden an die ausführende Komponente weitergegeben
 
-
-
-## Qualitätsziele 
+## Qualitätsziele
 
 | ID | Qualitätsziel | Kurzbeschreibung |
 | --- | --- | --- |
-| Q1 | Verteilungstransparenz| Entfernte Zugriffe, Bewegungen, Migrationen und Replikationen werden vom Nutzer versteckt|
-| Q2 | Offenheit (Openness) |  Schnittstellen müssen gut definierte Ablauf- und Fehlersemantik haben, Komponenten sollten austauschbar sein, Erweiterung um Komponenten sollte möglich sein|
-| Q3 | Geographische Skalierung | Die Benutzer können sich überall auf der Welt befinden |
+| Q1 | Gemeinsame Ressourcennutzung | Um das System nicht mit Replikation und Synchronisation zu belasten wollen wir eine Node mit Datenhoheit nutzen, welche die anderen informiert und aktualisiert |
+| Q2 | Verteilungstransparenz| <ul><li>Access: Gleiche Darstellung von Objekten soll durch taktgebende Node sichergestellt werden</li><li>Location: Der Nutzer weiß nicht, auf welcher Node sich die Datenhoheit und damit die Objekte befinden</li><li>Relocation: Soll sichergestellt werden sein, weil die Objekte auf der taktgebenden Node bleiben</li><li>Migration: Wenn ein Spieler während des Spielens seine IP-Adresse ändern würde, könnte er nicht mehr mitspielen.</li><li>Replication: Alle Nodes werden aktualisiert, Replikation wird  nicht sichtbar sein</li><li>Concurrency: Objekte befinden sich in der Node mit Datenhoheit und werden daher nicht von mehreren Spielern gleichzeitig genutzt</li><li>Failure: Wird leider nicht sichergestellt werden, denn wenn unsere zentrale Node abstürzt, funktioniert das Spiel für alle nicht mehr. Da die Spieldauer aber immer sehr kurz sein wird, kann schnell ein neues gestartet werden</li></ul>|
+| Q3 | Offenheit (Openness) | Schnittstellen müssen gut definierte Ablauf- und Fehlersemantik haben, Komponenten sollten austauschbar sein, Erweiterung um Komponenten sollte möglich sein |
+| Q4 | Skalierbarkeit | <ul><li>Größe: 2-6 Spieler sollten miteinander spielen können</li><li>geografisch: Bisher wird unser Spiel nur in einem lokalen Netzwerk oder über VPN spielbar sein</li><li>administrativ: Eine Node soll die Datenhoheit besitzen</li></ul> |
 
-
-
-
-## Stakeholder 
+## Stakeholder
 
 |Rolle|Kontakt|Erwartungshaltung|
 |-|-|-|
@@ -44,12 +77,28 @@ Es wird eine Middleware für die verteilte Anwendung Game Of Trons entwickelt.
 |Entwickler|Kathleen Neitzel, Kjell May, Viviam Ribeiro| - Funktionsfähige Middleware mit gewünschter Funktionalität entwickeln, dass das Spiel an mehreren Rechnern gespielt werden kann|
 |Kunde|GameOfTrons|Möglichkeit auf mehreren Rechnern gespielt werden zu können|
 
+# Randbedingungen
 
-# Randbedingungen 
+## Technisch
 
-# Kontextabgrenzung 
+| Randbedingung           | Erläuterung                                 |
+|-------------------------|---------------------------------------------|
+| Programmiersprache | Die Vorgabe der Aufgabenstellung erfordert die Nutzung einer objektorientierten Programmiersprache. Die Nutzung von Java wird empfohlen, da in dieser Sprache Code-Beispiele in den Vorlesungen gezeigt werden. Wir haben uns aus diesem Grund für Java entschieden. |
+| Versionsverwaltung | Die Nutzung von unserem hochschuleigenen Gitlab ist ebenfalls vorgeschrieben. Aufgrund eines Hackerangriffs in der Hochschule sind wir später im Projekt auf GitHub umgestiegen. |
+| Schnittstellen     | Kommunikation mit RPC  |
+| Netzwerksvoraussetzungen | Aufgrund des Hackerangriffs findet die Abnahme nicht im LAN des Labors statt, sondern online über VPN. Wir haben uns dabei für ZeroTier entschieden |
 
-## Fachlicher Kontext 
+## Organisatorisch
+
+| Randbedingung   | Erläuterung |
+|-----------------|-------------|
+| Team            | Kjell May, Viviam Ribeiro und Kathleen Neitzel aus dem Studiengang der Angewandten Informatik. Fachsemester 6 und 7. |
+| Zeit            |Abgabe am 19. Januar 2023. |
+| Vorgehensmodell | Die Entwicklung wird iterativ und inkrementell betrieben. Zur Dokumentation wird arc42 genutzt|
+
+# Kontextabgrenzung
+
+## Fachlicher Kontext
 
 ![Fachlicher_Trontext](./images/middleware_fachlicher_trontext.png)
 
@@ -69,194 +118,206 @@ Es wird eine Middleware für die verteilte Anwendung Game Of Trons entwickelt.
 
 ![Technischer_Trontext](./images/middleware_technischer_trontext.png)
 
-
-
 # Lösungsstrategie 
 
 ## Methodenliste
 
 | Usecase | Akteur |Funktionssignatur| Vorbedingung | Nachbedingung | Ablaufsemantik | Fehlersemantik |
 |---|---|---|---|---|---|---|
-|UC1| ServerStub, NameServer | void register(int, String InetAddress, int) | Ein CalleeStub aus dem ApplicationStub möchte sich als RemoteObject registrieren | Das RemoteObject wurde im NameServer gespeichert | Der NameServer wird aufgerufen. Der NameServer prüft, ob zur mitgegebenen ID und Methodennamen bereits ein Eintrag vorhanden ist(Aufruf checkInterfaceInTable).  Die ID und der Methodenname wird mit der übergebenen InetAddress und Portnummer eingetragen | Eintrag mit der ID und dem Methodennamen existiert bereits. Dann wird der Eintrag überschrieben |
+|UC1| ServerStub| void register(int, IRemoteObject remoteObject, String, InetAddress, int, bool) | Ein CalleeStub aus dem ApplicationStub möchte sich als RemoteObject registrieren | Das Remote Object wurde im Name Server und in der lokalen Tabelle im Server Stub aufgenommen.| Der Server Stub erstellt eine Nachricht aus den Daten in den Aufrufparametern (Aufruf serializeNS()) und schickt eine Nachricht nach dem TCP-Protokoll an den Name Server. Der Name Server schickt die eingetragene Multicast-Adresse, wenn eine neue Multicast-Adresse zugewiesen wurde, ein leerer String über eine Nachricht zurück. Die Adresse (oder leerer String) wird aus der Nachricht entpackt (Aufruf deserializeNS() ). Die im Aufrufparameter angegebene Interface-ID und das angegebene RemoteObject werden in der lokalen Tabelle eingetragen (wenn die ID noch nicht vorhanden ist). Wenn die vom Name Server erhaltene Antwort kein leerer String ist, wird die Methode addGroup(InetAddress) aufgerufen. | |
+|UC1| ServerStub | void addGroup(InetAddress)| Ein Remote-Object 
+|UC1|  NameServer | int bind(int, String InetAddress, int) | Eine Nachricht ist aus einem ServerStub angekommen, die Daten wurde aus der Nachricht entpackt und als Aufrufparameter genutzt | Das RemoteObject wurde im NameServer gespeichert | Der NameServer prüft, ob zur mitgegebenen ID und Methodennamen bereits ein Eintrag vorhanden ist(Aufruf checkInterfaceInTable).  Aus der übergebenen Interface-ID wird eine eindeutige Object-ID erzeugt. Die Object-ID und der Methodenname werden mit der übergebenen InetAddress und Portnummer eingetragen. Die erzeugte Object-ID wird an den anfragenden Server Stub zurückgeschickt.| Eintrag mit der ID und dem Methodennamen existiert bereits. Dann wird der Eintrag überschrieben. Wenn es sich um eine Modelschnittstelle handelt und eine andere Model-Komponente hat sich bereits eingetragen, dann wird keine weitere Model-Komponente registriert. Der Name Server schickt in dem Fall -1 an den Server Stub zurück. |
 |UC1| NameServer | boolean checkInterfaceInTable(int, String) | Ein CalleeStub möchte sich als RemoteObject eintragen und hat register() aufgerufen | Es wird true zurückgegeben, wenn bereits ein Eintrag existiert sonst false| Der Name Server prüft, ob zur übergebenen ID und Methodennamen bereits ein Eintrag in der Tabelle existiert| |
 |UC2| ClientStub | void invoke(int, String, Object[]) | Eine Komponente ruft eine Remote-Komponente über eine Application Stub Schnittstelle auf | Der Aufruf wurde geprüft und die Methode marshal() wurde aufgerufen |  Prüft mithilfe von lookup() ob die übergebene Objekt-ID (erster Parameter) und die Methode (zweiter Parameter) registriert ist. Dann wird die Methode marshal() aufgerufen | Wenn die Objekt-ID nicht registriert ist, wird eine Exception geworfen|
 |UC3| ClientStub | byte[] marshal(int,String, Object[]) | Funktionsaufruf über invoke wurde getätigt, zugehörige InetAddress und Portnummer wurde durch NameResolver ermittelt | Funktionsaufruf wurde marshaled und zurückgegeben | Es wird eine Nachricht im JSON-Format aus den übergebenen Parametern InterfaceID, Methodenname und Methodenparameter (Object[]) zusammengebaut. Das JSON-Objekt wird in ein byte-Array umgewandelt und zurückgegeben | |
 |UC3.1| ClientStub | void send(InetAdress, int, byte[]) | Funktionsaufruf wurde marshaled, zugehörige InetAddress und Portnummer druch NameResolver ermittelt | Nachricht wurde verschickt | Die marshaled Nachricht wird über einen Socket an die passende InetAddress und Portnummer verschickt. | |
 |UC4| ServerStub | JSON unmarshal(byte[]) | Nachricht wurde über receive empfangen | Nachrichteninhalt wurde extrahiert und kann für call genutzt werden | | (checksum stimmt nicht überein -> ignorieren) |
 |UC4.1| ServerStub |  receive(DatagramPacket)) | Ein Socket im Server Stub hat eine Nachricht empfangen | Nachricht wurde aus dem Packet entpackt und dem Marshaler übergeben. | Die Nachricht wird aus dem übergebenen Datagram-Paket herausgeholt und dem Unmarshaler übergeben | |
-|UC5| Client Stub | String cacheOrLookup(int,String) | Ein Application Stub hat invoke aufgerufen, um eine Remote-Methode aufzurufen. Der Client Stub muss im nächsten Schritt prüfen, ob die aufgerufene Methode im Cache des Client Stubs eingetragen ist. | Die Adresse und die Portnummer der angefragten Methode werden zurückgegeben.| | Es gibt keinen Eintrag mit der ID und dem Methodennamen. Der RPC abgebrochen|
-|UC5| Name Server | String lookup(int, String) | Eine angefragte Methode ist nicht im Cache des Client Stubs gespeichert| Die Adresse und die Portnummer der angefragten Methode werden zurückgegeben.|Der Name Server prüft, ob es einen Eintrag in der Tabelle mit der übergebenen Interface-ID und Methodenname gibt. Wenn ja, dann wird ein String zurückgegeben, der sich aus der IP-Adresse und der Portnummer zusammensetzt.| Es gibt keinen Eintrag mit der ID und dem Methodennamen. Der RPC abgebrochen |
+|UC5| Client Stub | String[] cacheOrLookup(int,String) | Ein Application Stub hat invoke aufgerufen, um eine Remote-Methode aufzurufen. Der Client Stub muss im nächsten Schritt prüfen, ob die aufgerufene Methode im Cache des Client Stubs eingetragen ist. | Die Adresse und die Portnummer der angefragten Methode werden zurückgegeben.| Es wird in der Cache-Tabelle des Client-Stubs nachgeschaut, ob es einen Eintrag zur angegebenen ID(int) und dem angegebenen Methodenname(String) existiert. Wenn ja, dann wird ein Array mit der eingetragenen IP-Adresse (Index 0) und Portnummer (Index 1) zurückgegeben. Wenn nicht, dann wird eine Nachricht aus der angegebenen ID und dem Methodennamen erstellt (Aufruf serializeNS() ) und an den Name Server über TCP geschickt. Die erhaltene Antwort vom Name Server wird entpackt (Aufruf deserializeNS() ) im selben Array-Format zurückgegeben.| Es gibt auch im Name Server keinen Eintrag mit der ID und dem Methodennamen (leere Strings als Antwort erhalten). Der RPC wird abgebrochen|
+|UC5| Name Server | void lookup(int, String) | Eine angefragte Methode ist nicht im Cache des Client Stubs gespeichert. Der Client Stub schickt eine Nachricht an den Name Server mit einer Lookup-Anfrage.| Die Adresse und die Portnummer der angefragten Methode werden über eine Nachricht zurückgeschickt.|Der Name Server prüft, ob es einen Eintrag in der Tabelle mit der übergebenen Interface-ID und Methodenname gibt. Wenn ja, dann werden die IP-Adresse und die Portnummer an den anfragenden Client Stub zurückgeschickt.| Es gibt keinen Eintrag mit der ID und dem Methodennamen. Es werden leere Strings zurückgeschickt. |
 |UC6| ServerStub | void callRemoteObjectInterface(JSON) | Nachricht wurde vom ServerStub empfangen und unmarshaled | Der Server Stub holt die Interface-ID, den Methodennamen und die Aufrufparameter aus dem JSON-Objekt heraus und ruft das korrekte Remote-Object-Interface auf.|Das RemoteObject-Interface wurde aufgerufen  | | 
 
+
 ## Nachrichtenformat
-Um RPCs durchzuführen müssen Methodenaufrufe in Nachrichten umgewandelt werden. Dafür bringen wir die Methodenaufrufe erstmal in ein JSON-Format.
+Um RPCs durchzuführen müssen Methodenaufrufe in Nachrichten umgewandelt werden. Dafür bringen wir die Methodenaufrufe erstmal in ein einheitliches JSON-Format.
 <br>
 <br>
-message = 
-<br>
-{
-        <br>
-        "interface" : Interface-ID als String,
-        <br>
-        "method": Methodenname als String,
-        <br>
-        "type1": primitiver Datentyp des ersten Aufrufparameters als String,
-        <br>
-        "value1" : der Wert des ersten Aufrufparameters,
-        <br>
-        ...,
-        <br>
-        "typeN": ,
-        <br>
-        "valueN":
-        <br>
+JsonObjectInvoke = {<br>
+    "interfaceID": 12,<br>
+    "methodName": "changeDir",<br>
+    "args": [<br>
+        "type1": "int",<br>
+        "val1": 1,<br>
+        "typeN": "TYP",<br>
+        "valN": val<br>
+    ]<br>
 }
+<br>
 
-Die Nachricht im JSON-Format wird dann in ein byte-Array umgewandelt, und über das Netzwerk verschickt.
+Die Nachricht im JSON-Format wird dann in ein byte-Array umgewandelt und über das Netzwerk verschickt.
+<br>
+<br>
+<br>
 
-Für die Registrierung beim Name Server wird ein Callback benötigt. Somit liegen hier zusätzliche Anforderungen an die Kommunikation vor. Damit eine Antwort des angefragten Servers an den aufrufenden Client gesendet werden kann, wird die Interface-ID des Clients bereits bei der Anfrage mitgesendet. Die Returnwerte der aufgerufenen Methode werden im Server Stub als Strings in einem JSON-Objekt gespeichert, anschließend verpackt und als Byte-Array übers Netzwerk versendet. Die Nachrichten sehen so aus:
+Für die Anfrage an den Name Server (siehe Lösungsstrategie register und lookup) werden ebenfalls Nachrichten benötigt. Für diesen Anwendungsfall haben wir das folgende JSON-Nachrichtenformate definiert:
 
-request =
-{
-        <br>
-        "sender-interface" : Interface-ID des Senders als String,
-        <br>
-        "interface" : Interface-ID als String,
-        <br>
-        "method": Methodenname als String,
-        <br>
-        "type1": primitiver Datentyp des ersten Aufrufparameters als String,
-        <br>
-        "value1" : der Wert des ersten Aufrufparameters,
-        <br>
-        ...,
-        <br>
-        "typeN": ,
-        <br>
-        "valueN":
-        <br>
+**JsonObjectLookUp** = { <br>
+    "method": 0(lookup), <br>
+    "args": [<br>
+        "ifaceID": Int,<br>
+        "methodName": Str,<br>
+        ("playerID": Int)<br>
+    ]<br>
 }
 <br>
 <br>
-answer =
-{
-        <br>
-        "client-interface": Interface-ID des Clients als String,
-        <br>
-        "type": Rückgabetyp des Ergebnisses als String,
-        <br>
-        "value": Rückgabewert des Ergebnisses String
-        <br>
+**JsonObjectRegister** = {<br>
+    "method": 1(register),<br>
+    "args": [<br>
+        "ifaceID": Int,<br>
+        "methodName": Str,<br>
+        "IpAddr": "XXX.XXX.XXX.XXX",<br>
+        "Port": "YYYYY"<br>
+    ]<br>
 }
 <br>
 <br>
-Beispiel: message = 
-<br>
-{
-        <br>
-        "type": int,
-        <br>
-        "value": 17
-        <br>
-}
-<br><br>
 
+Auf beide Anfragen an den Name Server wird eine Antwort erwartet. Im Folgenden definieren wir die Antwortformate vom Name Server an den Client Stub bzw. Server Stub:
+<br>
+
+**Format für die Antwort auf eine Register-Anfrage:**
+int<br>
+--> Die Antwort kommt als ein Byte-Array zurück. Das Byte-Array wird als ein int interpretiert.
+
+<br>
+<br>
+
+**Format für die Antwort auf eine Lookup-Anfrage:**
+<br>
+JSONObjectLookupResponse = {<br>
+  "IpAddr": "XXX.XXX.XXX.XXX",<br>
+  "Port": "YYYYY"<br>
+ }
+  
+ <br>
+ 
+ Wenn die Lookup-Anfrage **fehlgeschlagen** ist (kein Eintrag vorhanden), dann werden leere Strings zurückgeschickt:
+ <br>
+JSONObjectLookupResponseError = {
+  "IpAddr": "",<br>
+  "Port": ""<br>
+ }
+ <br>
+ 
 # Bausteinsicht 
 
 ## Whitebox Gesamtsystem
 
 ![Middleware_Ebene1](./images/Middleware_Ebene1.png)
 
+Die Middleware ist in drei Komponenten aufgeteilt: Client Stub, Server Stub und Name Service. Des Weiteren werden die Middleware-Schnittstellen hinter einer Fassade gekapselt.
+Die Funktionen der einzelnen Komponenten werden im weiteren Verlauf aufgeführt.
 
-Wichtige Schnittstellen
+
+### Blackbox Client Stub
+
+Der Client Stub nimmt Funktionsaufrufe vom Application Stub entgegen und wandelt diese in ein vordefiniertes Nachrichtenformat um.
+Die Nachricht wird an eine Remote-Komponente über das Betriebssystem geschickt. Dafür fragt der Client-Stub erstmal nach der physikalischen Adresse der Remote-Komponente.
+
+*Schnittstelle IRemoteInvocation*
+<br>
+Die Schnittstelle IRemoteInvocation kann aufgerufen werden, um eine Remote-Methode aufruzufen.
+
+|Methode| Kurzbeschreibung |
+| --- | --- |
+|invoke(int interfaceID, String methodName, Object[] args) | Erzeugt eine Nachricht aus dem Funktionsaufruf und ruft die Betriebssystemschnittstelle zum Versenden der Nachricht auf. |
+
+### Blackbox Server Stub
+
+Der Server Stub empfängt Nachrichten über das Betriebssystem und wandelt sie in Funktionsaufrufe um. Die Funktion wird dann an das zuständige Remote Object im Application Stub weitergeleitet. Dafür müssen sich die Remote Objects erstmal über den Server Stub beim Name Service registrieren.
+
+*Schnittstelle IRegister**
+
+Die Schnittstelle IRegister kann aufgerufen werden, um sich als Remote-Object im Name Server einzutragen.
+
+|Methode| Kurzbeschreibung |
+|---|---|
+| register(int interfaceID, String, InetAdress, int)| Schickt eine Nachricht an die NameService-Komponenten mit den Informationen, die für das Eintragen notwendig sind. Diese Informationen werden über die Aufrufparameter übergeben.|
+
+### Blackbox Name Service
+
+Der NameService verwaltet die IDs der Remote Objects, die sich registriert haben und die dazugehörigen IP-Adressen und Portnummern.
+Beim Name Service kann man die physikalische Adresse eines Remote Objects anfragen oder sich als Remote Object registrieren. Dafür werden Nachrichten über TCP ausgetauscht.
+
+**Diese Komponente bietet keine Schnittstellen an. Die Dienste können über Nachrichtenaustausch genutzt werden**
+
+Siehe [Querschnittliche Konzepte](#querschnittliche-konzepte).
 
 
 
-### \<Name Blackbox 1> {#__name_blackbox_1}
+## Ebene 2 
+![MW_Ebene2](./images/MW_Ebene2.png) 
 
-*\<Zweck/Verantwortung>*
+## Ebene 3
 
-*\<Schnittstelle(n)>*
 
-*\<(Optional) Qualitäts-/Leistungsmerkmale>*
+### Whitebox Client Stub
+<br>
 
-*\<(Optional) Ablageort/Datei(en)>*
-
-*\<(Optional) Erfüllte Anforderungen>*
-
-*\<(optional) Offene Punkte/Probleme/Risiken>*
-
-### \<Name Blackbox 2> {#__name_blackbox_2}
-
-*\<Blackbox-Template>*
-
-### \<Name Blackbox n> {#__name_blackbox_n}
-
-*\<Blackbox-Template>*
-
-### \<Name Schnittstelle 1> {#__name_schnittstelle_1}
-
-...
-
-### \<Name Schnittstelle m> {#__name_schnittstelle_m}
-
-## Ebene 2 {#_ebene_2}
-
-![Middleware_Ebene2](./images/Middleware_Ebene2.png)
-
-### Whitebox *\<Baustein 1>* {#_whitebox_emphasis_baustein_1_emphasis}
-
-*\<Whitebox-Template>*
-
-### Whitebox *\<Baustein 2>* {#_whitebox_emphasis_baustein_2_emphasis}
-
-*\<Whitebox-Template>*
-
-...
-
-### Whitebox *\<Baustein m>* {#_whitebox_emphasis_baustein_m_emphasis}
-
-*\<Whitebox-Template>*
-
-## Ebene 3 {#_ebene_3}
+![MW_ClientStub](./images/MW_Ebene3_ClientStub.png) 
 
 <br>
-Client Stub Implementierung
-<br>
-![MW_ClientStub](./images/MW_ClientStub.png)
 
-<br>
-Client Stub Sender
-<br>
-![MW_ClientStubSender](./images/MW_ClientStubSender.png)
+|Methode| Kurzbeschreibung|
+| --- | --- |
+|invoke(int, String, Object[]) | Ruft die Methoden marshal(), dann cacheOrLookup(), dann send() auf|
+|serializeNS(int, String) | Packt die Aufurfparameter in ein JSON-Nachrichtenformat. Wandelt das JSON-Objekt in ein byte-Array um.|
+| deserializeNS(byte[]) | Entpackt die Daten aus der Nachricht und gibt sie in einem String[]-Array der Länge 2 (Index 0: IP-Adresse, Index 1: Portnummer) zurück.|
+|byte[] marshal(int,String,Object[]) | erzeugt ein JSON-Objekt aus den übergebenen Parametern und wandelt es in ein byte-Array um, das zurückgegeben wird. |
+|cacheOrLookup(int,String,String[]):String[]| Gibt ein String-Array mit der IP-Adresse und Portnummer des gesuchten Remote-Objects zurück. Sucht erstmal im lokalen Cache-Speicher und wenn der Eintrag dort nicht vorhanden ist, wird eine Nachricht erstellt (Aufruf serializeNS() ) und an den Name Server geschickt. Das Ergebnis wird aus der Nachricht entpackt (Aufruf deserialize() )im Cache gespeichert (Aufruf cache() ) und zurückgegeben. |
+|cache(int, String, String[]| Trägt den String-Array mit IP-Adresse und Portnummer unter der angegebenen ID und Methodennamen im Cache-Speicher ein.|
+|send(InetAddress, int, byte[]| Verpackt die angegebene Nachricht in ein UDP-Datagramm und schickt die das Paket an die angegebne IP-Adresse und Portnummer.|
 
-<br>
-Name Server
-<br>
-![MW_NameServer](./images/MW_NameServer.png)
 
+### Whitebox Server Stub
 <br>
-Server Stub Implementierung
-<br>
-![MW_ServerStub](./images/MW_ServerStub.png)
+
+![MW_ServerStub](./images/MW_Ebene3_ServerStub.png)
 
 <br>
-Server Stub Receiver
+
+|Methode| Kurzbeschreibung|
+| --- | --- |
+|register(int, IRemoteObject, String, InetAddress, int, bool)| Packt Aufrufparameter in eine Nachricht (Aufruf serializeNS() ) und schickt sie an den Name Server mit den notwendigen Registrierungsdaten. Empfängt und entpackt (Aufruf deserializeNS() die Antwort vom Name Server, wenn die Antwort nicht -1 ist, wird das RemoteObject in den Aufrufparametern zusammen mit der ID in den Aufrufparametern in der lokalen Tabelle eingetragen. Wenn die erhaltene Antwort kein leerer String ist, wird sie für den Aufruf von addGroup(InetAddress) genutzt, wen.|
+|serializeNS(int, String,String,int)| Erstellt eine Nachricht im JSON-Format aus den Aufrufparametern und wandelt das JSON-Objekt in ein byte-Array um, das zurückgegeben wird.|
+|deserializeNS(byte[])| Wandelt das angegebene byte[]-Array in ein int um, der zurückgegeben wird.|
+| run() | Eine Endlosschleife, die auf ankommende Pakete wartet. Wenn ein Paket ankommt, wird ein neuer Thread erzeugt, der die Methode receive() aufruft und das angekommene Paket übergibt.|
+| receive(DatagramPacket) | Entpackt den Nachrichtinhalt aus dem UDP-Paket und ruft die Methode unmarshal() auf.|
+|addGroup(InetAdress multicastAddres)| Ruft die MultiSocket-Methode joinGroup(multicastAddress) auf. |
+| unmarshal(byte[]) | Wandelt das übergebene byte-Array in ein JSON-Objekt um und ruft die Methode callRemoteObjectInterface() auf. |
+| callRemoteObjectInterface(JSON)| Entpackt die Daten aus dem angegebenen JSON-Objekt, sucht in der lokalen Tabelle nach dem Remote Object, das unter der im JSON angegebenen ID eingetragen ist. Ruft mit Methode call() des eingetragenen Remote Objects.|
+
+
+
+### Whitebox Name Service
 <br>
-![MW_ServerStubReceiver](./images/MW_ServerStubReceiver.png)
+
+![MW_NameService](./images/MW_NameService.png)
+
+<br>
+
+|Methode| Kurzbeschreibung|
+| --- | --- |
+|lookup(int, String)| Prüft ob gesuchtes Interface und Methode eingetragen sind (Aufruf checkInterfaceInTable). Wenn ja, wird ein String-Array der Länge 2 (Index 0: IP-Adresse, Index 1: Portnummer) zurückgegeben.|
+|bind(int, String, InetAddress, int)| Prüft, ob das zu registrierende Interface bereits in der Tabelle ist. Prüft, ob das zu registrierende Interface ein Model ist (Aufruf checkIfModel() ). Wenn beide Fälle zutreffen, dann wird die Tabelle nicht verändert und es wird -1 zurückgegeben. Sonst wird das Interface unter der eingegeben IP-Adresse und Portnummer eingetragen.|
+|checkInterfaceInTable(int, String)|Prüft, ob das zu registrierende Interface und die Methode bereits in der Tabelle ist|
+|checkIfModel(int)| Prüft, ob die das zu registrierende Interface ein Model ist |
+|run()| Endlosschleife, die TCP-Pakete entgegennimmt. Wenn ein Paket ankommt, wird ein neuer Thread zur Behandlung erzeugt. Der neue Thread entpackt den Nachrichteninhalt aus dem Paket (Aufruf deserialize() ), prüft, welche Anfrage geschickt wurde (lookup oder register), ruft die entsprechende Methode auf. Packt das Ergebnis in eine Nachricht (Aufruf serialize() ) und schickt die Nachricht zurück an den Sender.|
+|deserialize(byte[])|entpackt den Nachrichteninhalt aus dem Paket|
+|serialize(JSON)|Packt das Ergebnis von lookup() in eine Nachricht. Gibt ein byte-Array zurück.|
 
 
-### Whitebox \<\_Baustein x.1\_\> {#_whitebox_baustein_x_1}
-
-*\<Whitebox-Template>*
-
-### Whitebox \<\_Baustein x.2\_\> {#_whitebox_baustein_x_2}
-
-*\<Whitebox-Template>*
-
-### Whitebox \<\_Baustein y.1\_\> {#_whitebox_baustein_y_1}
-
-*\<Whitebox-Template>*
 
 # Laufzeitsicht 
 
@@ -272,69 +333,83 @@ Server Stub Receiver
 
 ![MW_AD_register](./images/MW_AD_register.png)
 
+## AD bind
+
+![MW_AD_bind](images/MW_AD_bind.png)
+
 ## AD lookup
 
 ![MW_AD_lookup](./images/MW_AD_lookup.png)
 
-# Verteilungssicht {#section-deployment-view}
+# Verteilungssicht
 
-Gesamtsystem
+**Einordnung der Middleware im Gesamtsystem**
+
 ![Deployment_Tron](./images/Deployment_Tron.png)
 
-Zoom in Middleware
-![Deployment_ZoomMW](./images/Deployment_ZoomMW.png)
+# Querschnittliche Konzepte
+Auf folgende querschnittlichen Konzepte haben wir uns gemeinsam mit unserer Partnergruppe Gamma 4 geeinigt:
 
-## Infrastruktur Ebene 1 {#_infrastruktur_ebene_1}
+## Nachrichtenformat
+Um RPCs durchführen zu können müssen Methodenaufrufe in Nachrichten umgewandelt werden. Dafür werden die Methodenaufrufe in ein einheitliches JSON-Format transformiert. Verschickt wird ein JSON-Objekt mit der Interface-ID des adressierten Interfaces, der Methodenname und die Aufrufparameter der Methode mit jeweiligem Typ und Wert in einem Array.
 
-***\<Übersichtsdiagramm>***
+```json
+(JsonObjectMessage = {
+    "interfaceID": Interface-ID als int,
+    "methodName": Methodenname als String,
+     "args": [
+        "type1": primitiver Datentyp des ersten Aufrufparameters als String,
+        "val1": der Wert des ersten Aufrufparameters,
+        "typeN": primitiver Datentyp des n-ten Aufrufparameters als String,
+        "valN": der Wert des n-ten Aufrufparameters
+    ]
+})
+```
 
-Begründung
+Das JSON-Objekt wird in ein Byte-Array umgewandelt, und über das Netzwerk verschickt.
+Einige beispielhafte RPCs sind im Folgenden skizziert:
 
-:   *\<Erläuternder Text>*
+```json
+(JsonObjectInvoke = {
+    "interfaceID": 12,
+    "methodName": "changeDir",
+    "args": [
+        "playerNumber": 1,
+        "direction": 2
+    ]
+})
+JsonObjectInvoke = {
+    "interfaceID": 12,
+    "methodName": "changeDir",
+    "args": [
+        "type1": "int",
+        "val1": 1,
+        "typeN": "TYP",
+        "valN": val
+    ]
+}
+JsonObjectLookUp = {
+    "method": 0(lookup),
+    "args": [
+        "ifaceID": Int,
+        "methodName": Str,
+        ("playerID": Int)
+    ]
+}
+JsonObjectRegister = {
+    "method": 1(register),
+    "args": [
+        "ifaceID": Int,
+        "methodName": Str,
+        "IpAddr": "XXX.XXX.XXX.XXX",
+        "Port": "YYYYY"
+    ]
+}
+```
 
-Qualitäts- und/oder Leistungsmerkmale
+# Architekturentscheidungen
 
-:   *\<Erläuternder Text>*
-
-Zuordnung von Bausteinen zu Infrastruktur
-
-:   *\<Beschreibung der Zuordnung>*
-
-## Infrastruktur Ebene 2 {#_infrastruktur_ebene_2}
-
-### *\<Infrastrukturelement 1>* {#__emphasis_infrastrukturelement_1_emphasis}
-
-*\<Diagramm + Erläuterungen>*
-
-### *\<Infrastrukturelement 2>* {#__emphasis_infrastrukturelement_2_emphasis}
-
-*\<Diagramm + Erläuterungen>*
-
-...
-
-### *\<Infrastrukturelement n>* {#__emphasis_infrastrukturelement_n_emphasis}
-
-*\<Diagramm + Erläuterungen>*
-
-# Querschnittliche Konzepte {#section-concepts}
-
-## *\<Konzept 1>* {#__emphasis_konzept_1_emphasis}
-
-*\<Erklärung>*
-
-## *\<Konzept 2>* {#__emphasis_konzept_2_emphasis}
-
-*\<Erklärung>*
-
-...
-
-## *\<Konzept n>* {#__emphasis_konzept_n_emphasis}
-
-*\<Erklärung>*
-
-# Architekturentscheidungen {#section-design-decisions}
-
-# Qualitätsanforderungen {#section-quality-scenarios}
+# Qualitätsanforderungen
 
 ::: formalpara-title
 **Weiterführende Informationen**
@@ -343,13 +418,13 @@ Zuordnung von Bausteinen zu Infrastruktur
 Siehe [Qualitätsanforderungen](https://docs.arc42.org/section-10/) in
 der online-Dokumentation (auf Englisch!).
 
-## Qualitätsbaum {#_qualit_tsbaum}
+## Qualitätsbaum
 
-## Qualitätsszenarien {#_qualit_tsszenarien}
+## Qualitätsszenarien
 
-# Risiken und technische Schulden {#section-technical-risks}
+# Risiken und technische Schulden
 
-# Glossar {#section-glossary}
+# Glossar
 
 +-----------------------+-----------------------------------------------+
 | Begriff               | Definition                                    |
