@@ -18,13 +18,10 @@ public class LobbyScreen extends VBox {
         super(20.0);
 
         // Add listener to ID
-        this.currentPlayerID = currentPlayerIDArg.get();
-        currentPlayerIDArg.addListener(e->{
-            this.currentPlayerID = currentPlayerIDArg.get();
-        });
+        registerCurrentPlayerIDListener(currentPlayerIDArg);
 
         this.observablePlayersInLobby = new SimpleIntegerProperty(playersInLobby);
-        this.playerCounterLabel = new Label(this.observablePlayersInLobby.get() + " players have joined the game");
+        this.playerCounterLabel = new Label(this.observablePlayersInLobby.get() + " player has joined the game");
 
 
         // Kontrollelemente initialisieren
@@ -32,18 +29,11 @@ public class LobbyScreen extends VBox {
         Button cancelButton = new Button("Cancel");
 
         // Vbox einrichten
-        this.getStyleClass().add("root");
-        this.getStylesheets().add("lobby.css");
-        this.setAlignment(Pos.TOP_CENTER);
-
+        styleScreen();
 
 
         //Kontrollelemente Logik
-        cancelButton.setOnAction(event -> {
-            System.out.println("Cancel Button clicked");
-            //TODO call controller interface
-        });
-
+        registerCancelEventHandler(cancelButton);
 
 
         this.getChildren().add(titleLabel);
@@ -54,11 +44,39 @@ public class LobbyScreen extends VBox {
         if(this.currentPlayerID==0){
             this.getChildren().add(cancelButton);
         }
+        addPlayerCountListener();
+    }
+
+
+
+    private void addPlayerCountListener() {
         this.observablePlayersInLobby.addListener(
                 e-> {
-                    playerCounterLabel.setText(observablePlayersInLobby.get() +" players have joined the game.");
+                    if(observablePlayersInLobby.get()<=1){
+                        playerCounterLabel.setText(observablePlayersInLobby.get() +" player has joined the game.");
+                    } else playerCounterLabel.setText(observablePlayersInLobby.get() +" players have joined the game.");
                 }
         );
+    }
+
+    private static void registerCancelEventHandler(Button cancelButton) {
+        cancelButton.setOnAction(event -> {
+            System.out.println("Cancel Button clicked");
+            //TODO call controller interface
+        });
+    }
+
+    private void styleScreen() {
+        this.getStyleClass().add("root");
+        this.getStylesheets().add("lobby.css");
+        this.setAlignment(Pos.TOP_CENTER);
+    }
+
+    private void registerCurrentPlayerIDListener(SimpleIntegerProperty currentPlayerIDArg) {
+        this.currentPlayerID = currentPlayerIDArg.get();
+        currentPlayerIDArg.addListener(e->{
+            this.currentPlayerID = currentPlayerIDArg.get();
+        });
     }
 
 

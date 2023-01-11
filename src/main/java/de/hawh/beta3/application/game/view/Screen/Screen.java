@@ -29,6 +29,7 @@ public class Screen {
         screens.put("start",new StartScreen());
         screens.put("lobby", new LobbyScreen(currentPlayerID, numPlayers));
         screens.put("game", new GameScreen(1,2,40));
+        screens.put("countdown", new CountdownScreen(5));
 
     }
 

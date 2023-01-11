@@ -8,9 +8,13 @@ public class HelloApplication extends Application {
     @Override
     public void start(Stage stage){
 
+        stage.setFullScreen(true);
         Screen gameScreen = new Screen();
         gameScreen.resetScreen();
-        gameScreen.drawScreen("game");
+        gameScreen.drawScreen("countdown");
+        CountdownScreen cs = (CountdownScreen) gameScreen.getScreens().get("countdown");
+        cs.startCountdown();
+
 
 
 

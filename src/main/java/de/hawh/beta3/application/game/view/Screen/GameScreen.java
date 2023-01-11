@@ -5,11 +5,16 @@ import de.hawh.beta3.application.game.view.Player.Player;
 import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.effect.Glow;
+import javafx.scene.effect.Shadow;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import java.util.HashMap;
 import java.util.Map;
+
+
 
 public class GameScreen extends Canvas {
 
@@ -56,6 +61,8 @@ public class GameScreen extends Canvas {
         });
     }
 
+
+
     private void initializeGameField() {
         GraphicsContext g = this.getGraphicsContext2D();
         g.setFill(backgroundColor);
@@ -74,6 +81,8 @@ public class GameScreen extends Canvas {
         }
         //TODO erase after test
         prepareTest();
+
+
 
     // Draw players to gameField
         for(Player p:playerMap.values()){
@@ -119,6 +128,7 @@ public class GameScreen extends Canvas {
         }
         GraphicsContext g = this.getGraphicsContext2D();
 
+
         for(Coordinate pos : playerToDraw.getTrail()){
             if(pos.x < 0 || pos.x >= fieldSize){
                 throw new IllegalArgumentException("x value out of bounds: x is " + pos.x + ", but should be 0 <= x < " + fieldSize);
@@ -128,12 +138,25 @@ public class GameScreen extends Canvas {
             }
 
             // paint new bike position
-            g.setFill(screenCommons.getColor(playerToDraw.getId())); //Color.PAPAYAWHIP);
+            g.setFill(screenCommons.getColor(playerToDraw.getId()));
             g.fillRect(pos.x*windowSize/fieldSize, pos.y*windowSize/fieldSize, windowSize/fieldSize, windowSize/fieldSize);
         }
 
+        ColorAdjust bikeColor = new ColorAdjust();
+        Glow glow = new Glow(1.0);
+        bikeColor.setBrightness(-0.5);
+        bikeColor.setContrast(-1);
 
+
+
+        g.save();
+        g.setEffect(bikeColor);
+        if(playerToDraw.getId()==currentPlayerID) {
+            bikeColor.setBrightness(0.8);
+            g.setEffect(bikeColor);
+        }
         g.drawImage(playerToDraw.getImage(), playerToDraw.getPos().x*windowSize/fieldSize, playerToDraw.getPos().y*windowSize/fieldSize, windowSize/fieldSize,windowSize/fieldSize);
+        g.restore();
     }
 
     private void kill(int playerToKillID){

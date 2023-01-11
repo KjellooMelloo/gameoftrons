@@ -1,9 +1,15 @@
 package de.hawh.beta3.application.game.view.Player;
 
+import javafx.scene.CacheHint;
 import javafx.scene.SnapshotParameters;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.effect.ColorInput;
+import javafx.scene.effect.Effect;
+import javafx.scene.effect.Shadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +21,7 @@ public class Player {
 
     private List<Coordinate> trail;
 
-    private Image image;
+    private ImageView imageView;
 
     public Player(int id){
       this.id = id;
@@ -24,8 +30,9 @@ public class Player {
       //trail.add(pos);
       orientation = "RIGHT";
       //TODO change to relative path
-        //TODO bike image depends on ID
-      this.image = new Image("C:\\Users\\vivia\\IdeaProjects\\gameoftrons\\src\\main\\resources\\images\\bike.png");
+        // TODO bike image depends on ID
+      this.imageView = new ImageView("C:\\Users\\vivia\\IdeaProjects\\gameoftrons\\src\\main\\resources\\images\\bike.png");
+
     }
 
     public int getId() {
@@ -68,13 +75,15 @@ public class Player {
         if(orientation.equals("UP")||orientation.equals("DOWN")){
             if(difY!=0) {
                 for (int i = 1; i <= Math.abs(difY); i++) {
-                    trail.add(new Coordinate(pos.x, pos.y+= ( 1 * (Math.abs(difY) / difY ) ) ) );
+                    trail.add(new Coordinate(pos.x, pos.y+ ( 1 * (Math.abs(difY) / difY ) ) ) );
+                    pos=trail.get(trail.size()-1);
                 }
             }
 
             if(difX!=0){
                 for (int i = 1; i <= Math.abs(difX); i++) {
-                    trail.add(new Coordinate(pos.x+= ( 1 * (Math.abs(difX) / difX ) ), pos.y));
+                    trail.add(new Coordinate(pos.x+ ( 1 * (Math.abs(difX) / difX ) ), pos.y));
+                    pos=trail.get(trail.size()-1);
                 }
             }
 
@@ -94,33 +103,76 @@ public class Player {
             }
         }
         if(!newOrientation.equals(orientation)) {
-            orientation = newOrientation;
-            rotateImage();
+            rotateImage(newOrientation);
         }
     }
 
-    private void rotateImage() {
-        ImageView iv = new ImageView(image);
+    private void rotateImage(String newOrientation) {
+
         switch(orientation){
             case "RIGHT":
-                iv.setRotate(0);
+                switch(newOrientation){
+                    case "LEFT":
+                        imageView.setRotate(180);
+                        break;
+                    case "UP":
+                        imageView.setRotate(270);
+                        break;
+                    case "DOWN":
+                        imageView.setRotate(90);
+                        break;
+                }
                 break;
             case "LEFT":
-                iv.setRotate(180);
+                switch(newOrientation){
+                    case "RIGHT":
+                        imageView.setRotate(180);
+                        break;
+                    case "UP":
+                        imageView.setRotate(90);
+                        break;
+                    case "DOWN":
+                        imageView.setRotate(270);
+                        break;
+                }
                 break;
             case "UP":
-                iv.setRotate(270);
+                switch(newOrientation){
+                    case "RIGHT":
+                        imageView.setRotate(90);
+                        break;
+                    case "LEFT":
+                        imageView.setRotate(270);
+                        break;
+                    case "DOWN":
+                        imageView.setRotate(180);
+                        break;
+                }
                 break;
             case "DOWN":
-                iv.setRotate(90);
+                switch(newOrientation){
+                    case "RIGHT":
+                        imageView.setRotate(270);
+                        break;
+                    case "UP":
+                        imageView.setRotate(180);
+                        break;
+                    case "LEFT":
+                        imageView.setRotate(90);
+                        break;
+                }
                 break;
         }
+
         SnapshotParameters params = new SnapshotParameters();
         params.setFill(Color.TRANSPARENT);
-        image = iv.snapshot(params, null);
+        imageView.setImage(imageView.snapshot(params, null));
+        orientation = newOrientation;
+
     }
 
     public Image getImage() {
-        return image;
+        return imageView.getImage();
     }
+
 }
