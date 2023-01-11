@@ -82,12 +82,14 @@ public class Player {
        } else if(orientation.equals("LEFT") || orientation.equals("RIGHT")){
             if(difX!=0){
                 for (int i = 1; i <= Math.abs(difX); i++) {
-                    trail.add(new Coordinate(pos.x+= ( 1 * (Math.abs(difX) / difX ) ), pos.y));
+                    trail.add(new Coordinate(pos.x+ ( 1 * (Math.abs(difX) / difX ) ), pos.y));
+                    pos=trail.get(trail.size()-1);
                 }
             }
             if(difY!=0) {
                 for (int i = 1; i <= Math.abs(difY); i++) {
-                    trail.add(new Coordinate(pos.x, pos.y+= ( 1 * (Math.abs(difY) / difY ) ) ) );
+                    trail.add(new Coordinate(pos.x, pos.y+ ( 1 * (Math.abs(difY) / difY ) ) ) );
+                    pos=trail.get(trail.size()-1);
                 }
             }
         }
