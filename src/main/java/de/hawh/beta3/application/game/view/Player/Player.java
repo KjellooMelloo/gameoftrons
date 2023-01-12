@@ -10,6 +10,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.transform.Rotate;
+import javafx.scene.transform.Translate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,15 +25,18 @@ public class Player {
 
     private ImageView imageView;
 
-    public Player(int id){
+    public Player(int id, Coordinate pos, String orientation){
       this.id = id;
-      pos = new Coordinate(1,1);
+      this.pos = pos;
       trail=new ArrayList<>();
-      //trail.add(pos);
-      orientation = "RIGHT";
+      trail.add(pos);
+      this.orientation = "RIGHT";
       //TODO change to relative path
         // TODO bike image depends on ID
-      this.imageView = new ImageView("C:\\Users\\vivia\\IdeaProjects\\gameoftrons\\src\\main\\resources\\images\\bike.png");
+      this.imageView = new ImageView("C:\\Users\\vivia\\IdeaProjects\\gameoftrons\\src\\main\\resources\\images\\bike"
+              + "_" + this.id +".png");
+
+      rotateImage(orientation);
 
     }
 
@@ -108,6 +113,12 @@ public class Player {
     }
 
     private void rotateImage(String newOrientation) {
+        if(newOrientation.equals("LEFT")|| orientation.equals("LEFT")) {
+            Translate flipTranslation = new Translate(0, imageView.getImage().getHeight());
+            Rotate flipRotation = new Rotate(180, Rotate.X_AXIS);
+            imageView.getTransforms().addAll(flipTranslation, flipRotation);
+        }
+
 
         switch(orientation){
             case "RIGHT":

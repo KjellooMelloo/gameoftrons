@@ -1,5 +1,6 @@
 package de.hawh.beta3.application.game.view.Screen;
 
+
 import de.hawh.beta3.application.game.view.Player.Coordinate;
 import de.hawh.beta3.application.game.view.Player.Player;
 import javafx.event.EventHandler;
@@ -7,10 +8,9 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.Glow;
-import javafx.scene.effect.Shadow;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,7 +19,7 @@ import java.util.Map;
 public class GameScreen extends Canvas {
 
     private int currentPlayerID=-1;
-    private int fieldSize=40;
+    private int fieldSize=10;
     private Map<Integer, Player> playerMap = new HashMap<>();
     private int windowSize = 800;
     private int numPlayers = 2;
@@ -28,10 +28,7 @@ public class GameScreen extends Canvas {
 
 
 
-    public GameScreen(int currentPlayerID, int initialNumPlayers, int fieldSize){
-        this.currentPlayerID = currentPlayerID;
-        this.numPlayers = initialNumPlayers;
-        this.fieldSize = 10;
+    public GameScreen(){
 
        // Set up canvas size
         this.setWidth(windowSize);
@@ -40,13 +37,6 @@ public class GameScreen extends Canvas {
         // Register Key Event Handler
         registerKeyEventHandler();
 
-        // Initialize players
-        for(int i=0; i < initialNumPlayers; i++){
-            playerMap.put(i,new Player(i));
-        }
-
-
-        initializeGameField();
 
     }
 
@@ -55,7 +45,7 @@ public class GameScreen extends Canvas {
         this.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {
-                KeyCode keyCode = keyEvent.getCode();
+                String keyCode = keyEvent.getCode().toString();
                 //TODO Send keyCode (or keyCode.toString()) to Controller
             }
         });
@@ -63,7 +53,8 @@ public class GameScreen extends Canvas {
 
 
 
-    private void initializeGameField() {
+    public void initializeGameField() {
+        initPlayersInPositions();
         GraphicsContext g = this.getGraphicsContext2D();
         g.setFill(backgroundColor);
 
@@ -80,11 +71,7 @@ public class GameScreen extends Canvas {
             g.strokeLine(0, i, getWidth(), i);
         }
         //TODO erase after test
-        prepareTest();
-
-
-
-    // Draw players to gameField
+        //prepareTest();
         for(Player p:playerMap.values()){
             drawTileColors(p);
         }
@@ -92,7 +79,42 @@ public class GameScreen extends Canvas {
 
     }
 
-    public GameScreen(){}
+    private void initPlayersInPositions() {
+
+        Coordinate[] startingPos;
+
+        if (numPlayers < 5) {
+            startingPos = new Coordinate[]{
+                    new Coordinate(0, (fieldSize - 1) / 2),
+                    new Coordinate((fieldSize - 1), (fieldSize - 1) / 2),
+                    new Coordinate((fieldSize - 1) / 2, 0),
+                    new Coordinate((fieldSize - 1) / 2, (fieldSize - 1))
+            };
+        } else {
+            startingPos = new Coordinate[]{
+                    new Coordinate(0, (fieldSize - 1) / 3),
+                    new Coordinate((fieldSize - 1), (fieldSize - 1) / 3),
+                    new Coordinate((fieldSize - 1) / 2, 0),
+                    new Coordinate((fieldSize - 1) / 2, (fieldSize - 1)),
+                    new Coordinate(0, 2 * (fieldSize - 1) / 3),
+                    new Coordinate((fieldSize - 1), 2 * (fieldSize - 1) / 3)
+            };
+        }
+
+        Coordinate[] positionsToInitialize = Arrays.copyOf(startingPos, numPlayers);
+        String[] startingDir = new String[]{
+                "RIGHT",
+                "LEFT",
+                "DOWN",
+                "UP",
+                "RIGHT",
+                "LEFT"
+        };
+
+        for(int i=0; i < numPlayers; i++){
+            playerMap.put(i,new Player(i,positionsToInitialize[i],startingDir[i]));
+        }
+    }
 
 
     public void updatePlayer(int playerID,int newX, int newY, String newOrientation){
@@ -144,16 +166,16 @@ public class GameScreen extends Canvas {
 
         ColorAdjust bikeColor = new ColorAdjust();
         Glow glow = new Glow(1.0);
-        bikeColor.setBrightness(-0.5);
-        bikeColor.setContrast(-1);
+       // bikeColor.setBrightness(-0.5);
+        //bikeColor.setContrast(-1);
 
 
 
         g.save();
-        g.setEffect(bikeColor);
+        //g.setEffect(bikeColor);
         if(playerToDraw.getId()==currentPlayerID) {
-            bikeColor.setBrightness(0.8);
-            g.setEffect(bikeColor);
+            //bikeColor.setBrightness(0.8);
+            g.setEffect(glow);
         }
         g.drawImage(playerToDraw.getImage(), playerToDraw.getPos().x*windowSize/fieldSize, playerToDraw.getPos().y*windowSize/fieldSize, windowSize/fieldSize,windowSize/fieldSize);
         g.restore();
@@ -166,6 +188,7 @@ public class GameScreen extends Canvas {
     }
 
     public void prepareTest(){
+        currentPlayerID=1;
         int i = 0;
         for(Player p:playerMap.values()){
             p.setPos(i,i);
@@ -175,6 +198,15 @@ public class GameScreen extends Canvas {
 
     }
 
+    public void setFieldSize(int fieldSize) {
+        this.fieldSize = fieldSize;
+    }
 
+    public void setCurrentPlayerID(int currentPlayerID) {
+        this.currentPlayerID = currentPlayerID;
+    }
 
+    public void setNumPlayers(int numPlayers) {
+        this.numPlayers = numPlayers;
+    }
 }

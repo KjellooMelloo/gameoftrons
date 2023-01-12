@@ -1,5 +1,6 @@
 package de.hawh.beta3.application.game.view.Screen;
 
+import de.hawh.beta3.application.game.view.Player.Player;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -14,12 +15,11 @@ import java.util.Map;
  */
 public class Screen {
 
-    private int numPlayers = 0;
-    private int windowSize=100;
+    private SimpleIntegerProperty numPlayers = new SimpleIntegerProperty(2);
     private Scene scene;
     private StackPane base;
     private Map<String, Node> screens = new HashMap<>();
-    private SimpleIntegerProperty currentPlayerID = new SimpleIntegerProperty(-1);
+    private SimpleIntegerProperty currentPlayerID = new SimpleIntegerProperty(1);
 
     public Screen(){
         this.base = new StackPane();
@@ -28,7 +28,7 @@ public class Screen {
         // register screen states
         screens.put("start",new StartScreen());
         screens.put("lobby", new LobbyScreen(currentPlayerID, numPlayers));
-        screens.put("game", new GameScreen(1,2,40));
+        screens.put("game", new GameScreen());
         screens.put("countdown", new CountdownScreen(5));
 
     }
@@ -52,6 +52,19 @@ public class Screen {
         screenToShow.setVisible(true);
     }
 
+    public void showCountDown(){
+        CountdownScreen cs = (CountdownScreen) screens.get("countdown");
+        drawScreen("countdown");
+        cs.startCountdown();
+
+    }
+
+    public void startGame(){
+        GameScreen gs = (GameScreen) screens.get("game");
+        drawScreen("game");
+        gs.initializeGameField();
+    }
+
     public void resetScreen() {
         for(Map.Entry<String,Node> entry : screens.entrySet()){
             entry.getValue().setVisible(false);
@@ -61,11 +74,11 @@ public class Screen {
 
 
     public int getNumPlayers() {
-        return numPlayers;
+        return numPlayers.get();
     }
 
     public void setNumPlayers(int numPlayers) {
-        this.numPlayers = numPlayers;
+       this.numPlayers.set(numPlayers);
     }
 
     public Scene getScene() {
@@ -73,4 +86,14 @@ public class Screen {
     }
 
     public Map<String, Node> getScreens (){ return screens;}
+
+
+    public void updateView(int gameFieldSize) {
+        GameScreen gs = (GameScreen) screens.get("game");
+        gs.setCurrentPlayerID(currentPlayerID.get());
+        gs.setFieldSize(gameFieldSize);
+        gs.setNumPlayers(numPlayers.get());
+        drawScreen("game");
+        gs.initializeGameField();
+    }
 }

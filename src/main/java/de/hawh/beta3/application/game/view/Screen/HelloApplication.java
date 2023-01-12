@@ -11,9 +11,7 @@ public class HelloApplication extends Application {
         stage.setFullScreen(true);
         Screen gameScreen = new Screen();
         gameScreen.resetScreen();
-        gameScreen.drawScreen("countdown");
-        CountdownScreen cs = (CountdownScreen) gameScreen.getScreens().get("countdown");
-        cs.startCountdown();
+        gameScreen.updateView(10);
 
 
 

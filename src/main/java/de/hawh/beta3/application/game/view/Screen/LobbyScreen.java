@@ -9,19 +9,17 @@ import javafx.scene.layout.VBox;
 public class LobbyScreen extends VBox {
 
     private final ScreenCommons screenCommons = new ScreenCommons();
-    private SimpleIntegerProperty observablePlayersInLobby;
+    private int playersInLobby;
     private int currentPlayerID;
     Label playerCounterLabel;
 
-    public LobbyScreen(SimpleIntegerProperty currentPlayerIDArg, int playersInLobby){
+    public LobbyScreen(SimpleIntegerProperty currentPlayerIDArg, SimpleIntegerProperty observablePlayersInLobby){
         //Felder initialisieren
         super(20.0);
 
-        // Add listener to ID
-        registerCurrentPlayerIDListener(currentPlayerIDArg);
 
-        this.observablePlayersInLobby = new SimpleIntegerProperty(playersInLobby);
-        this.playerCounterLabel = new Label(this.observablePlayersInLobby.get() + " player has joined the game");
+        this.playersInLobby = observablePlayersInLobby.get();
+        this.playerCounterLabel = new Label(this.playersInLobby + " player has joined the game");
 
 
         // Kontrollelemente initialisieren
@@ -40,21 +38,24 @@ public class LobbyScreen extends VBox {
         this.getChildren().add(playerCounterLabel);
 
 
-
         if(this.currentPlayerID==0){
             this.getChildren().add(cancelButton);
         }
-        addPlayerCountListener();
+
+        // Add listener to ID and player count
+        addPlayerCountListener(observablePlayersInLobby);
+        addCurrentPlayerIDListener(currentPlayerIDArg);
     }
 
 
 
-    private void addPlayerCountListener() {
-        this.observablePlayersInLobby.addListener(
+    private void addPlayerCountListener(SimpleIntegerProperty observablePlayersInLobby) {
+        observablePlayersInLobby.addListener(
                 e-> {
+                    this.playersInLobby=observablePlayersInLobby.get();
                     if(observablePlayersInLobby.get()<=1){
-                        playerCounterLabel.setText(observablePlayersInLobby.get() +" player has joined the game.");
-                    } else playerCounterLabel.setText(observablePlayersInLobby.get() +" players have joined the game.");
+                        playerCounterLabel.setText(playersInLobby +" player has joined the game.");
+                    } else playerCounterLabel.setText(playersInLobby +" players have joined the game.");
                 }
         );
     }
@@ -72,7 +73,7 @@ public class LobbyScreen extends VBox {
         this.setAlignment(Pos.TOP_CENTER);
     }
 
-    private void registerCurrentPlayerIDListener(SimpleIntegerProperty currentPlayerIDArg) {
+    private void addCurrentPlayerIDListener(SimpleIntegerProperty currentPlayerIDArg) {
         this.currentPlayerID = currentPlayerIDArg.get();
         currentPlayerIDArg.addListener(e->{
             this.currentPlayerID = currentPlayerIDArg.get();
