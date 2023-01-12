@@ -1,12 +1,12 @@
 package de.hawh.beta3.application.game.view.Screen;
 
-import de.hawh.beta3.application.game.view.Player.Player;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,15 +18,15 @@ import java.util.Map;
 public class Screen {
 
     private SimpleIntegerProperty numPlayers = new SimpleIntegerProperty(2);
-    private Scene scene;
-    private StackPane base;
-    private Rectangle gameScreenBackground = new Rectangle();
-    private Map<String, Node> screens = new HashMap<>();
+    private final Scene scene;
+    private final StackPane base;
+    private final Map<String, Node> screens = new HashMap<>();
     private SimpleIntegerProperty currentPlayerID = new SimpleIntegerProperty(1);
 
     public Screen(){
         this.base = new StackPane();
         this.scene = new Scene(base);
+        Rectangle gameScreenBackground = new Rectangle();
         base.getChildren().add(gameScreenBackground);
         base.setStyle("-fx-background-color: #180b27");
 
@@ -49,7 +49,7 @@ public class Screen {
 
 
     public void drawScreen(String screenName){
-        if(!screens.keySet().contains(screenName)){
+        if(!screens.containsKey(screenName)){
             throw new IllegalArgumentException("A screen mapped to " + screenName + " does not exist. Available Screens are " + screens.keySet());
         }
 
@@ -66,23 +66,12 @@ public class Screen {
 
     }
 
-    public void startGame(){
-        GameScreen gs = (GameScreen) screens.get("game");
-        drawScreen("game");
-        gs.initializeGameField();
-    }
-
-    public void resetScreen() {
+      public void resetScreen() {
         for(Map.Entry<String,Node> entry : screens.entrySet()){
             entry.getValue().setVisible(false);
         }
     }
 
-
-
-    public int getNumPlayers() {
-        return numPlayers.get();
-    }
 
     public void setNumPlayers(int numPlayers) {
        this.numPlayers.set(numPlayers);
@@ -104,7 +93,43 @@ public class Screen {
         gs.initializeGameField();
     }
 
-    public void setCurrentPlayerID(int id){
-        this.currentPlayerID.set(id);
+    public void updatePlayer(int playerID, int newX, int newY, int orientation){
+        if(playerID>numPlayers.get()){
+            throw new IllegalArgumentException("A player by the given ID doesn't exist");
+        }
+        if(orientation > 3){
+            throw new IllegalArgumentException("The orientation must be between 0-3");
+        }
+        String orientationAsString="";
+        switch (orientation){
+            case(0):
+                orientationAsString="LEFT";
+                break;
+            case(1):
+                orientationAsString="UP";
+                break;
+            case(2):
+                orientationAsString="RIGHT";
+                break;
+            case(3):
+                orientationAsString="DOWN";
+                break;
+        }
+
+        GameScreen gameScreen = (GameScreen) screens.get("game");
+        gameScreen.updatePlayer(playerID,newX,newY,orientationAsString);
+
+    }
+
+    public void endGame(int result){
+        EndScreen endScreen = (EndScreen) screens.get("end");
+        endScreen.setWinner(result);
+    }
+
+    public void informUser(String information){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        ((Stage) alert.getDialogPane().getScene().getWindow()).setAlwaysOnTop(true);
+        alert.setContentText(information);
+        alert.show();
     }
 }

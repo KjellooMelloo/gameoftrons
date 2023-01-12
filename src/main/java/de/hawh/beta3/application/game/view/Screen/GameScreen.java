@@ -166,15 +166,12 @@ public class GameScreen extends Canvas {
 
         ColorAdjust bikeColor = new ColorAdjust();
         Glow glow = new Glow(1.0);
-       // bikeColor.setBrightness(-0.5);
-        //bikeColor.setContrast(-1);
+
 
 
 
         g.save();
-        //g.setEffect(bikeColor);
         if(playerToDraw.getId()==currentPlayerID) {
-            //bikeColor.setBrightness(0.8);
             g.setEffect(glow);
         }
         g.drawImage(playerToDraw.getImage(), playerToDraw.getPos().x*windowSize/fieldSize, playerToDraw.getPos().y*windowSize/fieldSize, windowSize/fieldSize,windowSize/fieldSize);
@@ -187,7 +184,7 @@ public class GameScreen extends Canvas {
         removeTileColors(playerToRemove);
     }
 
-    public void prepareTest(){
+   /* public void prepareTest(){
         currentPlayerID=1;
         int i = 0;
         for(Player p:playerMap.values()){
@@ -196,7 +193,7 @@ public class GameScreen extends Canvas {
             i+=2;
         }
 
-    }
+    }*/
 
     public void setFieldSize(int fieldSize) {
         this.fieldSize = fieldSize;
