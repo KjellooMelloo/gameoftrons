@@ -85,9 +85,6 @@ public class GameManager implements IModel {
     @Override
     public void startGame(int size, int gameSpeed) {
         gameLogic.init(numPlayers, size);
-        for (int[] p : gameLogic.getPlayerPositions()) {    //send starting positions to view
-            //modelView.updatePlayer(p[0], p[1], p[2], p[3]);
-        }
         timeline = new Timeline(new KeyFrame(Duration.millis(gameSpeed), e -> update()));
         timeline.setCycleCount(Animation.INDEFINITE);
     }
