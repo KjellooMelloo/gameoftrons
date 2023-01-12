@@ -9,11 +9,6 @@ public class IModelControllerCaller implements IModelController {
     private int id = 2;
 
     //@Override
-    public void behavior(){
-        mw.invoke(id, "behavior", new Object[]{});
-    }
-
-    //@Override
     public void setCurrentState(String State){
         mw.invoke(id, "setCurrentState", new Object[]{State});
     }
