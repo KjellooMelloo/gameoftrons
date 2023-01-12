@@ -1,6 +1,5 @@
 package de.hawh.beta3.application.game.view.Screen;
 
-import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -14,10 +13,10 @@ import javafx.util.Duration;
 public class CountdownScreen extends VBox {
 
     private Timeline timeline;
-    private Label countdownLabel = new Label();
+    private final Label countdownLabel = new Label();
 
-    private SimpleIntegerProperty countdownState;
-    private int countdownLength;
+    private final SimpleIntegerProperty countdownState;
+    private final int countdownLength;
 
 
     public CountdownScreen(int countdownLength) {
@@ -34,7 +33,6 @@ public class CountdownScreen extends VBox {
         this.getStylesheets().add("countdown.css");
         this.setAlignment(Pos.TOP_CENTER);
     }
-
 
 
     public void startCountdown() {
