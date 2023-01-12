@@ -15,15 +15,15 @@ import java.util.Map;
  * Base Screen der View
  * Diese Klasse verwaltet alle Bildschirmanzeigen
  */
-public class Screen {
+public class ScreenManager {
 
-    private SimpleIntegerProperty numPlayers = new SimpleIntegerProperty(2);
+    private final SimpleIntegerProperty numPlayers = new SimpleIntegerProperty(2);
     private final Scene scene;
     private final StackPane base;
     private final Map<String, Node> screens = new HashMap<>();
-    private SimpleIntegerProperty currentPlayerID = new SimpleIntegerProperty(1);
+    private final SimpleIntegerProperty currentPlayerID = new SimpleIntegerProperty(1);
 
-    public Screen(){
+    public ScreenManager() {
         this.base = new StackPane();
         this.scene = new Scene(base);
         Rectangle gameScreenBackground = new Rectangle();
@@ -32,7 +32,7 @@ public class Screen {
 
 
         // register screen states
-        screens.put("start",new StartScreen());
+        screens.put("start", new StartScreen());
         screens.put("lobby", new LobbyScreen(currentPlayerID, numPlayers));
         screens.put("game", new GameScreen());
         screens.put("countdown", new CountdownScreen(5));
@@ -41,15 +41,15 @@ public class Screen {
     }
 
 
-    public void updateCurrentPlayerID(int newPlayerID){
-        if(currentPlayerID.get() < 0) {
+    public void updateCurrentPlayerID(int newPlayerID) {
+        if (currentPlayerID.get() < 0) {
             currentPlayerID.set(newPlayerID);
         }
     }
 
 
-    public void drawScreen(String screenName){
-        if(!screens.containsKey(screenName)){
+    public void drawScreen(String screenName) {
+        if (!screens.containsKey(screenName)) {
             throw new IllegalArgumentException("A screen mapped to " + screenName + " does not exist. Available Screens are " + screens.keySet());
         }
 
@@ -59,29 +59,31 @@ public class Screen {
         screenToShow.setVisible(true);
     }
 
-    public void showCountDown(){
+    public void showCountDown() {
         CountdownScreen cs = (CountdownScreen) screens.get("countdown");
         drawScreen("countdown");
         cs.startCountdown();
 
     }
 
-      public void resetScreen() {
-        for(Map.Entry<String,Node> entry : screens.entrySet()){
+    public void resetScreen() {
+        for (Map.Entry<String, Node> entry : screens.entrySet()) {
             entry.getValue().setVisible(false);
         }
     }
 
 
     public void setNumPlayers(int numPlayers) {
-       this.numPlayers.set(numPlayers);
+        this.numPlayers.set(numPlayers);
     }
 
     public Scene getScene() {
         return scene;
     }
 
-    public Map<String, Node> getScreens (){ return screens;}
+    public Map<String, Node> getScreens() {
+        return screens;
+    }
 
 
     public void updateView(int gameFieldSize) {
@@ -93,40 +95,40 @@ public class Screen {
         gs.initializeGameField();
     }
 
-    public void updatePlayer(int playerID, int newX, int newY, int orientation){
-        if(playerID>numPlayers.get()){
+    public void updatePlayer(int playerID, int newX, int newY, int orientation) {
+        if (playerID > numPlayers.get()) {
             throw new IllegalArgumentException("A player by the given ID doesn't exist");
         }
-        if(orientation > 3){
+        if (orientation > 3) {
             throw new IllegalArgumentException("The orientation must be between 0-3");
         }
-        String orientationAsString="";
-        switch (orientation){
-            case(0):
-                orientationAsString="LEFT";
+        String orientationAsString = "";
+        switch (orientation) {
+            case (0):
+                orientationAsString = "LEFT";
                 break;
-            case(1):
-                orientationAsString="UP";
+            case (1):
+                orientationAsString = "UP";
                 break;
-            case(2):
-                orientationAsString="RIGHT";
+            case (2):
+                orientationAsString = "RIGHT";
                 break;
-            case(3):
-                orientationAsString="DOWN";
+            case (3):
+                orientationAsString = "DOWN";
                 break;
         }
 
         GameScreen gameScreen = (GameScreen) screens.get("game");
-        gameScreen.updatePlayer(playerID,newX,newY,orientationAsString);
+        gameScreen.updatePlayer(playerID, newX, newY, orientationAsString);
 
     }
 
-    public void endGame(int result){
+    public void endGame(int result) {
         EndScreen endScreen = (EndScreen) screens.get("end");
         endScreen.setWinner(result);
     }
 
-    public void informUser(String information){
+    public void informUser(String information) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         ((Stage) alert.getDialogPane().getScene().getWindow()).setAlwaysOnTop(true);
         alert.setContentText(information);

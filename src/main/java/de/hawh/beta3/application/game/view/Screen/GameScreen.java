@@ -10,27 +10,25 @@ import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.Glow;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 
-
 public class GameScreen extends Canvas {
 
-    private int currentPlayerID=-1;
-    private int fieldSize=10;
-    private Map<Integer, Player> playerMap = new HashMap<>();
-    private int windowSize = 800;
+    private int currentPlayerID = -1;
+    private int fieldSize = 10;
+    private final Map<Integer, Player> playerMap = new HashMap<>();
+    private final int windowSize = 800;
     private int numPlayers = 2;
-    private ScreenCommons screenCommons = new ScreenCommons();
+    private final ScreenCommons screenCommons = new ScreenCommons();
 
 
+    public GameScreen() {
 
-
-    public GameScreen(){
-
-       // Set up canvas size
+        // Set up canvas size
         this.setWidth(windowSize);
         this.setHeight(windowSize);
 
@@ -52,27 +50,25 @@ public class GameScreen extends Canvas {
     }
 
 
-
     public void initializeGameField() {
         initPlayersInPositions();
         GraphicsContext g = this.getGraphicsContext2D();
 
 
-
         // vertical lines
         g.setStroke(Color.GRAY);
-        for(int i = 0 ; i <= getWidth() ; i+=windowSize/fieldSize){
-            g.strokeLine(i, 0, i, getHeight() - (getHeight()%windowSize/fieldSize));
+        for (int i = 0; i <= getWidth(); i += windowSize / fieldSize) {
+            g.strokeLine(i, 0, i, getHeight() - (getHeight() % windowSize / fieldSize));
         }
 
         // horizontal lines
         g.setStroke(Color.GRAY);
-        for(int i = 0 ; i <= getHeight() ; i+=windowSize/fieldSize){
+        for (int i = 0; i <= getHeight(); i += windowSize / fieldSize) {
             g.strokeLine(0, i, getWidth(), i);
         }
         //TODO erase after test
         //prepareTest();
-        for(Player p:playerMap.values()){
+        for (Player p : playerMap.values()) {
             drawTileColors(p);
         }
 
@@ -111,74 +107,74 @@ public class GameScreen extends Canvas {
                 "LEFT"
         };
 
-        for(int i=0; i < numPlayers; i++){
-            playerMap.put(i,new Player(i,positionsToInitialize[i],startingDir[i]));
+        for (int i = 0; i < numPlayers; i++) {
+            playerMap.put(i, new Player(i, positionsToInitialize[i], startingDir[i]));
         }
     }
 
 
-    public void updatePlayer(int playerID,int newX, int newY, String newOrientation){
-        if(newX==-1 || newY==-1){
+    public void updatePlayer(int playerID, int newX, int newY, String newOrientation) {
+        if (newX == -1 || newY == -1) {
             kill(playerID);
             return;
         }
         Player playerToUpdate = playerMap.get(playerID);
-        this.getGraphicsContext2D().clearRect(playerToUpdate.getPos().x*windowSize/fieldSize, playerToUpdate.getPos().y*windowSize/fieldSize,
-                windowSize/fieldSize, windowSize/fieldSize);
-        playerToUpdate.updateTrailAndOrientation(newX,newY,newOrientation);
+        this.getGraphicsContext2D().clearRect(playerToUpdate.getPos().x * windowSize / fieldSize, playerToUpdate.getPos().y * windowSize / fieldSize,
+                windowSize / fieldSize, windowSize / fieldSize);
+        playerToUpdate.updateTrailAndOrientation(newX, newY, newOrientation);
         drawTileColors(playerToUpdate);
     }
-    private void removeTileColors(Player playerToRemove){
+
+    private void removeTileColors(Player playerToRemove) {
 
         GraphicsContext g = this.getGraphicsContext2D();
 
-        for(Coordinate pos : playerToRemove.getTrail()){
-            if(pos.x < 0 || pos.x >= fieldSize){
+        for (Coordinate pos : playerToRemove.getTrail()) {
+            if (pos.x < 0 || pos.x >= fieldSize) {
                 throw new IllegalArgumentException("x value out of bounds: x is " + pos.x + ", but should be 0 <= x < " + fieldSize);
             }
-            if(pos.y < 0 || pos.y >= fieldSize) {
+            if (pos.y < 0 || pos.y >= fieldSize) {
                 throw new IllegalArgumentException("y value out of bounds: y is " + pos.y + ", but should be 0 <= y < " + fieldSize);
             }
 
             // erase trail position
-             g.clearRect(pos.x*windowSize/fieldSize, pos.y*windowSize/fieldSize, windowSize/fieldSize, windowSize/fieldSize);
+            g.clearRect(pos.x * windowSize / fieldSize, pos.y * windowSize / fieldSize, windowSize / fieldSize, windowSize / fieldSize);
         }
     }
-    private void drawTileColors(Player playerToDraw){
-        if(playerToDraw == null || playerToDraw.getTrail()==null){
+
+    private void drawTileColors(Player playerToDraw) {
+        if (playerToDraw == null || playerToDraw.getTrail() == null) {
             throw new NullPointerException();
         }
         GraphicsContext g = this.getGraphicsContext2D();
 
 
-        for(Coordinate pos : playerToDraw.getTrail()){
-            if(pos.x < 0 || pos.x >= fieldSize){
+        for (Coordinate pos : playerToDraw.getTrail()) {
+            if (pos.x < 0 || pos.x >= fieldSize) {
                 throw new IllegalArgumentException("x value out of bounds: x is " + pos.x + ", but should be 0 <= x < " + fieldSize);
             }
-            if(pos.y < 0 || pos.y >= fieldSize) {
+            if (pos.y < 0 || pos.y >= fieldSize) {
                 throw new IllegalArgumentException("y value out of bounds: y is " + pos.y + ", but should be 0 <= y < " + fieldSize);
             }
 
             // paint new bike position
             g.setFill(screenCommons.getColor(playerToDraw.getId()));
-            g.fillRect(pos.x*windowSize/fieldSize, pos.y*windowSize/fieldSize, windowSize/fieldSize, windowSize/fieldSize);
+            g.fillRect(pos.x * windowSize / fieldSize, pos.y * windowSize / fieldSize, windowSize / fieldSize, windowSize / fieldSize);
         }
 
         ColorAdjust bikeColor = new ColorAdjust();
         Glow glow = new Glow(1.0);
 
 
-
-
         g.save();
-        if(playerToDraw.getId()==currentPlayerID) {
+        if (playerToDraw.getId() == currentPlayerID) {
             g.setEffect(glow);
         }
-        g.drawImage(playerToDraw.getImage(), playerToDraw.getPos().x*windowSize/fieldSize, playerToDraw.getPos().y*windowSize/fieldSize, windowSize/fieldSize,windowSize/fieldSize);
+        g.drawImage(playerToDraw.getImage(), playerToDraw.getPos().x * windowSize / fieldSize, playerToDraw.getPos().y * windowSize / fieldSize, windowSize / fieldSize, windowSize / fieldSize);
         g.restore();
     }
 
-    private void kill(int playerToKillID){
+    private void kill(int playerToKillID) {
         Player playerToRemove = playerMap.get(playerToKillID);
         playerMap.remove(playerToKillID);
         removeTileColors(playerToRemove);

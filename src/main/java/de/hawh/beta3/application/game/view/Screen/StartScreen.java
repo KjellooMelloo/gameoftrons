@@ -10,7 +10,8 @@ import javafx.scene.layout.VBox;
 
 public class StartScreen extends VBox {
 
-    private ScreenCommons screenCommons = new ScreenCommons();
+    private final ScreenCommons screenCommons = new ScreenCommons();
+
     public StartScreen() {
 
         //Initialize VBox
@@ -19,12 +20,10 @@ public class StartScreen extends VBox {
         this.getStylesheets().add("start.css");
 
 
-
         // initialize control elements
         Label labelReadyText = new Label("Are you ready to enter a new reality?");
         TextField inputPlayerCountField = new TextField("Player Count between 2-6");
         Button btnStart = new Button("Start Game");
-
 
 
         // Edit style
@@ -35,15 +34,15 @@ public class StartScreen extends VBox {
 
         // Align elements
         this.setAlignment(Pos.BOTTOM_CENTER);
-     //   labelReadyText.setAlignment(Pos.BOTTOM_LEFT);
-       // inputPlayerCountField.setAlignment(Pos.BOTTOM_CENTER);
-       // btnStart.setAlignment(Pos.BOTTOM_RIGHT);
+        //   labelReadyText.setAlignment(Pos.BOTTOM_LEFT);
+        // inputPlayerCountField.setAlignment(Pos.BOTTOM_CENTER);
+        // btnStart.setAlignment(Pos.BOTTOM_RIGHT);
 
 
-     //  Button Press Event Logic
+        //  Button Press Event Logic
         btnStart.setOnAction(event -> {
             String inputString = inputPlayerCountField.getText();
-            if(inputString.equals("")){
+            if (inputString.equals("")) {
                 //TODO: call informUser: Please input a player count!
                 System.out.println("Button was pressed");
             } else {
