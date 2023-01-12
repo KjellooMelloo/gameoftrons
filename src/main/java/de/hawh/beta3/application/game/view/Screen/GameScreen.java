@@ -24,7 +24,7 @@ public class GameScreen extends Canvas {
     private int windowSize = 800;
     private int numPlayers = 2;
     private ScreenCommons screenCommons = new ScreenCommons();
-    private Color backgroundColor = Color.BLUEVIOLET.darker().darker().darker().desaturate();
+
 
 
 
@@ -56,18 +56,18 @@ public class GameScreen extends Canvas {
     public void initializeGameField() {
         initPlayersInPositions();
         GraphicsContext g = this.getGraphicsContext2D();
-        g.setFill(backgroundColor);
+
 
 
         // vertical lines
         g.setStroke(Color.GRAY);
         for(int i = 0 ; i <= getWidth() ; i+=windowSize/fieldSize){
-            g.strokeLine(i, 0, i, getHeight() - (getHeight()%30));
+            g.strokeLine(i, 0, i, getHeight() - (getHeight()%windowSize/fieldSize));
         }
 
         // horizontal lines
         g.setStroke(Color.GRAY);
-        for(int i = windowSize/fieldSize ; i < getHeight() ; i+=windowSize/fieldSize){
+        for(int i = 0 ; i <= getHeight() ; i+=windowSize/fieldSize){
             g.strokeLine(0, i, getWidth(), i);
         }
         //TODO erase after test

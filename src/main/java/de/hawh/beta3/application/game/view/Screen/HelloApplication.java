@@ -1,6 +1,7 @@
 package de.hawh.beta3.application.game.view.Screen;
 
 import javafx.application.Application;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 
@@ -10,8 +11,15 @@ public class HelloApplication extends Application {
 
         stage.setFullScreen(true);
         Screen gameScreen = new Screen();
-        gameScreen.resetScreen();
-        gameScreen.updateView(10);
+        ScreenCommons sc = new ScreenCommons();
+        gameScreen.drawScreen("end");
+        EndScreen es = (EndScreen)gameScreen.getScreens().get("end");
+        es.setWinner(2);
+
+
+
+
+
 
 
 

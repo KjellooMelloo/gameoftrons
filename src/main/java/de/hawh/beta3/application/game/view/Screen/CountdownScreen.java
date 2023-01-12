@@ -10,11 +10,9 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
-import java.util.concurrent.TimeUnit;
 
 public class CountdownScreen extends VBox {
 
-    private AnimationTimer timer;
     private Timeline timeline;
     private Label countdownLabel = new Label();
 
@@ -33,9 +31,10 @@ public class CountdownScreen extends VBox {
 
     private void styleScreen() {
         this.getStyleClass().add("root");
-        this.getStylesheets().add("lobby.css");
+        this.getStylesheets().add("countdown.css");
         this.setAlignment(Pos.TOP_CENTER);
     }
+
 
 
     public void startCountdown() {

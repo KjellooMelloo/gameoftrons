@@ -1,18 +1,29 @@
 .root{
-    -fx-background-size: contain;
-    -fx-background-position: bottom;
-    -fx-background-repeat: repeat-x;
+    -fx-background-size: contain, contain;
+    -fx-background-position: bottom, bottom;
+    -fx-background-repeat: repeat-x, repeat-x;
     -fx-background-image:
             url("images/field_tron.jpg")
 }
 
 .label {
-    -fx-font: bold 40px "Sans";
+    -fx-font: bold 30px "Stencil";
     -fx-text-fill: #bde4f2;
 }
 
+#title{
+    -fx-font: 40px "Stencil";
+    -fx-text-fill: #bde4f2;
+
+}
+
+#colorLabel{
+    -fx-font: bold 20px "Stencil";
+
+}
+
 .button {
-    -fx-font: bold 20px "Sans";
+    -fx-font: bold 20px "Stencil";
     -fx-text-fill: #bde4f2;
     -fx-border-color: #bde4f2;
     -fx-border-width: 3px;

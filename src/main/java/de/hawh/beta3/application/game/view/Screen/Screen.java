@@ -5,6 +5,8 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,18 +20,23 @@ public class Screen {
     private SimpleIntegerProperty numPlayers = new SimpleIntegerProperty(2);
     private Scene scene;
     private StackPane base;
+    private Rectangle gameScreenBackground = new Rectangle();
     private Map<String, Node> screens = new HashMap<>();
     private SimpleIntegerProperty currentPlayerID = new SimpleIntegerProperty(1);
 
     public Screen(){
         this.base = new StackPane();
         this.scene = new Scene(base);
+        base.getChildren().add(gameScreenBackground);
+        base.setStyle("-fx-background-color: #180b27");
+
 
         // register screen states
         screens.put("start",new StartScreen());
         screens.put("lobby", new LobbyScreen(currentPlayerID, numPlayers));
         screens.put("game", new GameScreen());
         screens.put("countdown", new CountdownScreen(5));
+        screens.put("end", new EndScreen());
 
     }
 
@@ -95,5 +102,9 @@ public class Screen {
         gs.setNumPlayers(numPlayers.get());
         drawScreen("game");
         gs.initializeGameField();
+    }
+
+    public void setCurrentPlayerID(int id){
+        this.currentPlayerID.set(id);
     }
 }
