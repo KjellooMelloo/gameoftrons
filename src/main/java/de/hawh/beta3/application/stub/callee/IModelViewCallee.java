@@ -9,6 +9,7 @@ import java.util.Arrays;
 public class IModelViewCallee implements IRemoteObject {
     private IModelView modelView; //= new ModelViewImpl();
     private Method method;
+    private int id = 1;
 
     /**
      * Eine im Voraus registrierte Methode mit dem Namen <code>methodName</code> und den Parametern <code>args</code>
@@ -27,5 +28,9 @@ public class IModelViewCallee implements IRemoteObject {
         } catch(NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
+    }
+
+    public int getId() {
+        return id;
     }
 }

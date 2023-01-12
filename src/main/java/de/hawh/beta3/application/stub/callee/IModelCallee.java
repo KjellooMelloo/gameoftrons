@@ -11,6 +11,8 @@ public class IModelCallee implements IRemoteObject {
 
     private IModel model = GameManager.getInstance();
     private Method method;
+    private int id = 0;
+
     /**
      * Eine im Voraus registrierte Methode mit dem Namen <code>methodName</code> und den Parametern <code>args</code>
      * soll aufgerufen werden
@@ -28,5 +30,9 @@ public class IModelCallee implements IRemoteObject {
         } catch(NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
+    }
+
+    public int getId() {
+        return id;
     }
 }
