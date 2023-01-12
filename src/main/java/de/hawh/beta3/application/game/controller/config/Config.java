@@ -1,6 +1,8 @@
 package de.hawh.beta3.application.game.controller.config;
 
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -20,7 +22,11 @@ public class Config implements IConfig {
 
     public int[] loadConfigParameters(){
         String data;
-        Map<String, Integer> parameters = new HashMap<>();
+        Map<String, String> parameters = new HashMap<>();
+        String val;
+        String regex = "(\"/(\\\\S+[^=])(=)(\\\\S+)/\")";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher;
         //Set<String> params = Stream.of(new String[] {"size","gameSpeed","maxWaitingTime", "playerCount", "controls"}).collect(Collectors.toSet());
         String[] params = new String[] {"size","gameSpeed","maxWaitingTime", "playerCount", "controls"};
         //parse file with Scanner
@@ -29,7 +35,9 @@ public class Config implements IConfig {
             while (scanner.hasNextLine()) {
                 data = scanner.nextLine();
                 if (data.contains(p)) {
-                    parameters.put(p, 0); //0 mit val ersetzen
+                    matcher = pattern.matcher(data);
+                    val = matcher.group(3);
+                    parameters.put(p, val);
                 }
             }
         }
