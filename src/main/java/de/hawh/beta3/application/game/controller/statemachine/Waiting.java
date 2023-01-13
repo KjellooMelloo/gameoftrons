@@ -19,13 +19,13 @@ public class Waiting implements State {
         //to do
         iView.showScreen("Waiting");
         //if (handleWaitingButtonClick){
-              iModel.cancelWait(); //LOKAL
-              context.setCurrentState(new Delete(context));
+              //iModel.cancelWait(); //LOKAL
+              //context.setCurrentState(new Delete(context));
         //}
         //else if (notifyTimerstopped()){
-              iModel.cancelWait(); //REMOTE BEI ALLEN
+              //iModel.cancelWait(); //REMOTE BEI ALLEN --> ruft Model selbst auf
         //else if (fullPlayerCountReached()){
-              context.setCurrentState(new Game(context));
+              //context.setCurrentState(new Game(context));
         //}
         //else {
         //      WAIT
@@ -33,6 +33,7 @@ public class Waiting implements State {
     }
 
     public void handleWaitingButtonClick(){
+        iModel.cancelWait(); //LOKAL
         context.setCurrentState(new Delete(context));
     }
 }

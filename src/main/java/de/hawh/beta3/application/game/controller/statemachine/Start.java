@@ -9,9 +9,11 @@ public class Start implements State {
     IControllerView iView;
     IModel iModel;
     IConfig iConfig;
+    Context context;
 
     public Start(Context context){
         this.behavior(context);
+        this.context = context;
     }
 
     @Override
@@ -20,17 +22,14 @@ public class Start implements State {
         iView.showScreen("Start");
         //View: handleInputPlayerCount(int userInput);
         //? applicationStub.register() --> int ID
+    }
 
-        //wait for callback
-
+    public void handleInputPlayerCount(int playerCount){
+        iConfig.setPlayerCount(playerCount);
         int[] configParameters = iConfig.loadConfigParameters();
         context.configParameters = configParameters;
 
         iModel.join(configParameters[0]);
         context.setCurrentState(new Waiting(context));
-    }
-
-    public int handleInputPlayerCount(int playerCount){
-        return iConfig.setPlayerCount(playerCount);
     }
 }

@@ -1,6 +1,6 @@
 package de.hawh.beta3.application.game.controller.statemachine;
 
-public class Context {
+public class Context implements IContext {
 
     Context context;
     int[] configParameters;
