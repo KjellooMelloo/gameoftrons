@@ -3,8 +3,6 @@ package de.hawh.beta3.application.game.controller.config;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Config implements IConfig {
 
@@ -16,15 +14,7 @@ public class Config implements IConfig {
     //maxWaitingTime
     //gameSpeed
     //flag partner
-    /*int playerCount = 0; //stateMachine.handleInputPlayerCount();
-    //IntStream range = IntStream.of(2, 6);
-    List<Integer> range = List.of(2,3,4,5,6);
-    int defaultPlayerCount = 4;
-    float maxWaitingTime; //cast zu int
-    CONTROLS controls;
-    float gameSpeed; //cast zu int
-    //DIMENSIONS gridSize; //am einfachsten wäre int
-    int[] gridSize = new int[2];*/
+
 
     public int[] loadConfigParameters(){
         Map<String, String> parameters = new HashMap<>();
@@ -126,11 +116,5 @@ public class Config implements IConfig {
     public int getGridSize() {
         return configParameters[3];
     }
-
-    /*public int[] getGridSize() {
-        gridSize[0] = configParameters[4];
-        gridSize[1] = configParameters[4];
-        return gridSize;
-    }*/
 
 }
