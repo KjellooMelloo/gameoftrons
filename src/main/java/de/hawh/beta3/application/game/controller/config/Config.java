@@ -91,21 +91,38 @@ public class Config implements IConfig {
         return configParameters[1];
     }
 
-    public CONTROLS getControls(){
-        if (configParameters[2] == 0){
-            return CONTROLS.LEFT_RIGHT;
-        } else if (configParameters[2] == 1){
-            return CONTROLS.A_D;
-        } else if (configParameters[2] == 2){
-            return CONTROLS.B_M;
-        } else if (configParameters[2] == 3){
-            return CONTROLS.X_V;
-        } else if (configParameters[2] == 4){
-            return CONTROLS.T_U;
-        } else if (configParameters[2] == 5){
-            return CONTROLS.I_P;
+    public List<CONTROLS> getControls(){
+        List<CONTROLS> controls = new ArrayList<>();
+        controls.add(CONTROLS.A_D);
+        if ((boolean)allParams.get("remote") || (boolean)allParams.get("partner")){
+            return controls;
+        } else if (getPlayerCount()==2){
+            controls.add(CONTROLS.LEFT_RIGHT);
+            return controls;
+        } else if (getPlayerCount()==3){
+            controls.add(CONTROLS.LEFT_RIGHT);
+            controls.add(CONTROLS.G_J);
+            return controls;
+        } else if (getPlayerCount()==4){
+            controls.add(CONTROLS.LEFT_RIGHT);
+            controls.add(CONTROLS.G_J);
+            controls.add(CONTROLS.DIGIT1_DIGIT3);
+            return controls;
+        } else if (getPlayerCount()==5){
+            controls.add(CONTROLS.LEFT_RIGHT);
+            controls.add(CONTROLS.G_J);
+            controls.add(CONTROLS.DIGIT1_DIGIT3);
+            controls.add(CONTROLS.DIGIT5_DIGIT9);
+            return controls;
+        } else if (getPlayerCount()==6){
+            controls.add(CONTROLS.LEFT_RIGHT);
+            controls.add(CONTROLS.G_J);
+            controls.add(CONTROLS.DIGIT1_DIGIT3);
+            controls.add(CONTROLS.DIGIT5_DIGIT9);
+            controls.add(CONTROLS.I_P)
+            return controls;
         } else {
-            return null;
+            return new ArrayList<>();
         }
     }
 
