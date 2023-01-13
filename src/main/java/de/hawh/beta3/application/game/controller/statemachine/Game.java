@@ -18,16 +18,16 @@ public class Game implements State {
 
     @Override
     public void behavior(Context context){
-        //to do
+
         iView.showScreen("Countdown");
         //--> if (iViewController.notifyCountdownOver())
-        //      opt: setGameFieldParameters()
+
         iModel.startGame(context.configParameters[3], context.configParameters[2]); //int gridSize, int gameSpeed
         iView.setGameFieldSize(context.configParameters[3]);
+
         //schleife while(RUNNING)
-        //handleDirectionKeyboardInput();
-        //if (endGame(int result))
-        //      context.setCurrentState(new End(context));
+        //      handleDirectionKeyboardInput();
+        //bis endGame(int)
     }
 
 

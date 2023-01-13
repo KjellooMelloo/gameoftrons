@@ -6,8 +6,6 @@ import de.hawh.beta3.application.game.view.IControllerView;
 public class End implements State {
 
     IControllerView iView;
-    IModel iModel;
-    Context context;
 
     public End(Context context) {
         this.behavior(context);
@@ -15,7 +13,7 @@ public class End implements State {
 
     @Override
     public void behavior(Context context) {
-        //to do
+
         iView.showScreen("End");
         //Timer extern oder hier
         context.setCurrentState(new Delete(context));
