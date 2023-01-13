@@ -125,17 +125,18 @@ Es wird eine Middleware für die verteilte Anwendung Game Of Trons entwickelt.
 
 | Usecase | Akteur |Funktionssignatur| Vorbedingung | Nachbedingung | Ablaufsemantik | Fehlersemantik |
 |---|---|---|---|---|---|---|
-|UC1| ServerStub| void register(int, IRemoteObject remoteObject, String, InetAddress, int, bool) | Ein CalleeStub aus dem ApplicationStub möchte sich als RemoteObject registrieren | Das Remote Object wurde im Name Server und in der lokalen Tabelle im Server Stub aufgenommen.| Der Server Stub erstellt eine Nachricht aus den Daten in den Aufrufparametern (Aufruf serializeNS()) und schickt eine Nachricht nach dem TCP-Protokoll an den Name Server. Der Name Server schickt die eingetragene Multicast-Adresse, wenn eine neue Multicast-Adresse zugewiesen wurde, ein leerer String über eine Nachricht zurück. Die Adresse (oder leerer String) wird aus der Nachricht entpackt (Aufruf deserializeNS() ). Die im Aufrufparameter angegebene Interface-ID und das angegebene RemoteObject werden in der lokalen Tabelle eingetragen (wenn die ID noch nicht vorhanden ist). Wenn die vom Name Server erhaltene Antwort kein leerer String ist, wird die Methode addGroup(InetAddress) aufgerufen. | |
-|UC1| ServerStub | void addGroup(InetAddress)| Ein Remote-Object 
-|UC1|  NameServer | int bind(int, String InetAddress, int) | Eine Nachricht ist aus einem ServerStub angekommen, die Daten wurde aus der Nachricht entpackt und als Aufrufparameter genutzt | Das RemoteObject wurde im NameServer gespeichert | Der NameServer prüft, ob zur mitgegebenen ID und Methodennamen bereits ein Eintrag vorhanden ist(Aufruf checkInterfaceInTable).  Aus der übergebenen Interface-ID wird eine eindeutige Object-ID erzeugt. Die Object-ID und der Methodenname werden mit der übergebenen InetAddress und Portnummer eingetragen. Die erzeugte Object-ID wird an den anfragenden Server Stub zurückgeschickt.| Eintrag mit der ID und dem Methodennamen existiert bereits. Dann wird der Eintrag überschrieben. Wenn es sich um eine Modelschnittstelle handelt und eine andere Model-Komponente hat sich bereits eingetragen, dann wird keine weitere Model-Komponente registriert. Der Name Server schickt in dem Fall -1 an den Server Stub zurück. |
-|UC1| NameServer | boolean checkInterfaceInTable(int, String) | Ein CalleeStub möchte sich als RemoteObject eintragen und hat register() aufgerufen | Es wird true zurückgegeben, wenn bereits ein Eintrag existiert sonst false| Der Name Server prüft, ob zur übergebenen ID und Methodennamen bereits ein Eintrag in der Tabelle existiert| |
+|UC1| ServerStub| void register(int interfaceID, IRemoteObject remoteObject, String methodName, InetAddress ipAddr, bool isSingleton) | Ein CalleeStub aus dem ApplicationStub möchte sich als RemoteObject registrieren | Das Remote Object wurde im Name Server und in der lokalen Tabelle im Server Stub aufgenommen.| Der Server Stub erstellt eine Nachricht aus den Daten in den Aufrufparametern (Aufruf serializeNS()). <br> **interfaceID**: Id des RemoteObjects, <br> **remoteObject**: Die Remote-Schnittstelle, die registriert werden soll <br> **methodName**: Die Methode des RemoteObjects, die registriert werden soll <br> **ipAddr**: Die IP-Adresse, unter der das RemoteObject erreichbar ist <br> **isSingleton**:Flag, um zu bestimmen, ob mehrere RemoteObjects mit dieser Id registriert werden dürfen<br> Die NAchricht nach dem TCP-Protokoll an den Name Server geschickt.   | |
+|UC1|  NameServer | int bind(int id, String methodName, InetAddress ipAddr, bool isSingleton) | Eine Nachricht ist aus einem ServerStub angekommen, die Daten wurde aus der Nachricht entpackt und als Aufrufparameter genutzt | Das RemoteObject wurde im NameServer gespeichert | Der NameServer prüft, ob zur mitgegebenen ID bereits ein Eintrag vorhanden ist(Aufruf checkInterfaceInTable). Wenn ja, dann wird unter dem Schlüssel (id, methodName) die IP-Adresse hinzugefügt. Wenn isSingleton false ist, dann wird die IP-Adresse nicht eingetragen. <br>
+Wenn der Methodenname und/oder die übergebene ID noch nicht eingetragen ist, dann wird ein neuer Schlüssel (id,methodName) erzeugt. Darunter wird die die IP-Adresse eingetragen. | |
+|UC1| NameServer | boolean checkInterfaceInTable(String, String) | Ein CalleeStub möchte sich als RemoteObject eintragen und hat register() aufgerufen | Es wird true zurückgegeben, wenn bereits ein Eintrag  für ein InterfaceID existiert, sonst false| Der Name Server prüft, ob zur übergebenen ID und Methodennamen bereits ein Eintrag in der Tabelle existiert| |
 |UC2| ClientStub | void invoke(int, String, Object[]) | Eine Komponente ruft eine Remote-Komponente über eine Application Stub Schnittstelle auf | Der Aufruf wurde geprüft und die Methode marshal() wurde aufgerufen |  Prüft mithilfe von lookup() ob die übergebene Objekt-ID (erster Parameter) und die Methode (zweiter Parameter) registriert ist. Dann wird die Methode marshal() aufgerufen | Wenn die Objekt-ID nicht registriert ist, wird eine Exception geworfen|
 |UC3| ClientStub | byte[] marshal(int,String, Object[]) | Funktionsaufruf über invoke wurde getätigt, zugehörige InetAddress und Portnummer wurde durch NameResolver ermittelt | Funktionsaufruf wurde marshaled und zurückgegeben | Es wird eine Nachricht im JSON-Format aus den übergebenen Parametern InterfaceID, Methodenname und Methodenparameter (Object[]) zusammengebaut. Das JSON-Objekt wird in ein byte-Array umgewandelt und zurückgegeben | |
 |UC3.1| ClientStub | void send(InetAdress, int, byte[]) | Funktionsaufruf wurde marshaled, zugehörige InetAddress und Portnummer druch NameResolver ermittelt | Nachricht wurde verschickt | Die marshaled Nachricht wird über einen Socket an die passende InetAddress und Portnummer verschickt. | |
 |UC4| ServerStub | JSON unmarshal(byte[]) | Nachricht wurde über receive empfangen | Nachrichteninhalt wurde extrahiert und kann für call genutzt werden | | (checksum stimmt nicht überein -> ignorieren) |
 |UC4.1| ServerStub |  receive(DatagramPacket)) | Ein Socket im Server Stub hat eine Nachricht empfangen | Nachricht wurde aus dem Packet entpackt und dem Marshaler übergeben. | Die Nachricht wird aus dem übergebenen Datagram-Paket herausgeholt und dem Unmarshaler übergeben | |
-|UC5| Client Stub | String[] cacheOrLookup(int,String) | Ein Application Stub hat invoke aufgerufen, um eine Remote-Methode aufzurufen. Der Client Stub muss im nächsten Schritt prüfen, ob die aufgerufene Methode im Cache des Client Stubs eingetragen ist. | Die Adresse und die Portnummer der angefragten Methode werden zurückgegeben.| Es wird in der Cache-Tabelle des Client-Stubs nachgeschaut, ob es einen Eintrag zur angegebenen ID(int) und dem angegebenen Methodenname(String) existiert. Wenn ja, dann wird ein Array mit der eingetragenen IP-Adresse (Index 0) und Portnummer (Index 1) zurückgegeben. Wenn nicht, dann wird eine Nachricht aus der angegebenen ID und dem Methodennamen erstellt (Aufruf serializeNS() ) und an den Name Server über TCP geschickt. Die erhaltene Antwort vom Name Server wird entpackt (Aufruf deserializeNS() ) im selben Array-Format zurückgegeben.| Es gibt auch im Name Server keinen Eintrag mit der ID und dem Methodennamen (leere Strings als Antwort erhalten). Der RPC wird abgebrochen|
-|UC5| Name Server | void lookup(int, String) | Eine angefragte Methode ist nicht im Cache des Client Stubs gespeichert. Der Client Stub schickt eine Nachricht an den Name Server mit einer Lookup-Anfrage.| Die Adresse und die Portnummer der angefragten Methode werden über eine Nachricht zurückgeschickt.|Der Name Server prüft, ob es einen Eintrag in der Tabelle mit der übergebenen Interface-ID und Methodenname gibt. Wenn ja, dann werden die IP-Adresse und die Portnummer an den anfragenden Client Stub zurückgeschickt.| Es gibt keinen Eintrag mit der ID und dem Methodennamen. Es werden leere Strings zurückgeschickt. |
+|UC5| Client Stub | String[] cacheOrLookup(String id, String methodName) | Ein Application Stub hat invoke aufgerufen, um eine Remote-Methode aufzurufen. Der Client Stub muss im nächsten Schritt prüfen, ob die aufgerufene Methode im Cache des Client Stubs eingetragen ist. | Die Adresse  der angefragten Methode werden zurückgegeben.| Es wird in der Cache-Tabelle des Client-Stubs nachgeschaut, ob es einen Eintrag zur angegebenen ID und dem angegebenen Methodenname existiert. Wenn ja, dann wird ein Array mit allen eingetragenen IP-Adressen zurückgegeben. Die IP-Adressen werden gecached (Aufruf cache() ). Wenn nicht, dann wird eine Nachricht aus der angegebenen ID und dem Methodennamen erstellt (Aufruf serializeNS() ) und an den Name Server über TCP geschickt. Die erhaltene Antwort vom Name Server wird entpackt (Aufruf deserializeNS() ) im selben Array-Format zurückgegeben.| Es gibt auch im Name Server keinen Eintrag mit der ID und dem Methodennamen (leere Strings als Antwort erhalten). Der RPC wird abgebrochen|
+|UC5| Name Server | void lookup(String id, String methodName) | Eine angefragte Methode ist nicht im Cache des Client Stubs gespeichert. Der Client Stub schickt eine Nachricht an den Name Server mit einer Lookup-Anfrage.| Die Adresse der angefragten Methode werden über eine Nachricht zurückgeschickt.|Der Name Server prüft, ob es einen Eintrag in der Tabelle mit der übergebenen Interface-ID und Methodenname gibt. Wenn ja, dann werden die eingetragenen IP-Adressen an den anfragenden Client Stub zurückgeschickt.| Es gibt keinen Eintrag mit der ID und dem Methodennamen. Es werden leere Strings zurückgeschickt. |
+|UC5| Client Stub | void cache(String id, String methodName, String[] IpAddr) | Eine Antwort auf eine lookup-Anfrage ist im Client-Stub angekommen| Die IP-Adresse wurde im Cache gespeichert| Es wird ein Schlüssel aus der Interface-ID und dem Methodennamen erzeugt. Darunter werden die IP-Adressen eingetragen.| |
 |UC6| ServerStub | void callRemoteObjectInterface(JSON) | Nachricht wurde vom ServerStub empfangen und unmarshaled | Der Server Stub holt die Interface-ID, den Methodennamen und die Aufrufparameter aus dem JSON-Objekt heraus und ruft das korrekte Remote-Object-Interface auf.|Das RemoteObject-Interface wurde aufgerufen  | | 
 
 
@@ -167,7 +168,6 @@ Für die Anfrage an den Name Server (siehe Lösungsstrategie register und lookup
     "args": [<br>
         "ifaceID": Int,<br>
         "methodName": Str,<br>
-        ("playerID": Int)<br>
     ]<br>
 }
 <br>
@@ -178,27 +178,24 @@ Für die Anfrage an den Name Server (siehe Lösungsstrategie register und lookup
         "ifaceID": Int,<br>
         "methodName": Str,<br>
         "IpAddr": "XXX.XXX.XXX.XXX",<br>
-        "Port": "YYYYY"<br>
+        "isSingleton": "true" || "false"<br>
     ]<br>
 }
 <br>
 <br>
 
-Auf beide Anfragen an den Name Server wird eine Antwort erwartet. Im Folgenden definieren wir die Antwortformate vom Name Server an den Client Stub bzw. Server Stub:
+Auf eine Lookup-Anfrage an den Name Server wird eine Antwort erwartet. Im Folgenden definieren wir das Antwortformat vom Name Server an den Client Stub:
 <br>
 
-**Format für die Antwort auf eine Register-Anfrage:**
-int<br>
---> Die Antwort kommt als ein Byte-Array zurück. Das Byte-Array wird als ein int interpretiert.
 
-<br>
-<br>
 
 **Format für die Antwort auf eine Lookup-Anfrage:**
 <br>
 JSONObjectLookupResponse = {<br>
-  "IpAddr": "XXX.XXX.XXX.XXX",<br>
-  "Port": "YYYYY"<br>
+  "IpAddr1": "XXX.XXX.XXX.XXX",<br>
+              ...
+  "IpAddrN": "XXX.XXX.XXX.XXX",<br>
+  
  }
   
  <br>
@@ -206,8 +203,7 @@ JSONObjectLookupResponse = {<br>
  Wenn die Lookup-Anfrage **fehlgeschlagen** ist (kein Eintrag vorhanden), dann werden leere Strings zurückgeschickt:
  <br>
 JSONObjectLookupResponseError = {
-  "IpAddr": "",<br>
-  "Port": ""<br>
+  "IpAddr1": "",<br>
  }
  <br>
  
@@ -244,7 +240,7 @@ Die Schnittstelle IRegister kann aufgerufen werden, um sich als Remote-Object im
 
 |Methode| Kurzbeschreibung |
 |---|---|
-| register(int interfaceID, String, InetAdress, int)| Schickt eine Nachricht an die NameService-Komponenten mit den Informationen, die für das Eintragen notwendig sind. Diese Informationen werden über die Aufrufparameter übergeben.|
+| register(int interfaceID, String methodName, InetAdress ipAddr, bool isSingleton)| Schickt eine Nachricht an die NameService-Komponenten mit den Informationen, die für das Eintragen notwendig sind. Diese Informationen werden über die Aufrufparameter übergeben.|
 
 ### Blackbox Name Service
 
@@ -276,8 +272,8 @@ Siehe [Querschnittliche Konzepte](#querschnittliche-konzepte).
 |serializeNS(int, String) | Packt die Aufurfparameter in ein JSON-Nachrichtenformat. Wandelt das JSON-Objekt in ein byte-Array um.|
 | deserializeNS(byte[]) | Entpackt die Daten aus der Nachricht und gibt sie in einem String[]-Array der Länge 2 (Index 0: IP-Adresse, Index 1: Portnummer) zurück.|
 |byte[] marshal(int,String,Object[]) | erzeugt ein JSON-Objekt aus den übergebenen Parametern und wandelt es in ein byte-Array um, das zurückgegeben wird. |
-|cacheOrLookup(int,String,String[]):String[]| Gibt ein String-Array mit der IP-Adresse und Portnummer des gesuchten Remote-Objects zurück. Sucht erstmal im lokalen Cache-Speicher und wenn der Eintrag dort nicht vorhanden ist, wird eine Nachricht erstellt (Aufruf serializeNS() ) und an den Name Server geschickt. Das Ergebnis wird aus der Nachricht entpackt (Aufruf deserialize() )im Cache gespeichert (Aufruf cache() ) und zurückgegeben. |
-|cache(int, String, String[]| Trägt den String-Array mit IP-Adresse und Portnummer unter der angegebenen ID und Methodennamen im Cache-Speicher ein.|
+|cacheOrLookup(String,String):String[]| Gibt ein String-Array mit dem engetragenen IP-Adressen des gesuchten Remote-Objects zurück. Sucht erstmal im lokalen Cache-Speicher und wenn der Eintrag dort nicht vorhanden ist, wird eine Nachricht erstellt (Aufruf serializeNS() ) und an den Name Server geschickt. Das Ergebnis wird aus der Nachricht entpackt (Aufruf deserialize() ), im Cache gespeichert (Aufruf cache() ) und zurückgegeben. |
+|cache(String, String, String[]| Trägt die IP-Adressen der angegebenen ID und Methodennamen im Cache-Speicher ein.|
 |send(InetAddress, int, byte[]| Verpackt die angegebene Nachricht in ein UDP-Datagramm und schickt die das Paket an die angegebne IP-Adresse und Portnummer.|
 
 
@@ -290,12 +286,10 @@ Siehe [Querschnittliche Konzepte](#querschnittliche-konzepte).
 
 |Methode| Kurzbeschreibung|
 | --- | --- |
-|register(int, IRemoteObject, String, InetAddress, int, bool)| Packt Aufrufparameter in eine Nachricht (Aufruf serializeNS() ) und schickt sie an den Name Server mit den notwendigen Registrierungsdaten. Empfängt und entpackt (Aufruf deserializeNS() die Antwort vom Name Server, wenn die Antwort nicht -1 ist, wird das RemoteObject in den Aufrufparametern zusammen mit der ID in den Aufrufparametern in der lokalen Tabelle eingetragen. Wenn die erhaltene Antwort kein leerer String ist, wird sie für den Aufruf von addGroup(InetAddress) genutzt, wen.|
+|register(int id, IRemoteObject remoteObject, String methodName, InetAddress ipAddr, bool isSingleton)| Packt Aufrufparameter in eine Nachricht (Aufruf serializeNS() ) und schickt sie an den Name Server mit den notwendigen Registrierungsdaten. |
 |serializeNS(int, String,String,int)| Erstellt eine Nachricht im JSON-Format aus den Aufrufparametern und wandelt das JSON-Objekt in ein byte-Array um, das zurückgegeben wird.|
-|deserializeNS(byte[])| Wandelt das angegebene byte[]-Array in ein int um, der zurückgegeben wird.|
 | run() | Eine Endlosschleife, die auf ankommende Pakete wartet. Wenn ein Paket ankommt, wird ein neuer Thread erzeugt, der die Methode receive() aufruft und das angekommene Paket übergibt.|
 | receive(DatagramPacket) | Entpackt den Nachrichtinhalt aus dem UDP-Paket und ruft die Methode unmarshal() auf.|
-|addGroup(InetAdress multicastAddres)| Ruft die MultiSocket-Methode joinGroup(multicastAddress) auf. |
 | unmarshal(byte[]) | Wandelt das übergebene byte-Array in ein JSON-Objekt um und ruft die Methode callRemoteObjectInterface() auf. |
 | callRemoteObjectInterface(JSON)| Entpackt die Daten aus dem angegebenen JSON-Objekt, sucht in der lokalen Tabelle nach dem Remote Object, das unter der im JSON angegebenen ID eingetragen ist. Ruft mit Methode call() des eingetragenen Remote Objects.|
 
