@@ -139,73 +139,6 @@ Wenn der Methodenname und/oder die übergebene ID noch nicht eingetragen ist, da
 |UC5| Client Stub | void cache(String id, String methodName, String[] IpAddr) | Eine Antwort auf eine lookup-Anfrage ist im Client-Stub angekommen| Die IP-Adresse wurde im Cache gespeichert| Es wird ein Schlüssel aus der Interface-ID und dem Methodennamen erzeugt. Darunter werden die IP-Adressen eingetragen.| |
 |UC6| ServerStub | void callRemoteObjectInterface(JSON) | Nachricht wurde vom ServerStub empfangen und unmarshaled | Der Server Stub holt die Interface-ID, den Methodennamen und die Aufrufparameter aus dem JSON-Objekt heraus und ruft das korrekte Remote-Object-Interface auf.|Das RemoteObject-Interface wurde aufgerufen  | | 
 
-
-## Nachrichtenformat
-Um RPCs durchzuführen müssen Methodenaufrufe in Nachrichten umgewandelt werden. Dafür bringen wir die Methodenaufrufe erstmal in ein einheitliches JSON-Format.
-<br>
-<br>
-JsonObjectInvoke = {<br>
-    "interfaceID": 12,<br>
-    "methodName": "changeDir",<br>
-    "args": [<br>
-        "type1": "int",<br>
-        "val1": 1,<br>
-        "typeN": "TYP",<br>
-        "valN": val<br>
-    ]<br>
-}
-<br>
-
-Die Nachricht im JSON-Format wird dann in ein byte-Array umgewandelt und über das Netzwerk verschickt.
-<br>
-<br>
-<br>
-
-Für die Anfrage an den Name Server (siehe Lösungsstrategie register und lookup) werden ebenfalls Nachrichten benötigt. Für diesen Anwendungsfall haben wir das folgende JSON-Nachrichtenformate definiert:
-
-**JsonObjectLookUp** = { <br>
-    "method": 0(lookup), <br>
-    "args": [<br>
-        "ifaceID": Int,<br>
-        "methodName": Str,<br>
-    ]<br>
-}
-<br>
-<br>
-**JsonObjectRegister** = {<br>
-    "method": 1(register),<br>
-    "args": [<br>
-        "ifaceID": Int,<br>
-        "methodName": Str,<br>
-        "IpAddr": "XXX.XXX.XXX.XXX",<br>
-        "isSingleton": "true" || "false"<br>
-    ]<br>
-}
-<br>
-<br>
-
-Auf eine Lookup-Anfrage an den Name Server wird eine Antwort erwartet. Im Folgenden definieren wir das Antwortformat vom Name Server an den Client Stub:
-<br>
-
-
-
-**Format für die Antwort auf eine Lookup-Anfrage:**
-<br>
-JSONObjectLookupResponse = {<br>
-  "IpAddr1": "XXX.XXX.XXX.XXX",<br>
-              ...
-  "IpAddrN": "XXX.XXX.XXX.XXX",<br>
-  
- }
-  
- <br>
- 
- Wenn die Lookup-Anfrage **fehlgeschlagen** ist (kein Eintrag vorhanden), dann werden leere Strings zurückgeschickt:
- <br>
-JSONObjectLookupResponseError = {
-  "IpAddr1": "",<br>
- }
- <br>
  
 # Bausteinsicht 
 
@@ -366,40 +299,50 @@ Einige beispielhafte RPCs sind im Folgenden skizziert:
 
 ```json
 (JsonObjectInvoke = {
-    "interfaceID": 12,
+    "interfaceID": 0,
     "methodName": "changeDir",
     "args": [
-        "playerNumber": 1,
-        "direction": 2
+        "type1": int,
+        "val1": 1,
+        "type2": "RIGHT"
     ]
 })
-JsonObjectInvoke = {
-    "interfaceID": 12,
-    "methodName": "changeDir",
-    "args": [
-        "type1": "int",
-        "val1": 1,
-        "typeN": "TYP",
-        "valN": val
-    ]
-}
-JsonObjectLookUp = {
+(JsonObjectLookUp = {
     "method": 0(lookup),
     "args": [
-        "ifaceID": Int,
+        "ifaceID": I,
         "methodName": Str,
-        ("playerID": Int)
     ]
-}
-JsonObjectRegister = {
+})
+(JsonObjectRegister = {
     "method": 1(register),
     "args": [
         "ifaceID": Int,
         "methodName": Str,
         "IpAddr": "XXX.XXX.XXX.XXX",
-        "Port": "YYYYY"
+        "Port": "YYYYY",
+        "isSingleton": "true" || "false"
     ]
-}
+})
+```
+
+Auf eine Lookup-Anfrage an den Name Server wird eine Antwort erwartet. Im Folgenden definieren wir das Antwortformat vom Name Server an den Client Stub:
+
+Format für die Antwort auf eine Lookup-Anfrage:
+
+```json
+(JSONObjectLookupResponse = {
+"IpAddr1": "XXX.XXX.XXX.XXX",
+... "IpAddrN": "XXX.XXX.XXX.XXX",
+
+})
+```
+
+
+Wenn die Lookup-Anfrage fehlgeschlagen ist (kein Eintrag vorhanden), dann werden leere Strings zurückgeschickt:
+```json
+(JSONObjectLookupResponseError = { "IpAddr1": "",
+})
 ```
 
 ## Adaptionstabelle mit Partnergruppe
