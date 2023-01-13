@@ -18,7 +18,7 @@ public class Marshaler implements IRemoteInvocation {
     @Override
     public void invoke(int interfaceID, String methodName, Object[] params) {
         byte[] msg = marshal(interfaceID, methodName, params);
-        String[] ipAndPort = cacheOrLookup(interfaceID, methodName, new String[]{});
+        String[] ipAndPort = cacheOrLookup(interfaceID, methodName);
     }
 
     /**
@@ -33,7 +33,16 @@ public class Marshaler implements IRemoteInvocation {
         return null;
     }
 
-    private String[] cacheOrLookup(int interfaceID, String methodName, String[] ipAndPort) {
+    /**
+     * Schaut erst im <code>cache</code> nach, ob es einen Eintrag mit den Parametern gibt und andernfalls wird beim
+     * Nameserver angefragt mithilfe von <code>serializeNS</code> und <code>deserializeNS</code>.
+     * Gibt dann zugehörige IP und Port zurück
+     *
+     * @param interfaceID id des Interfaces
+     * @param methodName    Name der remote Methode
+     * @return String[] mit ipAddr an 0 und Port an 1
+     */
+    private String[] cacheOrLookup(int interfaceID, String methodName) {
         String[] res;
         String[] key = new String[]{String.valueOf(interfaceID), methodName};
         if (cache.containsKey(key)) {
@@ -43,7 +52,7 @@ public class Marshaler implements IRemoteInvocation {
             //send NS
             //byte[] response = ...;
             //res = deserializeNS(response);
-            //cache.put(key, res);
+            //cache(key, res);
         }
         return null;
     }
