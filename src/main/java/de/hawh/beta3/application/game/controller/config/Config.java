@@ -97,7 +97,7 @@ public class Config implements IConfig {
     public List<CONTROLS> getControls(){
         List<CONTROLS> controls = new ArrayList<>();
         controls.add(CONTROLS.A_D);
-        if ((boolean)allParams.get("remote") || (boolean)allParams.get("partner")){
+        /**if ((boolean)allParams.get("remote") || (boolean)allParams.get("partner")){
             return controls;
         } else if (getPlayerCount()==2){
             controls.add(CONTROLS.LEFT_RIGHT);
@@ -126,7 +126,22 @@ public class Config implements IConfig {
             return controls;
         } else {
             return new ArrayList<>();
-        }
+        } **/
+        for (int i=1; i<=getPlayerCount(); i++){
+            if (i==1){
+                controls.add(CONTROLS.A_D);
+            } else if (i==2){
+                controls.add(CONTROLS.LEFT_RIGHT);
+            } else if (i==3){
+                controls.add(CONTROLS.G_J);
+            } else if (i==4){
+                controls.add(CONTROLS.DIGIT1_DIGIT3);
+            } else if (i==5){
+                controls.add(CONTROLS.DIGIT5_DIGIT9);
+            } else {
+                controls.add(CONTROLS.I_P);
+            }
+        } return controls;
     }
 
     public int getGameSpeed(){
