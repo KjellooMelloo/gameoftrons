@@ -6,6 +6,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -30,6 +31,8 @@ public class Player {
                 + "_" + this.id + ".png").getAbsolutePath());
 
         rotateImage(orientation);
+
+
 
     }
 
