@@ -1,6 +1,5 @@
 package de.hawh.beta3.application.game.controller.statemachine;
 
-import de.hawh.beta3.application.game.model.gamemanager.IModel;
 import de.hawh.beta3.application.game.view.IControllerView;
 
 public class End implements State {
@@ -15,7 +14,7 @@ public class End implements State {
     public void behavior(Context context) {
 
         iView.showScreen("End");
-        //Timer extern oder hier
-        context.setCurrentState(new Delete(context));
+        //Timer in View
+        //View ruft iModel.cancelWait() auf
     }
 }
