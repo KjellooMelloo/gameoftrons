@@ -9,8 +9,7 @@ import java.util.stream.Stream;
 public class Config implements IConfig {
 
     int[] configParameters = new int[4];
-    Map<String, String> parameters = new HashMap<>();
-
+    Map<String,Object> allParams = new HashMap<>();
 
     //add to config
     //playerCount & defaultPlayerCount & range
@@ -28,6 +27,8 @@ public class Config implements IConfig {
     int[] gridSize = new int[2];*/
 
     public int[] loadConfigParameters(){
+        Map<String, String> parameters = new HashMap<>();
+
         String data;
         String val;
         String regex = "(\"/(\\\\S+[^=])(=)(\\\\S+)/\")";
@@ -35,7 +36,7 @@ public class Config implements IConfig {
         Matcher matcher;
         String[] params = new String[] {"size","gameSpeed","maxWaitingTime", "playerCount", "controls"};
         //parse config file with Scanner for each parameter
-        //put parameter & value in map
+        //put parameter & value as Strings in map
 
         for (String p : params) {
             Scanner scanner = new Scanner("gameoftrons.properties");
@@ -49,29 +50,46 @@ public class Config implements IConfig {
             }
         }
 
-        //extract needed values from map
+        //save needed values from map in correct data format
         //#1 playerCount-->userInput    #2 defaultPlayerCount-->4    3# rangeStart-->2     #4 rangeEnd-->6
         //#5 maxWaitingTime-->60(in s)    #6 controls-->1-6       #7 gameSpeed-->3      #8 gridSize-->20
-        //into array int[4]
+        int playerCount = Integer.parseInt(parameters.get("playerCount"));
+        allParams.put("playerCount", playerCount);
+        int defaultPlayerCount = Integer.parseInt(parameters.get("defaultPlayerCount"));
+        allParams.put("defaultPlayerCount", defaultPlayerCount);
+        int rangeStart = Integer.parseInt(parameters.get("rangeStart"));
+        allParams.put("rangeStart", rangeStart);
+        int rangeEnd = Integer.parseInt(parameters.get("rangeEnd"));
+        allParams.put("rangeEnd", rangeEnd);
+        int mayWaitingTime = Integer.parseInt(parameters.get("maxWaitingTime"));
+        allParams.put("mayWaitingTime", mayWaitingTime);
+        int gameSpeed = Integer.parseInt(parameters.get("gameSpeed"));
+        allParams.put("gameSpeed", gameSpeed);
+        int gridSize = Integer.parseInt(parameters.get("gridSize"));
+        allParams.put("gridSize", gridSize);
+        boolean remote = Boolean.parseBoolean(parameters.get("remote"));
+        allParams.put("remote", remote);
+        boolean partner = Boolean.parseBoolean(parameters.get("partner"));
+        allParams.put("partner", partner);
+
+
+        //game relevant info for view and model into array int[4]
         //#1playerCount    #2maxWaitingTime    #3gameSpeed    #4gridSize
-        String playerCount = parameters.get("playerCount");
-        String rangeStart = parameters.get("rangeStart");
-        String rangeEnd = parameters.get("rangeEnd");
-        if (Integer.parseInt(rangeStart)<=Integer.parseInt(playerCount)&&Integer.parseInt(playerCount)<=Integer.parseInt(rangeEnd)){
-            configParameters[0]=Integer.parseInt(playerCount);
+
+        if (rangeStart<=playerCount&&playerCount<=rangeEnd){
+            configParameters[0]=playerCount;
         } else {
             loadDefaultPlayerCount();
         }
-        configParameters[1]=Integer.parseInt(parameters.get("maxWaitingTime"));
-        configParameters[2]=Integer.parseInt(parameters.get("gameSpeed"));
-        configParameters[3]=Integer.parseInt(parameters.get("gridSize"));
+        configParameters[1]=mayWaitingTime;
+        configParameters[2]=gameSpeed;
+        configParameters[3]=gridSize;
 
         return configParameters;
     }
 
     public int loadDefaultPlayerCount(){
-        String defaultPlayerCount = parameters.get("defaultPlayerCount");
-        configParameters[0]=Integer.parseInt(defaultPlayerCount);
+        configParameters[0]=(int)allParams.get("defaultPlayerCount");
         return configParameters[0];
     }
 
