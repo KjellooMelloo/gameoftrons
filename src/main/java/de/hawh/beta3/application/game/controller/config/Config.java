@@ -119,7 +119,7 @@ public class Config implements IConfig {
             controls.add(CONTROLS.G_J);
             controls.add(CONTROLS.DIGIT1_DIGIT3);
             controls.add(CONTROLS.DIGIT5_DIGIT9);
-            controls.add(CONTROLS.I_P)
+            controls.add(CONTROLS.I_P);
             return controls;
         } else {
             return new ArrayList<>();
