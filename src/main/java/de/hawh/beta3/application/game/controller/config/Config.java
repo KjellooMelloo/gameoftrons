@@ -8,9 +8,16 @@ import java.util.stream.Stream;
 
 public class Config implements IConfig {
 
-    int[] configParameters = new int[7];
+    int[] configParameters = new int[4];
+    Map<String, String> parameters = new HashMap<>();
 
-    int playerCount = 0; //stateMachine.handleInputPlayerCount();
+
+    //add to config
+    //playerCount & defaultPlayerCount & range
+    //maxWaitingTime
+    //gameSpeed
+    //flag partner
+    /*int playerCount = 0; //stateMachine.handleInputPlayerCount();
     //IntStream range = IntStream.of(2, 6);
     List<Integer> range = List.of(2,3,4,5,6);
     int defaultPlayerCount = 4;
@@ -18,20 +25,20 @@ public class Config implements IConfig {
     CONTROLS controls;
     float gameSpeed; //cast zu int
     //DIMENSIONS gridSize; //am einfachsten wäre int
-    int[] gridSize = new int[2];
+    int[] gridSize = new int[2];*/
 
     public int[] loadConfigParameters(){
         String data;
-        Map<String, String> parameters = new HashMap<>();
         String val;
         String regex = "(\"/(\\\\S+[^=])(=)(\\\\S+)/\")";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher;
-        //Set<String> params = Stream.of(new String[] {"size","gameSpeed","maxWaitingTime", "playerCount", "controls"}).collect(Collectors.toSet());
         String[] params = new String[] {"size","gameSpeed","maxWaitingTime", "playerCount", "controls"};
-        //parse file with Scanner
-        Scanner scanner = new Scanner("gameoftrons.properties");
+        //parse config file with Scanner for each parameter
+        //put parameter & value in map
+
         for (String p : params) {
+            Scanner scanner = new Scanner("gameoftrons.properties");
             while (scanner.hasNextLine()) {
                 data = scanner.nextLine();
                 if (data.contains(p)) {
@@ -42,20 +49,30 @@ public class Config implements IConfig {
             }
         }
 
-
-
-        if (!range.contains(playerCount)){
+        //extract needed values from map
+        //#1 playerCount-->userInput    #2 defaultPlayerCount-->4    3# rangeStart-->2     #4 rangeEnd-->6
+        //#5 maxWaitingTime-->60(in s)    #6 controls-->1-6       #7 gameSpeed-->3      #8 gridSize-->20
+        //into array int[4]
+        //#1playerCount    #2maxWaitingTime    #3gameSpeed    #4gridSize
+        String playerCount = parameters.get("playerCount");
+        String rangeStart = parameters.get("rangeStart");
+        String rangeEnd = parameters.get("rangeEnd");
+        if (Integer.parseInt(rangeStart)<=Integer.parseInt(playerCount)&&Integer.parseInt(playerCount)<=Integer.parseInt(rangeEnd)){
+            configParameters[0]=Integer.parseInt(playerCount);
+        } else {
             loadDefaultPlayerCount();
         }
-        //todo
-        //aus Config Werte laden und in Array speichern
+        configParameters[1]=Integer.parseInt(parameters.get("maxWaitingTime"));
+        configParameters[2]=Integer.parseInt(parameters.get("gameSpeed"));
+        configParameters[3]=Integer.parseInt(parameters.get("gridSize"));
 
-        return new int[7];
+        return configParameters;
     }
 
     public int loadDefaultPlayerCount(){
-        playerCount=defaultPlayerCount;
-        return playerCount;
+        String defaultPlayerCount = parameters.get("defaultPlayerCount");
+        configParameters[0]=Integer.parseInt(defaultPlayerCount);
+        return configParameters[0];
     }
 
     public int getPlayerCount(){
@@ -85,11 +102,11 @@ public class Config implements IConfig {
     }
 
     public int getGameSpeed(){
-        return configParameters[3];
+        return configParameters[2];
     }
 
     public int getGridSize() {
-        return configParameters[4];
+        return configParameters[3];
     }
 
     /*public int[] getGridSize() {
