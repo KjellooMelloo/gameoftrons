@@ -19,8 +19,19 @@ public class Game implements State {
         //      context.setCurrentState(new End(context));
     }
 
-    public String handleDirectionKeyboardInput(){
-        return "";
+
+    //todo sicherheitsmodus überlegen, sodass nur aktivierte Tasten funktionieren --> 4 spieler, nur entsprechende Tastenbelegungen aktiviert
+    public String handleDirectionKeyboardInput(String key){
+        if (key.equals("A") || key.equals("LEFT") || key.equals("G")
+                || key.equals("DIGIT1") || key.equals("DIGIT5") || key.equals("I")){
+            return "LEFT";
+        }
+        else if (key.equals("D") || key.equals("RIGHT") || key.equals("J")
+                || key.equals("DIGIT3") || key.equals("DIGIT9") || key.equals("P")) {
+            return "RIGHT";
+        } else {
+            return "invalid key";
+        }
     }
 
     public void endGame(int result){}
