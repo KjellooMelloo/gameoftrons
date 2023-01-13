@@ -1,0 +1,15 @@
+.root{
+    -fx-background-size: contain, contain;
+    -fx-background-position: bottom, bottom;
+    -fx-background-repeat: repeat-x, repeat-x;
+    -fx-background-image:
+            url("images/bike_bg.jpg")
+}
+
+.label {
+    -fx-font: bold 200px "Stencil";
+    -fx-text-fill: #e0f3f9;
+}
+
+
+
