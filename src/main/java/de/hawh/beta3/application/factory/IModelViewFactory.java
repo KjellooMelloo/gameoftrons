@@ -1,9 +1,9 @@
-package de.hawh.beta3.application;
+package de.hawh.beta3.application.factory;
 
 import de.hawh.beta3.application.game.view.IModelView;
 import de.hawh.beta3.application.stub.caller.IModelViewCaller;
 
-public class IModelViewFactory {
+class IModelViewFactory {
 
     public static IModelView getModelView(String type) {
         if (type.equalsIgnoreCase("R")) {

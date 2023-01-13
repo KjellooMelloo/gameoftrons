@@ -1,6 +1,5 @@
-package de.hawh.beta3.application;
+package de.hawh.beta3.application.factory;
 
-//TODO Nur eine mögliche Idee wegen der ähnlichen Codes der Factories. Würde dann als einziges nach außen ansprechbar sein
 public class MVCFactory {
 
     public static Object getInterface(String interf, String type) {

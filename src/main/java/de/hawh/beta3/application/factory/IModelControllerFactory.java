@@ -1,9 +1,9 @@
-package de.hawh.beta3.application;
+package de.hawh.beta3.application.factory;
 
 import de.hawh.beta3.application.game.controller.IModelController;
 import de.hawh.beta3.application.stub.caller.IModelControllerCaller;
 
-public class IModelControllerFactory {
+class IModelControllerFactory {
 
     public static IModelController getModelController(String type) {
         if (type.equalsIgnoreCase("R")) {
