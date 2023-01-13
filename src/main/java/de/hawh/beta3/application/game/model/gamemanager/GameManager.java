@@ -1,6 +1,7 @@
 package de.hawh.beta3.application.game.model.gamemanager;
 
-import de.hawh.beta3.application.game.controller.config.statemachine.IModelController;
+import de.hawh.beta3.application.game.controller.statemachine.IModelController;
+import de.hawh.beta3.application.game.controller.statemachine.IModelController;
 import de.hawh.beta3.application.game.model.gamelogic.GameLogic;
 import de.hawh.beta3.application.game.model.gamelogic.IGameLogic;
 import de.hawh.beta3.application.game.view.IModelView;

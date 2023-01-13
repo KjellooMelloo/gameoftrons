@@ -1,6 +1,13 @@
 package de.hawh.beta3.application.game.controller.statemachine;
 
+import de.hawh.beta3.application.game.model.gamemanager.IModel;
+import de.hawh.beta3.application.game.view.IControllerView;
+
 public class Game implements State {
+
+    IControllerView iView;
+    IModel iModel;
+    Context context;
 
     public Game(Context context){
         this.behavior(context);
@@ -9,10 +16,10 @@ public class Game implements State {
     @Override
     public void behavior(Context context){
         //to do
-        //showScreen("Countdown")
+        iView.showScreen("Countdown");
         //--> if (iViewController.notifyCountdownOver())
         //      opt: setGameFieldParameters()
-        //      iModel.startGame(int size, int speed)
+              iModel.startGame(int size, int speed)
         //      iView.setGameFieldSize(int size)
         //schleife handleDirectionKeyboardInput()
         //if (endGame(int result))
@@ -34,6 +41,8 @@ public class Game implements State {
         }
     }
 
-    public void endGame(int result){}
+    public void endGame(int result){
+        context.setCurrentState(new End(context));
+    }
 
 }

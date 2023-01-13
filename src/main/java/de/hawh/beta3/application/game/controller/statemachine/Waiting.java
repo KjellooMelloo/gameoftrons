@@ -7,9 +7,11 @@ public class Waiting implements State {
 
     IControllerView iView;
     IModel iModel;
+    Context context;
 
     public Waiting(Context context){
         this.behavior(context);
+        this.context = context;
     }
 
     @Override
@@ -31,6 +33,6 @@ public class Waiting implements State {
     }
 
     public void handleWaitingButtonClick(){
-
+        context.setCurrentState(new Delete(context));
     }
 }
