@@ -2,6 +2,7 @@ package de.hawh.beta3.application.game.view.Screen;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+import org.json.JSONArray;
 
 
 public class HelloApplication extends Application {
