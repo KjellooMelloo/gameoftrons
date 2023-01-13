@@ -3,6 +3,8 @@ package de.hawh.beta3.middleware.clientstub;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,6 +12,7 @@ import java.util.Map;
 public class Marshaler implements IRemoteInvocation {
 
     private final Map<String[], String[]> cache = new HashMap<>();
+    private ISender sender;
 
 
     /**
@@ -24,6 +27,11 @@ public class Marshaler implements IRemoteInvocation {
     public void invoke(int interfaceID, String methodName, Object[] params) {
         byte[] msg = marshal(interfaceID, methodName, params);
         String[] ipAndPort = cacheOrLookup(interfaceID, methodName);
+        try {
+            sender.send(InetAddress.getByName(ipAndPort[0]), Integer.parseInt(ipAndPort[1]), msg);
+        } catch (UnknownHostException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
