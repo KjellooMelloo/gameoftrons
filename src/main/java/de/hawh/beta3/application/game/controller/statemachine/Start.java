@@ -9,6 +9,7 @@ public class Start implements State {
     IControllerView iView;
     IModel iModel;
     IConfig iConfig;
+
     public Start(Context context){
         this.behavior(context);
     }
@@ -23,6 +24,8 @@ public class Start implements State {
         //wait for callback
 
         int[] configParameters = iConfig.loadConfigParameters();
+        context.configParameters = configParameters;
+
         iModel.join(configParameters[0]);
         context.setCurrentState(new Waiting(context));
     }

@@ -19,9 +19,10 @@ public class Game implements State {
         iView.showScreen("Countdown");
         //--> if (iViewController.notifyCountdownOver())
         //      opt: setGameFieldParameters()
-              iModel.startGame(int size, int speed)
-        //      iView.setGameFieldSize(int size)
-        //schleife handleDirectionKeyboardInput()
+        iModel.startGame(context.configParameters[3], context.configParameters[2]); //int gridSize, int gameSpeed
+        iView.setGameFieldSize(context.configParameters[3]);
+        //schleife while(RUNNING)
+        //handleDirectionKeyboardInput();
         //if (endGame(int result))
         //      context.setCurrentState(new End(context));
     }
@@ -42,6 +43,7 @@ public class Game implements State {
     }
 
     public void endGame(int result){
+        iView.notifyGameResult(result);
         context.setCurrentState(new End(context));
     }
 

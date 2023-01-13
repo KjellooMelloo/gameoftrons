@@ -3,6 +3,7 @@ package de.hawh.beta3.application.game.controller.statemachine;
 public class Context {
 
     Context context;
+    int[] configParameters;
 
     private State currentState;
 
