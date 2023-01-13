@@ -96,37 +96,7 @@ public class Config implements IConfig {
 
     public List<CONTROLS> getControls(){
         List<CONTROLS> controls = new ArrayList<>();
-        controls.add(CONTROLS.A_D);
-        /**if ((boolean)allParams.get("remote") || (boolean)allParams.get("partner")){
-            return controls;
-        } else if (getPlayerCount()==2){
-            controls.add(CONTROLS.LEFT_RIGHT);
-            return controls;
-        } else if (getPlayerCount()==3){
-            controls.add(CONTROLS.LEFT_RIGHT);
-            controls.add(CONTROLS.G_J);
-            return controls;
-        } else if (getPlayerCount()==4){
-            controls.add(CONTROLS.LEFT_RIGHT);
-            controls.add(CONTROLS.G_J);
-            controls.add(CONTROLS.DIGIT1_DIGIT3);
-            return controls;
-        } else if (getPlayerCount()==5){
-            controls.add(CONTROLS.LEFT_RIGHT);
-            controls.add(CONTROLS.G_J);
-            controls.add(CONTROLS.DIGIT1_DIGIT3);
-            controls.add(CONTROLS.DIGIT5_DIGIT9);
-            return controls;
-        } else if (getPlayerCount()==6){
-            controls.add(CONTROLS.LEFT_RIGHT);
-            controls.add(CONTROLS.G_J);
-            controls.add(CONTROLS.DIGIT1_DIGIT3);
-            controls.add(CONTROLS.DIGIT5_DIGIT9);
-            controls.add(CONTROLS.I_P);
-            return controls;
-        } else {
-            return new ArrayList<>();
-        } **/
+
         for (int i=1; i<=getPlayerCount(); i++){
             if (i==1){
                 controls.add(CONTROLS.A_D);
