@@ -7,6 +7,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,10 +26,8 @@ public class Player {
         trail = new ArrayList<>();
         trail.add(pos);
         this.orientation = "RIGHT";
-        //TODO change to relative path
-        // TODO bike image depends on ID
-        this.imageView = new ImageView("C:\\Users\\vivia\\IdeaProjects\\gameoftrons\\src\\main\\resources\\images\\bike"
-                + "_" + this.id + ".png");
+        this.imageView = new ImageView(new File("./src/main/resources/images/bike"
+                + "_" + this.id + ".png").getAbsolutePath());
 
         rotateImage(orientation);
 
