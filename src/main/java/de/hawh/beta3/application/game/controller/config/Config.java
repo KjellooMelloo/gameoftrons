@@ -66,11 +66,6 @@ public class Config implements IConfig {
         //game relevant info for view and model into array int[4]
         //#1playerCount    #2maxWaitingTime    #3gameSpeed    #4gridSize
 
-        if (rangeStart<=playerCount&&playerCount<=rangeEnd){
-            configParameters[0]=playerCount;
-        } else {
-            loadDefaultPlayerCount();
-        }
         configParameters[1]=mayWaitingTime;
         configParameters[2]=gameSpeed;
         configParameters[3]=gridSize;
@@ -81,6 +76,14 @@ public class Config implements IConfig {
     public int loadDefaultPlayerCount(){
         configParameters[0]=(int)allParams.get("defaultPlayerCount");
         return configParameters[0];
+    }
+
+    public int setPlayerCount(int playerCount){
+        if (getRangeStart()<=playerCount&&playerCount<=getRangeEnd()){
+            return configParameters[0]=playerCount;
+        } else {
+            return loadDefaultPlayerCount();
+        }
     }
 
     public int getPlayerCount(){
@@ -132,6 +135,14 @@ public class Config implements IConfig {
 
     public int getGridSize() {
         return configParameters[3];
+    }
+
+    public int getRangeStart(){
+        return (int)allParams.get("rangeStart");
+    }
+
+    public int getRangeEnd(){
+        return (int)allParams.get("rangeEnd");
     }
 
 }

@@ -16,16 +16,18 @@ public class Start implements State {
     @Override
     public void behavior(Context context){
         //to do
-        //iView.showScreen("Start");
-        //handleInputPlayerCount();
-        iConfig.loadConfigParameters();
-        // applicationStub.register() --> int ID
-        //iModel.join(int numPlayers);
-        //iView.updateNumPlayers(int numPlayers);
+        iView.showScreen("Start");
+        //View: handleInputPlayerCount(int userInput);
+        //? applicationStub.register() --> int ID
+
+        //wait for callback
+
+        int[] configParameters = iConfig.loadConfigParameters();
+        iModel.join(configParameters[0]);
         context.setCurrentState(new Waiting(context));
     }
 
-    public int handleInputPlayerCount(){
-        return 0;
+    public int handleInputPlayerCount(int playerCount){
+        return iConfig.setPlayerCount(playerCount);
     }
 }
