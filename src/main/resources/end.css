@@ -1,0 +1,25 @@
+@font-face {
+    font-family: 'TRON';
+    src: url('fonts/TRON.TTF');
+}
+
+.root{
+   -fx-background-color: #180b27
+}
+
+.label {
+    -fx-font: bold 75px "TRON";
+    -fx-text-fill: #e0f3f9;
+}
+
+#winnerLabelText {
+    -fx-font: bold 20px "TRON";
+    -fx-text-fill: #e0f3f9;
+}
+
+#winnerLabelColor {
+    -fx-font: bold 20px "TRON";
+}
+
+
+
