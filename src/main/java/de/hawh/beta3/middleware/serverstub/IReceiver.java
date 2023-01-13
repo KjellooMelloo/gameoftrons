@@ -7,7 +7,7 @@ interface IReceiver {
     /**
      * <code>message</code> wird zur Verarbeitung weitergegeben
      *
-     * @param message   Empfangene Nachricht
+     * @param message Empfangene Nachricht
      */
     void receive(DatagramPacket message);
 }

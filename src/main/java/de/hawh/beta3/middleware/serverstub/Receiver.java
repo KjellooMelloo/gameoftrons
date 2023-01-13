@@ -7,7 +7,7 @@ import java.net.DatagramSocket;
 public class Receiver implements Runnable {
 
     private DatagramSocket socket;
-    private IReceiver receiver = new Unmarshaler(); //= Unmarshaler.getInstance();
+    private final IReceiver receiver = new Unmarshaler(); //= Unmarshaler.getInstance();
 
     /**
      * When an object implementing interface {@code Runnable} is used
