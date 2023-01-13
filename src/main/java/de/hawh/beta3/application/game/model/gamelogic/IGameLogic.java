@@ -9,9 +9,8 @@ public interface IGameLogic {
      *
      * @param numPlayers number of Players (2-6)
      * @param size       size of game field
-     * @param gameSpeed  speed of game
      */
-    void init(int numPlayers, int size, int gameSpeed);
+    void init(int numPlayers, int size);
 
     /**
      * Method for changing direction of a player with <code>id</code>

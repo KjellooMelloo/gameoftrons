@@ -16,13 +16,11 @@ public class GameLogic implements IGameLogic {
      *
      * @param numPlayers number of Players (2-6)
      * @param size       size of game field
-     * @param gameSpeed  speed of game
      */
     @Override
-    public void init(int numPlayers, int size, int gameSpeed) {
+    public void init(int numPlayers, int size) {
         this.size = size;
         players = new ArrayList<>();
-        //this.gameSpeed = gameSpeed;
         Position[] startingPos = getStartingPositions(numPlayers);
         Direction[] startingDir = getStartingDirections(numPlayers);
 
@@ -30,7 +28,6 @@ public class GameLogic implements IGameLogic {
             Player p = new Player(i, startingPos[i], startingDir[i]);
             p.addFrontToTrail();
             players.add(p);
-            //IModelView.updatePlayer(i, p.getFront().getX(), p.getFront().getY());
         }
 
         gameState = GameState.RUNNING;

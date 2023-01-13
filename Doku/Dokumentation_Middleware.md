@@ -37,6 +37,7 @@
 - [Verteilungssicht](#verteilungssicht)
 - [Querschnittliche Konzepte](#querschnittliche-konzepte)
   - [Nachrichtenformat](#nachrichtenformat-1)
+  - [Adaptionstabelle mit Partnergruppe](#adaptionstabelle-mit-partnergruppe)
 - [Architekturentscheidungen](#architekturentscheidungen)
 - [Qualitätsanforderungen](#qualitätsanforderungen)
   - [Qualitätsbaum](#qualitätsbaum)
@@ -406,6 +407,27 @@ JsonObjectRegister = {
     ]
 }
 ```
+
+## Adaptionstabelle mit Partnergruppe
+
+| RemoteObject | Methode Beta-3 | Methode Gamma-4 | Beschreibung |
+| - | - | - | - |
+| Model | ``changePlayerDirection(int,String)`` | ``changeDirection(int,String)`` | Für Inputs zur Richtungsänderung |
+| Model | ``startGame(int,int)`` | ``initGame()`` | Um das Spiel zu starten |
+| Model | ``join(int)`` | ``setPlayerCount(int)`` | Anzahl Spieler für die Lobby werden gesetzt |
+| Model | ``cancelWait()`` | - | Spielabbruch nach Ablauf der Wartezeit oder Klick auf Cancel |
+| Model | - | ``updateBoard()`` | gameloop/ tick-Methode. Ist bei Beta-3 privat |
+| View | ``updateNumPlayer(int)`` | ``updatePlayersReady(int)`` | Anzahl wartender Spieler in der Lobby |
+| View | ``updatePlayer(int,int,int,int)`` | ``setBoard(int[][])`` | Aktualisieren des Spielfelds. Beta-3 nutzt Deltas, Gamma-4 schickt gesamtes Spielfeld |
+| View | ``informUser(String)`` | - | Für Darstellen von Infonachrichten für den Spieler |
+| View | - | ``newGame()`` | Initialisiert Spielbildschirm(?) |
+| View | - | ``playerCrashed(int)`` | Um Spieler in der View zu löschen(?) |
+| View | - | ``setWinner(int)`` | Sieger anzeigen. Beta-3 hat endGame(int) im Controller dafür |
+| Controller | ``setCurrentState(String)`` | ``setState(String)`` | Verändert den Zustand der StateMachine |
+| Controller | ``endGame(int)`` | - | Spiel beenden und Sieger anzeigen (wird intern auf View aufgerufen) |
+| Controller | - | ``registerRemoteView()`` | Master-Controller registriert Remote-View(?) |
+| Controller | - | ``registerRemoteController()`` | Master-Controller registriert Remote-Controller(?) |
+| Controller | - | ``setLocalPlayer(int)`` | Teilt ID des lokalen Spieler mit(?) |
 
 # Architekturentscheidungen
 

@@ -8,9 +8,10 @@ import de.hawh.beta3.application.game.view.IModelView;
 import java.util.Timer;
 import java.util.TimerTask;
 
-//import javafx.animation.Animation;
-//import javafx.animation.KeyFrame;
-//import javafx.animation.Timeline;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
 
 public class GameManager implements IModel {
     private static GameManager gameInstance = new GameManager();
@@ -20,7 +21,7 @@ public class GameManager implements IModel {
     private int fullPlayerCount;
     private int numPlayers;
     private Timer timer = new Timer();
-    //private Timeline timeline
+    private Timeline timeline;
 
     private GameManager() {
         gameLogic = new GameLogic();
@@ -83,9 +84,9 @@ public class GameManager implements IModel {
      */
     @Override
     public void startGame(int size, int gameSpeed) {
-        gameLogic.init(numPlayers, size, gameSpeed);
-        //timeline = new Timeline(new KeyFrame(Duration.millis(200), e -> update()));
-        //timeline.setCycleCount(Animation.INDEFINITE);
+        gameLogic.init(numPlayers, size);
+        timeline = new Timeline(new KeyFrame(Duration.millis(gameSpeed), e -> update()));
+        timeline.setCycleCount(Animation.INDEFINITE);
     }
 
     /**
@@ -111,6 +112,7 @@ public class GameManager implements IModel {
             }
         } else if (gameLogic.getGameState().equals("OVER")) {
             //modelController.endGame(gameLogic.getGameWinner());
+            timeline.stop();
         }
     }
 }

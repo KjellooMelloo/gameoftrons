@@ -1,0 +1,38 @@
+.root{
+    -fx-background-size: contain, contain;
+    -fx-background-position: bottom, bottom;
+    -fx-background-repeat: repeat-x, repeat-x;
+    -fx-background-image:
+            url("images/field_tron.jpg")
+}
+
+.label {
+    -fx-font: bold 30px "Stencil";
+    -fx-text-fill: #bde4f2;
+}
+
+#title{
+    -fx-font: 40px "Stencil";
+    -fx-text-fill: #bde4f2;
+
+}
+
+#colorLabel{
+    -fx-font: bold 20px "Stencil";
+
+}
+
+.button {
+    -fx-font: bold 20px "Stencil";
+    -fx-text-fill: #bde4f2;
+    -fx-border-color: #bde4f2;
+    -fx-border-width: 3px;
+    -fx-background-color: transparent;
+}
+.button:hover {
+    -fx-background-color:
+            linear-gradient(from 0% 93% to 0% 100%, #dbf1f8 0%, #94d4ea 100%);
+    -fx-text-fill: black;
+}
+
+
