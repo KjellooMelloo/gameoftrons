@@ -21,6 +21,6 @@ public class Waiting implements State {
 
     public void handleWaitingButtonClick(){
         iModel.cancelWait(); //LOKAL
-        context.setCurrentState(new Delete(context));
+        context.setCurrentState("DELETE");
     }
 }

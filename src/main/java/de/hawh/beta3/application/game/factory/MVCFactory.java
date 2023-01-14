@@ -6,7 +6,7 @@ public class MVCFactory {
         switch (interf.toLowerCase()) {
             case "imodel": return IModelFactory.getModel(remote);
             case "imodelview": return IModelViewFactory.getModelView(remote);
-            case "imodelcontroller": return IModelControllerFactory.getModelController(remote);
+            case "icontroller": return IControllerFactory.getController(remote);
             default: return null;
         }
     }
