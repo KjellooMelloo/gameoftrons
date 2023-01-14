@@ -21,9 +21,6 @@ public class Context implements IContext {
         context = this;
         currentState = new Start(context);
     }
-    private State getState(){
-        return currentState;
-    }
 
     public void setCurrentState(String state){
         this.currentState = getStateFromString(state);
