@@ -29,7 +29,7 @@ public class Start implements State {
         int[] configParameters = iConfig.loadConfigParameters();
         context.configParameters = configParameters;
 
-        iModel.join(configParameters[0]/**, configParameters[1]**/); //playerCount & maxWaitingTime
+        iModel.join(configParameters[0], configParameters[1]); //playerCount & maxWaitingTime
         context.setCurrentState(new Waiting(context));
     }
 }
