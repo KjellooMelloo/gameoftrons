@@ -6,13 +6,7 @@ import de.hawh.beta3.application.stub.caller.IModelCaller;
 
 class IModelFactory {
 
-    public static IModel getModel(String type) {
-        if (type.equalsIgnoreCase("R")) {
-            return new IModelCaller();  //IModelCaller.getInstance();
-        } else if (type.equalsIgnoreCase("L")) {
-            return GameManager.getInstance();
-        } else {
-            return null;
-        }
+    public static IModel getModel(boolean remote) {
+        return remote ? new IModelCaller() /*IModelCaller.getInstance()*/ : GameManager.getInstance();
     }
 }

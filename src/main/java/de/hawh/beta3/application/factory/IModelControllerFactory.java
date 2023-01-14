@@ -5,13 +5,7 @@ import de.hawh.beta3.application.stub.caller.IModelControllerCaller;
 
 class IModelControllerFactory {
 
-    public static IModelController getModelController(String type) {
-        if (type.equalsIgnoreCase("R")) {
-            return new IModelControllerCaller();  //IModelControllerCaller.getInstance();
-        } else if (type.equalsIgnoreCase("L")) {
-            return null; //ModelControllerImpl.getInstance();
-        } else {
-            return null;
-        }
+    public static IModelController getModelController(boolean remote) {
+        return remote ? new IModelControllerCaller() /*IModelControllerCaller.getInstance()*/ : null; //ModelControllerImpl.getInstance();
     }
 }
