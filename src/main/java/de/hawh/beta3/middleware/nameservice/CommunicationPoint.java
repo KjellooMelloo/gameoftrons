@@ -93,6 +93,7 @@ class CommunicationPointWorker implements Runnable {
 
             socket.close();
             dis.close();
+            dos.close();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -119,7 +120,6 @@ class CommunicationPointWorker implements Runnable {
     private void doLookup(JSONArray args) throws IOException {
         String[] ipAndPort = nameServer.lookup(args.getInt(0), args.getString(1));
         dos.writeBytes(Arrays.toString(ipAndPort));
-        dos.close();
     }
 
     /**
@@ -132,6 +132,5 @@ class CommunicationPointWorker implements Runnable {
     private void doBind(JSONArray args) throws IOException {
         nameServer.bind(args.getInt(0), args.getString(1),
                 InetAddress.getByName(args.getString(2)), args.getInt(3));
-        dos.close();
     }
 }
