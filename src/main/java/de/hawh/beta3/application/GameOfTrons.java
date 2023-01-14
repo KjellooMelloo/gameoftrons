@@ -1,19 +1,12 @@
 package de.hawh.beta3.application;
 
-import de.hawh.beta3.application.game.controller.IModelController;
 import de.hawh.beta3.application.game.model.gamemanager.GameManager;
 import de.hawh.beta3.application.game.model.gamemanager.IModel;
-import de.hawh.beta3.application.game.view.IControllerView;
-import de.hawh.beta3.application.game.view.IModelView;
-import de.hawh.beta3.application.game.view.Screen.EndScreen;
-import de.hawh.beta3.application.game.view.Screen.IControllerViewImpl;
-import de.hawh.beta3.application.game.view.Screen.IModelViewImpl;
 import de.hawh.beta3.application.game.view.Screen.ScreenManager;
+import de.hawh.beta3.application.stub.callee.IControllerCallee;
 import de.hawh.beta3.application.stub.callee.IModelCallee;
-import de.hawh.beta3.application.stub.callee.IModelControllerCallee;
 import de.hawh.beta3.application.stub.callee.IModelViewCallee;
 import de.hawh.beta3.application.stub.callee.IRemoteObject;
-import de.hawh.beta3.application.stub.caller.IModelCaller;
 import de.hawh.beta3.middleware.IMiddleware;
 import de.hawh.beta3.middleware.Middleware;
 import javafx.application.Application;
@@ -51,7 +44,7 @@ public class GameOfTrons extends Application {
             // Callee Objekte erzeugen
             IRemoteObject modelCallee = new IModelCallee();
             IRemoteObject modelViewCallee = new IModelViewCallee();
-            IRemoteObject controllerCallee = new IModelControllerCallee();// new IControllerCallee();
+            IRemoteObject controllerCallee = new IControllerCallee();
 
             // VPN Adresse ermitteln
             InetAddress[] ipAddrs = InetAddress.getAllByName(InetAddress.getLocalHost().getHostName()); //get all IPs
