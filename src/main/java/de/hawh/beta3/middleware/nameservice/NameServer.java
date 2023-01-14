@@ -22,7 +22,7 @@ class NameServer implements INameServer {
         Set<String> res;
 
         if (checkInterfaceInTable(interfaceID, methodName)) {
-            Pair<Integer, String> key = new Pair<>(interfaceID, methodName)
+            Pair<Integer, String> key = new Pair<>(interfaceID, methodName);
             res = cache.get(key);
         } else {
             res = new HashSet<>(){};
@@ -50,6 +50,13 @@ class NameServer implements INameServer {
         cache.get(key).add(ipAddr.toString());
     }
 
+    /**
+     * Prüft, ob es einen Eintrag mit <code>interfaceID</code> und <code>methodName</code> gibt
+     *
+     * @param interfaceID id des Interfaces
+     * @param methodName  Methodenname
+     * @return  true, wenn enthalten, false sonst
+     */
     private boolean checkInterfaceInTable(int interfaceID, String methodName) {
         return cache.containsKey(new Pair<>(interfaceID, methodName));
     }

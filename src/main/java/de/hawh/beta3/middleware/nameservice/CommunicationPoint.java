@@ -7,8 +7,7 @@ import java.io.*;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Arrays;
-import java.util.Set;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.Semaphore;
 
 public class CommunicationPoint {
@@ -103,25 +102,36 @@ public class CommunicationPoint {
             }
         }
 
+        /**
+         * Wandelt eine Nachricht in ein <code>JSONObject</code> um
+         *
+         * @param message Nachricht zu deserialisieren
+         * @return <code>JSONObject</code> aus <code>message</code>
+         */
         private JSONObject deserialize(byte[] message) {
-            return new JSONObject();
+            return new JSONObject(new String(message, StandardCharsets.UTF_8));
         }
 
-        //TODO für lookup
+        /**
+         * Wandelt ein <code>JSONObject</code> in eine Nachricht um
+         *
+         * @param json JSON-Objekt zu serialisieren
+         * @return <code>message</code> aus <code>JSONObject</code>
+         */
         private byte[] serialize(JSONObject json) {
-            return null;
+            return json.toString().getBytes(StandardCharsets.UTF_8);
         }
 
         /**
          * Ruft lookup vom <code>NameServer</code> auf und schickt die Antwort an den Client
          *
-         * @param args  Argumente für den Lookup-Aufruf aus dem JSON-Objekt
-         *
+         * @param args Argumente für den Lookup-Aufruf aus dem JSON-Objekt
          * @throws IOException Wenn eine IOException vorkommt
          */
         private void doLookup(JSONArray args) throws IOException {
-            String[] ipAddrs = (String[]) nameServer.lookup(args.getInt(0), args.getString(1)).toArray();
+            String[] ipAddrs = nameServer.lookup(args.getInt(0), args.getString(1)).toArray(String[]::new);
             JSONObject res = new JSONObject();
+
             for (int i = 0; i < ipAddrs.length; i++) {
                 res.put("ipAddr" + i, ipAddrs[i]);
             }
@@ -132,13 +142,11 @@ public class CommunicationPoint {
         /**
          * Ruft bind vom <code>NameServer</code> auf
          *
-         * @param args  Argumente für den Bind-Aufruf aus dem JSON-Objekt
-         *
+         * @param args Argumente für den Bind-Aufruf aus dem JSON-Objekt
          * @throws IOException Wenn eine IOException vorkommt
          */
         private void doBind(JSONArray args) throws IOException {
-            nameServer.bind(args.getInt(0), args.getString(1),
-                    InetAddress.getByName(args.getString(2)), args.getInt(3));
+            nameServer.bind(args.getInt(0), args.getString(1), InetAddress.getByName(args.getString(2)));
         }
     }
 }
