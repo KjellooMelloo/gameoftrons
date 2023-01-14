@@ -5,5 +5,6 @@ module de.hawh.beta3.application.game.view {
     opens de.hawh.beta3.application.game.view to javafx.fxml;
     exports de.hawh.beta3.application.game.view;
     exports de.hawh.beta3.application.game.view.Screen;
+    exports de.hawh.beta3.application;
     opens de.hawh.beta3.application.game.view.Screen to javafx.fxml;
 }
