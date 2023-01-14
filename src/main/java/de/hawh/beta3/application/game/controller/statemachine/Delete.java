@@ -9,7 +9,7 @@ public class Delete implements State {
 
     @Override
     public void behavior(Context context) {
-        context.setCurrentState(new Start(context));
+        context.setCurrentState("START");
     }
 
 }

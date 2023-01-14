@@ -1,7 +1,7 @@
 package de.hawh.beta3.application.game.model.gamemanager;
 
-import de.hawh.beta3.application.game.controller.statemachine.IModelController;
-import de.hawh.beta3.application.game.controller.statemachine.IModelController;
+import de.hawh.beta3.application.game.controller.statemachine.IContext;
+//import de.hawh.beta3.application.game.controller.statemachine.IModelController;
 import de.hawh.beta3.application.game.model.gamelogic.GameLogic;
 import de.hawh.beta3.application.game.model.gamelogic.IGameLogic;
 import de.hawh.beta3.application.game.view.IModelView;
@@ -17,7 +17,8 @@ import javafx.util.Duration;
 public class GameManager implements IModel {
     private static GameManager gameInstance = new GameManager();
     private IGameLogic gameLogic;
-    private IModelController modelController;
+    //private IModelController modelController;
+    private IContext iContext;
     private IModelView modelView;
     private int fullPlayerCount;
     private int numPlayers;
@@ -51,11 +52,13 @@ public class GameManager implements IModel {
         } else {
             fullPlayerCount = playerCount;
             //IModelController.setCurrentState("WAITING");
+            iContext.setCurrentState("WAITING");
         }
         numPlayers++;
 
         if (numPlayers == fullPlayerCount) {
             //IModelController.setCurrentState("GAME");
+            iContext.setCurrentState("GAME");
         } else {
             //IModelView.updateNumPlayers(numPlayers);
             timer.cancel();
@@ -76,6 +79,7 @@ public class GameManager implements IModel {
         timer.cancel();
         //IModelView.informUser("Spiel wurde abgebrochen");
         //IModelController.setCurrentState("DELETE");
+        iContext.setCurrentState("DELETE");
     }
 
     /**
@@ -114,6 +118,7 @@ public class GameManager implements IModel {
             }
         } else if (gameLogic.getGameState().equals("OVER")) {
             //modelController.endGame(gameLogic.getGameWinner());
+            iContext.endGame(gameLogic.getGameWinner());
             timeline.stop();
         }
     }

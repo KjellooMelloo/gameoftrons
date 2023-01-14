@@ -1,5 +1,7 @@
 package de.hawh.beta3.application.game.controller.config;
 
+import javafx.util.Pair;
+
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -8,7 +10,7 @@ public class Config implements IConfig {
 
     int[] configParameters = new int[4];
     Map<String,Object> allParams = new HashMap<>();
-
+    HashMap<String, Pair<Integer, String>> controls = new HashMap<>();
     //add to config
     //playerCount & defaultPlayerCount & range
     //maxWaitingTime
@@ -114,6 +116,41 @@ public class Config implements IConfig {
         } return controls;
     }
 
+    @Override
+    public HashMap<String, Pair<Integer, String>> loadControls(){
+        //HashMap<String key, Pair<int id, String action>> controls
+        String key;
+        int id;
+        String action;
+        String line;
+        Scanner scanner = new Scanner("gameoftrons.properties");
+        Matcher matcher;
+        String regex;
+        if ((boolean)allParams.get("remote")){
+            regex = "(\"p(0)_(l{1}|r{1})=(\\S+)\")";
+        } else {
+            regex = "(\"p(\\d{1})_(l{1}|r{1})=(\\S+)\")";
+        }
+        Pattern pattern = Pattern.compile(regex);
+        while (scanner.hasNextLine()) {
+            line = scanner.nextLine();
+            matcher = pattern.matcher(line);
+            if (matcher.matches()){
+                id = Integer.parseInt(matcher.group(1));
+                action = matcher.group(2);
+                if (action.equals("l")){
+                    action="left";
+                } else {
+                    action="right";
+                }
+                key = matcher.group(3);
+                controls.put(key, new Pair<>(id,action));
+            }
+        }
+
+        return controls;
+    }
+
     public int getGameSpeed(){
         return configParameters[2];
     }
@@ -130,4 +167,7 @@ public class Config implements IConfig {
         return (int)allParams.get("rangeEnd");
     }
 
+    public boolean getRemote(){
+        return (boolean)allParams.get("remote");
+    }
 }

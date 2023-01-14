@@ -66,7 +66,7 @@ public class Game implements State {
 
     public void endGame(int result){
         iView.notifyGameResult(result);
-        context.setCurrentState(new End(context));
+        context.setCurrentState("END");
     }
 
 }
