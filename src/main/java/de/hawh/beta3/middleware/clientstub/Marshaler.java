@@ -1,11 +1,19 @@
 package de.hawh.beta3.middleware.clientstub;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Marshaler implements IRemoteInvocation {
 
-    private Map<String[], String[]> cache = new HashMap<>();
+    private final Map<String[], String[]> cache = new HashMap<>();
+    private ISender sender;
+
 
     /**
      * Eine remote Methode <code>methodName</code> vom Interface mit id <code>interfaceID</code>
@@ -19,6 +27,11 @@ public class Marshaler implements IRemoteInvocation {
     public void invoke(int interfaceID, String methodName, Object[] params) {
         byte[] msg = marshal(interfaceID, methodName, params);
         String[] ipAndPort = cacheOrLookup(interfaceID, methodName);
+        try {
+            sender.send(InetAddress.getByName(ipAndPort[0]), Integer.parseInt(ipAndPort[1]), msg);
+        } catch (UnknownHostException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -29,8 +42,30 @@ public class Marshaler implements IRemoteInvocation {
      * @param params      Parameter des Methodenaufrufs
      * @return JSON-Objekt als byte[] bereit zum Versenden
      */
-    private byte[] marshal(int interfaceID, String methodName, Object[] params) {
-        return null;
+    public byte[] marshal(int interfaceID, String methodName, Object[] params) {
+        JSONObject jsonObj = new JSONObject();
+        JSONArray paramsJSON = new JSONArray();
+
+        jsonObj.put("interfaceID", interfaceID);
+        jsonObj.put("methodName", methodName);
+
+
+        if (params.length > 0) {
+            JSONObject methodParam = new JSONObject();
+            for (int i = 0; i < params.length; i++) {
+                methodParam.put("type" + (i + 1), params[i].getClass().getSimpleName());
+                methodParam.put("val" + (i + 1), params[i]);
+            }
+            paramsJSON.put(methodParam);
+        }
+        jsonObj.put("args", paramsJSON);
+
+        // Convert to Byte-Array
+
+
+        byte[] msg = jsonObj.toString().getBytes(StandardCharsets.UTF_8);
+        return msg;
+
     }
 
     /**
@@ -39,7 +74,7 @@ public class Marshaler implements IRemoteInvocation {
      * Gibt dann zugehörige IP und Port zurück
      *
      * @param interfaceID id des Interfaces
-     * @param methodName    Name der remote Methode
+     * @param methodName  Name der remote Methode
      * @return String[] mit ipAddr an 0 und Port an 1
      */
     private String[] cacheOrLookup(int interfaceID, String methodName) {
@@ -89,4 +124,5 @@ public class Marshaler implements IRemoteInvocation {
         String[] key = new String[]{String.valueOf(interfaceID), methodName};
         cache.put(key, ipAndPort);
     }
+
 }

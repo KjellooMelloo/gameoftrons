@@ -174,8 +174,8 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 |UC4,5,6,7,8 | Model | ``void killPlayers(List<Player>)`` | Das Spiel befindet sich im Zustand RUNNING. Diese Methode wurde in ``updatePlayers()`` aufgerufen. | Zu tötende Spieler wurden getötet und eventuell ein Sieger des Spiels bestimmt. | Ist die übergebene Liste leer, wird einfach zurückgekehrt. Dann wird geprüft, ob die Listengröße gleich Anzahl lebender Spieler ist. In dem Fall hat man ein Unentschieden, der gameWinner wird auf -1 und der GameState auf OVER gesetzt und es wird returned. Andernfalls werden alle Spieler der Liste auf tot gesetzt. Ist danach nur noch ein Spieler übrig, ist dies der Gewinner, gameWinner wird auf seine ID und der GameState auf OVER gesetzt. ||
 |UC5, UC7| View |removeTileColor(int) | Ein Spieler ist gestorben und die Methode kill() wurde in der View aufgerufen. | Die Felder, die mit als Parameter eingegebenen Farbe eingefärbt waren, sind nicht mehr eingefärbt, sondern haben die gleiche Farbe wie der Spielhintergrund.| Die Methode ändert die Farbe von jedem Feld mit der als Parameter übergebenen Farbe zur Hintergrundfarbe. | |
 |UC5, UC7| View |kill(int) | Die View wurde informiert, dass ein Spieler gestorben ist. | Der tote Spieler wurde aus der Spielerliste entfernt und seine eingefärbten Felder wurden zurückgesetzt.| Ruft die Methode removeTileColor() auf und entfernt den Spieler aus der Spielerliste. |   |
-| UC1-8 | View |updatePlayer(int ID, int X, int Y, String orientation) |Im Model wurden Daten zu den Spielern geändert. | Die View hat ihre Daten aktualisiert. | Die Methode aktualisiert die Position des Spieler mit der übergebenen ID auf die übergebenen Koordinaten. Dann wird die Methode drawTileColors() aufgerufen Wenn die Koordinaten <0 sind, dann ist der Spieler tot und die Methode kill() wird aufgerufen. | |
-| UC3 | View | setGameFieldSize(int)| Alle Spieler haben den Warteraum betreten.|Die Spielfeldgröße wird in der View gespeichert.  |Die Methode setzt die Spielfeldgröße in der View, die aus der Config-Datei geladen wurden| |
+| UC1-8 | View |updatePlayer(int ID, int X, int Y, int orientation) |Im Model wurden Daten zu den Spielern geändert. | Die View hat ihre Daten aktualisiert. | Die Methode aktualisiert die Position des Spieler mit der übergebenen ID auf die übergebenen Koordinaten. Wenn sich die Ausrichtung des Spielers auch geändert hat, wird die neue Richtung in der View gezeigt. Dann wird die Methode drawTileColors() aufgerufen Wenn die Koordinaten <0 sind, dann ist der Spieler tot und die Methode kill() wird aufgerufen. | |
+| UC3 | View | setGameFieldSize(int)| Alle Spieler haben den Warteraum betreten.|Die Spielfeldgröße wird in der View gespeichert.  |Die Methode setzt die Spielfeldgröße in der View, die aus der Config-Datei geladen wurde. Dann werden die Spieldaten benutzt, um das Spielfeld zu initialisieren.| |
 |UC6,7,8| Controller| void endGame(int)| Im Model wurde ein Gewinner festgelegt oder das Spiel wurde als unentschieden entschieden. | Die State Maschine im Controller befindet sich im Zustand "End" | Die Methode ändert die State Maschine im Controller zum Zustand "End"| |
 |UC6,7,8|View|notifyGameResult(int)| Die State Maschine des Controllers befindet sich im Zustand "End"| Die View weiß, wie das Spiel ausgegangen ist und zeigt im nächsten Schitt den Endbildschirm an.| Die Methode setzt den Gewinner des Spiels in der View-Komponente.| |
 | UC1,2a,2b,3,6,7,8 | Controller | void setCurrentState(String) | Der Controller wurde gestartet oder ist bereits am laufen und befindet sich in einem State.  | Der State des Controllers wurde gewechselt und die behavior() Methode des aktuellen States kann ausgeführt werden. | Die Methode kann vom Controller (bzw. der State Machine) selbst innerhalb der behavior() Methode aufgerufen werden oder von außen durch das Model. In einem String wird der Folgezustand übergeben. Beim setzen des nächsten States wird direkt die behavior()-Methode ausgeführt. |  |   
@@ -254,7 +254,7 @@ Die View erlaubt das Aktualisieren der Spielerdaten über die Schnittstelle **IM
 
 | Methode | Kurzbeschreibung |
 | --- | --- |
-|updatePlayer(int, int, int, String) | Aktualisiert die Spielerliste, die in der View gehalten wird. Der erste Parameter ist die ID des zu aktualisierenden Spielers. Der zweite und dritte Parameter sind die neuen X- und Y-Koordinate des Spielers. Wenn die Koordinaten -1 und -1 betragen, dann ist der Spieler tot. |
+|updatePlayer(int, int, int, int) | Aktualisiert die Spielerliste, die in der View gehalten wird. Der erste Parameter ist die ID des zu aktualisierenden Spielers. Der zweite und dritte Parameter sind die neuen X- und Y-Koordinate des Spielers. Wenn die Koordinaten -1 und -1 betragen, dann ist der Spieler tot. |
 
 
 <a name="controllerblackbox"></a>
@@ -404,7 +404,7 @@ IConfig
 <br>
 |Methode| Kurzbeschreibung|
 | --- | --- |
-|join(int) <br> cancelWait() <br> startGame(int, int)<br> changePlayerDirection(int, String) <br> setCurrentState(String<br> endGame(int)<br>| Ruft die invoke(int interfaceID, String methodName, Object[] args)-Schnittstelle der Middleware auf. Für den Aufruf wird das InterfaceID der Caller-Klasse genommen, und die Aufrufparameter der Methode werden in ein Object-Array gepackt.|
+|join(int) <br> cancelWait() <br> startGame(int, int)<br> changePlayerDirection(int, String) <br> setCurrentState(String<br> endGame(int)<br> updateNumplayers(int)<br> updatePlayer(int,int,int,int)<br> informUser(String)<br>| Ruft die invoke(int interfaceID, String methodName, Object[] args)-Schnittstelle der Middleware auf. Für den Aufruf wird das InterfaceID der Caller-Klasse genommen, und die Aufrufparameter der Methode werden in ein Object-Array gepackt.|
 
  **Callee-Whitebox**
 ![Appstub_Callee.png](./images/callee_whitebox.png)
@@ -442,9 +442,6 @@ Die komplette Methodenliste ist bereits in der Blackbox-Sicht (#applicationstubb
 
 ### AD View:  kill()
 ![AD_View_kill](images/AD_View_kill.png)
-
-### AD View: drawTileColors()
-![AD_View_drawTiles](images/AD_View_drawTiles.png)
 
 ## UC6 Win
 ![Sequenzdiagramm_Spielende](images/SD_UC6Win.png)

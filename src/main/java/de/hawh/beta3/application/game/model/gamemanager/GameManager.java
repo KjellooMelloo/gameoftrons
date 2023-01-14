@@ -42,9 +42,10 @@ public class GameManager implements IModel {
      * First call decides size of lobby
      *
      * @param playerCount number of players to play with
+     * @param maxWaitingTime max waiting time until game is canceled
      */
     @Override
-    public void join(int playerCount) {
+    public void join(int playerCount, int maxWaitingTime) {
         if (fullPlayerCount != 0) {
             //IModelView.informUser("Deine Eingabe ist uns egal, wir spielen mit {fullPlayerCount} Spielern!")
         } else {
@@ -60,7 +61,7 @@ public class GameManager implements IModel {
             timer.cancel();
             timer = new Timer();
             TimerTask task = new WaitingTimer();
-            timer.schedule(task, 2*60*1000);    //waiting timer to 120s
+            timer.schedule(task, maxWaitingTime * 1000L);    //waiting timer to 120s
         }
     }
 
