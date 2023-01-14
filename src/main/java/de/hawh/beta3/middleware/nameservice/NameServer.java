@@ -1,20 +1,13 @@
 package de.hawh.beta3.middleware.nameservice;
 
+import javafx.util.Pair;
+
 import java.net.InetAddress;
 import java.util.*;
 
-class NameServer implements INameServer, INameResolver {
+class NameServer implements INameServer {
 
-    private Map<String[], Set<String>> cache = new HashMap<>(); //TODO Set<String> oder Set<String[]>
-    private static NameServer instance = new NameServer();
-
-    private NameServer() {
-
-    }
-
-    public static NameServer getInstance() {
-        return instance;
-    }
+    private Map<Pair<Integer, String>, Set<String>> cache = new HashMap<>();
 
     /**
      * Es soll nachgeschaut werden, ob es einen Eintrag mit <code>interfaceID</code> und <code>methodName</code>
@@ -25,14 +18,15 @@ class NameServer implements INameServer, INameResolver {
      * @return String[] mit ipAddr an 0 und Port an 1
      */
     @Override
-    public String[] lookup(int interfaceID, String methodName) {
-        String[] res;
+    public Set<String> lookup(int interfaceID, String methodName) {
+        Set<String> res;
 
         if (checkInterfaceInTable(interfaceID, methodName)) {
-            String[] key = new String[]{String.valueOf(interfaceID), methodName};
-            res = cache.get(key).toArray(String[]::new);
+            Pair<Integer, String> key = new Pair<>(interfaceID, methodName)
+            res = cache.get(key);
         } else {
-            res = new String[]{""};
+            res = new HashSet<>(){};
+            res.add("");
         }
 
         return res;
@@ -45,20 +39,18 @@ class NameServer implements INameServer, INameResolver {
      * @param interfaceID id des Interfaces, das eingetragen werden soll
      * @param methodName  Methodenname, der eingetragen werden soll
      * @param ipAddr      IP-Adresse des remote objects
-     * @param port        Port des remote objects
      */
     @Override
-    public void bind(int interfaceID, String methodName, InetAddress ipAddr, int port) {
-        String[] key = new String[]{String.valueOf(interfaceID), methodName};
-        String ipAndPort = ipAddr.toString() + ":" + port;
+    public void bind(int interfaceID, String methodName, InetAddress ipAddr) {
+        Pair<Integer, String> key = new Pair<>(interfaceID, methodName);
 
         if (!checkInterfaceInTable(interfaceID, methodName)) {
             cache.put(key, new HashSet<>());
         }
-        cache.get(key).add(ipAndPort);
+        cache.get(key).add(ipAddr.toString());
     }
 
     private boolean checkInterfaceInTable(int interfaceID, String methodName) {
-        return cache.containsKey(new String[]{String.valueOf(interfaceID), methodName});
+        return cache.containsKey(new Pair<>(interfaceID, methodName));
     }
 }

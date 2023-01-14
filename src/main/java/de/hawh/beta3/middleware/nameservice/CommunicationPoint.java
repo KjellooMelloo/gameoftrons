@@ -8,6 +8,7 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Arrays;
+import java.util.Set;
 import java.util.concurrent.Semaphore;
 
 public class CommunicationPoint {
@@ -15,6 +16,7 @@ public class CommunicationPoint {
     private ServerSocket socket;
     private final int port;
     private Semaphore sem;
+    private INameServer nameServer = new NameServer();
 
     public CommunicationPoint(int port, int maxThreads) {
         this.port = port;
@@ -32,7 +34,7 @@ public class CommunicationPoint {
             while (true) {
                 sem.acquire();
                 connSocket = socket.accept();
-                (new CommunicationPointWorker(connSocket, this)).run();
+                (new CommunicationPointWorker(connSocket, nameServer, this)).run();
             }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
@@ -48,89 +50,95 @@ public class CommunicationPoint {
     public Semaphore getSem() {
         return sem;
     }
-}
 
-class CommunicationPointWorker implements Runnable {
+    private static class CommunicationPointWorker implements Runnable {
 
-    private Socket socket;
-    private CommunicationPoint boss;
-    private DataInputStream dis;
-    private DataOutputStream dos;
-    private NameServer nameServer = NameServer.getInstance();
+        private Socket socket;
+        private CommunicationPoint boss;
+        private DataInputStream dis;
+        private DataOutputStream dos;
+        private INameServer nameServer;
 
-    public CommunicationPointWorker(Socket socket, CommunicationPoint boss) {
-        this.socket = socket;
-        this.boss = boss;
-    }
+        public CommunicationPointWorker(Socket socket, INameServer nameServer, CommunicationPoint boss) {
+            this.socket = socket;
+            this.nameServer = nameServer;
+            this.boss = boss;
+        }
 
-    /**
-     * When an object implementing interface {@code Runnable} is used
-     * to create a thread, starting the thread causes the object's
-     * {@code run} method to be called in that separately executing
-     * thread.
-     * <p>
-     * The general contract of the method {@code run} is that it may
-     * take any action whatsoever.
-     *
-     * @see Thread#run()
-     */
-    @Override
-    public void run() {
-        try {
-            dis = new DataInputStream(socket.getInputStream());
-            dos = new DataOutputStream(socket.getOutputStream());
-            byte[] buf = new byte[1000];
-            dis.read(buf);
+        /**
+         * When an object implementing interface {@code Runnable} is used
+         * to create a thread, starting the thread causes the object's
+         * {@code run} method to be called in that separately executing
+         * thread.
+         * <p>
+         * The general contract of the method {@code run} is that it may
+         * take any action whatsoever.
+         *
+         * @see Thread#run()
+         */
+        @Override
+        public void run() {
+            try {
+                dis = new DataInputStream(socket.getInputStream());
+                dos = new DataOutputStream(socket.getOutputStream());
+                byte[] buf = new byte[1000];
+                dis.read(buf);
 
-            JSONObject json = deserialize(buf);
-            JSONArray args = json.getJSONArray("args");
+                JSONObject json = deserialize(buf);
+                JSONArray args = json.getJSONArray("args");
 
-            if (json.getInt("method") == 0) {   //lookup
-                doLookup(args);
-            } else {    //bind
-                doBind(args);
+                if (json.getInt("method") == 0) {   //lookup
+                    doLookup(args);
+                } else {    //bind
+                    doBind(args);
+                }
+
+                socket.close();
+                dis.close();
+                dos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                boss.getSem().release();
+            }
+        }
+
+        private JSONObject deserialize(byte[] message) {
+            return new JSONObject();
+        }
+
+        //TODO für lookup
+        private byte[] serialize(JSONObject json) {
+            return null;
+        }
+
+        /**
+         * Ruft lookup vom <code>NameServer</code> auf und schickt die Antwort an den Client
+         *
+         * @param args  Argumente für den Lookup-Aufruf aus dem JSON-Objekt
+         *
+         * @throws IOException Wenn eine IOException vorkommt
+         */
+        private void doLookup(JSONArray args) throws IOException {
+            String[] ipAddrs = (String[]) nameServer.lookup(args.getInt(0), args.getString(1)).toArray();
+            JSONObject res = new JSONObject();
+            for (int i = 0; i < ipAddrs.length; i++) {
+                res.put("ipAddr" + i, ipAddrs[i]);
             }
 
-            socket.close();
-            dis.close();
-            dos.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            boss.getSem().release();
+            dos.write(serialize(res));
         }
-    }
 
-    private JSONObject deserialize(byte[] message) {
-        return new JSONObject();
-    }
-
-    //TODO weg?
-    private byte[] serialize(JSONObject json) {
-        return null;
-    }
-
-    /**
-     * Ruft lookup vom <code>NameServer</code> auf und schickt die Antwort an den Client
-     *
-     * @param args  Argumente für den Lookup-Aufruf aus dem JSON-Objekt
-     *
-     * @throws IOException Wenn eine IOException vorkommt
-     */
-    private void doLookup(JSONArray args) throws IOException {
-        String[] ipAndPort = nameServer.lookup(args.getInt(0), args.getString(1));
-        dos.writeBytes(Arrays.toString(ipAndPort));
-    }
-
-    /**
-     * Ruft bind vom <code>NameServer</code> auf
-     *
-     * @param args  Argumente für den Bind-Aufruf aus dem JSON-Objekt
-     *
-     * @throws IOException Wenn eine IOException vorkommt
-     */
-    private void doBind(JSONArray args) throws IOException {
-        nameServer.bind(args.getInt(0), args.getString(1),
-                InetAddress.getByName(args.getString(2)), args.getInt(3));
+        /**
+         * Ruft bind vom <code>NameServer</code> auf
+         *
+         * @param args  Argumente für den Bind-Aufruf aus dem JSON-Objekt
+         *
+         * @throws IOException Wenn eine IOException vorkommt
+         */
+        private void doBind(JSONArray args) throws IOException {
+            nameServer.bind(args.getInt(0), args.getString(1),
+                    InetAddress.getByName(args.getString(2)), args.getInt(3));
+        }
     }
 }
