@@ -159,11 +159,22 @@ public class Marshaler implements IRemoteInvocation {
      *
      * @param interfaceID id des Interfaces
      * @param methodName  Name der remote Methode
-     * @param ipAndPort   String[] mit ipAddr an 0 und Port an 1
+     * @param ipAddresses   String[] mit ipAddressen, die gecached werden sollen
      */
-    private void cache(int interfaceID, String methodName, String[] ipAndPort) {
-        String[] key = new String[]{String.valueOf(interfaceID), methodName};
-        //cache.put(key, ipAndPort);
+    private void cache(int interfaceID, String methodName, String[] ipAddresses) {
+        Pair<String,String> key;
+        key = new Pair<>(String.valueOf(interfaceID), methodName);
+        Set<String> val = new HashSet<>(){{
+            for(String ip : ipAddresses){
+                add(ip);
+            }
+        }};
+        cache.put(key, val);
+
+    }
+
+    public static void main(String[] args){
+
     }
 
 
