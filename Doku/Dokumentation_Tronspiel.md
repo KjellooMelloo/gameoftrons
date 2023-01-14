@@ -285,6 +285,20 @@ Der Controller bietet Funktionalitäten für die View v.a. zur Kommunikation mit
 | String handleDirectionKeyboardInput()| Der Nutzer tätigt  eine Tastatureingabe zur Steuerung seines Spielers. Zurückgegeben wird die für die Taste hinterlegte Richtung. Bei keiner Belegung wird eine Exception geworfen. |
 | void notifyCountdownOver() | Die View hat die Countdownanzeige abgeschlossen und benachrichtigt den Controller, dass der Countdown vorbei ist. Der Controller ruft die Methode startGame() des Models auf. |
 
+### Factory
+
+**Zweck/ Verantwortung**
+
+Die Komponente Factory bietet eine Factory nach außen an, um Caller-/ Realimplementierungsreferenzen zurückzugeben. Dabei wird das gewünschte Interface und ob remote gespielt wird übergeben.
+
+**Schnittstelle(n)**
+
+Die einzige von außen aufrufbare Klasse heißt MVCFactory, die in den Klassen genutzt werden kann.
+
+| Methode | Kurzbeschreibung |
+|-|-|
+| Object getInterface(String, boolean) | Es wird ein Objekt vom Interface im übergebenen String zurückgegeben. Wenn remote gespielt wird, ist der zweite Parameter true und das Caller Objekt wird zurückgegeben, sonst das der Realimplementierung |
+
 <a name="applicationstubblackblox"></a>
 ### Application Stub (Blackbox) 
 
@@ -315,11 +329,14 @@ Die Schnittstelle **IRemoteObject** bietet die Funktionalität zum Empfangen von
 ![View_Ebene2](./images/View_Ebene_2.png)
 
 
-### Whitbox Controller
+### Whitebox Controller
 
 ![Controller_WB2](./images/Controller_WB2.png)
 <br>
 
+### Whitebox Factory
+
+![Factory_Ebene2](images/Factory_Ebene2.png)
 
 ### Whitebox Application Stub
 
@@ -396,7 +413,23 @@ IConfig
 | --- | --- |
 | loadConfigParameters() | Liefert die für das Spiel relevanten Parameter aus der Config-Datei in einem Array. |   
 | loadDefaultPlayerCount() | Lädt den in der Config gespeicherten Defaultwert für die Spieleranzahl |   
-   
+
+### Whitebox Factory
+
+![Factory_Ebene3](images/Factory_Ebene3.png)
+
+*Öffentlich*:
+| Methode | Kurzbeschreibung|
+| --- | --- |
+| Object getInterface(String, boolean) | Es wird ein Objekt vom Interface im übergebenen String zurückgegeben. Wenn remote gespielt wird, ist der zweite Parameter true und das Caller Objekt wird zurückgegeben, sonst das der Realimplementierung |
+
+*Protected*:
+| Methode | Kurzbeschreibung|
+| --- | --- |
+| IModel getModel(boolean) | Gibt entweder ein Caller- oder Realimplementierungsobjekt, je nach boolean-Wert  |
+| IModelView getModelView(boolean) | Gibt entweder ein Caller- oder Realimplementierungsobjekt, je nach boolean-Wert  |
+| IContext getController(boolean) | Gibt entweder ein Caller- oder Realimplementierungsobjekt, je nach boolean-Wert  |
+
 ### Whitebox AppStub
    
 **Caller-Whitebox**

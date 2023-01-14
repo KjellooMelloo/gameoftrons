@@ -1,4 +1,4 @@
-package de.hawh.beta3.application.factory;
+package de.hawh.beta3.application.game.factory;
 
 public class MVCFactory {
 
