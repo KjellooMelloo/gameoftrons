@@ -5,14 +5,14 @@ import de.hawh.beta3.application.game.model.gamemanager.IModel;
 import de.hawh.beta3.application.game.view.IControllerView;
 import javafx.util.Pair;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
 public class Context implements IContext {
 
-    Context context;
+    private static Context context = new Context();
+
     IControllerView iView;
     IModel iModel;
     IConfig iConfig;
@@ -32,6 +32,10 @@ public class Context implements IContext {
     public Context(){
         context = this;
         currentState = new Start(context);
+    }
+
+    public static Context getInstance() {
+        return context;
     }
 
     public void setCurrentState(String state){
