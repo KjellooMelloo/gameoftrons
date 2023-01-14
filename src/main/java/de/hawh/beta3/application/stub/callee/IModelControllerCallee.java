@@ -1,6 +1,6 @@
 package de.hawh.beta3.application.stub.callee;
 
-import de.hawh.beta3.application.game.controller.IModelController;
+import de.hawh.beta3.application.game.controller.statemachine.IModelController;
 //import de.hawh.beta3.application.game.controller.statemachine.IModelController;
 
 import java.lang.reflect.InvocationTargetException;
