@@ -4,8 +4,11 @@ import javafx.util.Pair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.InetAddress;
+import java.net.Socket;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -13,8 +16,18 @@ import java.util.*;
 public class Marshaler implements IRemoteInvocation {
 
     private final Map<Pair<String, String>, Set<String>> cache = new HashMap<>();
-    private ISender sender;
+    private final ISender sender;
 
+    private final int port;
+
+    private final InetAddress NSIPaddr;
+
+
+    public Marshaler(ISender sender, int port, InetAddress NSIPaddr) {
+        this.sender = sender;
+        this.port = port;
+        this.NSIPaddr = NSIPaddr;
+    }
 
 
     /**
@@ -76,14 +89,6 @@ public class Marshaler implements IRemoteInvocation {
      * @return String[] mit ipAddr an 0 und Port an 1
      */
     private String[] cacheOrLookup(int interfaceID, String methodName) {
-        // Test
-        cache.put(new Pair<>("0", "updatePlayer"),
-                new HashSet<String>(){{
-                    add("123.122.233.34");
-                    add("123.444.567.4");
-        }});
-        //Test
-
 
         Set<String> ipSet;
         Pair<String, String> key = new Pair<>(String.valueOf(interfaceID), methodName);
@@ -95,7 +100,7 @@ public class Marshaler implements IRemoteInvocation {
             System.out.println("Set of IPs: " + ipSet);
             String[] res = new String[ipSet.size()];
             int i = 0;
-            for(String ip : ipSet){
+            for (String ip : ipSet) {
                 res[i] = ip;
                 i++;
             }
@@ -103,16 +108,39 @@ public class Marshaler implements IRemoteInvocation {
         } else {
 
             byte[] lookupMsg = serializeNS(interfaceID, methodName);
-            //send NS
 
-            //byte[] response = ...;
-            //res = deserializeNS(response);
-            //cache(key, res);
-            return null;
+            //send NS
+            try {
+
+                // Client Socket to send
+                Socket socket = new Socket(NSIPaddr, port);
+
+                DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
+                dOut.writeInt(lookupMsg.length);
+                dOut.write(lookupMsg);
+
+                //Receive
+                DataInputStream dIn = new DataInputStream(socket.getInputStream());
+                dIn = new DataInputStream(socket.getInputStream());
+
+                int length = dIn.readInt();
+                if (length > 0) {
+                    byte[] messageRec = new byte[length];
+                    dIn.readFully(messageRec, 0, messageRec.length);
+
+
+                    String[] ipAdrresses = deserializeNS(messageRec);
+                    cache(interfaceID, methodName, ipAdrresses);
+                    return ipAdrresses;
+                }
+
+                throw new RuntimeException("Problem with Name Server Connection");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
 
     }
-
 
 
     /**
@@ -128,7 +156,7 @@ public class Marshaler implements IRemoteInvocation {
         JSONArray argsJSONArray = new JSONArray();
         JSONObject jsonObjectArgs = new JSONObject();
 
-        jsonMsg.put("method",0);
+        jsonMsg.put("method", 0);
         jsonObjectArgs.put("ifaceID", interfaceID);
         jsonObjectArgs.put("methodName", methodName);
 
@@ -151,7 +179,20 @@ public class Marshaler implements IRemoteInvocation {
      * @return String[] mit ipAddr an 0 und Port an 1
      */
     private String[] deserializeNS(byte[] message) {
-        return null;
+        String json = new String(message, StandardCharsets.UTF_8);
+        JSONObject byteMsgToJSON = new JSONObject(json);
+
+        if(byteMsgToJSON.get("ipAddr1").equals("")){
+            throw new RuntimeException("Requested Method not registered in name Server!");
+        }
+
+        String[] ipAddr = new String[byteMsgToJSON.length()];
+
+        for(int i=0; i < byteMsgToJSON.length(); i++){
+
+            ipAddr[i] = byteMsgToJSON.getString("ipAddr" + (i+1));
+        }
+        return ipAddr;
     }
 
     /**
@@ -159,12 +200,18 @@ public class Marshaler implements IRemoteInvocation {
      *
      * @param interfaceID id des Interfaces
      * @param methodName  Name der remote Methode
-     * @param ipAndPort   String[] mit ipAddr an 0 und Port an 1
+     * @param ipAddresses String[] mit ipAddressen, die gecached werden sollen
      */
-    private void cache(int interfaceID, String methodName, String[] ipAndPort) {
-        String[] key = new String[]{String.valueOf(interfaceID), methodName};
-        //cache.put(key, ipAndPort);
-    }
+    private void cache(int interfaceID, String methodName, String[] ipAddresses) {
+        Pair<String, String> key;
+        key = new Pair<>(String.valueOf(interfaceID), methodName);
+        Set<String> val = new HashSet<>() {{
+            for (String ip : ipAddresses) {
+                add(ip);
+            }
+        }};
+        cache.put(key, val);
 
+    }
 
 }
