@@ -7,8 +7,9 @@ public interface IModel {
      * First call decides size of lobby
      *
      * @param playerCount number of players to play with
+     * @param maxWaitingTime max waiting time until game is canceled
      */
-    void join(int playerCount);
+    void join(int playerCount, int maxWaitingTime);
 
     /**
      * Method is called when Cancel Button is clicked or when waiting timer ended
