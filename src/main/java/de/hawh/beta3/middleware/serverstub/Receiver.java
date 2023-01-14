@@ -22,16 +22,24 @@ public class Receiver implements Runnable {
      */
     @Override   //TODO brauchen noch port hierfür
     public void run() {
-        try {
-            socket = new DatagramSocket();  //+ port
-            while (true) {
-                byte[] buffer = new byte[1000];
-                DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
-                socket.receive(packet);
-                receiver.receive(packet);
+        Thread receiver = new Thread(new ReceiverThread());
+        receiver.start();
+    }
+
+    class ReceiverThread implements Runnable {
+
+        public void run(){
+            try {
+                socket = new DatagramSocket();  //+ port
+                while (true) {
+                    byte[] buffer = new byte[1000];
+                    DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
+                    socket.receive(packet);
+                    receiver.receive(packet);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
