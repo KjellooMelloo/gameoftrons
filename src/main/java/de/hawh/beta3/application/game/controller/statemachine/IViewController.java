@@ -4,7 +4,7 @@ public interface IViewController extends State {
 
     void handleInputPlayerCount(int playerCount);
     void handleWaitingButtonClick();
-    String handleDirectionKeyboardInput();
+    void handleDirectionKeyboardInput();
     void notifyCountdownOver();
 
 }

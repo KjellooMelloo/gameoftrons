@@ -30,6 +30,6 @@ public class Start implements State {
         context.configParameters = configParameters;
 
         iModel.join(configParameters[0], configParameters[1]); //playerCount & maxWaitingTime
-        context.setCurrentState(new Waiting(context));
+        context.setCurrentState("WAITING");
     }
 }
