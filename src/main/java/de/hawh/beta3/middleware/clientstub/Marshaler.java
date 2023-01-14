@@ -12,8 +12,9 @@ import java.util.*;
 
 public class Marshaler implements IRemoteInvocation {
 
-    private final static Map<Pair<String, String>, Set<String>> cache = new HashMap<>();
+    private final Map<Pair<String, String>, Set<String>> cache = new HashMap<>();
     private ISender sender;
+
 
 
     /**
@@ -28,11 +29,7 @@ public class Marshaler implements IRemoteInvocation {
     public void invoke(int interfaceID, String methodName, Object[] params) {
         byte[] msg = marshal(interfaceID, methodName, params);
         String[] ipAddresses = cacheOrLookup(interfaceID, methodName);
-        //try {
-           // sender.send(InetAddress.getByName(ipAndPort[0]), Integer.parseInt(ipAndPort[1]), msg);
-      //  } catch (UnknownHostException e) {
-        //    throw new RuntimeException(e);
-        //}
+        sender.send(ipAddresses, msg);
     }
 
     /**
@@ -78,7 +75,7 @@ public class Marshaler implements IRemoteInvocation {
      * @param methodName  Name der remote Methode
      * @return String[] mit ipAddr an 0 und Port an 1
      */
-    private static String[] cacheOrLookup(int interfaceID, String methodName) {
+    private String[] cacheOrLookup(int interfaceID, String methodName) {
         // Test
         cache.put(new Pair<>("0", "updatePlayer"),
                 new HashSet<String>(){{
@@ -107,6 +104,7 @@ public class Marshaler implements IRemoteInvocation {
 
             byte[] lookupMsg = serializeNS(interfaceID, methodName);
             //send NS
+
             //byte[] response = ...;
             //res = deserializeNS(response);
             //cache(key, res);
@@ -124,7 +122,7 @@ public class Marshaler implements IRemoteInvocation {
      * @param methodName  Name der remote Methode
      * @return JSON-Objekt als byte[] bereit zum Versenden
      */
-    private static byte[] serializeNS(int interfaceID, String methodName) {
+    private byte[] serializeNS(int interfaceID, String methodName) {
 
         JSONObject jsonMsg = new JSONObject();
         JSONArray argsJSONArray = new JSONArray();
@@ -168,7 +166,5 @@ public class Marshaler implements IRemoteInvocation {
         //cache.put(key, ipAndPort);
     }
 
-    public static void main(String[] args){
-    }
 
 }
