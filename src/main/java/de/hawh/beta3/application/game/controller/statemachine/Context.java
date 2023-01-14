@@ -6,14 +6,22 @@ import de.hawh.beta3.application.game.view.IControllerView;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Context implements IContext {
 
     Context context;
-    int[] configParameters;
     IControllerView iView;
     IModel iModel;
     IConfig iConfig;
+
+    //Variablen aus der Config
+    int[] configParameters;
+    HashMap<String, Pair<Integer, String>> controls;
+    Pair<Integer, String> pair;
+    int id;
+    String action;
+
 
     private State currentState;
 
@@ -28,8 +36,8 @@ public class Context implements IContext {
 
     public void handleInputPlayerCount(int playerCount){
         iConfig.setPlayerCount(playerCount);
-        int[] configParameters = iConfig.loadConfigParameters();
-        context.configParameters = configParameters;
+        configParameters = iConfig.loadConfigParameters();
+        controls = iConfig.loadControls();
 
         iModel.join(configParameters[0], configParameters[1]); //playerCount & maxWaitingTime
         context.setCurrentState("WAITING");
@@ -48,22 +56,13 @@ public class Context implements IContext {
     //todo sicherheitsmodus überlegen, sodass nur aktivierte Tasten funktionieren --> 4 spieler, nur entsprechende Tastenbelegungen aktiviert
     //LOKALE VERSION
     public void handleDirectionKeyboardInput(String key){
-        ArrayList<Pair<String, String>> keyToId = new ArrayList<>(6);
-        keyToId.add(0, new Pair<>("A","D"));
-        keyToId.add(1, new Pair<>("LEFT","RIGHT"));
-        keyToId.add(2, new Pair<>("G","J"));
-        keyToId.add(3, new Pair<>("DIGIT1","DIGIT3"));
-        keyToId.add(4, new Pair<>("DIGIT5","DIGIT9"));
-        keyToId.add(5, new Pair<>("I","P"));
 
-        for (int i=0; i<6; i++){
-            Pair<String,String> pair = keyToId.get(i);
-            if (pair.getKey().equals(key)){
-                iModel.changePlayerDirection(i,"left");
-            } else if (pair.getValue().equals(key)){
-                iModel.changePlayerDirection(i,"right");
-            }
-        }
+        pair = controls.get(key);
+        id = pair.getKey();
+        action = pair.getValue();
+
+        iModel.changePlayerDirection(id,action);
+
     }
 
     //REMOTE

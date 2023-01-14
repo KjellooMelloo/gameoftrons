@@ -10,6 +10,7 @@ public class Config implements IConfig {
 
     int[] configParameters = new int[4];
     Map<String,Object> allParams = new HashMap<>();
+    HashMap<String, Pair<Integer, String>> controls = new HashMap<>();
 
     //add to config
     //playerCount & defaultPlayerCount & range
@@ -116,9 +117,9 @@ public class Config implements IConfig {
         } return controls;
     }
 
-    public void loadControls(){
+    @Override
+    public HashMap<String, Pair<Integer, String>> loadControls(){
         //HashMap<String key, Pair<int id, String action>> controls
-        HashMap<String, Pair<Integer, String>> controls = new HashMap<>();
         String key;
         int id;
         String action;
@@ -138,10 +139,15 @@ public class Config implements IConfig {
             if (matcher.matches()){
                 id = Integer.parseInt(matcher.group(1));
                 action = matcher.group(2);
+                if (action.equals("l")){
+                    action="left";
+                } else {
+                    action="right";
+                }
                 key = matcher.group(3);
                 controls.put(key, new Pair<>(id,action));
             }
-        }
+        } return controls;
     }
 
     public int getGameSpeed(){
