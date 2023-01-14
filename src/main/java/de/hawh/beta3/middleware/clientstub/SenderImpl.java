@@ -12,6 +12,7 @@ public class SenderImpl implements ISender {
 
     public SenderImpl(int port){
         this.port = port;
+
     }
 
     /**
@@ -21,18 +22,40 @@ public class SenderImpl implements ISender {
      * @param ipAddr  IP-Zieladresse
      * @param message Zu verschickende Nachricht
      */
-    @Override   //TODO an Threads abgeben?
+    @Override
     public void send(String[] ipAddr, byte[] message) {
-        try {
-            socket = new DatagramSocket();
-            for(int i=0; i<ipAddr.length;i++) {
-                InetAddress ip = InetAddress.getByName(ipAddr[i]);
-                DatagramPacket packet = new DatagramPacket(message, message.length, ip, port);
-                socket.send(packet);
-                socket.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+
+        Thread sender = new Thread(new SenderThread(ipAddr,message));
+        sender.start();
+
+    }
+
+    class SenderThread implements Runnable {
+
+        String[] ipAddr;
+        byte[] message;
+
+        public SenderThread(String[] ipAddr, byte[] message){
+            this.ipAddr = ipAddr;
+            this.message = message;
         }
+
+        @Override
+        public void run() {
+            try {
+                socket = new DatagramSocket();
+                for(int i=0; i<ipAddr.length;i++) {
+                    InetAddress ip = InetAddress.getByName(ipAddr[i]);
+                    DatagramPacket packet = new DatagramPacket(message, message.length, ip, port);
+                    socket.send(packet);
+                    socket.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+
     }
 }

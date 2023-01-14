@@ -7,7 +7,7 @@ import java.net.DatagramSocket;
 public class Receiver implements Runnable {
 
     private DatagramSocket socket;
-    private final IReceiver receiver = new Unmarshaler(); //= Unmarshaler.getInstance();
+    private final IReceiver unmarshaler = new Unmarshaler(); //= Unmarshaler.getInstance();
 
     /**
      * When an object implementing interface {@code Runnable} is used
@@ -28,10 +28,24 @@ public class Receiver implements Runnable {
                 byte[] buffer = new byte[1000];
                 DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
                 socket.receive(packet);
-                receiver.receive(packet);
+                Thread rec = new Thread(new ReceiverThread(packet));
+                rec.start();
             }
         } catch (IOException e) {
             e.printStackTrace();
+        }
+
+    }
+
+    class ReceiverThread implements Runnable {
+
+        DatagramPacket packet;
+
+        public ReceiverThread(DatagramPacket packet){
+            this.packet = packet;
+        }
+        public void run(){
+            unmarshaler.receive(packet);
         }
     }
 
