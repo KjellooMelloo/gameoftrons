@@ -13,10 +13,11 @@ public class IModelCaller implements IModel {
      * First call decides size of lobby
      *
      * @param playerCount number of players to play with
+     * @param maxWaitingTime max waiting time until game is canceled
      */
     @Override
-    public void join(int playerCount) {
-        mw.invoke(id, "join", new Object[]{playerCount});
+    public void join(int playerCount, int maxWaitingTime) {
+        mw.invoke(id, "join", new Object[]{playerCount, maxWaitingTime});
     }
 
     /**
