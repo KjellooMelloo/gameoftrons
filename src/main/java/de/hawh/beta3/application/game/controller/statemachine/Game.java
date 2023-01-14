@@ -20,16 +20,16 @@ public class Game implements State {
     public void behavior(Context context){
 
         iView.showScreen("Countdown");
-        //--> if (iViewController.notifyCountdownOver())
 
-        iModel.startGame(context.configParameters[3], context.configParameters[2]); //int gridSize, int gameSpeed
-        iView.setGameFieldSize(context.configParameters[3]);
-
-        //schleife while(RUNNING)
+        //wird schleife benötigt?
+        //while(RUNNING)
         //      handleDirectionKeyboardInput();
-        //bis endGame(int)
     }
 
+    public void notifyCountdownOver(){
+        iModel.startGame(context.configParameters[3], context.configParameters[2]); //int gridSize, int gameSpeed
+        iView.setGameFieldSize(context.configParameters[3]);
+    }
 
     //todo sicherheitsmodus überlegen, sodass nur aktivierte Tasten funktionieren --> 4 spieler, nur entsprechende Tastenbelegungen aktiviert
     //LOKALE VERSION
