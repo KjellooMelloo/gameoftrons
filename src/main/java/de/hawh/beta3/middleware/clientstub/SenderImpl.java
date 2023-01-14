@@ -18,12 +18,15 @@ public class SenderImpl implements ISender {
      * @param message Zu verschickende Nachricht
      */
     @Override   //TODO an Threads abgeben?
-    public void send(InetAddress ipAddr, int port, byte[] message) {
+    public void send(String[] ipAddr, int port, byte[] message) {
         try {
             socket = new DatagramSocket();
-            DatagramPacket packet = new DatagramPacket(message, message.length, ipAddr, port);
-            socket.send(packet);
-            socket.close();
+            for(int i=0; i<ipAddr.length;i++) {
+                InetAddress ip = InetAddress.getByName(ipAddr[i]);
+                DatagramPacket packet = new DatagramPacket(message, message.length, ip, port);
+                socket.send(packet);
+                socket.close();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

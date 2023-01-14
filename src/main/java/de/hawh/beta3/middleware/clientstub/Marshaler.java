@@ -1,17 +1,18 @@
 package de.hawh.beta3.middleware.clientstub;
 
+import javafx.util.Pair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Marshaler implements IRemoteInvocation {
 
-    private final Map<String[], String[]> cache = new HashMap<>();
+    private final static Map<Pair<String, String>, Set<String>> cache = new HashMap<>();
     private ISender sender;
 
 
@@ -26,12 +27,12 @@ public class Marshaler implements IRemoteInvocation {
     @Override
     public void invoke(int interfaceID, String methodName, Object[] params) {
         byte[] msg = marshal(interfaceID, methodName, params);
-        String[] ipAndPort = cacheOrLookup(interfaceID, methodName);
-        try {
-            sender.send(InetAddress.getByName(ipAndPort[0]), Integer.parseInt(ipAndPort[1]), msg);
-        } catch (UnknownHostException e) {
-            throw new RuntimeException(e);
-        }
+        String[] ipAddresses = cacheOrLookup(interfaceID, methodName);
+        //try {
+           // sender.send(InetAddress.getByName(ipAndPort[0]), Integer.parseInt(ipAndPort[1]), msg);
+      //  } catch (UnknownHostException e) {
+        //    throw new RuntimeException(e);
+        //}
     }
 
     /**
@@ -77,20 +78,44 @@ public class Marshaler implements IRemoteInvocation {
      * @param methodName  Name der remote Methode
      * @return String[] mit ipAddr an 0 und Port an 1
      */
-    private String[] cacheOrLookup(int interfaceID, String methodName) {
-        String[] res;
-        String[] key = new String[]{String.valueOf(interfaceID), methodName};
+    private static String[] cacheOrLookup(int interfaceID, String methodName) {
+        // Test
+        cache.put(new Pair<>("0", "updatePlayer"),
+                new HashSet<String>(){{
+                    add("123.122.233.34");
+                    add("123.444.567.4");
+        }});
+        //Test
+
+
+        Set<String> ipSet;
+        Pair<String, String> key = new Pair<>(String.valueOf(interfaceID), methodName);
+
+
         if (cache.containsKey(key)) {
-            res = cache.get(key);
+            System.out.println("Contains key: " + key);
+            ipSet = cache.get(key);
+            System.out.println("Set of IPs: " + ipSet);
+            String[] res = new String[ipSet.size()];
+            int i = 0;
+            for(String ip : ipSet){
+                res[i] = ip;
+                i++;
+            }
+            return res;
         } else {
+
             byte[] lookupMsg = serializeNS(interfaceID, methodName);
             //send NS
             //byte[] response = ...;
             //res = deserializeNS(response);
             //cache(key, res);
+            return null;
         }
-        return null;
+
     }
+
+
 
     /**
      * Methode erzeugt ein JSON-Objekt mit den Parametern, um es dem Nameserver als lookup-request zu schicken
@@ -99,8 +124,26 @@ public class Marshaler implements IRemoteInvocation {
      * @param methodName  Name der remote Methode
      * @return JSON-Objekt als byte[] bereit zum Versenden
      */
-    private byte[] serializeNS(int interfaceID, String methodName) {
-        return null;
+    private static byte[] serializeNS(int interfaceID, String methodName) {
+
+        JSONObject jsonMsg = new JSONObject();
+        JSONArray argsJSONArray = new JSONArray();
+        JSONObject jsonObjectArgs = new JSONObject();
+
+        jsonMsg.put("method",0);
+        jsonObjectArgs.put("ifaceID", interfaceID);
+        jsonObjectArgs.put("methodName", methodName);
+
+        argsJSONArray.put(jsonObjectArgs);
+
+        jsonMsg.put("args", argsJSONArray);
+        // Convert to Byte-Array
+
+
+        byte[] msg = jsonMsg.toString().getBytes(StandardCharsets.UTF_8);
+        return msg;
+
+
     }
 
     /**
@@ -122,7 +165,10 @@ public class Marshaler implements IRemoteInvocation {
      */
     private void cache(int interfaceID, String methodName, String[] ipAndPort) {
         String[] key = new String[]{String.valueOf(interfaceID), methodName};
-        cache.put(key, ipAndPort);
+        //cache.put(key, ipAndPort);
+    }
+
+    public static void main(String[] args){
     }
 
 }
