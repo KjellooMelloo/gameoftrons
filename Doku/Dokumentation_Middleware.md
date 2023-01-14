@@ -322,7 +322,7 @@ Einige beispielhafte RPCs sind im Folgenden skizziert:
     "args": [
         "ifaceID": Int,
         "methodName": Str,
-        "IpAddr": "XXX.XXX.XXX.XXX",
+        "ipAddr": "XXX.XXX.XXX.XXX",
         "isSingleton": "true" || "false"
     ]
 })
