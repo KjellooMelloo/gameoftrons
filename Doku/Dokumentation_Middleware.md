@@ -324,7 +324,6 @@ Einige beispielhafte RPCs sind im Folgenden skizziert:
         "ifaceID": Int,
         "methodName": Str,
         "IpAddr": "XXX.XXX.XXX.XXX",
-        "Port": "YYYYY",
         "isSingleton": "true" || "false"
     ]
 })
