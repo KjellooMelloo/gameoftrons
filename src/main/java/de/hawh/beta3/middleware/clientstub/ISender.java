@@ -12,5 +12,5 @@ interface ISender {
      * @param port    Zielport
      * @param message Zu verschickende Nachricht
      */
-    void send(InetAddress ipAddr, int port, byte[] message);
+    void send(String[] ipAddr, byte[] message);
 }
