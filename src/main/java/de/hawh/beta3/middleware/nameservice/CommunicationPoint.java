@@ -80,16 +80,18 @@ public class CommunicationPoint {
             try {
                 dis = new DataInputStream(socket.getInputStream());
                 dos = new DataOutputStream(socket.getOutputStream());
-                byte[] buf = new byte[1000];
-                dis.read(buf);
+                int msgLength = dis.readInt();
+                byte[] buf = new byte[msgLength];
+                dis.readFully(buf, 0, buf.length);
 
                 JSONObject json = deserialize(buf);
-                JSONArray args = json.getJSONArray("args");
+                JSONArray argsArray = json.getJSONArray("args");
+                JSONObject argsJSONOBj = (JSONObject)argsArray.get(0);
 
                 if (json.getInt("method") == 0) {   //lookup
-                    doLookup(args);
+                    doLookup(argsJSONOBj);
                 } else {    //bind
-                    doBind(args);
+                    doBind(argsJSONOBj);
                 }
 
                 socket.close();
@@ -128,15 +130,16 @@ public class CommunicationPoint {
          * @param args Argumente für den Lookup-Aufruf aus dem JSON-Objekt
          * @throws IOException Wenn eine IOException vorkommt
          */
-        private void doLookup(JSONArray args) throws IOException {
-            String[] ipAddrs = nameServer.lookup(args.getInt(0), args.getString(1)).toArray(String[]::new);
+        private void doLookup(JSONObject args) throws IOException {
+            String[] ipAddrs = nameServer.lookup(args.getInt("ifaceID"), args.getString("methodName")).toArray(String[]::new);
             JSONObject res = new JSONObject();
 
             for (int i = 0; i < ipAddrs.length; i++) {
-                res.put("ipAddr" + i, ipAddrs[i]);
+                res.put("ipAddr" + (i+1), ipAddrs[i]);
             }
-
-            dos.write(serialize(res));
+            byte[] resByteMsg = serialize(res);
+            dos.writeInt(resByteMsg.length);
+            dos.write(resByteMsg);
         }
 
         /**
@@ -145,8 +148,8 @@ public class CommunicationPoint {
          * @param args Argumente für den Bind-Aufruf aus dem JSON-Objekt
          * @throws IOException Wenn eine IOException vorkommt
          */
-        private void doBind(JSONArray args) throws IOException {
-            nameServer.bind(args.getInt(0), args.getString(1), InetAddress.getByName(args.getString(2)));
+        private void doBind(JSONObject args) throws IOException {
+            nameServer.bind(args.getInt("ifaceID"), args.getString("methodName"), InetAddress.getByName(args.getString("ipAddr")));
         }
     }
 }
