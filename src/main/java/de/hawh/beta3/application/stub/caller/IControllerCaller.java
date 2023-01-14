@@ -1,19 +1,14 @@
 package de.hawh.beta3.application.stub.caller;
 
 import de.hawh.beta3.application.game.controller.statemachine.Context;
-import de.hawh.beta3.application.game.controller.statemachine.IController;
+import de.hawh.beta3.application.game.controller.statemachine.IContext;
 import de.hawh.beta3.application.game.controller.statemachine.State;
 import de.hawh.beta3.middleware.IMiddleware;
 
-public class IControllerCaller implements IController {
+public class IControllerCaller implements IContext {
 
     private IMiddleware mw; //= new Middleware();
     private int id = 2;
-
-    @Override
-    public State getState() {
-        return null;
-    }
 
     @Override
     public void setCurrentState(String State){
@@ -32,8 +27,12 @@ public class IControllerCaller implements IController {
     }
 
     @Override
-    public void handleDirectionKeyboardInput() {
-        mw.invoke(id,"handleDirectionKeyboardInput", new Object[]{});
+    public void handleDirectionKeyboardInput(String key) {
+        mw.invoke(id,"handleDirectionKeyboardInput", new Object[]{key});
+    }
+    @Override
+    public void handleDirectionKeyboardInput(int id, String key) {
+        mw.invoke(id,"handleDirectionKeyboardInput", new Object[]{id, key});
     }
 
     @Override
@@ -46,9 +45,5 @@ public class IControllerCaller implements IController {
             mw.invoke(id, "endGame", new Object[]{result});
         }
 
-    @Override
-    public void behavior(Context context) {
-        mw.invoke(id, "behavior", new Object[]{});
-    }
 }
 
