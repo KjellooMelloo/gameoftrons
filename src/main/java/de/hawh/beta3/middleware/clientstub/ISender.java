@@ -8,9 +8,9 @@ interface ISender {
      * Verpackt die <code>message</code> in ein UDP-Datagramm und schickt das Paket an
      * <code>ipAddr</code> mit <code>port</code>
      *
-     * @param ipAddr    IP-Zieladresse
-     * @param port      Zielport
-     * @param message   Zu verschickende Nachricht
+     * @param ipAddr  IP-Zieladresse
+     * @param port    Zielport
+     * @param message Zu verschickende Nachricht
      */
     void send(InetAddress ipAddr, int port, byte[] message);
 }
