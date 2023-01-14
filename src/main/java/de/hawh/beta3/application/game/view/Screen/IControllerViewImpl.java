@@ -3,11 +3,22 @@ package de.hawh.beta3.application.game.view.Screen;
 import de.hawh.beta3.application.game.view.IControllerView;
 
 public class IControllerViewImpl implements IControllerView {
-    ScreenManager screen;
 
-    public void IControllerViewImpl(ScreenManager screen) {
+    ScreenManager screen;
+    private static IControllerViewImpl iControllerViewImpl = new IControllerViewImpl(new ScreenManager());
+
+    private IControllerViewImpl(ScreenManager screen){
         this.screen = screen;
     }
+
+    public static IControllerViewImpl getInstance() {
+        return iControllerViewImpl;
+    }
+
+
+    /**public void IControllerViewImpl(ScreenManager screen) {
+        this.screen = screen;
+    }**/
 
     @Override
     public void showScreen(String screenName) {

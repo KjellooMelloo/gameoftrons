@@ -1,15 +1,25 @@
 package de.hawh.beta3.application.game.view.Screen;
 
+import de.hawh.beta3.application.game.model.gamemanager.GameManager;
 import de.hawh.beta3.application.game.view.IModelView;
 
 public class IModelViewImpl implements IModelView {
 
-    ScreenManager screen = new ScreenManager();
+    ScreenManager screen;
+    private static IModelViewImpl iModelViewImpl = new IModelViewImpl(new ScreenManager());
 
-
-    public void IModelView(ScreenManager screen) {
+    private IModelViewImpl(ScreenManager screen){
         this.screen = screen;
     }
+
+    public static IModelViewImpl getInstance() {
+        return iModelViewImpl;
+    }
+
+
+    /**public void IModelView(ScreenManager screen) {
+        this.screen = screen;
+    }**/
 
     @Override
     public void updatePlayer(int playerID, int newX, int newY, int newOrientation) {

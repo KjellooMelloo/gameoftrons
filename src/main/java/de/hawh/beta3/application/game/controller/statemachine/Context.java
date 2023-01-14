@@ -29,7 +29,7 @@ public class Context implements IContext {
 
     private State currentState;
 
-    public Context(){
+    private Context(){
         context = this;
         currentState = new Start(context);
     }
