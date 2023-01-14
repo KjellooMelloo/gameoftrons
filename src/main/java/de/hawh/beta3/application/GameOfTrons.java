@@ -28,7 +28,7 @@ public class GameOfTrons extends Application {
 
             //TODO Middleware aufbauen/ starten
 
-            //TODO Callee Objekte registrieren
+            //TODO Callee Objekte registrieren + IDs aus Config zuweisen
 
         // MVC Referenzen
         //IModel model = MVCFactory.getInterface("IModel", remote);
