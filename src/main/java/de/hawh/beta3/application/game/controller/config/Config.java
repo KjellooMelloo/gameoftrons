@@ -11,7 +11,6 @@ public class Config implements IConfig {
     int[] configParameters = new int[4];
     Map<String,Object> allParams = new HashMap<>();
     HashMap<String, Pair<Integer, String>> controls = new HashMap<>();
-
     //add to config
     //playerCount & defaultPlayerCount & range
     //maxWaitingTime
@@ -147,7 +146,9 @@ public class Config implements IConfig {
                 key = matcher.group(3);
                 controls.put(key, new Pair<>(id,action));
             }
-        } return controls;
+        }
+
+        return controls;
     }
 
     public int getGameSpeed(){
@@ -166,4 +167,7 @@ public class Config implements IConfig {
         return (int)allParams.get("rangeEnd");
     }
 
+    public boolean getRemote(){
+        return (boolean)allParams.get("remote");
+    }
 }

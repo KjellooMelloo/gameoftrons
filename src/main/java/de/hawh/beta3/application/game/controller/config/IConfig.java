@@ -11,4 +11,6 @@ public interface IConfig {
     HashMap<String, Pair<Integer, String>> loadControls();
 
     int setPlayerCount(int playerCount);
+
+    boolean getRemote();
 }

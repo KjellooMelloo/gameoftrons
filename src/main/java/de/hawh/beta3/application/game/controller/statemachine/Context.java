@@ -7,6 +7,8 @@ import javafx.util.Pair;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 public class Context implements IContext {
 
@@ -21,6 +23,8 @@ public class Context implements IContext {
     Pair<Integer, String> pair;
     int id;
     String action;
+    String left;
+    String right;
 
 
     private State currentState;
@@ -38,6 +42,13 @@ public class Context implements IContext {
         iConfig.setPlayerCount(playerCount);
         configParameters = iConfig.loadConfigParameters();
         controls = iConfig.loadControls();
+        if (iConfig.getRemote()){
+            //Map.Entry<String,Pair<Integer,String>> entry = controls.values().stream().anyMatch(p -> p.getValue().equals("left"));
+            Optional<Map.Entry<String,Pair<Integer,String>>> entry = controls.entrySet().stream().filter(e->e.getValue().getValue().equals("left")).findFirst();
+            entry.ifPresent(e -> left = e.getKey());
+            Optional<Map.Entry<String,Pair<Integer,String>>> entry2 = controls.entrySet().stream().filter(e->e.getValue().getValue().equals("right")).findFirst();
+            entry2.ifPresent(e -> right = e.getKey());
+        }
 
         iModel.join(configParameters[0], configParameters[1]); //playerCount & maxWaitingTime
         context.setCurrentState("WAITING");
@@ -67,13 +78,12 @@ public class Context implements IContext {
 
     //REMOTE
     public void handleDirectionKeyboardInput(int id, String key){
-        if (key.equals("A") || key.equals("LEFT") || key.equals("G")
-                || key.equals("DIGIT1") || key.equals("DIGIT5") || key.equals("I")){
-            iModel.changePlayerDirection(0, "left");
+
+        if (key.equals(left)){
+            iModel.changePlayerDirection(id, "left");
         }
-        else if (key.equals("D") || key.equals("RIGHT") || key.equals("J")
-                || key.equals("DIGIT3") || key.equals("DIGIT9") || key.equals("P")) {
-            iModel.changePlayerDirection(0, "right");
+        else if (key.equals(right)) {
+            iModel.changePlayerDirection(id, "right");
         }
     }
 
