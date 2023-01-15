@@ -37,13 +37,16 @@ public class GameOfTrons extends Application {
             fr = new FileReader("nameserver.properties");
             p.load(fr);
             int port = (int) p.get("nameServerPort");
+            InetAddress NSip = InetAddress.getByName((String)p.get("nameserverIP"));
 
             // Nameserver starten
             CommunicationPoint nameServer = new CommunicationPoint(port, 4);
             nameServer.startNameServer();
 
             // Middleware aufbauen/ starten
-            IMiddleware middleware = new Middleware();  //Middleware.getInstance();
+            IMiddleware middleware = Middleware.getInstance();
+            Middleware middlewareInstance = (Middleware) middleware;
+            middlewareInstance.initialize(port,NSip);
 
             // Callee Objekte erzeugen
             IRemoteObject modelCallee = new IModelCallee();
