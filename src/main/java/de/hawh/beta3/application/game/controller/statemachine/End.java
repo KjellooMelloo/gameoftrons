@@ -13,7 +13,7 @@ public class End implements State {
     @Override
     public void behavior(Context context) {
 
-        iView.showScreen("End");
+        iView.showScreen("end");
         //Timer in View
         //View ruft iModel.cancelWait() auf
     }

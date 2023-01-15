@@ -15,7 +15,7 @@ public class Start implements State {
     @Override
     public void behavior(Context context){
 
-        iView.showScreen("Start");
+        iView.showScreen("start");
     }
 
 }

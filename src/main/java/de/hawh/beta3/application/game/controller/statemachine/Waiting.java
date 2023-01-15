@@ -14,7 +14,7 @@ public class Waiting implements State {
 
     @Override
     public void behavior(Context context){
-        iView.showScreen("Waiting");
+        iView.showScreen("waiting");
     }
 
 }
