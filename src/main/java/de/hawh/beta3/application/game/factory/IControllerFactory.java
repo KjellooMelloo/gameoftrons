@@ -7,6 +7,6 @@ import de.hawh.beta3.application.stub.caller.IControllerCaller;
 class IControllerFactory {
 
     public static IContext getController(boolean remote) {
-        return remote ? new IControllerCaller() /*IControllerCaller.getInstance()*/ : Context.getInstance();
+        return remote ? new IControllerCaller() : Context.getInstance();
     }
 }

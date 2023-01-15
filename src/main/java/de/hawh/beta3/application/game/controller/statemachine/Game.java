@@ -13,7 +13,7 @@ public class Game implements State {
     @Override
     public void behavior(Context context){
 
-        iView.showScreen("Countdown");
+        iView.showScreen("countdown");
 
     }
 

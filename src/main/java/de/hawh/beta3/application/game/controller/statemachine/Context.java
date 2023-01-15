@@ -20,6 +20,7 @@ public class Context implements IContext {
     //Variablen aus der Config
     int[] configParameters;
     HashMap<String, Pair<Integer, String>> controls;
+    HashMap<Integer, String[]> playerKeysMap;
     Pair<Integer, String> pair;
     int id;
     String action;
@@ -54,6 +55,7 @@ public class Context implements IContext {
             entry2.ifPresent(e -> right = e.getKey());
         }
 
+        iView.setPlayerKeys(new HashMap<>());
         iModel.join(configParameters[0], configParameters[1]); //playerCount & maxWaitingTime
         context.setCurrentState("WAITING");
     }
