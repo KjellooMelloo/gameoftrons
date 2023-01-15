@@ -50,10 +50,13 @@ public class Context implements IContext {
 
     @Override
     public void handleInputPlayerCount(int playerCount){
+        iConfig.loadConfigParameters();
         iConfig.setPlayerCount(playerCount);
-        configParameters = iConfig.loadConfigParameters();
+        configParameters = iConfig.getConfigParameters();
+
         playerKeysMap = iConfig.loadControls(); //make Map for View id --> {"A","D"}
         transformControls(); //transform Map for efficient handleDirectionKeyboardInput()
+
         iView.setPlayerKeys(playerKeysMap);
         iModel.join(configParameters[0],configParameters[1]); //playerCount, maxWaitingTime
         context.setCurrentState("WAITING");
