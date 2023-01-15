@@ -3,6 +3,7 @@ package de.hawh.beta3.application.game.controller.statemachine;
 import de.hawh.beta3.application.game.controller.config.IConfig;
 import de.hawh.beta3.application.game.model.gamemanager.IModel;
 import de.hawh.beta3.application.game.view.IControllerView;
+import de.hawh.beta3.application.game.view.Screen.IViewImpl;
 import javafx.util.Pair;
 
 import java.util.HashMap;
@@ -37,6 +38,11 @@ public class Context implements IContext {
 
     public static Context getInstance() {
         return context;
+    }
+
+    public void initialize(IModel iModel) {
+        this.iModel = iModel;
+        iView = IViewImpl.getInstance();
     }
 
     public void setCurrentState(String state){

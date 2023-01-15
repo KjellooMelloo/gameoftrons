@@ -2,8 +2,10 @@ package de.hawh.beta3.application;
 
 import de.hawh.beta3.application.game.controller.statemachine.Context;
 import de.hawh.beta3.application.game.controller.statemachine.IContext;
+import de.hawh.beta3.application.game.factory.MVCFactory;
 import de.hawh.beta3.application.game.model.gamemanager.GameManager;
 import de.hawh.beta3.application.game.model.gamemanager.IModel;
+import de.hawh.beta3.application.game.view.IModelView;
 import de.hawh.beta3.application.game.view.Screen.IViewImpl;
 import de.hawh.beta3.application.stub.callee.IControllerCallee;
 import de.hawh.beta3.application.stub.callee.IModelCallee;
@@ -95,10 +97,14 @@ public class GameOfTrons extends Application {
         }
 
         // MVC initialisieren
-        IModel model = GameManager.getInstance();
-        IContext controller = Context.getInstance();
+        // Model bekommt IContext und IModelView Referenz je nach remote Caller oder real
+        // Controller bekommt IModel Referenz je nach remote Caller oder real
         IViewImpl view = IViewImpl.getInstance();
-
+        GameManager model = GameManager.getInstance();
+        model.initialize((IContext) MVCFactory.getInterface("IController", remote),
+                (IModelView) MVCFactory.getInterface("IModelView", remote));
+        Context controller = Context.getInstance();
+        controller.initialize((IModel) MVCFactory.getInterface("IModel", remote));
 
         // Stage bauen
         stage.setWidth(javafx.stage.Screen.getPrimary().getBounds().getWidth() / 1.5);
