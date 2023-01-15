@@ -11,6 +11,7 @@ public class Config implements IConfig {
     int[] configParameters = new int[4];
     Map<String,Object> allParams = new HashMap<>();
     HashMap<String, Pair<Integer, String>> controls = new HashMap<>();
+    HashMap<Integer, String[]> playerKeysMap = new HashMap<>();
     //add to config
     //playerCount & defaultPlayerCount & range
     //maxWaitingTime
@@ -116,7 +117,7 @@ public class Config implements IConfig {
         } return controls;
     }
 
-    @Override
+    /**@Override
     public HashMap<String, Pair<Integer, String>> loadControls(){
         //HashMap<String key, Pair<int id, String action>> controls
         String key;
@@ -149,6 +150,35 @@ public class Config implements IConfig {
         }
 
         return controls;
+    }**/
+
+    @Override
+    public HashMap<Integer, String[]> loadControls(){
+        int id;
+        String direction;
+        String key_l = "";
+        String key_r;
+
+        String line;
+        Scanner scanner = new Scanner("gameoftrons.properties");
+        Matcher matcher;
+        String regex = "(\"p(\\d{1})_(l{1}|r{1})=(\\S+)\")";
+        Pattern pattern = Pattern.compile(regex);
+        while (scanner.hasNextLine()) {
+            line = scanner.nextLine();
+            matcher = pattern.matcher(line);
+            if (matcher.matches()) {
+                id = Integer.parseInt(matcher.group(1));
+                direction = matcher.group(2);
+                if (direction.equals("l")) {
+                    key_l = matcher.group(3);
+                } else {
+                    key_r = matcher.group(3);
+                    playerKeysMap.put(id, new String[]{key_l, key_r});
+                }
+            }
+        }
+        return playerKeysMap;
     }
 
     public int getGameSpeed(){

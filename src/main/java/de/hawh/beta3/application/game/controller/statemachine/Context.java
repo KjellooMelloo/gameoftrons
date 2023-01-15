@@ -53,7 +53,14 @@ public class Context implements IContext {
     }
 
     @Override
-    public void handleInputPlayerCount(int playerCount){}
+    public void handleInputPlayerCount(int playerCount){
+        iConfig.setPlayerCount(playerCount);
+        configParameters = iConfig.loadConfigParameters();
+        playerKeysMap = iConfig.loadControls();
+        iView.setPlayerKeys(playerKeysMap);
+        iModel.join(configParameters[0],configParameters[1]); //playerCount, maxWaitingTime
+        context.setCurrentState("WAITING");
+    }
 
     /**public void handleInputPlayerCount(int playerCount){
         iConfig.setPlayerCount(playerCount);
