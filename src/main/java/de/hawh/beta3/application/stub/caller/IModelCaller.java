@@ -2,10 +2,11 @@ package de.hawh.beta3.application.stub.caller;
 
 import de.hawh.beta3.application.game.model.gamemanager.IModel;
 import de.hawh.beta3.middleware.IMiddleware;
+import de.hawh.beta3.middleware.Middleware;
 
 public class IModelCaller implements IModel {
 
-    private IMiddleware mw; //=new Middleware();
+    private IMiddleware mw = Middleware.getInstance();
     private int id = 0;
 
     /**

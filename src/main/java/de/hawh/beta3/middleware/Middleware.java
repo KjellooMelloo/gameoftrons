@@ -11,8 +11,15 @@ import java.net.InetAddress;
  */
 public class Middleware implements IMiddleware {
 
+    private static Middleware mw = new Middleware();
     private IRemoteInvocation clientStub;   //= new Marshaler.getInstance();
     private IRegister serverStub;   //= new Unmarshaler.getInstance();
+
+    private Middleware(){}
+
+    public static Middleware getInstance() {
+        return mw;
+    }
 
     /**
      * Eine remote Methode <code>methodName</code> vom Interface mit id <code>interfaceID</code>

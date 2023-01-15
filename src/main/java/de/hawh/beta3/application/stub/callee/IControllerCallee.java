@@ -8,7 +8,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 
 public class IControllerCallee implements IRemoteObject {
-    private IContext iContext; //Context.getInstance()
+    private IContext iContext = Context.getInstance();
     private Method method;
     private int id = 2;
 
