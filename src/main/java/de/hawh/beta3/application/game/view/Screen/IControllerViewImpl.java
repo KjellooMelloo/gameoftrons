@@ -2,6 +2,8 @@ package de.hawh.beta3.application.game.view.Screen;
 
 import de.hawh.beta3.application.game.view.IControllerView;
 
+import java.util.Map;
+
 public class IControllerViewImpl implements IControllerView {
     ScreenManager screen;
 
@@ -25,5 +27,11 @@ public class IControllerViewImpl implements IControllerView {
     @Override
     public void notifyGameResult(int winnerID) {
         screen.endGame(winnerID);
+    }
+
+    @Override
+    public void setPlayerKeys(Map<Integer, String[]> playerKeysMap) {
+        screen.setPlayersKeyMap(playerKeysMap);
+
     }
 }
