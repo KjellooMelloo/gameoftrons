@@ -8,6 +8,7 @@ import de.hawh.beta3.application.game.view.IControllerView;
 import de.hawh.beta3.application.game.view.Screen.IViewImpl;
 import javafx.util.Pair;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -49,7 +50,7 @@ public class Context implements IContext {
     }
 
     @Override
-    public void handleInputPlayerCount(int playerCount){
+    public void handleInputPlayerCount(int playerCount) throws IOException {
         iConfig.loadConfigParameters();
         iConfig.setPlayerCount(playerCount);
         configParameters = iConfig.getConfigParameters();
