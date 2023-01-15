@@ -8,7 +8,7 @@ public class Receiver implements Runnable {
 
     private DatagramSocket socket;
     private int port;
-    private final IReceiver unmarshaler;
+    private final Unmarshaler unmarshaler;
 
     public Receiver(int port, Unmarshaler unmarshaler){
         this.port = port;
