@@ -11,9 +11,10 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
+import java.util.Properties;
 import java.util.concurrent.Semaphore;
 
-public class CommunicationPoint {
+public class CommunicationPoint{
 
     private ServerSocket socket;
     private final int port;
@@ -154,6 +155,18 @@ public class CommunicationPoint {
         private void doBind(JSONObject args) throws IOException {
             nameServer.bind(args.getInt("ifaceID"), args.getString("methodName"), args.getString("ipAddr"), args.getBoolean("isSingleton")  );
         }
+    }
+
+    public static void main(String[] args) throws IOException {
+        FileReader fr;
+        fr = new FileReader("nameserver.properties");
+        Properties p = new Properties();
+        p.load(fr);
+        int port = Integer.parseInt((String)p.get("nameserverPort"));
+
+        // Nameserver starten
+        CommunicationPoint nameServer = new CommunicationPoint(port, 4);
+        nameServer.startNameServer();
     }
 
 }

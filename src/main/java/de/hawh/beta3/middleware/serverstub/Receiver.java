@@ -30,6 +30,7 @@ public class Receiver implements Runnable {
         try {
             socket = new DatagramSocket(port);
             while (true) {
+                System.out.println("Receiver running");
                 // Größtes Paket durch Netzwerk hat 164 Bytes. Nächste Zweierpotenz ist ausreichend
                 byte[] buffer = new byte[1024];
                 DatagramPacket packet = new DatagramPacket(buffer, buffer.length);

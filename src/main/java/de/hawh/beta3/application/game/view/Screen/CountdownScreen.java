@@ -42,7 +42,7 @@ public class CountdownScreen extends VBox {
         EventHandler<ActionEvent> onFinished = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                //TODO call Controller notifyCountdownOver();
+                ScreenCommons.CONTROLLER.notifyCountdownOver();
             }
         };
 
