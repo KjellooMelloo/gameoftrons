@@ -2,6 +2,7 @@ package de.hawh.beta3.application.game.view.Screen;
 
 import de.hawh.beta3.application.game.controller.statemachine.Context;
 import de.hawh.beta3.application.game.controller.statemachine.IContext;
+import de.hawh.beta3.application.game.factory.MVCFactory;
 import javafx.scene.paint.Color;
 
 import java.util.Map;
@@ -10,7 +11,7 @@ public class ScreenCommons {
     private static final Color[] colors = new Color[]{Color.AQUA, Color.CRIMSON, Color.YELLOW, Color.LIME, Color.FUCHSIA, Color.ORANGE};
     private static final String[] colorNames = new String[]{"blue", "red", "yellow", "green", "pink", "orange"};
     private static Map<Integer, String[]> playersKeyMap;
-    public static IContext CONTROLLER = Context.getInstance();
+    public static IContext CONTROLLER = (IContext) MVCFactory.getInterface("IController", true);
 
     public ScreenCommons() {
 

@@ -146,7 +146,7 @@ public class Unmarshaler implements IRegister, IReceiver {
         // Check if there are any parameters for method call
         if (argsJSONArray.length() > 0) {
             JSONObject argsJSONObj = argsJSONArray.getJSONObject(0);
-            callParameters = new Object[argsJSONObj.length()];
+            callParameters = new Object[argsJSONObj.length() / 2];
             String type, val;
 
             System.out.println("LEngth argsJSONOBJ: " + argsJSONObj.length());
