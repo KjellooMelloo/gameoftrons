@@ -22,7 +22,6 @@ public class GameScreen extends Canvas {
     private final int windowSize = 800;
     private int currentPlayerID = -1;
     private int fieldSize = 10;
-    private int numPlayers = 2;
 
 
     public GameScreen() {
@@ -31,11 +30,14 @@ public class GameScreen extends Canvas {
         this.setWidth(windowSize);
         this.setHeight(windowSize);
 
+
+
         // Register Key Event Handler
         registerKeyEventHandler();
 
 
     }
+
 
     private void registerKeyEventHandler() {
         this.setFocusTraversable(true);
@@ -49,9 +51,9 @@ public class GameScreen extends Canvas {
     }
 
 
-    public void initializeGameField() {
+    public void initializeGameField(int numPlayers) {
         System.out.println("Initializing game field");
-        initPlayersInPositions();
+        initPlayersInPositions(numPlayers);
         GraphicsContext g = this.getGraphicsContext2D();
 
 
@@ -61,8 +63,8 @@ public class GameScreen extends Canvas {
             g.strokeLine(i, 0, i, getHeight() - (getHeight() % windowSize / fieldSize));
         }
 
+
         // horizontal lines
-        g.setStroke(Color.GRAY);
         for (int i = 0; i <= getHeight(); i += windowSize / fieldSize) {
             g.strokeLine(0, i, getWidth(), i);
         }
@@ -73,7 +75,7 @@ public class GameScreen extends Canvas {
 
     }
 
-    private void initPlayersInPositions() {
+    private void initPlayersInPositions(int numPlayers) {
 
         System.out.println("initializing player");
         System.out.println("NumPlayers: " + numPlayers);
@@ -200,7 +202,4 @@ public class GameScreen extends Canvas {
         this.currentPlayerID = currentPlayerID;
     }
 
-    public void setNumPlayers(int numPlayers) {
-        this.numPlayers = numPlayers;
-    }
 }

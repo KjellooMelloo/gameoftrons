@@ -13,8 +13,8 @@
 }
 
 .label {
-    -fx-font: bold 20px "TRON";
-    -fx-text-fill: #e0f3f9;
+    -fx-font: bold 15px "TRON";
+    -fx-text-fill: white;
 }
 
 .button {
@@ -29,6 +29,17 @@
             linear-gradient(from 0% 93% to 0% 100%, #dbf1f8 0%, #94d4ea 100%);
     -fx-text-fill: black;
 
+}
+.toggle-button {
+    -fx-font: bold 10px "TRON";
+    -fx-text-fill: darkblue;
+    -fx-border-color: darkblue;
+    -fx-background-color: white;
+
+}
+
+.toggle-button:selected{
+    -fx-background-color: gray;
 }
 
 .text-field {

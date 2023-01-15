@@ -11,7 +11,6 @@ import javafx.util.Pair;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 public class Context implements IContext {
 
@@ -71,7 +70,7 @@ public class Context implements IContext {
     @Override
     public void notifyCountdownOver(){
         iModel.startGame(context.configParameters[3], context.configParameters[2]); //int gridSize, int gameSpeed
-        iView.setGameFieldSize(context.configParameters[3]);
+        iView.startGame(context.configParameters[3]);
     }
 
     @Override

@@ -45,8 +45,8 @@ public class IViewImpl implements IControllerView, IModelView {
     }
 
     @Override
-    public void setGameFieldSize(int gameFieldSize) {
-        screen.updateView(gameFieldSize);
+    public void startGame(int playerCount, int gameFieldSize) {
+        screen.updateView(playerCount, gameFieldSize);
 
     }
 
