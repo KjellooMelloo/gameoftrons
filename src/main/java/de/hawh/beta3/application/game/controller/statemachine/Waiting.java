@@ -9,9 +9,9 @@ public class Waiting implements State {
     Context context;
 
     public Waiting(){
-        this.behavior();
         this.iView = IViewImpl.getInstance();
         this.context = Context.getInstance();
+        this.behavior();
     }
 
     @Override

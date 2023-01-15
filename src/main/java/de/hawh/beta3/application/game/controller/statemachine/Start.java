@@ -9,9 +9,9 @@ public class Start implements State {
     Context context;
 
     public Start(){
-        this.behavior();
         this.context = Context.getInstance();
         this.iView = IViewImpl.getInstance();
+        this.behavior();
     }
 
     @Override

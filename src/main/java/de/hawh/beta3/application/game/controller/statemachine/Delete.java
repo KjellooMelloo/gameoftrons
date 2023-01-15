@@ -6,8 +6,8 @@ public class Delete implements State {
     IContext context;
 
     public Delete() {
-        this.behavior();
         this.context = Context.getInstance();
+        this.behavior();
     }
 
     @Override
