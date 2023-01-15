@@ -7,7 +7,7 @@ import java.util.Map;
 public class IControllerViewImpl implements IControllerView {
     ScreenManager screen;
 
-    public void IControllerViewImpl(ScreenManager screen) {
+    public IControllerViewImpl(ScreenManager screen) {
         this.screen = screen;
     }
 
