@@ -42,14 +42,14 @@ class NameServer implements INameServer {
      * @param isSingleton   Flag, ob sich nur eine instanz dieser Schnittstelle registriert werden darf
      */
     @Override
-    public void bind(int interfaceID, String methodName, InetAddress ipAddr, boolean isSingleton) {
+    public void bind(int interfaceID, String methodName, String ipAddr, boolean isSingleton) {
         Pair<Integer, String> key = new Pair<>(interfaceID, methodName);
 
         if (!checkInterfaceInTable(interfaceID, methodName)) {
             cache.put(key, new HashSet<>());
-            cache.get(key).add(ipAddr.getHostAddress());
+            cache.get(key).add(ipAddr);
         } else if(!isSingleton) {
-            cache.get(key).add(ipAddr.getHostAddress());
+            cache.get(key).add(ipAddr);
         }
 
     }

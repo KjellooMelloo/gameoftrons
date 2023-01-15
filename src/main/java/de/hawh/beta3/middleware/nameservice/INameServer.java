@@ -13,7 +13,7 @@ public interface INameServer {
      * @param methodName    Methodenname, der eingetragen werden soll
      * @param isSingleton   Flag, ob sich nur eine instanz dieser Schnittstelle registriert werden darf
      */
-    void bind(int interfaceID, String methodName, InetAddress ipAddr, boolean isSingleton);
+    void bind(int interfaceID, String methodName, String ipAddr, boolean isSingleton);
 
     /**
      * Es soll nachgeschaut werden, ob es einen Eintrag mit <code>interfaceID</code> und <code>methodName</code>
