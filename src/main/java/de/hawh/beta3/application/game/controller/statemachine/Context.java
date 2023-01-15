@@ -61,6 +61,7 @@ public class Context implements IContext {
         if (iConfig.getRemote()){
             context.setCurrentState("WAITING");
         } else {
+            //todo setNumPlayers(playerCount); --> Model initialisiert 4 Spieler, können dann mit aktivierten Tasten spielen
             setCurrentState("GAME");
         }
     }
@@ -85,6 +86,7 @@ public class Context implements IContext {
     @Override
     public void handleDirectionKeyboardInput(String key){
 
+        //todo prüfen, ob id < playerCount oder schon bei transformControls()-Methode
         if (controls.containsKey(key)){ //prüft, ob Tastenbelegung aktiviert ist für key
             iModel.changePlayerDirection(controls.get(key).getKey(),controls.get(key).getValue()); //id, direction
         }
