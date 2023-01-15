@@ -12,11 +12,6 @@ public class Config implements IConfig {
     Map<String,Object> allParams = new HashMap<>();
     HashMap<String, Pair<Integer, String>> controls = new HashMap<>();
     HashMap<Integer, String[]> playerKeysMap = new HashMap<>();
-    //add to config
-    //playerCount & defaultPlayerCount & range
-    //maxWaitingTime
-    //gameSpeed
-    //flag partner
 
 
     public int[] loadConfigParameters(){
@@ -46,16 +41,16 @@ public class Config implements IConfig {
         //save needed values from map in correct data format
         //#1 playerCount-->userInput    #2 defaultPlayerCount-->4    3# rangeStart-->2     #4 rangeEnd-->6
         //#5 maxWaitingTime-->60(in s)    #6 controls-->1-6       #7 gameSpeed-->3      #8 gridSize-->20
-        int playerCount = Integer.parseInt(parameters.get("playerCount"));
-        allParams.put("playerCount", playerCount);
+        //int playerCount = Integer.parseInt(parameters.get("playerCount"));
+        //allParams.put("playerCount", playerCount);
         int defaultPlayerCount = Integer.parseInt(parameters.get("defaultPlayerCount"));
         allParams.put("defaultPlayerCount", defaultPlayerCount);
         int rangeStart = Integer.parseInt(parameters.get("rangeStart"));
         allParams.put("rangeStart", rangeStart);
         int rangeEnd = Integer.parseInt(parameters.get("rangeEnd"));
         allParams.put("rangeEnd", rangeEnd);
-        int mayWaitingTime = Integer.parseInt(parameters.get("maxWaitingTime"));
-        allParams.put("mayWaitingTime", mayWaitingTime);
+        int maxWaitingTime = Integer.parseInt(parameters.get("maxWaitingTime"));
+        allParams.put("maxWaitingTime", maxWaitingTime);
         int gameSpeed = Integer.parseInt(parameters.get("gameSpeed"));
         allParams.put("gameSpeed", gameSpeed);
         int gridSize = Integer.parseInt(parameters.get("gridSize"));
@@ -69,7 +64,7 @@ public class Config implements IConfig {
         //game relevant info for view and model into array int[4]
         //#1playerCount    #2maxWaitingTime    #3gameSpeed    #4gridSize
 
-        configParameters[1]=mayWaitingTime;
+        configParameters[1]=maxWaitingTime;
         configParameters[2]=gameSpeed;
         configParameters[3]=gridSize;
 
@@ -83,7 +78,8 @@ public class Config implements IConfig {
 
     public int setPlayerCount(int playerCount){
         if (getRangeStart()<=playerCount&&playerCount<=getRangeEnd()){
-            return configParameters[0]=playerCount;
+            configParameters[0]=playerCount;
+            return playerCount;
         } else {
             return loadDefaultPlayerCount();
         }
@@ -199,5 +195,9 @@ public class Config implements IConfig {
 
     public boolean getRemote(){
         return (boolean)allParams.get("remote");
+    }
+
+    public int[] getConfigParameters(){
+        return configParameters;
     }
 }

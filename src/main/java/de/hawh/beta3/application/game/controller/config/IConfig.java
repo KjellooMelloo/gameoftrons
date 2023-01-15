@@ -9,6 +9,7 @@ public interface IConfig {
     int[] loadConfigParameters();
     int loadDefaultPlayerCount();
     HashMap<Integer, String[]> loadControls();
+    int[] getConfigParameters();
 
     int setPlayerCount(int playerCount);
 
