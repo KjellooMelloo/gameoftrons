@@ -62,23 +62,6 @@ public class Context implements IContext {
         context.setCurrentState("WAITING");
     }
 
-    /**public void handleInputPlayerCount(int playerCount){
-        iConfig.setPlayerCount(playerCount);
-        configParameters = iConfig.loadConfigParameters();
-        controls = iConfig.loadControls();
-        if (iConfig.getRemote()){
-            //Map.Entry<String,Pair<Integer,String>> entry = controls.values().stream().anyMatch(p -> p.getValue().equals("left"));
-            Optional<Map.Entry<String,Pair<Integer,String>>> entry = controls.entrySet().stream().filter(e->e.getValue().getValue().equals("left")).findFirst();
-            entry.ifPresent(e -> left = e.getKey());
-            Optional<Map.Entry<String,Pair<Integer,String>>> entry2 = controls.entrySet().stream().filter(e->e.getValue().getValue().equals("right")).findFirst();
-            entry2.ifPresent(e -> right = e.getKey());
-        }
-
-        iView.setPlayerKeys(new HashMap<>());
-        iModel.join(configParameters[0], configParameters[1]); //playerCount & maxWaitingTime
-        context.setCurrentState("WAITING");
-    }**/
-
     @Override
     public void handleWaitingButtonClick(){
         iModel.cancelWait();
