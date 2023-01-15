@@ -22,9 +22,9 @@ public class Context implements IContext {
     IConfig iConfig = new Config();
 
     //Variablen aus der Config
-    int[] configParameters;
-    HashMap<String, Pair<Integer, String>> controls;
-    HashMap<Integer, String[]> playerKeysMap;
+    int[] configParameters = new int[8];
+    HashMap<String, Pair<Integer, String>> controls = new HashMap<>();
+    HashMap<Integer, String[]> playerKeysMap = new HashMap<>();
 
 
     private State currentState;
