@@ -7,6 +7,6 @@ import de.hawh.beta3.application.stub.caller.IModelCaller;
 class IModelFactory {
 
     public static IModel getModel(boolean remote) {
-        return remote ? new IModelCaller() /*IModelCaller.getInstance()*/ : GameManager.getInstance();
+        return remote ? new IModelCaller() : GameManager.getInstance();
     }
 }
