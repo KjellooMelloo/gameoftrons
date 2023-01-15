@@ -8,8 +8,8 @@ public class Game implements State {
     IControllerView iView;
 
     public Game(){
-        this.behavior();
         this.iView = IViewImpl.getInstance();
+        this.behavior();
     }
 
     @Override

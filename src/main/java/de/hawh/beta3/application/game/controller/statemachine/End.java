@@ -8,8 +8,8 @@ public class End implements State {
     IControllerView iView;
 
     public End() {
-        this.behavior();
         this.iView = IViewImpl.getInstance();
+        this.behavior();
     }
 
     @Override
