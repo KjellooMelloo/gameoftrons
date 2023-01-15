@@ -1,14 +1,14 @@
 package de.hawh.beta3.application.stub.callee;
 
 import de.hawh.beta3.application.game.view.IModelView;
-import de.hawh.beta3.application.game.view.Screen.IModelViewImpl;
+//import de.hawh.beta3.application.game.view.Screen.IModelViewImpl;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
 public class IModelViewCallee implements IRemoteObject {
-    private IModelView modelView = IModelViewImpl.getInstance();
+    private IModelView modelView;// = IModelViewImpl.getInstance();
     private Method method;
     private int id = 1;
 
