@@ -184,6 +184,19 @@ Beim Name Service kann man die physikalische Adresse eines Remote Objects anfrag
 **Diese Komponente bietet keine Schnittstellen an. Die Dienste können über Nachrichtenaustausch genutzt werden**
 
 Siehe [Querschnittliche Konzepte](#querschnittliche-konzepte).
+  
+  
+### Blackbox Facade
+  
+Das Facade-Pattern wird eingesetzt, um die beiden extern angebotenen Funktionalitäten der Middleware hinter einer Schnittstelle zu kapseln.
+Dafür wird die Schnittstelle IMiddleware angeboten.
+  
+|Methode| Kurzbeschreibung |
+|---|---|
+| register(int interfaceID, String methodName, InetAdress ipAddr, bool isSingleton)| Die register-Methode der IRegister-Schnittstelle wird aufgerufen|
+ |invoke(int interfaceID, String methodName, Object[] args) | Die invoke-Methode der IRemoteInvocation-Schnittstelle wird aufgerufen|
+  
+  
 
 
 
@@ -247,6 +260,20 @@ Siehe [Querschnittliche Konzepte](#querschnittliche-konzepte).
 |run()| Endlosschleife, die TCP-Pakete entgegennimmt. Wenn ein Paket ankommt, wird ein neuer Thread zur Behandlung erzeugt. Der neue Thread entpackt den JSON- Nachrichteninhalt aus dem Paket (Aufruf deserialize() ), holt den Parameter-Array aus dem JSON und prüft, welche Anfrage geschickt wurde (lookup oder register), ruft die entsprechende Methode auf. |
 |deserialize(byte[] msg)|entpackt den JSON-Nachrichteninhalt aus dem Paket|
 |serialize(JSON msg)|Wandelt die JSON-Antwortnachricht von der lookup-Anfrage in ein byte-Array.|
+  
+
+ ### Whitebox Facade
+  <br>
+  
+  ![MW_Facade](./images/MW_Facade.png)
+  
+  <br>
+  
+|Methode| Kurzbeschreibung |
+|---|---|
+| register(int interfaceID, String methodName, InetAdress ipAddr, bool isSingleton)| Die register-Methode der IRegister-Schnittstelle wird aufgerufen|
+|invoke(int interfaceID, String methodName, Object[] args) | Die invoke-Methode der IRemoteInvocation-Schnittstelle wird aufgerufen|
+  
 
 
 
