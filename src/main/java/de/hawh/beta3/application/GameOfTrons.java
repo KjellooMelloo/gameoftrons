@@ -78,24 +78,24 @@ public class GameOfTrons extends Application {
             middleware.register(0, modelCallee, "changePlayerDirection",
                     InetAddress.getByName(ipVPN.getHostAddress()), true);
             // IModelView
-            middleware.register(0, modelViewCallee, "updateNumPlayers",
+            middleware.register(1, modelViewCallee, "updateNumPlayers",
                     InetAddress.getByName(ipVPN.getHostAddress()), false);
-            middleware.register(0, modelViewCallee, "updatePlayer",
+            middleware.register(1, modelViewCallee, "updatePlayer",
                     InetAddress.getByName(ipVPN.getHostAddress()), false);
-            middleware.register(0, modelViewCallee, "informUser",
+            middleware.register(1, modelViewCallee, "informUser",
                     InetAddress.getByName(ipVPN.getHostAddress()), false);
             // Controller
-            middleware.register(0, controllerCallee, "setCurrentState",
+            middleware.register(2, controllerCallee, "setCurrentState",
                     InetAddress.getByName(ipVPN.getHostAddress()), false);
-            middleware.register(0, controllerCallee, "handleInputPlayerCount",
+            middleware.register(2, controllerCallee, "handleInputPlayerCount",
                     InetAddress.getByName(ipVPN.getHostAddress()), false);
-            middleware.register(0, controllerCallee, "handleWaitingButtonClick",
+            middleware.register(2, controllerCallee, "handleWaitingButtonClick",
                     InetAddress.getByName(ipVPN.getHostAddress()), false);
-            middleware.register(0, controllerCallee, "handleDirectionKeyboardInput",
+            middleware.register(2, controllerCallee, "handleDirectionKeyboardInput",
                     InetAddress.getByName(ipVPN.getHostAddress()), false);
-            middleware.register(0, controllerCallee, "notifyCountdownOver",
+            middleware.register(2, controllerCallee, "notifyCountdownOver",
                     InetAddress.getByName(ipVPN.getHostAddress()), false);
-            middleware.register(0, controllerCallee, "endGame",
+            middleware.register(2, controllerCallee, "endGame",
                     InetAddress.getByName(ipVPN.getHostAddress()), false);
         }
 

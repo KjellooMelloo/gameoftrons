@@ -23,10 +23,13 @@ public class IControllerCallee implements IRemoteObject {
     public void call(String methodName, Object[] args) {
         //TODO Übersetzung mit Adapter bei vereinbarten gemeinsamen Methodennamen
         try {
-            Class<?>[] params = (Class<?>[]) Arrays.stream(args).map(Object::getClass).toArray();
-            method = iContext.getClass().getMethod(methodName, params);
-            method.invoke(iContext);
-        } catch(NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            for (Method m : iContext.getClass().getDeclaredMethods()) {
+                if (m.getName().equals(methodName)) {
+                    m.invoke(iContext, args);
+                    break;
+                }
+            }
+        } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
     }
