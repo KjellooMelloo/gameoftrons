@@ -1,7 +1,6 @@
 package de.hawh.beta3.application.game.model.gamemanager;
 
 import de.hawh.beta3.application.game.controller.statemachine.IContext;
-//import de.hawh.beta3.application.game.controller.statemachine.IModelController;
 import de.hawh.beta3.application.game.model.gamelogic.GameLogic;
 import de.hawh.beta3.application.game.model.gamelogic.IGameLogic;
 import de.hawh.beta3.application.game.view.IModelView;
@@ -17,8 +16,7 @@ import javafx.util.Duration;
 public class GameManager implements IModel {
     private static GameManager gameInstance = new GameManager();
     private IGameLogic gameLogic;
-    //private IModelController modelController;
-    private IContext iContext;
+    private IContext controller;
     private IModelView modelView;
     private int fullPlayerCount;
     private int numPlayers;
@@ -38,6 +36,11 @@ public class GameManager implements IModel {
         return gameInstance;
     }
 
+    public void initialize(IContext controller, IModelView modelView) {
+        this.controller = controller;
+        this.modelView = modelView;
+    }
+
     /**
      * Methods adds player to the game and checks if game is ready or waiting timer ended
      * First call decides size of lobby
@@ -48,23 +51,21 @@ public class GameManager implements IModel {
     @Override
     public void join(int playerCount, int maxWaitingTime) {
         if (fullPlayerCount != 0) {
-            //IModelView.informUser("Deine Eingabe ist uns egal, wir spielen mit {fullPlayerCount} Spielern!")
+            modelView.informUser("Deine Eingabe ist uns egal, wir spielen mit {fullPlayerCount} Spielern!");
         } else {
             fullPlayerCount = playerCount;
-            //IModelController.setCurrentState("WAITING");
-            iContext.setCurrentState("WAITING");
+            controller.setCurrentState("WAITING");
         }
         numPlayers++;
 
         if (numPlayers == fullPlayerCount) {
-            //IModelController.setCurrentState("GAME");
-            iContext.setCurrentState("GAME");
+            controller.setCurrentState("GAME");
         } else {
-            //IModelView.updateNumPlayers(numPlayers);
+            modelView.updateNumPlayers(numPlayers);
             timer.cancel();
             timer = new Timer();
             TimerTask task = new WaitingTimer();
-            timer.schedule(task, maxWaitingTime * 1000L);    //waiting timer to 120s
+            timer.schedule(task, maxWaitingTime * 1000L);    //waiting timer to maxWaitingTime
         }
     }
 
@@ -77,9 +78,8 @@ public class GameManager implements IModel {
         fullPlayerCount = 0;
         numPlayers = 0;
         timer.cancel();
-        //IModelView.informUser("Spiel wurde abgebrochen");
-        //IModelController.setCurrentState("DELETE");
-        iContext.setCurrentState("DELETE");
+        modelView.informUser("Spiel wurde abgebrochen");
+        controller.setCurrentState("DELETE");
     }
 
     /**
@@ -114,11 +114,10 @@ public class GameManager implements IModel {
         gameLogic.updatePlayers();
         if (gameLogic.getGameState().equals("RUNNING")) {
             for (int[] p : gameLogic.getPlayerPositions()) {
-                //modelView.updatePlayer(p[0], p[1], p[2], p[3]);
+                modelView.updatePlayer(p[0], p[1], p[2], p[3]);
             }
         } else if (gameLogic.getGameState().equals("OVER")) {
-            //modelController.endGame(gameLogic.getGameWinner());
-            iContext.endGame(gameLogic.getGameWinner());
+            controller.endGame(gameLogic.getGameWinner());
             timeline.stop();
         }
     }

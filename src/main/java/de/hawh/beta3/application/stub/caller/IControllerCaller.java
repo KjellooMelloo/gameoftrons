@@ -30,10 +30,10 @@ public class IControllerCaller implements IContext {
     public void handleDirectionKeyboardInput(String key) {
         mw.invoke(id,"handleDirectionKeyboardInput", new Object[]{key});
     }
-    @Override
+    /**@Override
     public void handleDirectionKeyboardInput(int id, String key) {
         mw.invoke(id,"handleDirectionKeyboardInput", new Object[]{id, key});
-    }
+    }**/
 
     @Override
     public void notifyCountdownOver() {

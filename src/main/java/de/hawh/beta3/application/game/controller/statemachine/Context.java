@@ -42,6 +42,11 @@ public class Context implements IContext {
         return context;
     }
 
+    public void initialize(IModel iModel) {
+        this.iModel = iModel;
+        iView = IViewImpl.getInstance();
+    }
+
     @Override
     public void setCurrentState(String state){
         this.currentState = getStateFromString(state);
