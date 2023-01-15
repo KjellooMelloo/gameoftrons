@@ -14,10 +14,7 @@ public class HelloApplication extends Application {
         stage.setHeight(javafx.stage.Screen.getPrimary().getBounds().getHeight() / 1.5);
 
         ScreenManager gameScreen = new ScreenManager();
-        gameScreen.drawScreen("end");
-        EndScreen es = (EndScreen) gameScreen.getScreens().get("end");
-        es.setWinner(2);
-        gameScreen.informUser("bal");
+        gameScreen.showCountDown();
 
 
         // configure and show stage
