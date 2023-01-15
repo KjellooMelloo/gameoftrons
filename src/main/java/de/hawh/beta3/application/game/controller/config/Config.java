@@ -16,63 +16,10 @@ public class Config implements IConfig {
     HashMap<String, Pair<Integer, String>> controls = new HashMap<>();
     HashMap<Integer, String[]> playerKeysMap = new HashMap<>();
 
-
-    /**public int[] loadConfigParameters(){
-        Map<String, String> parameters = new HashMap<>();
-
-        String data;
-        String val;
-        String regex = "(\"/(\\\\S+[^=])(=)(\\\\S+)/\")";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher;
-        String[] params = new String[] {"size","gameSpeed","maxWaitingTime", "playerCount", "controls"};
-        //parse config file with Scanner for each parameter
-        //put parameter & value as Strings in map
-
-        for (String p : params) {
-            Scanner scanner = new Scanner("gameoftrons.properties");
-            while (scanner.hasNextLine()) {
-                data = scanner.nextLine();
-                if (data.contains(p)) {
-                    matcher = pattern.matcher(data);
-                    val = matcher.group(3);
-                    parameters.put(p, val);
-                }
-            }
-        }
-
-        //save needed values from map in correct data format
-        //#1 playerCount-->userInput    #2 defaultPlayerCount-->4    3# rangeStart-->2     #4 rangeEnd-->6
-        //#5 maxWaitingTime-->60(in s)    #6 controls-->1-6       #7 gameSpeed-->3      #8 gridSize-->20
-        //int playerCount = Integer.parseInt(parameters.get("playerCount"));
-        //allParams.put("playerCount", playerCount);
-        int defaultPlayerCount = Integer.parseInt(parameters.get("defaultPlayerCount"));
-        allParams.put("defaultPlayerCount", defaultPlayerCount);
-        int rangeStart = Integer.parseInt(parameters.get("rangeStart"));
-        allParams.put("rangeStart", rangeStart);
-        int rangeEnd = Integer.parseInt(parameters.get("rangeEnd"));
-        allParams.put("rangeEnd", rangeEnd);
-        int maxWaitingTime = Integer.parseInt(parameters.get("maxWaitingTime"));
-        allParams.put("maxWaitingTime", maxWaitingTime);
-        int gameSpeed = Integer.parseInt(parameters.get("gameSpeed"));
-        allParams.put("gameSpeed", gameSpeed);
-        int gridSize = Integer.parseInt(parameters.get("gridSize"));
-        allParams.put("gridSize", gridSize);
-        boolean remote = Boolean.parseBoolean(parameters.get("remote"));
-        allParams.put("remote", remote);
-        boolean partner = Boolean.parseBoolean(parameters.get("partner"));
-        allParams.put("partner", partner);
-
-
-        //game relevant info for view and model into array int[4]
-        //#1playerCount    #2maxWaitingTime    #3gameSpeed    #4gridSize
-
-        configParameters[1]=maxWaitingTime;
-        configParameters[2]=gameSpeed;
-        configParameters[3]=gridSize;
-
-        return configParameters;
-    }**/
+    public static void main(String[] args) throws IOException {
+        IConfig config = new Config();
+        config.loadConfigParameters();
+    }
 
     public int[] loadConfigParameters() throws IOException {
         //#1 defaultPlayerCount     #2 maxWaitingTime     #3 gameSpeed     #4 gridSize
@@ -81,21 +28,24 @@ public class Config implements IConfig {
         FileReader reader = new FileReader("gameoftrons.properties");
         Properties props = new Properties();
         props.load(reader);
-        gameParameters[0] = (int) props.get("defaultPlayerCount");
-        gameParameters[1] = (int) props.get("maxWaitingTime");
-        gameParameters[2] = (int) props.get("gameSpeed");
-        gameParameters[3] = (int) props.get("gridSize");
-        gameParameters[4] = (int) props.get("rangeStart");
-        gameParameters[5] = (int) props.get("rangeEnd");
+        gameParameters[0] = Integer.parseInt((String) props.get("defaultPlayerCount")) ;
+        gameParameters[1] = Integer.parseInt((String) props.get("maxWaitingTime"));
+        gameParameters[2] = Integer.parseInt((String) props.get("gameSpeed"));
+        gameParameters[3] = Integer.parseInt((String) props.get("gridSize"));
+        gameParameters[4] = Integer.parseInt((String) props.get("rangeStart"));
+        gameParameters[5] = Integer.parseInt((String) props.get("rangeEnd"));
         boolean r = Boolean.parseBoolean((String) props.get("remote"));
         gameParameters[6] = r ? 1 : 0;
         boolean p = Boolean.parseBoolean((String) props.get("partner"));
         gameParameters[7] = p ? 1 : 0;
         configParameters = gameParameters;
+        for (int i=0; i<configParameters.length; i++){
+            System.out.println(configParameters[i]);
+        }
         return configParameters;
     }
 
-    public void loadOtherParameters(){
+    public void loadConfigControls(){
         //#1 rangeStart     #2 rangeEnd     #3 remote       #4 partner      #5 controls
         int[] otherParameters = new int[5];
     }
