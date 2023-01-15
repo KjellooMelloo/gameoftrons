@@ -55,7 +55,7 @@ public class ScreenManager {
 
         resetScreen();
         Node screenToShow = screens.get(screenName);
-        if(!base.getChildren().contains(screenToShow)) base.getChildren().add(screenToShow);
+        if(!base.getChildren().contains(screenToShow))
         {
             base.getChildren().add(screenToShow);
         }
