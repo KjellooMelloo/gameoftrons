@@ -5,7 +5,7 @@ import java.util.Map;
 public interface IControllerView {
     void showScreen(String screenName);
 
-    void setGameFieldSize(int gameFieldSize);
+    void startGame(int playerCount, int gameFieldSize);
 
     void notifyGameResult(int winnerID);
 

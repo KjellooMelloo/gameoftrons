@@ -91,13 +91,15 @@ public class ScreenManager {
     }
 
 
-    public void updateView(int gameFieldSize) {
+    public void updateView(int playerCount, int gameFieldSize) {
+        if(numPlayers.get() != playerCount){
+            numPlayers.set(playerCount);
+        }
         GameScreen gs = (GameScreen) screens.get("game");
         gs.setCurrentPlayerID(currentPlayerID.get());
         gs.setFieldSize(gameFieldSize);
-        gs.setNumPlayers(numPlayers.get());
         drawScreen("game");
-        gs.initializeGameField();
+        gs.initializeGameField(numPlayers.get());
     }
 
     public void updatePlayer(int playerID, int newX, int newY, int orientation) {
