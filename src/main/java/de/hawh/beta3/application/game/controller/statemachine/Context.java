@@ -74,19 +74,10 @@ public class Context implements IContext {
     @Override
     public void handleDirectionKeyboardInput(String key){
 
+        if (controls.containsKey(key)){ //prüft, ob Tastenbelegung aktiviert ist für key
+            iModel.changePlayerDirection(controls.get(key).getKey(),controls.get(key).getValue()); //id, direction
+        }
     }
-
-    //todo sicherheitsmodus überlegen, sodass nur aktivierte Tasten funktionieren --> 4 spieler, nur entsprechende Tastenbelegungen aktiviert
-    //LOKALE VERSION
-    /**public void handleDirectionKeyboardInput(String key){
-
-        pair = controls.get(key);
-        id = pair.getKey();
-        action = pair.getValue();
-
-        iModel.changePlayerDirection(id,action);
-
-    }**/
 
 
    @Override
