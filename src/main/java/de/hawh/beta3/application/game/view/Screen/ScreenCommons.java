@@ -1,5 +1,7 @@
 package de.hawh.beta3.application.game.view.Screen;
 
+import de.hawh.beta3.application.game.controller.statemachine.Context;
+import de.hawh.beta3.application.game.controller.statemachine.IContext;
 import javafx.scene.paint.Color;
 
 import java.util.Map;
@@ -10,7 +12,7 @@ public class ScreenCommons {
 
 
     private static Map<Integer, String[]> playersKeyMap;
-    //private IContext controller = new Context();
+    public static IContext CONTROLLER = Context.getInstance();
 
     public ScreenCommons() {
 

@@ -48,7 +48,7 @@ public class LobbyScreen extends VBox {
         this.getChildren().add(titleLabel);
         this.getChildren().add(playerCounterLabel);
         this.getChildren().add(playerColorControlLabel);
-        //this.getChildren().add(playerControlsLabel);
+
 
 
         if (this.currentPlayerID == 0) {
@@ -64,7 +64,7 @@ public class LobbyScreen extends VBox {
     private static void registerCancelEventHandler(Button cancelButton) {
         cancelButton.setOnAction(event -> {
             System.out.println("Cancel Button clicked");
-            // TODO call controller interface handleWaitingButtonClick()
+            ScreenCommons.CONTROLLER.handleWaitingButtonClick();
         });
     }
 

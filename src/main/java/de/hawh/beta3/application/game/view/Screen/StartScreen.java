@@ -10,8 +10,6 @@ import javafx.scene.layout.VBox;
 
 public class StartScreen extends VBox {
 
-    private final ScreenCommons screenCommons = new ScreenCommons();
-
     public StartScreen() {
 
         //Initialize VBox
@@ -46,7 +44,7 @@ public class StartScreen extends VBox {
                 System.out.println("Button was pressed");
             } else {
                 int playerCount = Integer.valueOf(inputString);
-                //TODO add call to controller interface
+                ScreenCommons.CONTROLLER.handleInputPlayerCount(playerCount);
                 System.out.println("Input player count: " + playerCount);
             }
 

@@ -43,13 +43,14 @@ public class GameScreen extends Canvas {
             @Override
             public void handle(KeyEvent keyEvent) {
                 String keyCode = keyEvent.getCode().toString();
-                //TODO Send keyCode (or keyCode.toString()) to Controller
+                ScreenCommons.CONTROLLER.handleDirectionKeyboardInput(keyCode);
             }
         });
     }
 
 
     public void initializeGameField() {
+        System.out.println("Initializing game field");
         initPlayersInPositions();
         GraphicsContext g = this.getGraphicsContext2D();
 
@@ -65,16 +66,17 @@ public class GameScreen extends Canvas {
         for (int i = 0; i <= getHeight(); i += windowSize / fieldSize) {
             g.strokeLine(0, i, getWidth(), i);
         }
-        //TODO erase after test
-        //prepareTest();
-        for (Player p : playerMap.values()) {
+
+        for(Player p:playerMap.values()){
             drawTileColors(p);
         }
-
 
     }
 
     private void initPlayersInPositions() {
+
+        System.out.println("initializing player");
+        System.out.println("NumPlayers: " + numPlayers);
 
         Coordinate[] startingPos;
 
