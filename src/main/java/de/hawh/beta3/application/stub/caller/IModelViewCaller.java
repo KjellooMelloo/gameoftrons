@@ -9,17 +9,17 @@ public class IModelViewCaller implements IModelView {
     private IMiddleware mw = Middleware.getInstance();
     private int id = 1;
 
-    //@Override
+    @Override
     public void updatePlayer(int playerID, int x, int y, int direction) {
         mw.invoke(id, "updatePlayer", new Object[]{playerID, x, y, direction});
     }
 
-    //@Override
+    @Override
     public void updateNumPlayers(int numPlayers) {
         mw.invoke(id, "updateNumPlayers", new Object[]{numPlayers});
     }
 
-    //@Override
+    @Override
     public void informUser(String message) {
         mw.invoke(id, "informUser", new Object[]{message});
     }
