@@ -59,7 +59,16 @@ public class Context implements IContext {
 
         iView.setPlayerKeys(playerKeysMap);
         iModel.join(configParameters[0],configParameters[1]); //playerCount, maxWaitingTime
-        context.setCurrentState("WAITING");
+        if (iConfig.getRemote()){
+            context.setCurrentState("WAITING");
+        } else {
+            setCurrentState("GAME");
+        }
+    }
+
+    @Override
+    public void handleOfflineButton() throws IOException {
+        iConfig.setOffline();
     }
 
     @Override

@@ -2,9 +2,7 @@ package de.hawh.beta3.application.game.controller.config;
 
 import javafx.util.Pair;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -55,6 +53,20 @@ public class Config implements IConfig {
         } else {
             return loadDefaultPlayerCount();
         }
+    }
+
+    public void setOffline() throws IOException {
+        Properties props = new Properties();
+        InputStream in = getClass().getResourceAsStream("gameoftrons.properties");
+        props.load(in);
+        if (props.get("remote").equals("true")){
+            props.remove("remote");
+            props.setProperty("remote", "false");
+        } else {
+            props.remove("remote");
+            props.setProperty("remote", "true");
+        }
+        props.store(new FileOutputStream("gameoftrons.properties"), null);
     }
 
     public int getPlayerCount(){

@@ -14,6 +14,7 @@ public interface IConfig {
     int[] getConfigParameters();
 
     int setPlayerCount(int playerCount);
+    void setOffline() throws IOException;
 
     boolean getRemote();
 }
