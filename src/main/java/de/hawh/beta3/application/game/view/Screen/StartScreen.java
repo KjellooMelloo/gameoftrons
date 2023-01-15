@@ -43,7 +43,6 @@ public class StartScreen extends VBox {
         btnStart.setOnAction(event -> {
             String inputString = inputPlayerCountField.getText();
             if (inputString.equals("")) {
-                //TODO: call informUser: Please input a player count!
                 System.out.println("Button was pressed");
             } else {
                 int playerCount = Integer.valueOf(inputString);

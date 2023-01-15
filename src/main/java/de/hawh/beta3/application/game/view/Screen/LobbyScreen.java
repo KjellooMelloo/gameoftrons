@@ -73,7 +73,7 @@ public class LobbyScreen extends VBox {
     private static void registerCancelEventHandler(Button cancelButton) {
         cancelButton.setOnAction(event -> {
             System.out.println("Cancel Button clicked");
-            // TODO call controller interface
+            // TODO call controller interface handleWaitingButtonClick()
         });
     }
 
