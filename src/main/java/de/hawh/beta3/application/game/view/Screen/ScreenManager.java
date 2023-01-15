@@ -55,7 +55,11 @@ public class ScreenManager {
 
         resetScreen();
         Node screenToShow = screens.get(screenName);
-        base.getChildren().add(screenToShow);
+        if(!base.getChildren().contains(screenToShow)) base.getChildren().add(screenToShow);
+        {
+            base.getChildren().add(screenToShow);
+        }
+
         StackPane.clearConstraints(screenToShow);
         screenToShow.setVisible(true);
     }
