@@ -10,7 +10,6 @@ import javafx.scene.layout.VBox;
 
 public class EndScreen extends VBox {
 
-    private final ScreenCommons screenCommons = new ScreenCommons();
 
     private final SimpleIntegerProperty winner;
     private final Label winnerLabel;
@@ -45,7 +44,7 @@ public class EndScreen extends VBox {
                     if (winner.get() < 0) {
                         winnerLabel.setText("The game finished as a tie.");
                     } else {
-                        winnerLabel.setText("The winner is player " + screenCommons.getColorName(winner.get()));
+                        winnerLabel.setText("The winner is player " + ScreenCommons.getColorName(winner.get()));
                     }
 
                 }

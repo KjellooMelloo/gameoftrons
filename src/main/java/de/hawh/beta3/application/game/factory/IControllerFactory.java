@@ -1,4 +1,4 @@
-package de.hawh.beta3.application.factory;
+package de.hawh.beta3.application.game.factory;
 
 import de.hawh.beta3.application.game.controller.statemachine.Context;
 import de.hawh.beta3.application.game.controller.statemachine.IContext;

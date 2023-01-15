@@ -7,8 +7,13 @@ import java.net.DatagramSocket;
 public class Receiver implements Runnable {
 
     private DatagramSocket socket;
-    private final IReceiver receiver = new Unmarshaler(); //= Unmarshaler.getInstance();
+    private int port;
+    private final IReceiver unmarshaler;
 
+    public Receiver(int port, Unmarshaler unmarshaler){
+        this.port = port;
+        this.unmarshaler = unmarshaler;
+    }
     /**
      * When an object implementing interface {@code Runnable} is used
      * to create a thread, starting the thread causes the object's
@@ -20,20 +25,34 @@ public class Receiver implements Runnable {
      *
      * @see Thread#run()
      */
-    @Override   //TODO brauchen noch port hierfür
+    @Override
     public void run() {
         try {
-            socket = new DatagramSocket();  //+ port
+            socket = new DatagramSocket(port);
             while (true) {
-                byte[] buffer = new byte[1000];
+                // Größtes Paket durch Netzwerk hat 164 Bytes. Nächste Zweierpotenz ist ausreichend
+                byte[] buffer = new byte[1024];
                 DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
                 socket.receive(packet);
-                receiver.receive(packet);
+                Thread rec = new Thread(new ReceiverThread(packet));
+                rec.start();
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
-    //public void setPort(int port) {}
+    class ReceiverThread implements Runnable {
+
+        DatagramPacket packet;
+
+        public ReceiverThread(DatagramPacket packet){
+            this.packet = packet;
+        }
+        public void run(){
+            unmarshaler.receive(packet);
+        }
+    }
+
 }

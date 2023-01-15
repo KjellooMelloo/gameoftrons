@@ -4,6 +4,8 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
@@ -17,6 +19,8 @@ public class CountdownScreen extends VBox {
 
     private final SimpleIntegerProperty countdownState;
     private final int countdownLength;
+
+    private ScreenCommons screenCommons = new ScreenCommons();
 
 
     public CountdownScreen(int countdownLength) {
@@ -35,8 +39,15 @@ public class CountdownScreen extends VBox {
     }
 
 
-    public void startCountdown() {
 
+    public void startCountdown(){
+
+        EventHandler<ActionEvent> onFinished = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                //TODO call Controller notifyCountdownOver();
+            }
+        };
 
         if (timeline != null) {
             timeline.stop();
@@ -44,11 +55,9 @@ public class CountdownScreen extends VBox {
         countdownState.set(countdownLength);
         timeline = new Timeline();
         timeline.getKeyFrames().add(
-                new KeyFrame(Duration.seconds(countdownLength + 1),
+                new KeyFrame(Duration.seconds(countdownLength + 1), onFinished,
                         new KeyValue(countdownState, 0)));
         timeline.playFromStart();
-
-
     }
 
 }

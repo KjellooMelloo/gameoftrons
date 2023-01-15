@@ -42,10 +42,10 @@ public class Middleware implements IMiddleware {
      * @param remoteObject Referenz des remote objects
      * @param methodName   zu registrierende Methode
      * @param ipAddr       IP-Adresse für remote-Ansprechbarkeit
-     * @param port         Port für remote-Ansprechbarkeit
+     * @param isSingleton         Flag, ob sich nur eine instanz dieser Schnittstelle registriert werden darf
      */
     @Override
-    public void register(int interfaceID, IRemoteObject remoteObject, String methodName, InetAddress ipAddr, int port) {
-        serverStub.register(interfaceID, remoteObject, methodName, ipAddr, port);
+    public void register(int interfaceID, IRemoteObject remoteObject, String methodName, InetAddress ipAddr, boolean isSingleton) {
+        serverStub.register(interfaceID, remoteObject, methodName, ipAddr, isSingleton);
     }
 }

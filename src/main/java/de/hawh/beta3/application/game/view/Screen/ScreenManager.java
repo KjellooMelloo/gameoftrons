@@ -23,6 +23,8 @@ public class ScreenManager {
     private final Map<String, Node> screens = new HashMap<>();
     private final SimpleIntegerProperty currentPlayerID = new SimpleIntegerProperty(1);
 
+
+
     public ScreenManager() {
         this.base = new StackPane();
         this.scene = new Scene(base);
@@ -53,6 +55,7 @@ public class ScreenManager {
             throw new IllegalArgumentException("A screen mapped to " + screenName + " does not exist. Available Screens are " + screens.keySet());
         }
 
+        resetScreen();
         Node screenToShow = screens.get(screenName);
         base.getChildren().add(screenToShow);
         StackPane.clearConstraints(screenToShow);
@@ -134,4 +137,5 @@ public class ScreenManager {
         alert.setContentText(information);
         alert.show();
     }
+
 }

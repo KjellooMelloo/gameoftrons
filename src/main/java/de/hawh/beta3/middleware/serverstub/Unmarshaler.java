@@ -1,11 +1,17 @@
 package de.hawh.beta3.middleware.serverstub;
 
+import de.hawh.beta3.application.stub.callee.IModelCallee;
+import de.hawh.beta3.application.stub.callee.IModelViewCallee;
 import de.hawh.beta3.application.stub.callee.IRemoteObject;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,6 +21,14 @@ public class Unmarshaler implements IRegister, IReceiver {
     private final Map<Integer, IRemoteObject> registeredRemoteObjects = new HashMap<>() {
     };
 
+    private final InetAddress NSIPaddr;
+    private final int port;
+
+    public Unmarshaler(InetAddress NSIPaddr, int port){
+        this.NSIPaddr = NSIPaddr;
+        this.port = port;
+    }
+
     /**
      * Zum registrieren eines <code>IRemoteObject</code> im Nameserver mit seiner <code>interfaceID</code> und
      * <code>methodName</code>, sowie IP-Adresse <code>ipAddr</code> und Port <code>port</code>
@@ -23,10 +37,29 @@ public class Unmarshaler implements IRegister, IReceiver {
      * @param remoteObject Referenz des remote objects
      * @param methodName   zu registrierende Methode
      * @param ipAddr       IP-Adresse für remote-Ansprechbarkeit
-     * @param port         Port für remote-Ansprechbarkeit
+     * @param isSingleton   Flag, ob sich nur eine instanz dieser Schnittstelle registriert werden darf
      */
     @Override
-    public void register(int interfaceID, IRemoteObject remoteObject, String methodName, InetAddress ipAddr, int port) {
+    public void register(int interfaceID, IRemoteObject remoteObject, String methodName, InetAddress ipAddr, boolean isSingleton) {
+        // call serializeNS
+        byte[] registerMsg = serializeNS(interfaceID, methodName, ipAddr.getHostAddress(), isSingleton);
+
+        // send to NS;
+        // Client Socket to send
+        Socket socket = null;
+        try {
+            socket = new Socket(NSIPaddr, port);
+            DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
+            dOut.writeInt(registerMsg.length);
+            dOut.write(registerMsg);
+            // close socket
+            socket.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        // add RemoteObject to Map
+        registeredRemoteObjects.put(interfaceID, remoteObject);
 
     }
 
@@ -46,11 +79,30 @@ public class Unmarshaler implements IRegister, IReceiver {
      * @param interfaceID id des Interfaces
      * @param methodName  Name der remote Methode
      * @param ipAddr      IP-Adresse des remote objects
-     * @param port        Port des remote objects
+     * @param isSingleton   Flag, ob sich nur eine instanz dieser Schnittstelle registriert werden darf
      * @return JSON-Objekt als byte[] bereit zum Versenden
      */
-    private byte[] serializeNS(int interfaceID, String methodName, String ipAddr, int port) {
-        return null;
+    private byte[] serializeNS(int interfaceID, String methodName, String ipAddr, boolean isSingleton) {
+
+        // create JSON of interfaceID, methodName, ipAddr, isSingleton
+
+        JSONObject jsonMsg = new JSONObject();
+        JSONArray jsonMsgArgsArray = new JSONArray();
+        JSONObject jsonMsgArgsObject = new JSONObject();
+
+        jsonMsg.put("method",1);
+        jsonMsgArgsObject.put("ifaceID", interfaceID);
+        jsonMsgArgsObject.put("methodName", methodName);
+        jsonMsgArgsObject.put("ipAddr", ipAddr);
+        jsonMsgArgsObject.put("isSingleton", isSingleton);
+
+        jsonMsgArgsArray.put(jsonMsgArgsObject);
+        jsonMsg.put("args",jsonMsgArgsArray);
+        System.out.println("register jsonObj: " + jsonMsg);
+
+        // serialize JSON
+        byte[] byteMsg = jsonMsg.toString().getBytes(StandardCharsets.UTF_8);
+        return byteMsg;
     }
 
     /**
