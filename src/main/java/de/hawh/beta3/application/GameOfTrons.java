@@ -1,5 +1,7 @@
 package de.hawh.beta3.application;
 
+import de.hawh.beta3.application.game.controller.statemachine.Context;
+import de.hawh.beta3.application.game.controller.statemachine.IContext;
 import de.hawh.beta3.application.game.model.gamemanager.GameManager;
 import de.hawh.beta3.application.game.model.gamemanager.IModel;
 import de.hawh.beta3.application.game.view.Screen.ScreenManager;
@@ -9,6 +11,7 @@ import de.hawh.beta3.application.stub.callee.IModelViewCallee;
 import de.hawh.beta3.application.stub.callee.IRemoteObject;
 import de.hawh.beta3.middleware.IMiddleware;
 import de.hawh.beta3.middleware.Middleware;
+import de.hawh.beta3.middleware.nameservice.CommunicationPoint;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -36,7 +39,8 @@ public class GameOfTrons extends Application {
             int port = (int) p.get("nameServerPort");
 
             // Nameserver starten
-            // CommunicationPoint nameServer = new CommunicationPoint(port, 4);
+            CommunicationPoint nameServer = new CommunicationPoint(port, 4);
+            nameServer.startNameServer();
 
             // Middleware aufbauen/ starten
             IMiddleware middleware = new Middleware();  //Middleware.getInstance();
@@ -83,11 +87,10 @@ public class GameOfTrons extends Application {
                     InetAddress.getByName(ipVPN.getHostAddress()), false);
         }
 
-        //initialize für Interfaces mit obigen Referenzen
-        // IModelView nur von Model gebraucht, also in initialize() mit Factory initialisiert
-        IModel model = GameManager.getInstance();   //.initialize();
-        //IContext controller = new Context().initialize();  //Context.getInstance();
-        ScreenManager screenManager = new ScreenManager();
+        // MVC initialisieren
+        IModel model = GameManager.getInstance();
+        IContext controller = new Context();  //Context.getInstance();
+        ScreenManager screenManager = new ScreenManager();  //ScreenManager.getInstance();
 
 
         // Stage bauen
