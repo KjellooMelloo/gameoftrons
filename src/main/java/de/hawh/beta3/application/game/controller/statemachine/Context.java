@@ -24,11 +24,7 @@ public class Context implements IContext {
     int[] configParameters;
     HashMap<String, Pair<Integer, String>> controls;
     HashMap<Integer, String[]> playerKeysMap;
-    Pair<Integer, String> pair;
-    int id;
-    String action;
-    String left;
-    String right;
+
 
 
     private State currentState;
@@ -56,7 +52,8 @@ public class Context implements IContext {
     public void handleInputPlayerCount(int playerCount){
         iConfig.setPlayerCount(playerCount);
         configParameters = iConfig.loadConfigParameters();
-        playerKeysMap = iConfig.loadControls();
+        playerKeysMap = iConfig.loadControls(); //make Map for View id --> {"A","D"}
+        transformControls(); //transform Map for efficient handleDirectionKeyboardInput()
         iView.setPlayerKeys(playerKeysMap);
         iModel.join(configParameters[0],configParameters[1]); //playerCount, maxWaitingTime
         context.setCurrentState("WAITING");
@@ -91,16 +88,6 @@ public class Context implements IContext {
 
     }**/
 
-    //REMOTE
-   /**public void handleDirectionKeyboardInput(int id, String key){
-
-        if (key.equals(left)){
-            iModel.changePlayerDirection(id, "left");
-        }
-        else if (key.equals(right)) {
-            iModel.changePlayerDirection(id, "right");
-        }
-    }**/
 
    @Override
     public void endGame(int result){
@@ -123,5 +110,22 @@ public class Context implements IContext {
             default:
                 return new Start();
         }
+    }
+
+    public void transformControls(){
+       //id --> {"A","D"} String[]
+       //"A" --> {id, "left"} Pair
+
+        int id;
+        String key_l;
+        String key_r;
+
+       for (Map.Entry<Integer, String[]> entry : playerKeysMap.entrySet()){
+           id = entry.getKey();
+           key_l = entry.getValue()[0];
+           key_r = entry.getValue()[1];
+           controls.put(key_l,new Pair<>(id,"left"));
+           controls.put(key_r,new Pair<>(id,"right"));
+       }
     }
 }
