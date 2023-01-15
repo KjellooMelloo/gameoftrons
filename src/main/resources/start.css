@@ -5,13 +5,11 @@
 
 
 .root{
-    -fx-background-size: contain;
+    -fx-background-size: cover;
     -fx-background-position: bottom;
-    -fx-background-repeat: repeat-x;
+    -fx-background-repeat: no-repeat;
     -fx-background-image:
             url("images/tron_start_screen.png")
-
-
 }
 
 .label {
