@@ -27,6 +27,9 @@ public class IControllerCaller implements IContext {
     }
 
     @Override
+    public void handleOfflineButton() {mw.invoke(id, "handleOfflineButton", new Object[]{});}
+
+    @Override
     public void handleDirectionKeyboardInput(String key) {
         mw.invoke(id,"handleDirectionKeyboardInput", new Object[]{key});
     }

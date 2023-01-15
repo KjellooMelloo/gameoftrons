@@ -9,7 +9,7 @@ public interface IContext {
     void handleInputPlayerCount(int playerCount) throws IOException;
     void handleWaitingButtonClick();
     void handleDirectionKeyboardInput(String key);
-    //void handleDirectionKeyboardInput(int id, String key);
+    void handleOfflineButton() throws IOException;
     void notifyCountdownOver();
 
     void endGame(int result);
