@@ -152,7 +152,7 @@ public class CommunicationPoint {
          * @throws IOException Wenn eine IOException vorkommt
          */
         private void doBind(JSONObject args) throws IOException {
-            nameServer.bind(args.getInt("ifaceID"), args.getString("methodName"), InetAddress.getByName(args.getString("ipAddr")), args.getBoolean("isSingleton")  );
+            nameServer.bind(args.getInt("ifaceID"), args.getString("methodName"), args.getString("ipAddr"), args.getBoolean("isSingleton")  );
         }
     }
 
