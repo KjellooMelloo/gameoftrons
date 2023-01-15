@@ -12,13 +12,12 @@ import java.util.regex.Pattern;
 public class Config implements IConfig {
 
     int[] configParameters = new int[8];
-    Map<String,Object> allParams = new HashMap<>();
-    HashMap<String, Pair<Integer, String>> controls = new HashMap<>();
     HashMap<Integer, String[]> playerKeysMap = new HashMap<>();
 
     public static void main(String[] args) throws IOException {
         IConfig config = new Config();
         config.loadConfigParameters();
+        config.loadControls();
     }
 
     public int[] loadConfigParameters() throws IOException {
@@ -45,11 +44,6 @@ public class Config implements IConfig {
         return configParameters;
     }
 
-    public void loadConfigControls(){
-        //#1 rangeStart     #2 rangeEnd     #3 remote       #4 partner      #5 controls
-        int[] otherParameters = new int[5];
-    }
-
     public int loadDefaultPlayerCount(){
         return configParameters[0];
     }
@@ -71,7 +65,7 @@ public class Config implements IConfig {
         return configParameters[1];
     }
 
-    public List<CONTROLS> getControls(){
+    /**public List<CONTROLS> getControls(){
         List<CONTROLS> controls = new ArrayList<>();
 
         for (int i=1; i<=getPlayerCount(); i++){
@@ -89,68 +83,24 @@ public class Config implements IConfig {
                 controls.add(CONTROLS.I_P);
             }
         } return controls;
-    }
-
-    /**@Override
-    public HashMap<String, Pair<Integer, String>> loadControls(){
-        //HashMap<String key, Pair<int id, String action>> controls
-        String key;
-        int id;
-        String action;
-        String line;
-        Scanner scanner = new Scanner("gameoftrons.properties");
-        Matcher matcher;
-        String regex;
-        if ((boolean)allParams.get("remote")){
-            regex = "(\"p(0)_(l{1}|r{1})=(\\S+)\")";
-        } else {
-            regex = "(\"p(\\d{1})_(l{1}|r{1})=(\\S+)\")";
-        }
-        Pattern pattern = Pattern.compile(regex);
-        while (scanner.hasNextLine()) {
-            line = scanner.nextLine();
-            matcher = pattern.matcher(line);
-            if (matcher.matches()){
-                id = Integer.parseInt(matcher.group(1));
-                action = matcher.group(2);
-                if (action.equals("l")){
-                    action="left";
-                } else {
-                    action="right";
-                }
-                key = matcher.group(3);
-                controls.put(key, new Pair<>(id,action));
-            }
-        }
-
-        return controls;
     }**/
 
     @Override
-    public HashMap<Integer, String[]> loadControls(){
-        int id;
-        String direction;
-        String key_l = "";
-        String key_r;
+    public HashMap<Integer, String[]> loadControls() throws IOException {
 
-        String line;
-        Scanner scanner = new Scanner("gameoftrons.properties");
-        Matcher matcher;
-        String regex = "(\"p(\\d{1})_(l{1}|r{1})=(\\S+)\")";
-        Pattern pattern = Pattern.compile(regex);
-        while (scanner.hasNextLine()) {
-            line = scanner.nextLine();
-            matcher = pattern.matcher(line);
-            if (matcher.matches()) {
-                id = Integer.parseInt(matcher.group(1));
-                direction = matcher.group(2);
-                if (direction.equals("l")) {
-                    key_l = matcher.group(3);
-                } else {
-                    key_r = matcher.group(3);
-                    playerKeysMap.put(id, new String[]{key_l, key_r});
-                }
-            }
+        FileReader reader = new FileReader("gameoftrons.properties");
+        Properties props = new Properties();
+        props.load(reader);
+
+        playerKeysMap.put(0, new String[]{(String) props.get("p0_l"), (String) props.get("p0_r")});
+        playerKeysMap.put(1, new String[]{(String) props.get("p1_l"), (String) props.get("p1_r")});
+        playerKeysMap.put(2, new String[]{(String) props.get("p2_l"), (String) props.get("p2_r")});
+        playerKeysMap.put(3, new String[]{(String) props.get("p3_l"), (String) props.get("p3_r")});
+        playerKeysMap.put(4, new String[]{(String) props.get("p4_l"), (String) props.get("p4_r")});
+        playerKeysMap.put(5, new String[]{(String) props.get("p5_l"), (String) props.get("p5_r")});
+
+        for (int i=0; i<playerKeysMap.size(); i++){
+            System.out.println(Arrays.toString(playerKeysMap.get(i)));
         }
         return playerKeysMap;
     }
