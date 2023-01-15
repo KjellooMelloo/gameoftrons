@@ -25,12 +25,13 @@ public class Receiver implements Runnable {
      *
      * @see Thread#run()
      */
-    @Override   //TODO brauchen noch port hierfür
+    @Override
     public void run() {
         try {
-            socket = new DatagramSocket();  //+ port
+            socket = new DatagramSocket(port);
             while (true) {
-                byte[] buffer = new byte[1000];
+                // Größtes Paket durch Netzwerk hat 164 Bytes. Nächste Zweierpotenz ist ausreichend
+                byte[] buffer = new byte[1024];
                 DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
                 socket.receive(packet);
                 Thread rec = new Thread(new ReceiverThread(packet));
@@ -54,5 +55,4 @@ public class Receiver implements Runnable {
         }
     }
 
-    //public void setPort(int port) {}
 }
