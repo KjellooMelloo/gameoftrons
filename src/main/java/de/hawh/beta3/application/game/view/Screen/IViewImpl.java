@@ -7,15 +7,14 @@ import java.util.Map;
 
 public class IViewImpl implements IControllerView, IModelView {
 
+    private static IViewImpl instance = null;
     private ScreenManager screen;
 
-    private static IViewImpl instance = null;
-
-    private IViewImpl(){
-        ScreenManager screen = new ScreenManager();
+    private IViewImpl() {
+        this.screen = new ScreenManager();
     }
 
-    public static IViewImpl getInstance(){
+    public static IViewImpl getInstance() {
         if (instance == null)
             instance = new IViewImpl();
 
@@ -60,5 +59,9 @@ public class IViewImpl implements IControllerView, IModelView {
     public void setPlayerKeys(Map<Integer, String[]> playerKeysMap) {
         ScreenCommons.setPlayersKeyMap(playerKeysMap);
 
+    }
+
+    public ScreenManager getScreen() {
+        return screen;
     }
 }

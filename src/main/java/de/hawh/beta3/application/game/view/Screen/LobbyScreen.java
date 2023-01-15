@@ -14,13 +14,10 @@ import javafx.util.Duration;
 
 public class LobbyScreen extends VBox {
 
+    Label playerCounterLabel;
+    Label playerColorControlLabel;
     private int playersInLobby;
     private int currentPlayerID;
-    Label playerCounterLabel;
-
-    Label playerColorControlLabel;
-
-
 
 
     public LobbyScreen(SimpleIntegerProperty currentPlayerIDArg, SimpleIntegerProperty observablePlayersInLobby) {
@@ -64,6 +61,12 @@ public class LobbyScreen extends VBox {
         animateBackground();
     }
 
+    private static void registerCancelEventHandler(Button cancelButton) {
+        cancelButton.setOnAction(event -> {
+            System.out.println("Cancel Button clicked");
+            // TODO call controller interface handleWaitingButtonClick()
+        });
+    }
 
     private void addPlayerCountListener(SimpleIntegerProperty observablePlayersInLobby) {
         observablePlayersInLobby.addListener(
@@ -72,13 +75,6 @@ public class LobbyScreen extends VBox {
                     playerCounterLabel.setText(playersInLobby + " already joined.");
                 }
         );
-    }
-
-    private static void registerCancelEventHandler(Button cancelButton) {
-        cancelButton.setOnAction(event -> {
-            System.out.println("Cancel Button clicked");
-            // TODO call controller interface handleWaitingButtonClick()
-        });
     }
 
     private void styleScreen() {
@@ -92,7 +88,7 @@ public class LobbyScreen extends VBox {
         currentPlayerIDArg.addListener(e -> {
             this.currentPlayerID = currentPlayerIDArg.get();
             playerColorControlLabel.setText("Your player color is " + ScreenCommons.getColorName(currentPlayerID)
-            + " and your controls are " + ScreenCommons.getPlayerControls(currentPlayerID));
+                    + " and your controls are " + ScreenCommons.getPlayerControls(currentPlayerID));
             String playerColorHex = ScreenCommons.getColor(currentPlayerID).toString().substring(2, 8);
             playerColorControlLabel.setStyle("-fx-text-fill: " + "#" + playerColorHex + ";");
         });

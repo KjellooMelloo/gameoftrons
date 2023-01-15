@@ -18,10 +18,10 @@ import java.util.Map;
 
 public class GameScreen extends Canvas {
 
-    private int currentPlayerID = -1;
-    private int fieldSize = 10;
     private final Map<Integer, Player> playerMap = new HashMap<>();
     private final int windowSize = 800;
+    private int currentPlayerID = -1;
+    private int fieldSize = 10;
     private int numPlayers = 2;
 
 
