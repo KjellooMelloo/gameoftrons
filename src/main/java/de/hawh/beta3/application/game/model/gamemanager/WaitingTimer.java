@@ -2,7 +2,7 @@ package de.hawh.beta3.application.game.model.gamemanager;
 
 import java.util.TimerTask;
 
-public class WaitingTimer extends TimerTask {
+class WaitingTimer extends TimerTask {
 
     private GameManager manager = GameManager.getInstance();
 

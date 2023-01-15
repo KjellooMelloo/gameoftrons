@@ -51,23 +51,21 @@ public class GameManager implements IModel {
     @Override
     public void join(int playerCount, int maxWaitingTime) {
         if (fullPlayerCount != 0) {
-            //IModelView.informUser("Deine Eingabe ist uns egal, wir spielen mit {fullPlayerCount} Spielern!")
+            modelView.informUser("Deine Eingabe ist uns egal, wir spielen mit {fullPlayerCount} Spielern!");
         } else {
             fullPlayerCount = playerCount;
-            //IModelController.setCurrentState("WAITING");
             controller.setCurrentState("WAITING");
         }
         numPlayers++;
 
         if (numPlayers == fullPlayerCount) {
-            //IModelController.setCurrentState("GAME");
             controller.setCurrentState("GAME");
         } else {
-            //IModelView.updateNumPlayers(numPlayers);
+            modelView.updateNumPlayers(numPlayers);
             timer.cancel();
             timer = new Timer();
             TimerTask task = new WaitingTimer();
-            timer.schedule(task, maxWaitingTime * 1000L);    //waiting timer to 120s
+            timer.schedule(task, maxWaitingTime * 1000L);    //waiting timer to maxWaitingTime
         }
     }
 
@@ -80,8 +78,7 @@ public class GameManager implements IModel {
         fullPlayerCount = 0;
         numPlayers = 0;
         timer.cancel();
-        //IModelView.informUser("Spiel wurde abgebrochen");
-        //IModelController.setCurrentState("DELETE");
+        modelView.informUser("Spiel wurde abgebrochen");
         controller.setCurrentState("DELETE");
     }
 
@@ -117,10 +114,9 @@ public class GameManager implements IModel {
         gameLogic.updatePlayers();
         if (gameLogic.getGameState().equals("RUNNING")) {
             for (int[] p : gameLogic.getPlayerPositions()) {
-                //modelView.updatePlayer(p[0], p[1], p[2], p[3]);
+                modelView.updatePlayer(p[0], p[1], p[2], p[3]);
             }
         } else if (gameLogic.getGameState().equals("OVER")) {
-            //modelController.endGame(gameLogic.getGameWinner());
             controller.endGame(gameLogic.getGameWinner());
             timeline.stop();
         }
