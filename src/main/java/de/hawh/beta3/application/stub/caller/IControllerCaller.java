@@ -2,12 +2,12 @@ package de.hawh.beta3.application.stub.caller;
 
 import de.hawh.beta3.application.game.controller.statemachine.Context;
 import de.hawh.beta3.application.game.controller.statemachine.IContext;
-import de.hawh.beta3.application.game.controller.statemachine.State;
 import de.hawh.beta3.middleware.IMiddleware;
+import de.hawh.beta3.middleware.Middleware;
 
 public class IControllerCaller implements IContext {
 
-    private IMiddleware mw; //= new Middleware();
+    private IMiddleware mw = Middleware.getInstance();
     private int id = 2;
 
     @Override
