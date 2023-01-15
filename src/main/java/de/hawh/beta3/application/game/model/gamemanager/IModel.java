@@ -31,4 +31,6 @@ public interface IModel {
      * @param action    "left" or "right"
      */
     void changePlayerDirection(int id, String action);
+
+    void setNumPlayers(int numPlayers);
 }

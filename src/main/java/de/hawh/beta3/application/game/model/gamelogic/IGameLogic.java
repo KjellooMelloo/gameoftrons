@@ -46,4 +46,5 @@ public interface IGameLogic {
      * @return int[][] with player IDs + current x and y
      */
     int[][] getPlayerPositions();
+
 }
