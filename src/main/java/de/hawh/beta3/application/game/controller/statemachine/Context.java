@@ -79,7 +79,7 @@ public class Context implements IContext {
     @Override
     public void notifyCountdownOver(){
         iModel.startGame(context.configParameters[3], context.configParameters[2]); //int gridSize, int gameSpeed
-        iView.startGame(context.configParameters[3]);
+        iView.startGame(context.configParameters[0], context.configParameters[3]); //int playerCount, int gridSize
     }
 
     @Override
