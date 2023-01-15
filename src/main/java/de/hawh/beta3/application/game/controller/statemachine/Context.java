@@ -24,11 +24,7 @@ public class Context implements IContext {
     int[] configParameters;
     HashMap<String, Pair<Integer, String>> controls;
     HashMap<Integer, String[]> playerKeysMap;
-    Pair<Integer, String> pair;
-    int id;
-    String action;
-    String left;
-    String right;
+
 
 
     private State currentState;
@@ -53,24 +49,15 @@ public class Context implements IContext {
     }
 
     @Override
-    public void handleInputPlayerCount(int playerCount){}
-
-    /**public void handleInputPlayerCount(int playerCount){
+    public void handleInputPlayerCount(int playerCount){
         iConfig.setPlayerCount(playerCount);
         configParameters = iConfig.loadConfigParameters();
-        controls = iConfig.loadControls();
-        if (iConfig.getRemote()){
-            //Map.Entry<String,Pair<Integer,String>> entry = controls.values().stream().anyMatch(p -> p.getValue().equals("left"));
-            Optional<Map.Entry<String,Pair<Integer,String>>> entry = controls.entrySet().stream().filter(e->e.getValue().getValue().equals("left")).findFirst();
-            entry.ifPresent(e -> left = e.getKey());
-            Optional<Map.Entry<String,Pair<Integer,String>>> entry2 = controls.entrySet().stream().filter(e->e.getValue().getValue().equals("right")).findFirst();
-            entry2.ifPresent(e -> right = e.getKey());
-        }
-
-        iView.setPlayerKeys(new HashMap<>());
-        iModel.join(configParameters[0], configParameters[1]); //playerCount & maxWaitingTime
+        playerKeysMap = iConfig.loadControls(); //make Map for View id --> {"A","D"}
+        transformControls(); //transform Map for efficient handleDirectionKeyboardInput()
+        iView.setPlayerKeys(playerKeysMap);
+        iModel.join(configParameters[0],configParameters[1]); //playerCount, maxWaitingTime
         context.setCurrentState("WAITING");
-    }**/
+    }
 
     @Override
     public void handleWaitingButtonClick(){
@@ -87,30 +74,11 @@ public class Context implements IContext {
     @Override
     public void handleDirectionKeyboardInput(String key){
 
+        if (controls.containsKey(key)){ //prüft, ob Tastenbelegung aktiviert ist für key
+            iModel.changePlayerDirection(controls.get(key).getKey(),controls.get(key).getValue()); //id, direction
+        }
     }
 
-    //todo sicherheitsmodus überlegen, sodass nur aktivierte Tasten funktionieren --> 4 spieler, nur entsprechende Tastenbelegungen aktiviert
-    //LOKALE VERSION
-    /**public void handleDirectionKeyboardInput(String key){
-
-        pair = controls.get(key);
-        id = pair.getKey();
-        action = pair.getValue();
-
-        iModel.changePlayerDirection(id,action);
-
-    }**/
-
-    //REMOTE
-   /**public void handleDirectionKeyboardInput(int id, String key){
-
-        if (key.equals(left)){
-            iModel.changePlayerDirection(id, "left");
-        }
-        else if (key.equals(right)) {
-            iModel.changePlayerDirection(id, "right");
-        }
-    }**/
 
    @Override
     public void endGame(int result){
@@ -133,5 +101,22 @@ public class Context implements IContext {
             default:
                 return new Start();
         }
+    }
+
+    public void transformControls(){
+       //id --> {"A","D"} String[]
+       //"A" --> {id, "left"} Pair
+
+        int id;
+        String key_l;
+        String key_r;
+
+       for (Map.Entry<Integer, String[]> entry : playerKeysMap.entrySet()){
+           id = entry.getKey();
+           key_l = entry.getValue()[0];
+           key_r = entry.getValue()[1];
+           controls.put(key_l,new Pair<>(id,"left"));
+           controls.put(key_r,new Pair<>(id,"right"));
+       }
     }
 }
