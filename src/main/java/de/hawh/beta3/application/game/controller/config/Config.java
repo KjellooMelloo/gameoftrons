@@ -2,19 +2,22 @@ package de.hawh.beta3.application.game.controller.config;
 
 import javafx.util.Pair;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Config implements IConfig {
 
-    int[] configParameters = new int[4];
+    int[] configParameters = new int[8];
     Map<String,Object> allParams = new HashMap<>();
     HashMap<String, Pair<Integer, String>> controls = new HashMap<>();
     HashMap<Integer, String[]> playerKeysMap = new HashMap<>();
 
 
-    public int[] loadConfigParameters(){
+    /**public int[] loadConfigParameters(){
         Map<String, String> parameters = new HashMap<>();
 
         String data;
@@ -69,6 +72,32 @@ public class Config implements IConfig {
         configParameters[3]=gridSize;
 
         return configParameters;
+    }**/
+
+    public int[] loadConfigParameters() throws IOException {
+        //#1 defaultPlayerCount     #2 maxWaitingTime     #3 gameSpeed     #4 gridSize
+        //#5 rangeStart       #6 rangeEnd       #7 remote       #8 partner
+        int[] gameParameters = new int[8];
+        FileReader reader = new FileReader("gameoftrons.properties");
+        Properties props = new Properties();
+        props.load(reader);
+        gameParameters[0] = (int) props.get("defaultPlayerCount");
+        gameParameters[1] = (int) props.get("maxWaitingTime");
+        gameParameters[2] = (int) props.get("gameSpeed");
+        gameParameters[3] = (int) props.get("gridSize");
+        gameParameters[4] = (int) props.get("rangeStart");
+        gameParameters[5] = (int) props.get("rangeEnd");
+        boolean r = Boolean.parseBoolean((String) props.get("remote"));
+        gameParameters[6] = r ? 1 : 0;
+        boolean p = Boolean.parseBoolean((String) props.get("partner"));
+        gameParameters[7] = p ? 1 : 0;
+        configParameters = gameParameters;
+        return configParameters;
+    }
+
+    public void loadOtherParameters(){
+        //#1 rangeStart     #2 rangeEnd     #3 remote       #4 partner      #5 controls
+        int[] otherParameters = new int[5];
     }
 
     public int loadDefaultPlayerCount(){
