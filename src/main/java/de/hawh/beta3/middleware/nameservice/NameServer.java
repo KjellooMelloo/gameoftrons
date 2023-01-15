@@ -39,15 +39,19 @@ class NameServer implements INameServer {
      * @param interfaceID id des Interfaces, das eingetragen werden soll
      * @param methodName  Methodenname, der eingetragen werden soll
      * @param ipAddr      IP-Adresse des remote objects
+     * @param isSingleton   Flag, ob sich nur eine instanz dieser Schnittstelle registriert werden darf
      */
     @Override
-    public void bind(int interfaceID, String methodName, InetAddress ipAddr) {
+    public void bind(int interfaceID, String methodName, InetAddress ipAddr, boolean isSingleton) {
         Pair<Integer, String> key = new Pair<>(interfaceID, methodName);
 
         if (!checkInterfaceInTable(interfaceID, methodName)) {
             cache.put(key, new HashSet<>());
+            cache.get(key).add(ipAddr.getHostAddress());
+        } else if(!isSingleton) {
+            cache.get(key).add(ipAddr.getHostAddress());
         }
-        cache.get(key).add(ipAddr.toString());
+
     }
 
     /**
