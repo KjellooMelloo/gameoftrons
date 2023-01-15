@@ -62,7 +62,7 @@ public class Context implements IContext {
             context.setCurrentState("WAITING");
         } else {
             //todo setNumPlayers(playerCount); --> Model initialisiert 4 Spieler, können dann mit aktivierten Tasten spielen
-            iModel.setNumPlayers(playerCount);
+            iModel.setNumPlayers(configParameters[0]);
             setCurrentState("GAME");
         }
     }

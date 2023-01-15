@@ -93,6 +93,7 @@ public class GameManager implements IModel {
         gameLogic.init(numPlayers, size);
         timeline = new Timeline(new KeyFrame(Duration.millis(gameSpeed), e -> update()));
         timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
     }
 
     /**
