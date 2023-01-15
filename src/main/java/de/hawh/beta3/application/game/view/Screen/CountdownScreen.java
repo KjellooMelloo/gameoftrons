@@ -40,7 +40,7 @@ public class CountdownScreen extends VBox {
 
 
 
-    private void startCountdown(){
+    public void startCountdown(){
 
         EventHandler<ActionEvent> onFinished = new EventHandler<ActionEvent>() {
             @Override

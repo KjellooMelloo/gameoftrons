@@ -14,7 +14,6 @@ import javafx.util.Duration;
 
 public class LobbyScreen extends VBox {
 
-    private final ScreenCommons screenCommons = new ScreenCommons();
     private int playersInLobby;
     private int currentPlayerID;
     Label playerCounterLabel;
@@ -87,8 +86,8 @@ public class LobbyScreen extends VBox {
         this.currentPlayerID = currentPlayerIDArg.get();
         currentPlayerIDArg.addListener(e -> {
             this.currentPlayerID = currentPlayerIDArg.get();
-            playerColorLabel.setText("Your player color is " + screenCommons.getColorName(currentPlayerID));
-            String playerColorHex = screenCommons.getColor(currentPlayerID).toString().substring(2, 8);
+            playerColorLabel.setText("Your player color is " + ScreenCommons.getColorName(currentPlayerID));
+            String playerColorHex = ScreenCommons.getColor(currentPlayerID).toString().substring(2, 8);
             playerColorLabel.setStyle("-fx-text-fill: " + "#" + playerColorHex + ";");
         });
     }

@@ -55,6 +55,7 @@ public class ScreenManager {
             throw new IllegalArgumentException("A screen mapped to " + screenName + " does not exist. Available Screens are " + screens.keySet());
         }
 
+        resetScreen();
         Node screenToShow = screens.get(screenName);
         base.getChildren().add(screenToShow);
         StackPane.clearConstraints(screenToShow);

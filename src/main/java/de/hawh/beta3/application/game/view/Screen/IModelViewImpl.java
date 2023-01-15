@@ -7,7 +7,7 @@ public class IModelViewImpl implements IModelView {
     ScreenManager screen = new ScreenManager();
 
 
-    public void IModelView(ScreenManager screen) {
+    public IModelViewImpl(ScreenManager screen) {
         this.screen = screen;
     }
 

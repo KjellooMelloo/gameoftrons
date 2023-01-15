@@ -23,7 +23,6 @@ public class GameScreen extends Canvas {
     private final Map<Integer, Player> playerMap = new HashMap<>();
     private final int windowSize = 800;
     private int numPlayers = 2;
-    private final ScreenCommons screenCommons = new ScreenCommons();
 
 
     public GameScreen() {
@@ -158,7 +157,7 @@ public class GameScreen extends Canvas {
             }
 
             // paint new bike position
-            g.setFill(screenCommons.getColor(playerToDraw.getId()));
+            g.setFill(ScreenCommons.getColor(playerToDraw.getId()));
             g.fillRect(pos.x * windowSize / fieldSize, pos.y * windowSize / fieldSize, windowSize / fieldSize, windowSize / fieldSize);
         }
 
