@@ -2,7 +2,11 @@ package de.hawh.beta3.middleware;
 
 import de.hawh.beta3.application.stub.callee.IRemoteObject;
 import de.hawh.beta3.middleware.clientstub.IRemoteInvocation;
+import de.hawh.beta3.middleware.clientstub.Marshaler;
+import de.hawh.beta3.middleware.clientstub.SenderImpl;
 import de.hawh.beta3.middleware.serverstub.IRegister;
+import de.hawh.beta3.middleware.serverstub.Receiver;
+import de.hawh.beta3.middleware.serverstub.Unmarshaler;
 
 import java.net.InetAddress;
 
@@ -12,13 +16,24 @@ import java.net.InetAddress;
 public class Middleware implements IMiddleware {
 
     private static Middleware mw = new Middleware();
-    private IRemoteInvocation clientStub;   //= new Marshaler.getInstance();
+
+    private IRemoteInvocation clientStub;// = new Marshaler.getInstance();
     private IRegister serverStub;   //= new Unmarshaler.getInstance();
+
+    private Receiver receiver;
 
     private Middleware(){}
 
     public static Middleware getInstance() {
         return mw;
+    }
+
+    public void initialize(int port, InetAddress NSIp){
+        clientStub = new Marshaler(new SenderImpl(port), port, NSIp);
+        serverStub = new Unmarshaler(NSIp,port);
+        receiver = new Receiver(port, (Unmarshaler) serverStub);
+        receiver.run();
+
     }
 
     /**

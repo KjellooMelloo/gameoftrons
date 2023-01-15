@@ -6,20 +6,17 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
+    private final List<Coordinate> trail;
+    private final ImageView imageView;
     private int id;
     private Coordinate pos;
     private String orientation;
-
-    private final List<Coordinate> trail;
-
-    private final ImageView imageView;
 
     public Player(int id, Coordinate pos, String orientation) {
         this.id = id;
@@ -31,7 +28,6 @@ public class Player {
                 + "_" + this.id + ".png").getAbsolutePath());
 
         rotateImage(orientation);
-
 
 
     }

@@ -2,10 +2,13 @@ package de.hawh.beta3.application.game.view.Screen;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import org.json.JSONArray;
 
 
 public class HelloApplication extends Application {
+    public static void main(String[] args) {
+        launch();
+    }
+
     @Override
     public void start(Stage stage) throws InterruptedException {
 
@@ -21,10 +24,5 @@ public class HelloApplication extends Application {
         stage.setTitle("TRON - Light Cycles");
         stage.setScene(gameScreen.getScene());
         stage.show();
-    }
-
-
-    public static void main(String[] args) {
-        launch();
     }
 }

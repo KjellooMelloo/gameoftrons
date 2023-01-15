@@ -1,7 +1,5 @@
 package de.hawh.beta3.application.game.view.Screen;
 
-import de.hawh.beta3.application.game.controller.statemachine.Context;
-import de.hawh.beta3.application.game.controller.statemachine.IContext;
 import javafx.scene.paint.Color;
 
 import java.util.Map;
@@ -27,12 +25,14 @@ public class ScreenCommons {
         if (playerID > 5) throw new IllegalArgumentException("PlayerIDs can't be larger than 5");
         return colorNames[playerID];
     }
+
     public static void setPlayersKeyMap(Map<Integer, String[]> playersKeyMap) {
         ScreenCommons.playersKeyMap = playersKeyMap;
     }
 
-    public static String getPlayerControls(int playerId){
-        if(!playersKeyMap.containsKey(playerId)) throw new IllegalArgumentException("No controls available for player id");
+    public static String getPlayerControls(int playerId) {
+        if (!playersKeyMap.containsKey(playerId))
+            throw new IllegalArgumentException("No controls available for player id");
         String[] controls = playersKeyMap.get(playerId);
         String controlsString = "LEFT:" + controls[0] + " , " + "RIGHT:" + controls[1];
         return controlsString;

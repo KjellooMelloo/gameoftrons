@@ -9,5 +9,5 @@ public interface IControllerView {
 
     void notifyGameResult(int winnerID);
 
-    void setPlayerKeys(Map<Integer,String[]> playerKeysMap);
+    void setPlayerKeys(Map<Integer, String[]> playerKeysMap);
 }

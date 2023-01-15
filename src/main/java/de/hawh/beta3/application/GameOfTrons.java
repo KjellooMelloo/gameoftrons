@@ -4,7 +4,7 @@ import de.hawh.beta3.application.game.controller.statemachine.Context;
 import de.hawh.beta3.application.game.controller.statemachine.IContext;
 import de.hawh.beta3.application.game.model.gamemanager.GameManager;
 import de.hawh.beta3.application.game.model.gamemanager.IModel;
-import de.hawh.beta3.application.game.view.Screen.ScreenManager;
+import de.hawh.beta3.application.game.view.Screen.IViewImpl;
 import de.hawh.beta3.application.stub.callee.IControllerCallee;
 import de.hawh.beta3.application.stub.callee.IModelCallee;
 import de.hawh.beta3.application.stub.callee.IModelViewCallee;
@@ -23,6 +23,10 @@ import java.util.stream.Collectors;
 
 public class GameOfTrons extends Application {
 
+    public static void main(String[] args) {
+        launch(args);
+    }
+
     @Override
     public void start(Stage stage) throws Exception {
         // Config lesen
@@ -37,13 +41,16 @@ public class GameOfTrons extends Application {
             fr = new FileReader("nameserver.properties");
             p.load(fr);
             int port = (int) p.get("nameServerPort");
+            InetAddress NSip = InetAddress.getByName((String) p.get("nameserverIP"));
 
             // Nameserver starten
             CommunicationPoint nameServer = new CommunicationPoint(port, 4);
             nameServer.startNameServer();
 
             // Middleware aufbauen/ starten
-            IMiddleware middleware = new Middleware();  //Middleware.getInstance();
+            IMiddleware middleware = Middleware.getInstance();
+            Middleware middlewareInstance = (Middleware) middleware;
+            middlewareInstance.initialize(port, NSip);
 
             // Callee Objekte erzeugen
             IRemoteObject modelCallee = new IModelCallee();
@@ -89,23 +96,19 @@ public class GameOfTrons extends Application {
 
         // MVC initialisieren
         IModel model = GameManager.getInstance();
-        IContext controller = new Context();  //Context.getInstance();
-        ScreenManager screenManager = new ScreenManager();  //ScreenManager.getInstance();
+        IContext controller = Context.getInstance();
+        IViewImpl view = IViewImpl.getInstance();
 
 
         // Stage bauen
         stage.setWidth(javafx.stage.Screen.getPrimary().getBounds().getWidth() / 1.5);
         stage.setHeight(javafx.stage.Screen.getPrimary().getBounds().getHeight() / 1.5);
 
-        screenManager.drawScreen("start");
+        view.showScreen("start");
 
         // configure and show stage
         stage.setTitle("Game of Trons - Not so Light BiCycles");
-        stage.setScene(screenManager.getScene());
+        stage.setScene(view.getScreen().getScene());
         stage.show();
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 }
