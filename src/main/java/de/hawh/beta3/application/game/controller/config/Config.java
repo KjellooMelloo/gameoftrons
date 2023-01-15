@@ -12,8 +12,6 @@ import java.util.regex.Pattern;
 public class Config implements IConfig {
 
     int[] configParameters = new int[8];
-    Map<String,Object> allParams = new HashMap<>();
-    HashMap<String, Pair<Integer, String>> controls = new HashMap<>();
     HashMap<Integer, String[]> playerKeysMap = new HashMap<>();
 
     public static void main(String[] args) throws IOException {
@@ -46,11 +44,6 @@ public class Config implements IConfig {
         return configParameters;
     }
 
-    public void loadConfigControls(){
-        //#1 rangeStart     #2 rangeEnd     #3 remote       #4 partner      #5 controls
-        int[] otherParameters = new int[5];
-    }
-
     public int loadDefaultPlayerCount(){
         return configParameters[0];
     }
@@ -72,7 +65,7 @@ public class Config implements IConfig {
         return configParameters[1];
     }
 
-    public List<CONTROLS> getControls(){
+    /**public List<CONTROLS> getControls(){
         List<CONTROLS> controls = new ArrayList<>();
 
         for (int i=1; i<=getPlayerCount(); i++){
@@ -90,41 +83,6 @@ public class Config implements IConfig {
                 controls.add(CONTROLS.I_P);
             }
         } return controls;
-    }
-
-    /**@Override
-    public HashMap<String, Pair<Integer, String>> loadControls(){
-        //HashMap<String key, Pair<int id, String action>> controls
-        String key;
-        int id;
-        String action;
-        String line;
-        Scanner scanner = new Scanner("gameoftrons.properties");
-        Matcher matcher;
-        String regex;
-        if ((boolean)allParams.get("remote")){
-            regex = "(\"p(0)_(l{1}|r{1})=(\\S+)\")";
-        } else {
-            regex = "(\"p(\\d{1})_(l{1}|r{1})=(\\S+)\")";
-        }
-        Pattern pattern = Pattern.compile(regex);
-        while (scanner.hasNextLine()) {
-            line = scanner.nextLine();
-            matcher = pattern.matcher(line);
-            if (matcher.matches()){
-                id = Integer.parseInt(matcher.group(1));
-                action = matcher.group(2);
-                if (action.equals("l")){
-                    action="left";
-                } else {
-                    action="right";
-                }
-                key = matcher.group(3);
-                controls.put(key, new Pair<>(id,action));
-            }
-        }
-
-        return controls;
     }**/
 
     @Override

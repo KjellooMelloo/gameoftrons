@@ -27,7 +27,6 @@ public class Context implements IContext {
     HashMap<Integer, String[]> playerKeysMap;
 
 
-
     private State currentState;
 
     private Context(){
@@ -82,7 +81,6 @@ public class Context implements IContext {
             iModel.changePlayerDirection(controls.get(key).getKey(),controls.get(key).getValue()); //id, direction
         }
     }
-
 
    @Override
     public void endGame(int result){
