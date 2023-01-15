@@ -8,6 +8,8 @@ import javafx.scene.effect.Effect;
 import javafx.scene.effect.Glow;
 import javafx.scene.layout.VBox;
 
+import java.io.IOException;
+
 public class StartScreen extends VBox {
 
     public StartScreen() {
@@ -44,7 +46,11 @@ public class StartScreen extends VBox {
                 System.out.println("Button was pressed");
             } else {
                 int playerCount = Integer.valueOf(inputString);
-                ScreenCommons.CONTROLLER.handleInputPlayerCount(playerCount);
+                try {
+                    ScreenCommons.CONTROLLER.handleInputPlayerCount(playerCount);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 System.out.println("Input player count: " + playerCount);
             }
 
