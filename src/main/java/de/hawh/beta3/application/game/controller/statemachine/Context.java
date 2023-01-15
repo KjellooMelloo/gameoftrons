@@ -1,8 +1,11 @@
 package de.hawh.beta3.application.game.controller.statemachine;
 
+import de.hawh.beta3.application.game.controller.config.Config;
 import de.hawh.beta3.application.game.controller.config.IConfig;
+import de.hawh.beta3.application.game.model.gamemanager.GameManager;
 import de.hawh.beta3.application.game.model.gamemanager.IModel;
 import de.hawh.beta3.application.game.view.IControllerView;
+import de.hawh.beta3.application.game.view.Screen.IViewImpl;
 import javafx.util.Pair;
 
 import java.util.HashMap;
@@ -13,9 +16,9 @@ public class Context implements IContext {
 
     private static Context context = new Context();
 
-    IControllerView iView;
-    IModel iModel;
-    IConfig iConfig;
+    IControllerView iView = IViewImpl.getInstance();
+    IModel iModel = GameManager.getInstance();
+    IConfig iConfig = new Config();
 
     //Variablen aus der Config
     int[] configParameters;
@@ -32,7 +35,7 @@ public class Context implements IContext {
 
     private Context(){
         context = this;
-        currentState = new Start(context);
+        currentState = new Start();
     }
 
     public static Context getInstance() {
@@ -102,17 +105,17 @@ public class Context implements IContext {
     public State getStateFromString(String state){
         switch (state){
             case "START":
-                return new Start(context);
+                return new Start();
             case "WAITING":
-                return new Waiting(context);
+                return new Waiting();
             case "GAME":
-                return new Game(context);
+                return new Game();
             case "END":
-                return new End(context);
+                return new End();
             case "DELETE":
-                return new Delete(context);
+                return new Delete();
             default:
-                return new Start(context);
+                return new Start();
         }
     }
 }

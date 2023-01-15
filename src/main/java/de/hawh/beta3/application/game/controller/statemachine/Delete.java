@@ -3,12 +3,15 @@ package de.hawh.beta3.application.game.controller.statemachine;
 
 public class Delete implements State {
 
-    public Delete(Context context) {
-        this.behavior(context);
+    IContext context;
+
+    public Delete() {
+        this.behavior();
+        this.context = Context.getInstance();
     }
 
     @Override
-    public void behavior(Context context) {
+    public void behavior() {
         context.setCurrentState("START");
     }
 

@@ -1,19 +1,21 @@
 package de.hawh.beta3.application.game.controller.statemachine;
 
 import de.hawh.beta3.application.game.view.IControllerView;
+import de.hawh.beta3.application.game.view.Screen.IViewImpl;
 
 public class Start implements State {
 
     IControllerView iView;
     Context context;
 
-    public Start(Context context){
-        this.behavior(context);
-        this.context = context;
+    public Start(){
+        this.behavior();
+        this.context = Context.getInstance();
+        this.iView = IViewImpl.getInstance();
     }
 
     @Override
-    public void behavior(Context context){
+    public void behavior(){
 
         iView.showScreen("start");
     }
