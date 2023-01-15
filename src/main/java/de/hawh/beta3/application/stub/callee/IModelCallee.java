@@ -24,11 +24,16 @@ public class IModelCallee implements IRemoteObject {
     public void call(String methodName, Object[] args) {
         //TODO Übersetzung mit Adapter bei vereinbarten gemeinsamen Methodennamen
         try {
-            Class<?>[] params = (Class<?>[]) Arrays.stream(args).map(Object::getClass).toArray();
-            method = model.getClass().getMethod(methodName, params);
-            method.invoke(model);
-        } catch(NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            for (Method m : model.getClass().getDeclaredMethods()) {
+                if (m.getName().equals(methodName)) {
+                    m.invoke(model, args);
+                    break;
+                }
+            }
+        } catch(IllegalAccessException e) {
             e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            System.err.println(e.getTargetException());
         }
     }
 

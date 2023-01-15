@@ -60,6 +60,8 @@ public class Context implements IContext {
         iModel.join(configParameters[0],configParameters[1]); //playerCount, maxWaitingTime
         if (iConfig.getRemote()){
             context.setCurrentState("WAITING");
+            iView.showScreen("lobby");  //Sollte hier glaube ich noch gemacht werden
+            //todo hier schlägt es fehl
         } else {
             //todo setNumPlayers(playerCount); --> Model initialisiert 4 Spieler, können dann mit aktivierten Tasten spielen
             iModel.setNumPlayers(configParameters[0]);

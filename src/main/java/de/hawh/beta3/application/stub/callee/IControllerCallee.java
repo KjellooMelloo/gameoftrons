@@ -29,8 +29,11 @@ public class IControllerCallee implements IRemoteObject {
                     break;
                 }
             }
-        } catch (IllegalAccessException | InvocationTargetException e) {
+        } catch (IllegalAccessException e) {
+
             e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            System.err.println(e.getTargetException());
         }
     }
 

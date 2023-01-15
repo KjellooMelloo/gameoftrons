@@ -165,7 +165,7 @@ public class Marshaler implements IRemoteInvocation {
         jsonMsg.put("args", argsJSONArray);
         // Convert to Byte-Array
 
-
+        System.out.println("lookup request: " + jsonMsg);
         byte[] msg = jsonMsg.toString().getBytes(StandardCharsets.UTF_8);
         return msg;
 
@@ -182,6 +182,7 @@ public class Marshaler implements IRemoteInvocation {
         String json = new String(message, StandardCharsets.UTF_8);
         JSONObject byteMsgToJSON = new JSONObject(json);
 
+        System.out.println("lookup result: " + byteMsgToJSON);
         if(byteMsgToJSON.get("ipAddr1").equals("")){
             throw new RuntimeException("Requested Method not registered in name Server!");
         }
