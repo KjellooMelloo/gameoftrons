@@ -50,4 +50,9 @@ public class IModelCaller implements IModel {
     public void changePlayerDirection(int id, String action) {
         mw.invoke(id, "changePlayerDirection", new Object[]{id, action});
     }
+
+    @Override
+    public void setNumPlayers(int numPlayers){
+        mw.invoke(id,"setNumPlayers", new Object[]{numPlayers});
+    }
 }
