@@ -18,7 +18,10 @@ public class LobbyScreen extends VBox {
     private int currentPlayerID;
     Label playerCounterLabel;
 
-    Label playerColorLabel;
+    Label playerColorControlLabel;
+
+
+
 
     public LobbyScreen(SimpleIntegerProperty currentPlayerIDArg, SimpleIntegerProperty observablePlayersInLobby) {
         //Felder initialisieren
@@ -33,8 +36,9 @@ public class LobbyScreen extends VBox {
         Label titleLabel = new Label("Please wait until all players have joined the game...");
         titleLabel.setId("title");
         Button cancelButton = new Button("Cancel");
-        playerColorLabel = new Label("");
-        playerColorLabel.setId("colorLabel");
+        playerColorControlLabel = new Label("");
+        playerColorControlLabel.setId("colorLabel");
+
 
         // Vbox einrichten
         styleScreen();
@@ -46,7 +50,8 @@ public class LobbyScreen extends VBox {
 
         this.getChildren().add(titleLabel);
         this.getChildren().add(playerCounterLabel);
-        this.getChildren().add(playerColorLabel);
+        this.getChildren().add(playerColorControlLabel);
+        //this.getChildren().add(playerControlsLabel);
 
 
         if (this.currentPlayerID == 0) {
@@ -86,9 +91,10 @@ public class LobbyScreen extends VBox {
         this.currentPlayerID = currentPlayerIDArg.get();
         currentPlayerIDArg.addListener(e -> {
             this.currentPlayerID = currentPlayerIDArg.get();
-            playerColorLabel.setText("Your player color is " + ScreenCommons.getColorName(currentPlayerID));
+            playerColorControlLabel.setText("Your player color is " + ScreenCommons.getColorName(currentPlayerID)
+            + " and your controls are " + ScreenCommons.getPlayerControls(currentPlayerID));
             String playerColorHex = ScreenCommons.getColor(currentPlayerID).toString().substring(2, 8);
-            playerColorLabel.setStyle("-fx-text-fill: " + "#" + playerColorHex + ";");
+            playerColorControlLabel.setStyle("-fx-text-fill: " + "#" + playerColorHex + ";");
         });
     }
 

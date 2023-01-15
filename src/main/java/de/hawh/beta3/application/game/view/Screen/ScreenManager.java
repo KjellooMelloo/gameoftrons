@@ -23,7 +23,7 @@ public class ScreenManager {
     private final Map<String, Node> screens = new HashMap<>();
     private final SimpleIntegerProperty currentPlayerID = new SimpleIntegerProperty(1);
 
-    private Map<Integer, String[]> playersKeyMap;
+
 
     public ScreenManager() {
         this.base = new StackPane();
@@ -138,11 +138,4 @@ public class ScreenManager {
         alert.show();
     }
 
-    public Map<Integer, String[]> getPlayersKeyMap() {
-        return playersKeyMap;
-    }
-
-    public void setPlayersKeyMap(Map<Integer, String[]> playersKeyMap) {
-        this.playersKeyMap = playersKeyMap;
-    }
 }
