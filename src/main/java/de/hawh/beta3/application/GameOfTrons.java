@@ -42,7 +42,7 @@ public class GameOfTrons extends Application {
         if (remote) {
             fr = new FileReader("nameserver.properties");
             p.load(fr);
-            int port = (int) p.get("nameServerPort");
+            int port = Integer.parseInt((String) p.get("nameserverPort"));
             InetAddress NSip = InetAddress.getByName((String) p.get("nameserverIP"));
 
             // Nameserver starten
