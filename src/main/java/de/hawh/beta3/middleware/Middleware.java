@@ -32,6 +32,7 @@ public class Middleware implements IMiddleware {
         clientStub = new Marshaler(new SenderImpl(port), port, NSIp);
         serverStub = new Unmarshaler(NSIp,port);
         receiver = new Receiver(port, (Unmarshaler) serverStub);
+        receiver.run();
 
     }
 

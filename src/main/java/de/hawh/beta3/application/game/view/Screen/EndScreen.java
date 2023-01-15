@@ -7,7 +7,6 @@ import javafx.scene.effect.Glow;
 import javafx.scene.layout.VBox;
 
 
-
 public class EndScreen extends VBox {
 
 

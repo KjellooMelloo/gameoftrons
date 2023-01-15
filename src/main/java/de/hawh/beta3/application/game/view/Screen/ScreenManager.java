@@ -24,14 +24,12 @@ public class ScreenManager {
     private final SimpleIntegerProperty currentPlayerID = new SimpleIntegerProperty(1);
 
 
-
     public ScreenManager() {
         this.base = new StackPane();
         this.scene = new Scene(base);
         Rectangle gameScreenBackground = new Rectangle();
         base.getChildren().add(gameScreenBackground);
         base.setStyle("-fx-background-color: #180b27");
-
 
         // register screen states
         screens.put("start", new StartScreen());

@@ -14,12 +14,10 @@ import javafx.util.Duration;
 
 public class CountdownScreen extends VBox {
 
-    private Timeline timeline;
     private final Label countdownLabel = new Label();
-
     private final SimpleIntegerProperty countdownState;
     private final int countdownLength;
-
+    private Timeline timeline;
     private ScreenCommons screenCommons = new ScreenCommons();
 
 
@@ -39,8 +37,7 @@ public class CountdownScreen extends VBox {
     }
 
 
-
-    public void startCountdown(){
+    public void startCountdown() {
 
         EventHandler<ActionEvent> onFinished = new EventHandler<ActionEvent>() {
             @Override
