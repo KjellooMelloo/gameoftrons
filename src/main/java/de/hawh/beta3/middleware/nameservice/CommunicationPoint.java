@@ -1,5 +1,7 @@
 package de.hawh.beta3.middleware.nameservice;
 
+import de.hawh.beta3.application.stub.callee.IModelViewCallee;
+import de.hawh.beta3.middleware.serverstub.Unmarshaler;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -7,6 +9,7 @@ import java.io.*;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.Semaphore;
 
@@ -149,7 +152,8 @@ public class CommunicationPoint {
          * @throws IOException Wenn eine IOException vorkommt
          */
         private void doBind(JSONObject args) throws IOException {
-            nameServer.bind(args.getInt("ifaceID"), args.getString("methodName"), InetAddress.getByName(args.getString("ipAddr")));
+            nameServer.bind(args.getInt("ifaceID"), args.getString("methodName"), InetAddress.getByName(args.getString("ipAddr")), args.getBoolean("isSingleton")  );
         }
     }
+
 }

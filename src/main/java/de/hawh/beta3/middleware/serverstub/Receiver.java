@@ -7,8 +7,13 @@ import java.net.DatagramSocket;
 public class Receiver implements Runnable {
 
     private DatagramSocket socket;
-    private final IReceiver unmarshaler = new Unmarshaler(); //= Unmarshaler.getInstance();
+    private int port;
+    private final IReceiver unmarshaler;
 
+    public Receiver(int port, Unmarshaler unmarshaler){
+        this.port = port;
+        this.unmarshaler = unmarshaler;
+    }
     /**
      * When an object implementing interface {@code Runnable} is used
      * to create a thread, starting the thread causes the object's

@@ -11,9 +11,9 @@ public interface INameServer {
      *
      * @param interfaceID   id des Interfaces, das eingetragen werden soll
      * @param methodName    Methodenname, der eingetragen werden soll
-     * @param ipAddr        IP-Adresse des remote objects
+     * @param isSingleton   Flag, ob sich nur eine instanz dieser Schnittstelle registriert werden darf
      */
-    void bind(int interfaceID, String methodName, InetAddress ipAddr);
+    void bind(int interfaceID, String methodName, InetAddress ipAddr, boolean isSingleton);
 
     /**
      * Es soll nachgeschaut werden, ob es einen Eintrag mit <code>interfaceID</code> und <code>methodName</code>

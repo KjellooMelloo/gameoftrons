@@ -24,7 +24,7 @@ public interface IMiddleware {
      * @param remoteObject Referenz des remote objects
      * @param methodName   zu registrierende Methode
      * @param ipAddr       IP-Adresse für remote-Ansprechbarkeit
-     * @param port         Port für remote-Ansprechbarkeit
+     * @param isSingleton  Flag, ob sich nur eine instanz dieser Schnittstelle registriert werden darf
      */
-    void register(int interfaceID, IRemoteObject remoteObject, String methodName, InetAddress ipAddr, int port);
+    void register(int interfaceID, IRemoteObject remoteObject, String methodName, InetAddress ipAddr, boolean isSingleton);
 }

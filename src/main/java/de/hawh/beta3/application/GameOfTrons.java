@@ -54,33 +54,33 @@ public class GameOfTrons extends Application {
             // RemoteObjects registrieren
             // IModel
             middleware.register(0, modelCallee, "join",
-                    InetAddress.getByName(ipVPN.getHostAddress()), port);
+                    InetAddress.getByName(ipVPN.getHostAddress()), true);
             middleware.register(0, modelCallee, "cancelWait",
-                    InetAddress.getByName(ipVPN.getHostAddress()), port);
+                    InetAddress.getByName(ipVPN.getHostAddress()), true);
             middleware.register(0, modelCallee, "startGame",
-                    InetAddress.getByName(ipVPN.getHostAddress()), port);
+                    InetAddress.getByName(ipVPN.getHostAddress()), true);
             middleware.register(0, modelCallee, "changePlayerDirection",
-                    InetAddress.getByName(ipVPN.getHostAddress()), port);
+                    InetAddress.getByName(ipVPN.getHostAddress()), true);
             // IModelView
             middleware.register(0, modelViewCallee, "updateNumPlayers",
-                    InetAddress.getByName(ipVPN.getHostAddress()), port);
+                    InetAddress.getByName(ipVPN.getHostAddress()), false);
             middleware.register(0, modelViewCallee, "updatePlayer",
-                    InetAddress.getByName(ipVPN.getHostAddress()), port);
+                    InetAddress.getByName(ipVPN.getHostAddress()), false);
             middleware.register(0, modelViewCallee, "informUser",
-                    InetAddress.getByName(ipVPN.getHostAddress()), port);
+                    InetAddress.getByName(ipVPN.getHostAddress()), false);
             // Controller
             middleware.register(0, controllerCallee, "setCurrentState",
-                    InetAddress.getByName(ipVPN.getHostAddress()), port);
+                    InetAddress.getByName(ipVPN.getHostAddress()), false);
             middleware.register(0, controllerCallee, "handleInputPlayerCount",
-                    InetAddress.getByName(ipVPN.getHostAddress()), port);
+                    InetAddress.getByName(ipVPN.getHostAddress()), false);
             middleware.register(0, controllerCallee, "handleWaitingButtonClick",
-                    InetAddress.getByName(ipVPN.getHostAddress()), port);
+                    InetAddress.getByName(ipVPN.getHostAddress()), false);
             middleware.register(0, controllerCallee, "handleDirectionKeyboardInput",
-                    InetAddress.getByName(ipVPN.getHostAddress()), port);
+                    InetAddress.getByName(ipVPN.getHostAddress()), false);
             middleware.register(0, controllerCallee, "notifyCountdownOver",
-                    InetAddress.getByName(ipVPN.getHostAddress()), port);
+                    InetAddress.getByName(ipVPN.getHostAddress()), false);
             middleware.register(0, controllerCallee, "endGame",
-                    InetAddress.getByName(ipVPN.getHostAddress()), port);
+                    InetAddress.getByName(ipVPN.getHostAddress()), false);
         }
 
         //initialize für Interfaces mit obigen Referenzen
