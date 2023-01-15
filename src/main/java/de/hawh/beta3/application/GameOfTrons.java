@@ -15,6 +15,7 @@ import de.hawh.beta3.middleware.IMiddleware;
 import de.hawh.beta3.middleware.Middleware;
 import de.hawh.beta3.middleware.nameservice.CommunicationPoint;
 import javafx.application.Application;
+import javafx.concurrent.Task;
 import javafx.stage.Stage;
 
 import java.io.FileReader;
@@ -39,19 +40,21 @@ public class GameOfTrons extends Application {
         boolean remote = Boolean.parseBoolean(p.getProperty("remote"));
         System.err.println("### Es wird " + (remote ? "remote" : "lokal") + " gespielt!");
 
+         Middleware middlewareInstance = null;
+
         if (remote) {
             fr = new FileReader("nameserver.properties");
             p.load(fr);
-            int port = Integer.parseInt((String) p.get("nameserverPort"));
+            int port = Integer.parseInt((String)p.get("nameserverPort"));
             InetAddress NSip = InetAddress.getByName((String) p.get("nameserverIP"));
 
-            // Nameserver starten
+            /*// Nameserver starten
             CommunicationPoint nameServer = new CommunicationPoint(port, 4);
-            nameServer.startNameServer();
+            nameServer.startNameServer();*/
 
             // Middleware aufbauen/ starten
             IMiddleware middleware = Middleware.getInstance();
-            Middleware middlewareInstance = (Middleware) middleware;
+            middlewareInstance = (Middleware) middleware;
             middlewareInstance.initialize(port, NSip);
 
             // Callee Objekte erzeugen
@@ -116,5 +119,20 @@ public class GameOfTrons extends Application {
         stage.setTitle("Game of Trons - Not so Light BiCycles");
         stage.setScene(view.getScreen().getScene());
         stage.show();
+        if(middlewareInstance!=null){
+            Middleware finalMiddlewareInstance = middlewareInstance;
+            Task task = new Task() {
+                @Override
+                protected Object call() throws Exception {
+                    finalMiddlewareInstance.startReceiver();
+                    return null;
+                }
+            };
+
+            new Thread(task).start();
+
+        }
+
     }
+
 }

@@ -121,4 +121,8 @@ public class GameManager implements IModel {
             timeline.stop();
         }
     }
+
+    public void setNumPlayers(int numPlayers){
+        this.numPlayers = numPlayers;
+    }
 }
