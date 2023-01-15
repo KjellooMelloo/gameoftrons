@@ -42,11 +42,15 @@ public class Context implements IContext {
         return context;
     }
 
+    @Override
     public void setCurrentState(String state){
         this.currentState = getStateFromString(state);
     }
 
-    public void handleInputPlayerCount(int playerCount){
+    @Override
+    public void handleInputPlayerCount(int playerCount){}
+
+    /**public void handleInputPlayerCount(int playerCount){
         iConfig.setPlayerCount(playerCount);
         configParameters = iConfig.loadConfigParameters();
         controls = iConfig.loadControls();
@@ -61,21 +65,28 @@ public class Context implements IContext {
         iView.setPlayerKeys(new HashMap<>());
         iModel.join(configParameters[0], configParameters[1]); //playerCount & maxWaitingTime
         context.setCurrentState("WAITING");
-    }
+    }**/
 
+    @Override
     public void handleWaitingButtonClick(){
-        iModel.cancelWait(); //LOKAL
+        iModel.cancelWait();
         context.setCurrentState("DELETE");
     }
 
+    @Override
     public void notifyCountdownOver(){
         iModel.startGame(context.configParameters[3], context.configParameters[2]); //int gridSize, int gameSpeed
         iView.setGameFieldSize(context.configParameters[3]);
     }
 
+    @Override
+    public void handleDirectionKeyboardInput(String key){
+
+    }
+
     //todo sicherheitsmodus überlegen, sodass nur aktivierte Tasten funktionieren --> 4 spieler, nur entsprechende Tastenbelegungen aktiviert
     //LOKALE VERSION
-    public void handleDirectionKeyboardInput(String key){
+    /**public void handleDirectionKeyboardInput(String key){
 
         pair = controls.get(key);
         id = pair.getKey();
@@ -83,10 +94,10 @@ public class Context implements IContext {
 
         iModel.changePlayerDirection(id,action);
 
-    }
+    }**/
 
     //REMOTE
-    public void handleDirectionKeyboardInput(int id, String key){
+   /**public void handleDirectionKeyboardInput(int id, String key){
 
         if (key.equals(left)){
             iModel.changePlayerDirection(id, "left");
@@ -94,13 +105,13 @@ public class Context implements IContext {
         else if (key.equals(right)) {
             iModel.changePlayerDirection(id, "right");
         }
-    }
+    }**/
 
+   @Override
     public void endGame(int result){
         iView.notifyGameResult(result);
         context.setCurrentState("END");
     }
-
 
     public State getStateFromString(String state){
         switch (state){
