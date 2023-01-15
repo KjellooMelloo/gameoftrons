@@ -101,7 +101,6 @@ public class Config implements IConfig {
     }
 
     public int loadDefaultPlayerCount(){
-        configParameters[0]=(int)allParams.get("defaultPlayerCount");
         return configParameters[0];
     }
 
@@ -215,15 +214,15 @@ public class Config implements IConfig {
     }
 
     public int getRangeStart(){
-        return (int)allParams.get("rangeStart");
+        return configParameters[4];
     }
 
     public int getRangeEnd(){
-        return (int)allParams.get("rangeEnd");
+        return configParameters[5];
     }
 
     public boolean getRemote(){
-        return (boolean)allParams.get("remote");
+        return Boolean.parseBoolean(String.valueOf(configParameters[6]));
     }
 
     public int[] getConfigParameters(){
