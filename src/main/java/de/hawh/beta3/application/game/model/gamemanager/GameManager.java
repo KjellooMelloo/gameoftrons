@@ -60,6 +60,11 @@ public class GameManager implements IModel {
         numPlayers++;
 
         if (numPlayers == fullPlayerCount) {
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             controller.setCurrentState("GAME");
         } else {
             modelView.updateNumPlayers(numPlayers);
@@ -91,11 +96,6 @@ public class GameManager implements IModel {
      */
     @Override
     public void startGame(int size, int gameSpeed) {
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         timer.cancel();
         gameLogic.init(numPlayers, size);
         timeline = new Timeline(new KeyFrame(Duration.millis(gameSpeed), e -> update()));
