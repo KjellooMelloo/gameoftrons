@@ -355,6 +355,7 @@ Die Schnittstelle **IRemoteObject** bietet die Funktionalität zum Empfangen von
 | Methode | Kurzbeschreibung |
 | --- | --- |
 | ``getInstance()`` | Liefert die IModel-Instanz(Singleton-Pattern)|
+| ``initialize(IContext,IModelView)`` | Zum Herstellen der Referenzen |
 | ``join(int, int)`` | Zum Erstellen oder Beitreten einer Lobby |
 | ``cancelWait()`` | Zum Abbrechen der Lobby durch Ablaufen der Wartezeit oder Drücken auf 'Cancel' |
 | ``startGame(int,int)`` | Lässt das Spiel mit den übergebenen Einstellungen (Spielfeldgröße und Spielgeschwindigkeit) starten |
