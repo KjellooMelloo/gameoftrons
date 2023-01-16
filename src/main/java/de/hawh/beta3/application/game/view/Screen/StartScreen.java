@@ -57,12 +57,12 @@ public class StartScreen extends VBox {
         toggleRemote.setOnAction(event -> {
             toggleRemote.setText(toggleRemote.getText().equals("online mode") ?
                     "offline mode": "online mode");
-
+/*
             try {
                 ScreenCommons.CONTROLLER.handleOfflineButton();
             } catch (IOException e) {
                 throw new RuntimeException(e);
-            }
+            }*/
         });
     }
 
