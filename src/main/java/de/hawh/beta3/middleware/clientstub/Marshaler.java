@@ -95,7 +95,7 @@ public class Marshaler implements IRemoteInvocation {
         Pair<String, String> key = new Pair<>(String.valueOf(interfaceID), methodName);
 
 
-        if (cache.containsKey(key)) {
+        /*if (cache.containsKey(key)) {
             System.out.println("Contains key: " + key);
             ipSet = cache.get(key);
             System.out.println("Set of IPs: " + ipSet);
@@ -106,7 +106,7 @@ public class Marshaler implements IRemoteInvocation {
                 i++;
             }
             return res;
-        } else {
+        } else {*/
 
             byte[] lookupMsg = serializeNS(interfaceID, methodName);
 
@@ -139,7 +139,7 @@ public class Marshaler implements IRemoteInvocation {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-        }
+        //}
 
     }
 
