@@ -106,6 +106,7 @@ public class ScreenManager {
     }
 
     public void updatePlayer(int playerID, int newX, int newY, int orientation) {
+        System.out.println("pID:" + playerID);
         if (playerID > numPlayers.get()-1) {
             throw new IllegalArgumentException("A player by the given ID doesn't exist");
         }
