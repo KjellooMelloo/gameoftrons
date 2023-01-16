@@ -58,8 +58,11 @@ public class Unmarshaler implements IRegister, IReceiver {
             throw new RuntimeException(e);
         }
 
-        // add RemoteObject to Map
-        registeredRemoteObjects.put(interfaceID, remoteObject);
+        if(!registeredRemoteObjects.containsKey(interfaceID)) {
+
+            // add RemoteObject to Map
+            registeredRemoteObjects.put(interfaceID, remoteObject);
+        }
 
     }
 
@@ -135,9 +138,9 @@ public class Unmarshaler implements IRegister, IReceiver {
 
         // Get interfaceID and Mmethod name
         int interfaceID = jsonMsg.getInt("interfaceID");
-        System.out.println("interfaceID: " + interfaceID);
+        //System.out.println("interfaceID: " + interfaceID);
         String methodName = jsonMsg.getString("methodName");
-        System.out.println("methodName: " + methodName);
+        //System.out.println("methodName: " + methodName);
 
         // Extract parameters for method call
         JSONArray argsJSONArray = jsonMsg.getJSONArray("args");
@@ -149,15 +152,18 @@ public class Unmarshaler implements IRegister, IReceiver {
             callParameters = new Object[argsJSONObj.length() / 2];
             String type, val;
 
-            System.out.println("LEngth argsJSONOBJ: " + argsJSONObj.length());
+            //System.out.println("LEngth argsJSONOBJ: " + argsJSONObj.length());
             // Convert to expected typ
             for (int i = 0; i < argsJSONObj.length() / 2; i++) {
                 type = argsJSONObj.getString("type" + (i + 1));
-                System.out.println("type" + (i + 1) + ": " + argsJSONObj.getString("type" + (i + 1)));
+                //System.out.println("type" + (i + 1) + ": " + argsJSONObj.getString("type" + (i + 1)));
                 val = argsJSONObj.get("val" + (i + 1)).toString();
-                System.out.println("Converted Val: " + convertValueToType(type, val));
+                //System.out.println("Converted Val: " + convertValueToType(type, val));
                 callParameters[i] = convertValueToType(type, val);
             }
+
+            if(methodName.equalsIgnoreCase("updateNumPlayers"))
+            System.out.println("Call to updateNumPlayer: " + methodName );
 
             // call method
             IRemoteObject interfaceToBeCalled = registeredRemoteObjects.get(interfaceID);

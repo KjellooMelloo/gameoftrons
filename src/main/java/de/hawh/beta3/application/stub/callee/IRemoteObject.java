@@ -9,4 +9,6 @@ public interface IRemoteObject {
      * @param args       Parameter des Aufrufs
      */
     void call(String methodName, Object[] args);
+
+    int getId();
 }

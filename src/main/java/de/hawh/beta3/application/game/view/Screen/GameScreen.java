@@ -52,7 +52,7 @@ public class GameScreen extends Canvas {
 
 
     public void initializeGameField(int numPlayers) {
-        System.out.println("Initializing game field");
+        System.out.println("Initializing game field with numPlayers = " + numPlayers);
         initPlayersInPositions(numPlayers);
         GraphicsContext g = this.getGraphicsContext2D();
 
@@ -117,15 +117,17 @@ public class GameScreen extends Canvas {
 
 
     public void updatePlayer(int playerID, int newX, int newY, String newOrientation) {
-        if (newX == -1 || newY == -1) {
-            kill(playerID);
-            return;
+        if(playerMap.containsKey(playerID)) {
+            if (newX == -1 || newY == -1) {
+                kill(playerID);
+                return;
+            }
+            Player playerToUpdate = playerMap.get(playerID);
+            this.getGraphicsContext2D().clearRect(playerToUpdate.getPos().x * windowSize / fieldSize, playerToUpdate.getPos().y * windowSize / fieldSize,
+                    windowSize / fieldSize, windowSize / fieldSize);
+            playerToUpdate.updateTrailAndOrientation(newX, newY, newOrientation);
+            drawTileColors(playerToUpdate);
         }
-        Player playerToUpdate = playerMap.get(playerID);
-        this.getGraphicsContext2D().clearRect(playerToUpdate.getPos().x * windowSize / fieldSize, playerToUpdate.getPos().y * windowSize / fieldSize,
-                windowSize / fieldSize, windowSize / fieldSize);
-        playerToUpdate.updateTrailAndOrientation(newX, newY, newOrientation);
-        drawTileColors(playerToUpdate);
     }
 
     private void removeTileColors(Player playerToRemove) {
@@ -143,6 +145,7 @@ public class GameScreen extends Canvas {
             // erase trail position
             g.clearRect(pos.x * windowSize / fieldSize, pos.y * windowSize / fieldSize, windowSize / fieldSize, windowSize / fieldSize);
         }
+
     }
 
     private void drawTileColors(Player playerToDraw) {

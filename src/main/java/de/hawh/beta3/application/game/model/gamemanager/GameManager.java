@@ -5,6 +5,7 @@ import de.hawh.beta3.application.game.model.gamelogic.GameLogic;
 import de.hawh.beta3.application.game.model.gamelogic.IGameLogic;
 import de.hawh.beta3.application.game.view.IModelView;
 
+import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -51,7 +52,7 @@ public class GameManager implements IModel {
     @Override
     public void join(int playerCount, int maxWaitingTime) {
         if (fullPlayerCount != 0) {
-            modelView.informUser("Deine Eingabe ist uns egal, wir spielen mit {fullPlayerCount} Spielern!");
+            //modelView.informUser("Deine Eingabe ist uns egal, wir spielen mit {fullPlayerCount} Spielern!");
         } else {
             fullPlayerCount = playerCount;
             controller.setCurrentState("WAITING");
@@ -59,6 +60,12 @@ public class GameManager implements IModel {
         numPlayers++;
 
         if (numPlayers == fullPlayerCount) {
+            modelView.updateNumPlayers(numPlayers);
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             controller.setCurrentState("GAME");
         } else {
             modelView.updateNumPlayers(numPlayers);
@@ -90,6 +97,7 @@ public class GameManager implements IModel {
      */
     @Override
     public void startGame(int size, int gameSpeed) {
+        timer.cancel();
         gameLogic.init(numPlayers, size);
         timeline = new Timeline(new KeyFrame(Duration.millis(gameSpeed), e -> update()));
         timeline.setCycleCount(Animation.INDEFINITE);

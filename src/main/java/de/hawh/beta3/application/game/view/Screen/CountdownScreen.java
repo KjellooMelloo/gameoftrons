@@ -18,7 +18,7 @@ public class CountdownScreen extends VBox {
     private final SimpleIntegerProperty countdownState;
     private final int countdownLength;
     private Timeline timeline;
-    private ScreenCommons screenCommons = new ScreenCommons();
+
 
 
     public CountdownScreen(int countdownLength) {
@@ -42,7 +42,8 @@ public class CountdownScreen extends VBox {
         EventHandler<ActionEvent> onFinished = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                ScreenCommons.CONTROLLER.notifyCountdownOver();
+                ScreenCommons screenCommons = new ScreenCommons();
+                screenCommons.controller.notifyCountdownOver();
             }
         };
 

@@ -51,7 +51,7 @@ class NameServer implements INameServer {
         } else if(!isSingleton) {
             cache.get(key).add(ipAddr);
         }
-
+        System.out.println("Registered interface" + interfaceID + " + " + methodName + " ip: " + ipAddr);
     }
 
     /**

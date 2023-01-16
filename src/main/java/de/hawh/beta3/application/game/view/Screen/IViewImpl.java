@@ -33,6 +33,7 @@ public class IViewImpl implements IControllerView, IModelView {
 
     @Override
     public void updateNumPlayers(int newPlayerNum) {
+        System.out.println("UpdateNumPlayer: " + newPlayerNum);
         screen.setNumPlayers(newPlayerNum);
         screen.updateCurrentPlayerID(newPlayerNum - 1);
     }

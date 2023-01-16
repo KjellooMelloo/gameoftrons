@@ -134,7 +134,10 @@ public class Config implements IConfig {
     }
 
     public boolean getRemote(){
-        return Boolean.parseBoolean(String.valueOf(configParameters[6]));
+        //in loadConfigParameters wird remote als 0 oder 1 geschrieben
+        //parseBoolean schaut nach "true" und gibt sonst false
+        //return Boolean.parseBoolean(String.valueOf(configParameters[6]));
+        return configParameters[6] == 1;
     }
 
     public int[] getConfigParameters(){

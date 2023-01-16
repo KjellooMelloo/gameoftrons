@@ -87,14 +87,14 @@ public class GameOfTrons extends Application {
             // Controller
             middleware.register(2, controllerCallee, "setCurrentState",
                     InetAddress.getByName(ipVPN.getHostAddress()), false);
-            middleware.register(2, controllerCallee, "handleInputPlayerCount",
+            /*middleware.register(2, controllerCallee, "handleInputPlayerCount",
                     InetAddress.getByName(ipVPN.getHostAddress()), false);
             middleware.register(2, controllerCallee, "handleWaitingButtonClick",
                     InetAddress.getByName(ipVPN.getHostAddress()), false);
             middleware.register(2, controllerCallee, "handleDirectionKeyboardInput",
                     InetAddress.getByName(ipVPN.getHostAddress()), false);
             middleware.register(2, controllerCallee, "notifyCountdownOver",
-                    InetAddress.getByName(ipVPN.getHostAddress()), false);
+                    InetAddress.getByName(ipVPN.getHostAddress()), false);*/
             middleware.register(2, controllerCallee, "endGame",
                     InetAddress.getByName(ipVPN.getHostAddress()), false);
         }
