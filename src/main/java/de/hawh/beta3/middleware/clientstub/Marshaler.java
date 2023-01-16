@@ -42,6 +42,7 @@ public class Marshaler implements IRemoteInvocation {
     public void invoke(int interfaceID, String methodName, Object[] params) {
         byte[] msg = marshal(interfaceID, methodName, params);
         String[] ipAddresses = cacheOrLookup(interfaceID, methodName);
+        System.out.println("Send wird aufgerufen für Methode: " + methodName);
         sender.send(ipAddresses, msg);
     }
 

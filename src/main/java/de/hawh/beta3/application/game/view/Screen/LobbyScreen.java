@@ -18,6 +18,8 @@ public class LobbyScreen extends VBox {
     Label playerColorControlLabel;
     private int playersInLobby;
     private int currentPlayerID;
+    Button cancelButton = new Button("Cancel");
+
 
 
     public LobbyScreen(SimpleIntegerProperty currentPlayerIDArg, SimpleIntegerProperty observablePlayersInLobby) {
@@ -32,7 +34,6 @@ public class LobbyScreen extends VBox {
         // Kontrollelemente initialisieren
         Label titleLabel = new Label("Please wait until all players have joined the game...");
         titleLabel.setId("title");
-        Button cancelButton = new Button("Cancel");
         playerColorControlLabel = new Label("");
         playerColorControlLabel.setId("colorLabel");
 
@@ -51,7 +52,7 @@ public class LobbyScreen extends VBox {
 
 
 
-        if (this.currentPlayerID == 0) {
+        if (this.playersInLobby < 1) {
             this.getChildren().add(cancelButton);
         }
 
@@ -61,10 +62,10 @@ public class LobbyScreen extends VBox {
         animateBackground();
     }
 
-    private static void registerCancelEventHandler(Button cancelButton) {
+    private void registerCancelEventHandler(Button cancelButton) {
         cancelButton.setOnAction(event -> {
-            System.out.println("Cancel Button clicked");
-            ScreenCommons.CONTROLLER.handleWaitingButtonClick();
+            ScreenCommons screenCommons = new ScreenCommons();
+            screenCommons.controller.handleWaitingButtonClick();
         });
     }
 
@@ -72,7 +73,8 @@ public class LobbyScreen extends VBox {
         observablePlayersInLobby.addListener(
                 e -> {
                     this.playersInLobby = observablePlayersInLobby.get();
-                    playerCounterLabel.setText(playersInLobby + " already joined.");
+                    playerCounterLabel.setText(playersInLobby + " already joined");
+                    if(this.getChildren().contains(cancelButton)) this.getChildren().remove(cancelButton);
                 }
         );
     }

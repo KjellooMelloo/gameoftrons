@@ -17,11 +17,11 @@ import java.util.Map;
  */
 public class ScreenManager {
 
-    private final SimpleIntegerProperty numPlayers = new SimpleIntegerProperty(2);
+    private final SimpleIntegerProperty numPlayers = new SimpleIntegerProperty(0);
     private final Scene scene;
     private final StackPane base;
     private final Map<String, Node> screens = new HashMap<>();
-    private final SimpleIntegerProperty currentPlayerID = new SimpleIntegerProperty(1);
+    private final SimpleIntegerProperty currentPlayerID = new SimpleIntegerProperty(-1);
 
 
     public ScreenManager() {

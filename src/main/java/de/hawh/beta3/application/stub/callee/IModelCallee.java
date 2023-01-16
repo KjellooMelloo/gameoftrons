@@ -22,6 +22,7 @@ public class IModelCallee implements IRemoteObject {
      */
     @Override
     public void call(String methodName, Object[] args) {
+        System.out.println("Aufruf call mit Methode: " + methodName);
         //TODO Übersetzung mit Adapter bei vereinbarten gemeinsamen Methodennamen
         try {
             for (Method m : model.getClass().getDeclaredMethods()) {

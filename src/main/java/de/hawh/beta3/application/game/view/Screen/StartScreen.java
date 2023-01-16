@@ -13,6 +13,7 @@ import java.io.IOException;
 
 public class StartScreen extends VBox {
 
+
     public StartScreen() {
 
         //Initialize VBox
@@ -61,7 +62,7 @@ public class StartScreen extends VBox {
         });
     }
 
-    private static void registerStartButtonEventHandler(TextField inputPlayerCountField, Button btnStart) {
+    private void registerStartButtonEventHandler(TextField inputPlayerCountField, Button btnStart) {
         btnStart.setOnAction(event -> {
             String inputString = inputPlayerCountField.getText();
             if (inputString.equals("")) {
@@ -69,7 +70,8 @@ public class StartScreen extends VBox {
             } else {
                 int playerCount = Integer.valueOf(inputString);
                 try {
-                    ScreenCommons.CONTROLLER.handleInputPlayerCount(playerCount);
+                    ScreenCommons sc = new ScreenCommons();
+                    sc.controller.handleInputPlayerCount(playerCount);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

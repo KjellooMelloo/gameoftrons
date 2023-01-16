@@ -58,8 +58,11 @@ public class Unmarshaler implements IRegister, IReceiver {
             throw new RuntimeException(e);
         }
 
-        // add RemoteObject to Map
-        registeredRemoteObjects.put(interfaceID, remoteObject);
+        if(!registeredRemoteObjects.containsKey(interfaceID)) {
+
+            // add RemoteObject to Map
+            registeredRemoteObjects.put(interfaceID, remoteObject);
+        }
 
     }
 

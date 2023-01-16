@@ -13,8 +13,11 @@ public class ScreenCommons {
     private static Map<Integer, String[]> playersKeyMap;
     public static IContext CONTROLLER = (IContext) MVCFactory.getInterface("IController", false);
 
-    public ScreenCommons() {
+    public IContext controller;
 
+
+    public ScreenCommons() {
+       controller = Context.getInstance();
     }
 
     public static Color getColor(int playerID) {
@@ -35,8 +38,7 @@ public class ScreenCommons {
         if (!playersKeyMap.containsKey(playerId))
             throw new IllegalArgumentException("No controls available for player id");
         String[] controls = playersKeyMap.get(playerId);
-        String controlsString = "LEFT:" + controls[0] + " , " + "RIGHT:" + controls[1];
-        return controlsString;
+        return "LEFT:" + controls[0] + " , " + "RIGHT:" + controls[1];
     }
 
 }
