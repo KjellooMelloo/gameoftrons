@@ -7,7 +7,7 @@ import java.net.InetAddress;
 
 public class SenderImpl implements ISender {
 
-    private DatagramSocket socket;
+    //private DatagramSocket socket;
     private int port;
 
     public SenderImpl(int port){
@@ -43,7 +43,7 @@ public class SenderImpl implements ISender {
         @Override
         public void run() {
             try {
-                socket = new DatagramSocket();
+                DatagramSocket socket = new DatagramSocket();
                 for(int i=0; i<ipAddr.length;i++) {
                     InetAddress ip = InetAddress.getByName(ipAddr[i]);
                     DatagramPacket packet = new DatagramPacket(message, message.length, ip, port);
