@@ -45,6 +45,8 @@ public class ScreenManager {
         if (currentPlayerID.get() < 0) {
             currentPlayerID.set(newPlayerID);
         }
+        System.out.println("Current player number: " + numPlayers.get());
+        System.out.println("Current player id:" + currentPlayerID.get());
     }
 
 
@@ -92,6 +94,7 @@ public class ScreenManager {
 
 
     public void updateView(int playerCount, int gameFieldSize) {
+        System.out.println("Player count from Controller: " + playerCount);
         if(numPlayers.get() != playerCount){
             numPlayers.set(playerCount);
         }
@@ -103,7 +106,7 @@ public class ScreenManager {
     }
 
     public void updatePlayer(int playerID, int newX, int newY, int orientation) {
-        if (playerID > numPlayers.get()) {
+        if (playerID > numPlayers.get()-1) {
             throw new IllegalArgumentException("A player by the given ID doesn't exist");
         }
         if (orientation > 3) {

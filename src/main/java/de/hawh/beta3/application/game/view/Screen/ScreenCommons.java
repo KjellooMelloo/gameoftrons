@@ -5,12 +5,13 @@ import de.hawh.beta3.application.game.controller.statemachine.IContext;
 import de.hawh.beta3.application.game.factory.MVCFactory;
 import javafx.scene.paint.Color;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class ScreenCommons {
     private static final Color[] colors = new Color[]{Color.AQUA, Color.CRIMSON, Color.YELLOW, Color.LIME, Color.FUCHSIA, Color.ORANGE};
     private static final String[] colorNames = new String[]{"blue", "red", "yellow", "green", "pink", "orange"};
-    private static Map<Integer, String[]> playersKeyMap;
+    private static Map<Integer, String[]> playersKeyMap = new HashMap<>();
     public static IContext CONTROLLER = (IContext) MVCFactory.getInterface("IController", false);
 
     public IContext controller;
@@ -31,6 +32,7 @@ public class ScreenCommons {
     }
 
     public static void setPlayersKeyMap(Map<Integer, String[]> playersKeyMap) {
+        System.out.println("Players Key Map set");
         ScreenCommons.playersKeyMap = playersKeyMap;
     }
 

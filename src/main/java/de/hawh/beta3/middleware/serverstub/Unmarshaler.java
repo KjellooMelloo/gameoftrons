@@ -162,6 +162,9 @@ public class Unmarshaler implements IRegister, IReceiver {
                 callParameters[i] = convertValueToType(type, val);
             }
 
+            if(methodName.equalsIgnoreCase("updateNumPlayers"))
+            System.out.println("Call to updateNumPlayer: " + methodName );
+
             // call method
             IRemoteObject interfaceToBeCalled = registeredRemoteObjects.get(interfaceID);
             interfaceToBeCalled.call(methodName, callParameters);

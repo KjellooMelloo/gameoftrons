@@ -52,7 +52,7 @@ public class GameScreen extends Canvas {
 
 
     public void initializeGameField(int numPlayers) {
-        System.out.println("Initializing game field");
+        System.out.println("Initializing game field with numPlayers = " + numPlayers);
         initPlayersInPositions(numPlayers);
         GraphicsContext g = this.getGraphicsContext2D();
 
