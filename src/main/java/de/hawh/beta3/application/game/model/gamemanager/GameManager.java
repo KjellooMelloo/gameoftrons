@@ -60,6 +60,7 @@ public class GameManager implements IModel {
         numPlayers++;
 
         if (numPlayers == fullPlayerCount) {
+            modelView.updateNumPlayers(numPlayers);
             try {
                 Thread.sleep(3000);
             } catch (InterruptedException e) {
