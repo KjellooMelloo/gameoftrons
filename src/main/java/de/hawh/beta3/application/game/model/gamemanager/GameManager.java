@@ -51,7 +51,7 @@ public class GameManager implements IModel {
     @Override
     public void join(int playerCount, int maxWaitingTime) {
         if (fullPlayerCount != 0) {
-            modelView.informUser("Deine Eingabe ist uns egal, wir spielen mit {fullPlayerCount} Spielern!");
+            //modelView.informUser("Deine Eingabe ist uns egal, wir spielen mit {fullPlayerCount} Spielern!");
         } else {
             fullPlayerCount = playerCount;
             controller.setCurrentState("WAITING");

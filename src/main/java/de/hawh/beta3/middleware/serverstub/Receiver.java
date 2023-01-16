@@ -1,5 +1,7 @@
 package de.hawh.beta3.middleware.serverstub;
 
+import javafx.application.Platform;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -36,7 +38,7 @@ public class Receiver implements Runnable {
                 DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
                 socket.receive(packet);
                 Thread rec = new Thread(new ReceiverThread(packet));
-                rec.start();
+                Platform.runLater(rec);
             }
         } catch (IOException e) {
             e.printStackTrace();

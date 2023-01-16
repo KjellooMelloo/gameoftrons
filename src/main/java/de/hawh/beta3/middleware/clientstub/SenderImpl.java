@@ -48,8 +48,8 @@ public class SenderImpl implements ISender {
                     InetAddress ip = InetAddress.getByName(ipAddr[i]);
                     DatagramPacket packet = new DatagramPacket(message, message.length, ip, port);
                     socket.send(packet);
-                    socket.close();
                 }
+                socket.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
