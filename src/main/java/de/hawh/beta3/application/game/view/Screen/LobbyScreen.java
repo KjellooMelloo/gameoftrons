@@ -49,12 +49,8 @@ public class LobbyScreen extends VBox {
         this.getChildren().add(titleLabel);
         this.getChildren().add(playerCounterLabel);
         this.getChildren().add(playerColorControlLabel);
+        this.getChildren().add(cancelButton);
 
-
-
-        if (this.playersInLobby == 1) {
-            this.getChildren().add(cancelButton);
-        }
 
         // Add listener to ID and player count
         addPlayerCountListener(observablePlayersInLobby);
@@ -74,7 +70,7 @@ public class LobbyScreen extends VBox {
                 e -> {
                     this.playersInLobby = observablePlayersInLobby.get();
                     playerCounterLabel.setText(playersInLobby + " already joined");
-                    if(this.getChildren().contains(cancelButton)) this.getChildren().remove(cancelButton);
+                    if(this.getChildren().contains(cancelButton) && playersInLobby > 1) this.getChildren().remove(cancelButton);
                 }
         );
     }
