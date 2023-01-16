@@ -5,6 +5,7 @@ import de.hawh.beta3.application.game.model.gamelogic.GameLogic;
 import de.hawh.beta3.application.game.model.gamelogic.IGameLogic;
 import de.hawh.beta3.application.game.view.IModelView;
 
+import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -90,6 +91,11 @@ public class GameManager implements IModel {
      */
     @Override
     public void startGame(int size, int gameSpeed) {
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         timer.cancel();
         gameLogic.init(numPlayers, size);
         timeline = new Timeline(new KeyFrame(Duration.millis(gameSpeed), e -> update()));
