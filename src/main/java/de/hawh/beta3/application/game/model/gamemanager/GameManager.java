@@ -5,7 +5,6 @@ import de.hawh.beta3.application.game.model.gamelogic.GameLogic;
 import de.hawh.beta3.application.game.model.gamelogic.IGameLogic;
 import de.hawh.beta3.application.game.view.IModelView;
 
-import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
