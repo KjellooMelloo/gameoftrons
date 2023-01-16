@@ -52,7 +52,7 @@ public class LobbyScreen extends VBox {
 
 
 
-        if (this.playersInLobby < 1) {
+        if (this.playersInLobby == 1) {
             this.getChildren().add(cancelButton);
         }
 
