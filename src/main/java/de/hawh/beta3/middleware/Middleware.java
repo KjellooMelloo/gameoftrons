@@ -22,7 +22,7 @@ public class Middleware implements IMiddleware {
 
     private Receiver receiver;
 
-    private Middleware(){}
+    private Middleware() {}
 
     public static Middleware getInstance() {
         return mw;
