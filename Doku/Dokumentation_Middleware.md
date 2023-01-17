@@ -444,5 +444,6 @@ Wenn die Lookup-Anfrage fehlgeschlagen ist (kein Eintrag vorhanden), dann werden
   
 | Begriff | Definition|
 | --- | --- |
+|Middleware| Software, die die Kommunikation in einer verteilten Anwendung ermöglicht. |
 | Node| Teilnehmende Komponenten des verteilten Systems. Nodes kommunizieren in dem verteilten System miteinander. |
 | RPC | Remote Procedure Call: Aufruf von Funktionen auf entfernten Systemen |
