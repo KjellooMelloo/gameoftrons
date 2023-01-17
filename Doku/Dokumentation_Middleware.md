@@ -382,10 +382,10 @@ Wenn die Lookup-Anfrage fehlgeschlagen ist (kein Eintrag vorhanden), dann werden
 })
 ```
   
-Für das Zusammenspiel mit unserer Partnergruppe Gamma 4 gibt es den Spielmodus "partner". In diesem Modus nutzen wir das Adapter-Pattern zwischen unseren MVC-Komponenten und dem App Stub. Der jeweilige Methodenname wird auf den zugeordneten Methodenname der Partnergruppe gemappt und die Argumente in passender Form übergeben. Die Caller-Objekte im App-Stub führen invoke() mit den neuen Parametern aus. Für die umgekehrte Richtung wird die empfangene Methode mithilfe des Adapter-Patterns wieder übersetzt und der call()-Aufruf mit den lokal bekannten Methodennamen- und parametern auf den Callee-Objekten ausgeführt. Die Methoden werden folgendermaßen übersetzt:
-
 
 ## Adaptionstabelle mit Partnergruppe
+  
+  Für das Zusammenspiel mit unserer Partnergruppe Gamma 4 gibt es den Spielmodus "partner". In diesem Modus nutzen wir das Adapter-Pattern zwischen unseren MVC-Komponenten und dem App Stub. Der jeweilige Methodenname wird auf den zugeordneten Methodenname der Partnergruppe gemappt und die Argumente in passender Form übergeben. Die Caller-Objekte im App-Stub führen invoke() mit den neuen Parametern aus. Für die umgekehrte Richtung wird die empfangene Methode mithilfe des Adapter-Patterns wieder übersetzt und der call()-Aufruf mit den lokal bekannten Methodennamen- und Parametern auf den Callee-Objekten ausgeführt. Die Methoden werden folgendermaßen übersetzt:
 
 | RemoteObject | Methode Beta-3 | Methode Gamma-4 | Beschreibung |
 | - | - | - | - |
@@ -416,19 +416,7 @@ Für das Zusammenspiel mit unserer Partnergruppe Gamma 4 gibt es den Spielmodus 
   Die entwickelte Middleware kann jedoch wiederverwendet werden, da keine Anwendungsspezifische Details integriert wurden. Durch die Kommunikation über Nachrichten, die im einfachen und weit verbreiteten JSON-Format definiert sind, kann die Kommunikation zwischen unterschiedlichen Applikationen und Systemen recht einfach implementiert werden.
   
  Falls nur ein Node des verteilten Systems über Datenhoheit verfügen soll, kann dies über die entwickelte Middleware erfolgen. Beim Registrieren kann nämlich ein isSingleton-Flag gesetzt werden, sodass die Komponente, die die Datenhoheit besitzen soll, sich beim Registrieren als solche gekennzeichnen kann. Die Implementierungsdetails davon werden von der Middleware weggekapselt.
- 
-# Qualitätsanforderungen
 
-::: formalpara-title
-**Weiterführende Informationen**
-:::
-
-Siehe [Qualitätsanforderungen](https://docs.arc42.org/section-10/) in
-der online-Dokumentation (auf Englisch!).
-
-## Qualitätsbaum
-
-## Qualitätsszenarien
 
 # Risiken und technische Schulden
 
