@@ -203,8 +203,10 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 |UC5, UC7| View |removeTileColors(Player) | Ein Spieler ist gestorben und die Methode kill() wurde in der View aufgerufen. | Die Felder, die zum Trail des übergebenen Spielers gehören sind nicht mehr eingefärbt, sondern haben die gleiche Farbe wie der Spielhintergrund.| Die Farbe der Felder, die zum Trail des übergebenen Spielers gehören, wird gelöscht. | |
 |UC5, UC7| View |kill(int) | Die View wurde informiert, dass ein Spieler gestorben ist. | Der tote Spieler wurde aus der Spielerliste entfernt und seine eingefärbten Felder wurden zurückgesetzt.| Ruft die Methode removeTileColosr() auf und entfernt den Spieler aus der Spielerliste. |   |
 | UC1-8 | View |updatePlayer(int ID, int X, int Y, int orientation) |Im Model wurden Daten zu den Spielern geändert. | Die View zeigt die aktualisierten Daten an. | Die Methode prüft, ob x == -1 oder ob y == -1 ist. In dem Fall ist der Spieler kollidiert und muss aus dem Spiel entfernt werden. Dafür wird die Methode kill(int ID) aufgerufen. Wenn der Spieler nicht kollidiert ist, dann wird die als Integer übergebene Spielerorientierung in einen String übersetzt und der Methode updateTrailAndOrientation() übergeben, damit die Spielerdaten aktualisiert werden. Im Anschluss wird die Bildschirmanzeige aktualisiert durch den Aufruf von drawTileColors()  | |
-| UC3 | View | startGame(intn int)| Alle Spieler haben den Warteraum betreten.|Die View zeigt das Spielfeld und die Spieler an ihren Startpositionen an. |Die Methode setzt die Spielfeldgröße in der View, die aus der Config-Datei geladen wurde. Anhand der Spielfeldgröße und der Spieleranzahl wird das Spielfeld erzeugt, die Spieler werden instanziiert und positioniert.| |
+| UC3 | View | startGame(int, int)| Alle Spieler haben den Warteraum betreten.|Die View zeigt das Spielfeld und die Spieler an ihren Startpositionen an. |Die Methode setzt die Spielfeldgröße in der View, die aus der Config-Datei geladen wurde. Anhand der Spielfeldgröße und der Spieleranzahl wird das Spielfeld erzeugt, die Spieler werden instanziiert und positioniert.| |
 |UC6,7,8|View|notifyGameResult(int)| Die State Maschine des Controllers befindet sich im Zustand "End"| Die View weiß, wie das Spiel ausgegangen ist und zeigt im  den Endbildschirm mit dem Spielergebnis an.| Die Methode setzt den Gewinner des Spiels in der View-Komponente und zeigt den Endbildschirm an. Wenn das Ergebnis keine SpielerID ist, sondern eine -1, dann ist das Spiel unentschieden ausgegangen. Darüber wird der Spieler über den Endbildschirm informiert.| |
+| UC3 | View |updateNumPlayers(int)| Ein weiterer Spieler hat die Lobby betreten| Die Lobbybildschirmanzeige zeigt die aktuelle Anzahl wartender Spieler an. Alle wartende Spieler haben eine SpielerID.  |Die Methode setzt die Anzahl der Spieler in der View auf den übergebenen Wert. Die registrierten Listener werden aktiv und führen die Event-Handler aus. Die Methode updateCurrentPlayerID() wird aufgerufen| |
+|UC3 | View | updateCurrentPlayerID(int) | Wenn der Spieler die SpielerID -1 ist, wird die SpielerID auf den übergebenen Wert -1 gesetzt. | |
 
 # Bausteinsicht
 ## Ebene 1
@@ -262,8 +264,9 @@ Die View bietet die Bildschirmanzeigefunktionalität, das Setzen der Spielfeldgr
 | Methode | Kurzbeschreibung |
 | --- | --- |
 | showScreen(String) | Zeigt den Bildschirm an, der zum als String übergebenen Programmzustand passt. |
-| setGameFieldSize(int)| setzt die Spielfeldgröße in der View. Der Aufrufparameter bestimmt die Anzahl der Reihen und Spalten des rasterförmigen Spielfeldes.|
+| startGame(int playerCount, int fieldSize) | Initialisiert das Spielfeld mit der übergebenen Spieleranzahl und Spielfeldgröße. Das Spielfeld wird angezeigt.|
 | notifyGameResult(int) | setzt ein Spielergebnis in der View. Die Methode wird mit der SpielerID des Gewinners aufgerufen oder mit -1, wenn das Spiel unentschieden ist. |
+
 
 
 Die View erlaubt das Aktualisieren der Spielerdaten über die Schnittstelle **IModelView**
@@ -271,6 +274,8 @@ Die View erlaubt das Aktualisieren der Spielerdaten über die Schnittstelle **IM
 | Methode | Kurzbeschreibung |
 | --- | --- |
 |updatePlayer(int, int, int, int) | Aktualisiert die Spielerliste, die in der View gehalten wird. Der erste Parameter ist die ID des zu aktualisierenden Spielers. Der zweite und dritte Parameter sind die neuen X- und Y-Koordinate des Spielers. Wenn die Koordinaten -1 und -1 betragen, dann ist der Spieler tot. |
+|informUser(String message) | Erzeugt ein Alert-Fenster mit der übergebenen Nachricht als Inhalt.|
+|updateNumPlayers(int) | Aktualisiert die Anzahl der Spieler in der View und weist wartenden Spielern ohne SpielerID eine neue SpielerID zu. |
 
 
 ### Controller (Blackbox) 
