@@ -210,8 +210,10 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 |UC5, UC7| View |removeTileColors(Player) | Ein Spieler ist gestorben und die Methode kill() wurde in der View aufgerufen. | Die Felder, die zum Trail des übergebenen Spielers gehören sind nicht mehr eingefärbt, sondern haben die gleiche Farbe wie der Spielhintergrund.| Die Farbe der Felder, die zum Trail des übergebenen Spielers gehören, wird gelöscht. | |
 |UC5, UC7| View |kill(int) | Die View wurde informiert, dass ein Spieler gestorben ist. | Der tote Spieler wurde aus der Spielerliste entfernt und seine eingefärbten Felder wurden zurückgesetzt.| Ruft die Methode removeTileColosr() auf und entfernt den Spieler aus der Spielerliste. |   |
 | UC1-8 | View |updatePlayer(int ID, int X, int Y, int orientation) |Im Model wurden Daten zu den Spielern geändert. | Die View zeigt die aktualisierten Daten an. | Die Methode prüft, ob x == -1 oder ob y == -1 ist. In dem Fall ist der Spieler kollidiert und muss aus dem Spiel entfernt werden. Dafür wird die Methode kill(int ID) aufgerufen. Wenn der Spieler nicht kollidiert ist, dann wird die als Integer übergebene Spielerorientierung in einen String übersetzt und der Methode updateTrailAndOrientation() übergeben, damit die Spielerdaten aktualisiert werden. Im Anschluss wird die Bildschirmanzeige aktualisiert durch den Aufruf von drawTileColors()  | |
-| UC3 | View | startGame(intn int)| Alle Spieler haben den Warteraum betreten.|Die View zeigt das Spielfeld und die Spieler an ihren Startpositionen an. |Die Methode setzt die Spielfeldgröße in der View, die aus der Config-Datei geladen wurde. Anhand der Spielfeldgröße und der Spieleranzahl wird das Spielfeld erzeugt, die Spieler werden instanziiert und positioniert.| |
+| UC3 | View | startGame(int, int)| Alle Spieler haben den Warteraum betreten.|Die View zeigt das Spielfeld und die Spieler an ihren Startpositionen an. |Die Methode setzt die Spielfeldgröße in der View, die aus der Config-Datei geladen wurde. Anhand der Spielfeldgröße und der Spieleranzahl wird das Spielfeld erzeugt, die Spieler werden instanziiert und positioniert.| |
 |UC6,7,8|View|notifyGameResult(int)| Die State Maschine des Controllers befindet sich im Zustand "End"| Die View weiß, wie das Spiel ausgegangen ist und zeigt im  den Endbildschirm mit dem Spielergebnis an.| Die Methode setzt den Gewinner des Spiels in der View-Komponente und zeigt den Endbildschirm an. Wenn das Ergebnis keine SpielerID ist, sondern eine -1, dann ist das Spiel unentschieden ausgegangen. Darüber wird der Spieler über den Endbildschirm informiert.| |
+| UC3 | View |updateNumPlayers(int)| Ein weiterer Spieler hat die Lobby betreten| Die Lobbybildschirmanzeige zeigt die aktuelle Anzahl wartender Spieler an. Alle wartende Spieler haben eine SpielerID.  |Die Methode setzt die Anzahl der Spieler in der View auf den übergebenen Wert. Die registrierten Listener werden aktiv und führen die Event-Handler aus. Die Methode updateCurrentPlayerID() wird aufgerufen| |
+|UC3 | View | updateCurrentPlayerID(int) | Wenn der Spieler die SpielerID -1 ist, wird die SpielerID auf den übergebenen Wert -1 gesetzt. | |
 
 # Bausteinsicht
 ## Ebene 1
@@ -269,15 +271,18 @@ Die View bietet die Bildschirmanzeigefunktionalität, das Setzen der Spielfeldgr
 | Methode | Kurzbeschreibung |
 | --- | --- |
 | showScreen(String) | Zeigt den Bildschirm an, der zum als String übergebenen Programmzustand passt. |
-| setGameFieldSize(int)| setzt die Spielfeldgröße in der View. Der Aufrufparameter bestimmt die Anzahl der Reihen und Spalten des rasterförmigen Spielfeldes.|
+| startGame(int playerCount, int fieldSize) | Initialisiert das Spielfeld mit der übergebenen Spieleranzahl und Spielfeldgröße. Das Spielfeld wird angezeigt.|
 | notifyGameResult(int) | setzt ein Spielergebnis in der View. Die Methode wird mit der SpielerID des Gewinners aufgerufen oder mit -1, wenn das Spiel unentschieden ist. |
 
 
-Die View erlaubt das Aktualisieren der Spielerdaten über die Schnittstelle **IModelView**
+
+Die View erlaubt das Aktualisieren der Spielerdaten und die Anzeige von Meldungen über die Schnittstelle **IModelView**
 
 | Methode | Kurzbeschreibung |
 | --- | --- |
 |updatePlayer(int, int, int, int) | Aktualisiert die Spielerliste, die in der View gehalten wird. Der erste Parameter ist die ID des zu aktualisierenden Spielers. Der zweite und dritte Parameter sind die neuen X- und Y-Koordinate des Spielers. Wenn die Koordinaten -1 und -1 betragen, dann ist der Spieler tot. |
+|informUser(String message) | Erzeugt ein Alert-Fenster mit der übergebenen Nachricht als Inhalt.|
+|updateNumPlayers(int) | Aktualisiert die Anzahl der Spieler in der View und weist wartenden Spielern ohne SpielerID eine neue SpielerID zu. |
 
 
 ### Controller (Blackbox) 
@@ -335,6 +340,7 @@ Außerdem leitet der Application Stub einen durch die Middleware empfangenen Met
 Die Schnittstelle **IRemoteObject** bietet die Funktionalität zum Empfangen von Remote-Methodenaufrufen an. 
 
 | Methode | Kurzbeschreibung |
+| - | - |
 |call(String methodName, Object[] args) | Eine zu importierende Schnittstelle wird gefragt, ob eine Methode mit dem Namen "methodName" vorhanden ist. Wenn ja, dann wird diese Methode mit den Aufrufparametern im Array "args" aufgerufen.|
 
 ## Ebene 2 
@@ -401,18 +407,87 @@ Die Schnittstelle **IRemoteObject** bietet die Funktionalität zum Empfangen von
 ### Whitebox View
 
 ![View_Ebene3](./images/Whitebox_View.png)
+  
+  
+ *ScreenManager* 
 
 |Methode| Kurzbeschreibung|
 | --- | --- |
-|drawScreen() | Abstrakte Methode, die in den konkreten Klassen die Bildschirmanzeige zeichnet. |
-|informUser(String) | konkrete Methode, die eine Meldung (als String-Aufrufparameter übergebe) dem Nutzer anzeigt. |
-|Color getColor(int) |Bildet Spieler-IDs eindeutig auf Anzeigefarben ab und liefert die Farbe zur angefragten ID.|
-|drawPlayers() | Zeigt die aktuell lebenden Spieler an ihrer aktuellen Position an. |
-|drawTileColors(int, int, int, int, int,String) | Wird mit der Spieler-ID, mit den alten Spielerkoodinaten und der Differenz zwischen den  alten und neuen Spielerkoordinaten aufgerufen. Für die Berechnung wird die Ausrichtung des Spielers benötigt (String-Parameter). Die Methode berechnet die Spielfelder, die von dem Spieler besetzt wurden und aktualisiert die Spielfelddaten entsprechend.|
-|kill(int)| Ruft RemoteTileColors auf und entfernt den Spieler aus der Spielerliste|
-|updateCurrentPlayerID(int)|Wenn updateNumPlayers(int) aufgerufen wird, wird geprüft, ob eine die currentPlayerID schon gesetzt ist, Wenn nicht, dann wird diese Methode aufgerufen. Dabei wird der übergebene Parameter die aktuelle Spieleranzahl-1 und wird als ID für den Spieler genutzt.|
-
+|drawScreen(String screenName) | Wenn der übergebene Bildschirmname vorhanden ist, werden alle anderen Bildschirminstanzen auf unsichtbar gemacht (Aufruf resetScreen(). Die Instanz, die zum übergebenen Bildschirmnamen passt, wird sichtbar gemacht.|
+|resetScreen() | Iteriert über alle vorhandenen Screens und macht sie unsichtbar. |
+| showCountdown() | Holt die CountdownScreen-Instanz und ruft darauf die Methode startCountdown() auf. |
+| updateView(int playerCount, int fieldSize) | Holt die GameScreen-Instanz, setzt die Spieleranzahl und die Spielfeldgröße und ruft initializeGameField() auf die GameScreen-Instanz auf.|
+|updatePlayer(int id, int x, int y, int orientation | Prüft, ob x oder y -1 ist. Wenn ja dann wird kill() aufgerufen. Sonst wird die Player-Instanz mit der übergebenen ID geholt, die "orientation" wird in ein String-Format übersetzt und damit wird updateTrailAndOrientation aufgerufen. |
+|informUser(String message) | Zeigt die ein Meldungsfenster mit der übergebenen Message als Inhalt dem Nutzer an.|
+|drawTileColors(Player playerToDraw) | Iteriert über den Trail des übergebenen Spielers und malt jedes Feld, das zum Trail gehört in der Farbe des übergebenen Spielers.|
+|kill(int playerID)| Entfernt den Spieler aus der Spielerliste und ruft remoteTileColors() mit dem betroffenen Spieler auf.|
+|updateCurrentPlayerID(int id)|Es wird geprüft, ob eine die currentPlayerID schon gesetzt ist. Wenn nicht, dann wird die aktuelle ID auf den übergebenen Wert gesetzt.|
+|endGame(int) | Setzt die Id des Gewinners in der EndScreen-Instanz und ruft drawScreen("end") auf. |
+  
+  
+*StartScreen*
+  
+|Methode| Kurzbeschreibung|
+| --- | --- |
+|registerStartButtonEventHandler(TextField textfield, Button startButton) | Registriert einen Event-Handler, um die Controller-Schnittstelle aufzurufen, wenn der Start-Button gedrückt wird. Der Inhalt des Textfeldes wird dem Controller übergeben, wenn er nicht leer ist.|
+  
+*LobbyScreen*
+|Methode| Kurzbeschreibung|
+| --- | --- |
+|registerCancelButtonEventHandler(Button cancelButton)| Registriert einen Event-Handler, um die Controller-Schnittstelle aufzurufen, wenn der Cancel-Button gedrückt wird.|
+|addPlayerCounterListener(ObservableInteger playersInLobby) |Registriert einen Listener auf die Anzahl der wartenden Spieler. Wenn diese aktualisiert wird, dann wird der aktuelle Wert im Lobby-Bildschirm angezeigt. |
+|addCurrentPlayerIDListener(ObservableInteger currentPlayerID) | Registriert einen Listener auf die PlayerID des Spielers. Wenn die gesetzt wird, dann wir din der Lobby seine Spielerfarbe und Steuerungstastaturbelegung angezeigt. |
+ 
+  
+*CountdownScreen*
+|Methode| Kurzbeschreibung|
+| --- | --- |
+| startCountdown() | Startet den Countdown von 5 bis 0 für alle Spieler, die in der Lobby sind. |
+  
    
+*EndScreen*
+|Methode| Kurzbeschreibung|
+| --- | --- |
+|registerWinnerListener() |Registriert einen Listener auf das Spielergebnis. Wenn das Ergebnis gesetzt wird, wird es in dem Endbildschirm angezeigt. |
+ 
+*GameScreen*
+|Methode| Kurzbeschreibung|
+| --- | --- |
+|registerKEyEventHandler()| Registriert einen Event-Handler, um die Controller-Schnittstelle aufzurufen.|
+|initializeGameField(int playerNumber) | Zeichnet das Spielfeldraster, ruft initPlayersInPositions() und drawTileColors() auf alle Spieler auf. |
+| initPlayersInPositions(int playerNumber)| Berechnet faire Startpositionen für jeden Spieler (abhängig von der Spieleranzahl). Berechnet die Startausrichtung von jedem Spieler, sodass jeder Spieler zum Zentrum des Spielfeldes ausgerichtet ist. Instanziiert die Spieler mit den berechneten Startpositionen- und Ausrichtungen und fügt sie der Spielerliste hinzu.|
+| updatePlayer(int id,int x,int y,int orientation)| Prüft, ob der Spieler kollidiert ist. Wenn ja, dann wird kill() aufgerufen. Wenn nicht, wird die Ausrichtung in ein String-Format umgewandelt und updateCurrentTrailAndOrientation() aufgerufen. |
+| removeTileColors(Player) | Entfernt die Einfärbung des Trails des übergebenen Spielers aus dem Spielfeld.|
+| drawTileColors(Player) | Färbt die Felder des Spielfeldes, die zum Trail des übergebenen Spielers gehören in der Farbe des Spielers ein.|
+| kill(int) | Entfernt den Spieler mit der übergebenen SpielerID aus der Spielerliste und ruft removeTileColors() auf. |
+
+*ScreenCommons*
+|Methode| Kurzbeschreibung|
+| --- | --- |
+|Color getColor(int) |Liefert die Farbe-Instanz zur angefragten SpielerID.|
+| String getColorName(int) | Liefert den Farbennamen zur angefragten SpielerID. |
+|String getPlayerControls(int) | Liefert eine Stringdarstellung der Steuerungstastaturbelegung zur angefragten SpielerID. |
+  
+  
+*Player*
+|Methode| Kurzbeschreibung|
+| --- | --- |
+|updateTrailAndOrientation(int x, int x, String orientation) | Fügt die neu hinzugekommenen Positionen dem Trail des Spielers zu. Ruft rotateImage(orientation) auf. |
+|rotateImage(orientation) | Prüft, ob sich die Ausrichtung des Spielers verändert hat. Wenn ja, dann wird das Bild des Spielers entsprechende gedreht und die orientation wird auf den übergebenen Wert gesetzt. |
+   
+  
+*IViewImpl*
+|Methode| Kurzbeschreibung|
+| --- | --- |
+|IViewImpl getInstance() | Implementierung des Singleton-Patterns. Liefert die IViewImpl-Instanz zurück.|
+| showScreen(String screenName) | Zeigt den Bildschirm an, der zum als String übergebenen Programmzustand passt. Wenn der Bildschirmname "countdown" ist, wird auch startCountdown() aufgerufen. |
+| startGame(int playerCount, int fieldSize) | Ruft updateView() in ScreenManager auf.|
+| notifyGameResult(int) | setzt ein Spielergebnis in der View. Die Methode wird mit der SpielerID des Gewinners aufgerufen oder mit -1, wenn das Spiel unentschieden ist. Ruft endGame() im Endbildschirm auf. |
+|updatePlayer(int, int, int, int) | Ruft updatePlayer() in GameScreen auf. |
+|informUser(String message) | Erzeugt ein Alert-Fenster mit der übergebenen Nachricht als Inhalt.|
+|updateNumPlayers(int) | Aktualisiert die Anzahl der Spieler in der View und weist wartenden Spielern ohne SpielerID eine neue SpielerID zu. |
+ 
+  
 ### Whitebox Controller
 
 ![CWB3](./images/CWB3.png)
