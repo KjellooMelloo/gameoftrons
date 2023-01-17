@@ -387,20 +387,21 @@ Wenn die Lookup-Anfrage fehlgeschlagen ist (kein Eintrag vorhanden), dann werden
 | Model | ``changePlayerDirection(int,String)`` | ``changeDirection(int,String)`` | Für Inputs zur Richtungsänderung |
 | Model | ``startGame(int,int)`` | ``initGame()`` | Um das Spiel zu starten |
 | Model | ``join(int)`` | ``setPlayerCount(int)`` | Anzahl Spieler für die Lobby werden gesetzt |
-| Model | ``cancelWait()`` | - | Spielabbruch nach Ablauf der Wartezeit oder Klick auf Cancel |
-| Model | - | ``updateBoard()`` | gameloop/ tick-Methode. Ist bei Beta-3 privat |
+| Model | ``cancelWait()`` | **``cancelWait()``** | Spielabbruch nach Ablauf der Wartezeit oder Klick auf Cancel |
+| Model | ``update()`` | ``updateBoard()`` | gameloop/ tick-Methode. |
 | View | ``updateNumPlayer(int)`` | ``updatePlayersReady(int)`` | Anzahl wartender Spieler in der Lobby |
 | View | ``updatePlayer(int,int,int,int)`` | ``setBoard(int[][])`` | Aktualisieren des Spielfelds. Beta-3 nutzt Deltas, Gamma-4 schickt gesamtes Spielfeld |
-| View | ``informUser(String)`` | - | Für Darstellen von Infonachrichten für den Spieler |
-| View | - | ``newGame()`` | Initialisiert Spielbildschirm(?) |
-| View | - | ``playerCrashed(int)`` | Um Spieler in der View zu löschen(?) |
-| View | - | ``setWinner(int)`` | Sieger anzeigen. Beta-3 hat endGame(int) im Controller dafür |
+| View | ``informUser(String)`` | **``informUser(String)``** | Für Darstellen von Infonachrichten für den Spieler |
+| View | ``kill(int)`` | ``playerCrashed(int)`` | Um Spieler in der View zu löschen |
+| View | ``notifyGameResult(int)`` | ``setWinner(int)`` | Sieger anzeigen. |
 | Controller | ``setCurrentState(String)`` | ``setState(String)`` | Verändert den Zustand der StateMachine |
-| Controller | ``endGame(int)`` | - | Spiel beenden und Sieger anzeigen (wird intern auf View aufgerufen) |
-| Controller | - | ``registerRemoteView()`` | Master-Controller registriert Remote-View(?) |
-| Controller | - | ``registerRemoteController()`` | Master-Controller registriert Remote-Controller(?) |
-| Controller | - | ``setLocalPlayer(int)`` | Teilt ID des lokalen Spieler mit(?) |
+| Controller | ``endGame(int)`` | **``endGame(int)``** | Spiel beenden |
+| Controller | **``registerRemoteView()``** | ``registerRemoteView()`` | Master-Controller registriert Remote-View |
+| Controller | **``registerRemoteController()``** | ``registerRemoteController()`` | Master-Controller registriert Remote-GameController |
+| Controller | **``setLocalPlayer(int)``** | ``setLocalPlayer(int)`` | Teilt ID des lokalen Spieler mit |
 
+**Anmerkung:** Die hervorgehobenen Methoden werden in der jeweiligen Gruppe ergänzt, sodass die Spielfunktionalitäten beider Gruppen abgedeckt sind.   
+  
 # Architekturentscheidungen
   
   Die entwickelte Middleware dient dem Zweck das von uns entwickelte Spiel "Game of Trons" verteilt zu spielen. Dafür müssen die teilnehmenden Node sich gegenseitig aktualisieren und Operationen anstoßen.
