@@ -480,11 +480,6 @@ Die komplette Methodenliste ist bereits in der Blackbox-Sicht (#applicationstubb
 ## Usecase 5 gegen Spielobjekt kollidieren
 ![Sequenzdiagramm_Collide](images/SD_UC5Collide.png)
 
-### AD View: updatePlayer()
-![AD_View_updatePlayer](images/AD_View_update.png)
-
-### AD View:  kill()
-![AD_View_kill](images/AD_View_kill.png)
 
 ## UC6 Win
 ![Sequenzdiagramm_Spielende](images/SD_UC6Win.png)
@@ -533,6 +528,12 @@ Die komplette Methodenliste ist bereits in der Blackbox-Sicht (#applicationstubb
 
 ## AD killPlayers
 ![Aktivitätsdiagramm_killPlayers](images/AD_killPlayers.png)
+  
+## AD View: updatePlayer()
+![AD_View_updatePlayer](images/AD_View_update.png)
+
+## AD View:  kill()
+![AD_View_kill](images/AD_View_kill.png)
 
 # Verteilungssicht 
 ![Deployment_Tron](images/Deployment_Tron.png)
