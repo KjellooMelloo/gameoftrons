@@ -419,7 +419,16 @@ Die Schnittstelle **IRemoteObject** bietet die Funktionalität zum Empfangen von
 *ScreenCommons*
 |Methode| Kurzbeschreibung|
 | --- | --- |
-|Color getColor(int) |Bildet Spieler-IDs eindeutig auf Anzeigefarben ab und liefert die Farbe zur angefragten ID.|
+|Color getColor(int) |Liefert die Farbe-Instanz zur angefragten SpielerID.|
+| String getColorName(int) | Liefert den Farbennamen zur angefragten SpielerID. |
+|String getPlayerControls(int) | Liefert eine Stringdarstellung der Steuerungstastaturbelegung zur angefragten SpielerID. |
+  
+  
+*Player*
+|Methode| Kurzbeschreibung|
+| --- | --- |
+|updateTrailAndOrientation(int x, int x, String orientation) | Fügt die neu hinzugekommenen Positionen dem Trail des Spielers zu. Ruft rotateImage(orientation) auf. |
+|rotateImage(orientation) | Prüft, ob sich die Ausrichtung des Spielers verändert hat. Wenn ja, dann wird das Bild des Spielers entsprechende gedreht und die orientation wird auf den übergebenen Wert gesetzt. |
    
 ### Whitebox Controller
 
