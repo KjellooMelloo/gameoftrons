@@ -395,14 +395,14 @@ Wenn die Lookup-Anfrage fehlgeschlagen ist (kein Eintrag vorhanden), dann werden
 | Model | ``cancelWait()`` | **``cancelWait()``** | Spielabbruch nach Ablauf der Wartezeit oder Klick auf Cancel |
 | Model | ``update()`` | ``updateBoard()`` | gameloop/ tick-Methode. |
 | View | ``updateNumPlayer(int)`` | ``updatePlayersReady(int)`` | Anzahl wartender Spieler in der Lobby |
-| View | ``updatePlayer(int,int,int,int)`` | ``setPlayerPositions(HashMap<Integer, List<Tuple<Integer, Inter>>>)`` | Aktualisieren des Spielfelds. Beta-3 nutzt Deltas, Gamma-4 schickt letzte 5 Positionen von allen Spielern |
+| View | ``updatePlayer(int,int,int,int)`` | ``setPlayerPositions(HashMap<Integer, List<Tuple<Integer, Integer>>>)`` | Aktualisieren des Spielfelds. Beta-3 nutzt Deltas, Gamma-4 schickt letzte 5 Positionen von allen Spielern |
 | View | ``informUser(String)`` | **``informUser(String)``** | Für Darstellen von Infonachrichten für den Spieler |
 | View | ``kill(int)`` | ``playerCrashed(int)`` | Um Spieler in der View zu löschen |
 | View | ``notifyGameResult(int)`` | ``setWinner(int)`` | Sieger anzeigen. |
 | Controller | ``setCurrentState(String)`` | ``setState(String)`` | Verändert den Zustand der StateMachine |
 | Controller | ``endGame(int)`` | **``endGame(int)``** | Spiel beenden |
-| Controller | **``registerRemoteView()``** | ``registerRemoteView()`` | Master-Controller registriert Remote-View |
-| Controller | **``registerRemoteController()``** | ``registerRemoteController()`` | Master-Controller registriert Remote-GameController |
+| Controller | **``registerRemoteView(UUID)``** | ``registerRemoteView(UUID)`` | Master-Controller registriert Remote-View |
+| Controller | **``registerRemoteController(UUID)``** | ``registerRemoteController(UUID)`` | Master-Controller registriert Remote-GameController |
 | Controller | **``setLocalPlayer(int)``** | ``setLocalPlayer(int)`` | Teilt ID des lokalen Spieler mit |
 
 **Anmerkung:** Die hervorgehobenen Methoden werden in der jeweiligen Gruppe ergänzt, sodass die Spielfunktionalitäten beider Gruppen abgedeckt sind.   
