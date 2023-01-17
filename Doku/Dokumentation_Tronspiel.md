@@ -3,33 +3,73 @@
 **Autoren**: Kathleen Neitzel, Kjell May, Viviam Ribeiro <br>
 **Modul**: Verteilte Systeme
 
-- [Einführung und Ziele](#einfuehrung)
-   - [Use Cases](#usecases)
-   - [Qualitätsziele](#qualitaetsziele)
-   - [Stakeholder](#stakeholder)
-   - [Randbedingungen](#randbedingungen)
+- [**Dokumentation Game of Trons**](#dokumentation-game-of-trons)
+- [Einführung und Ziele](#einführung-und-ziele)
+  - [Aufgabenstellung](#aufgabenstellung)
+    - [**Weitere Storyboard Ansichten**](#weitere-storyboard-ansichten)
+    - [**UseCases**](#usecases)
+  - [Qualitätsziele](#qualitätsziele)
+  - [Stakeholder](#stakeholder)
+- [Randbedingungen](#randbedingungen)
+  - [Technisch](#technisch)
+  - [Organisatorisch](#organisatorisch)
 - [Kontextabgrenzung](#kontextabgrenzung)
-  - [Fachlicher Kontext](#fachlicherkontext)
-  - [Technischer Kontext](#technischerkontext)
-- [Lösungsstrategie](#loesungsstrategie)
+  - [Fachlicher Kontext](#fachlicher-kontext)
+  - [Technischer Kontext](#technischer-kontext)
+- [Lösungsstrategie](#lösungsstrategie)
 - [Bausteinsicht](#bausteinsicht)
-  - [Whitebox Gesamtsystem](#whiteboxgesamt)
-    - [Model Blackbox](#modelblackbox)
-    - [View Blackbox](#viewblackbox)
-    - [Controller Blackbox](#controllerblackbox)
-    - [Application Stub Blackbox](#applicationstubblackblox)
-  - [Whitebox Ebene 2](#ebene2)
-  - [Whitebox Ebene 3](#ebene3)
+  - [Ebene 1](#ebene-1)
+    - [Whitebox Gesamtsystem](#whitebox-gesamtsystem)
+    - [Model (Blackbox)](#model-blackbox)
+    - [View (Blackbox)](#view-blackbox)
+    - [Controller (Blackbox)](#controller-blackbox)
+    - [Factory](#factory)
+    - [Application Stub (Blackbox)](#application-stub-blackbox)
+  - [Ebene 2](#ebene-2)
+    - [Whitebox Model](#whitebox-model)
+    - [Whitebox View](#whitebox-view)
+    - [Whitebox Controller](#whitebox-controller)
+    - [Whitebox Factory](#whitebox-factory)
+    - [Whitebox Application Stub](#whitebox-application-stub)
+  - [Ebene 3](#ebene-3)
+    - [Whitebox Model](#whitebox-model-1)
+    - [Whitebox View](#whitebox-view-1)
+    - [Whitebox Controller](#whitebox-controller-1)
+    - [Whitebox Factory](#whitebox-factory-1)
+    - [Whitebox AppStub](#whitebox-appstub)
 - [Laufzeitsicht](#laufzeitsicht)
+  - [Usecase 1 Create](#usecase-1-create)
+  - [Usecase 2a CancelWait](#usecase-2a-cancelwait)
+  - [Usecase 2b TimeUp](#usecase-2b-timeup)
+  - [Usecase 3 Start](#usecase-3-start)
+  - [Usecase 4 Spieler steuern](#usecase-4-spieler-steuern)
+  - [Usecase 5 gegen Spielobjekt kollidieren](#usecase-5-gegen-spielobjekt-kollidieren)
+    - [AD View: updatePlayer()](#ad-view-updateplayer)
+    - [AD View:  kill()](#ad-view--kill)
+  - [UC6 Win](#uc6-win)
+  - [UC7 Lose](#uc7-lose)
+  - [UC8 Tie](#uc8-tie)
+  - [AD join](#ad-join)
+  - [AD cancelWait](#ad-cancelwait)
+  - [AD startGame](#ad-startgame)
+  - [AD init](#ad-init)
+  - [AD update](#ad-update)
+  - [AD changePlayerDirection](#ad-changeplayerdirection)
+  - [AD calcNextPos](#ad-calcnextpos)
+  - [AD getPlayerPositions](#ad-getplayerpositions)
+  - [AD updatePlayers](#ad-updateplayers)
+  - [AD movePlayer](#ad-moveplayer)
+  - [AD checkForCollision](#ad-checkforcollision)
+  - [AD killPlayers](#ad-killplayers)
 - [Verteilungssicht](#verteilungssicht)
-- [Architekturentscheidungen](#architektur)
-- [Risiken und technische Schulden](#risiken)
-- [Qualitätsanforderungen](#qualitaet)
-- [Glossar](#glossar)
+- [Querschnittliche Konzepte](#querschnittliche-konzepte)
+- [Architekturentscheidungen](#architekturentscheidungen)
+- [Qualitätsanforderungen](#qualitätsanforderungen)
+  - [Qualitätsbaum](#qualitätsbaum)
+  - [Qualitätsszenarien](#qualitätsszenarien)
+- [Risiken und technische Schulden {#section-technical-risks}](#risiken-und-technische-schulden-section-technical-risks)
+- [Glossar {#section-glossary}](#glossar-section-glossary)
 
-
-
-<a name="einfuehrung"></a>
 # Einführung und Ziele
 ## Aufgabenstellung
 
@@ -85,7 +125,6 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 |**UC7** Lose|Game|Der Spieler befindet sich mit mindestens einem weiteren Spieler auf dem Spielfeld|Der Spieler wurde aus dem Spiel entfernt|**1.** Der Spieler kollidiert (siehe UC5).<br><br> **2.** Das System entfernt den Spieler aus dem Spiel| | |
 |**UC8** Tie|Game|Der Spieler befindet sich mit nur einem weiteren Spieler auf dem Spielfeld|Das Spiel wurde gelöscht und alle Nutzer wurden zum Startbildschirm weitergeleitet.|**1.** Beide Spieler kollidieren gleichzeitig (siehe UC5).<br><br> **2.** Das System legt fest, dass das Spiel unentschieden ist.<br><br> **3.** Das System zeigt allen Nutzern den Endschirm an, wo angezeigt wird, dass das Spiel unentschieden ist.<br><br> **4.** Nach 3 Sekunden löscht das System die Spielinstanz und zeigt allen wieder den Startbildschirm an.| |
 
-<a name="qualitaetsziele"></a>
 ## Qualitätsziele
 
 |Qualitätsziel  |Erklärung|
@@ -95,7 +134,6 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 |Zuverlässigkeit|Das Spiel soll immer gleich schnell laufen (kein "Jittering")|
 |Ein Spiel am Stück (Rematch-Option)|Es reicht aus, wenn ein Spiel am Stück spielbar ist (Keine "direkte" Rematch-Option)|
 
-<a name="stakeholder"></a>
 ## Stakeholder
 
 |Rolle  |Kontakt        |Erwartungshaltung|
@@ -103,8 +141,6 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 |Kunde  |Martin Becke   |Entwicklung eines Tron-Spiels als verteiltes System, gut dokumentiert (Code <-> Dokumentation), Konzepte aus der Vorlesung sinnvoll angewendet und verstanden|
 |Entwickler|Kathleen Neitzel, Kjell May, Viviam Ribeiro| - Das Spiel als verteiltes System entwickeln und dabei die Inhalte aus der Vorlesung praktisch verstehen und anwenden können <br>- PVL erhalten|
 
-
-<a name="randbedingungen"></a>
 # Randbedingungen
 
 ## Technisch
@@ -123,29 +159,17 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 | Zeit            |Abgabe am 19. Januar 2023. |
 | Vorgehensmodell | Die Entwicklung wird iterativ und inkrementell betrieben. Zur Dokumentation wird arc42 genutzt|
 
-
-<a name="kontextabgrenzung"></a>
 # Kontextabgrenzung
 
-<a name="fachlicherkontext"></a>
 ## Fachlicher Kontext
-
 
 ![fachlicher_trontext.png](./images/fachlicher_trontext.png)
 
-
-
-<a name="technischerkontext"></a>
 ## Technischer Kontext
-
-
 
 ![technischer_trontext.png](./images/technischer_trontext.png)
 
-
-<a name="loesungsstrategie"></a>
 # Lösungsstrategie
-
 
 |Use Case| Akteur | Funktionssignatur |Vorbedingung| Nachbedingung | Ablaufsemantik | Fehlersemantik |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -181,16 +205,9 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 | UC1,2a,2b,3,6,7,8 | Controller | void setCurrentState(String) | Der Controller wurde gestartet oder ist bereits am laufen und befindet sich in einem State.  | Der State des Controllers wurde gewechselt und die behavior() Methode des aktuellen States kann ausgeführt werden. | Die Methode kann vom Controller (bzw. der State Machine) selbst innerhalb der behavior() Methode aufgerufen werden oder von außen durch das Model. In einem String wird der Folgezustand übergeben. Beim setzen des nächsten States wird direkt die behavior()-Methode ausgeführt. |  |   
 | UC1,2a,2b,3,6,7,8 | Controller | void behavior() | Die State Machine hat ihren Zustand gewechselt und führt die behavior Methode aus. | Die behvaior()-Methode wurde ausgeführt und ggf. der Zustand gewechselt. | Je nachdem in welchem State sich die State Machine aktuell befindet, wird die entsprechende behvior()-Methodenimplementierung ausgewählt und ausgeführt. |  |   
 
-
-
-
-
-
-<a name="bausteinsicht"></a>
 # Bausteinsicht
 ## Ebene 1
 
-<a name="whiteboxgesamt"></a>
 ### Whitebox Gesamtsystem
 
 Game Of Trons ist in drei Komponenten aufgeteilt, die in der unteren Abbildung zu sehen sind.
@@ -209,8 +226,6 @@ Die Komponentenaufteilung richtet sich nach dem eingesetzten MVC-Architekturmust
 |Controller | Regelt die Ablaufsemantik außerhalb des Spiels und vermittelt zwischen Model und View.|
 | Application Stub | Fängt Methodenaufrufe auf und leite sie an die Middleware weiter. Wird von der Middleware aufgerufen, um Methodenaufrufe an die aufgerufene Klasse weiterzuleiten. |
 
-
-<a name="modelblackbox"></a>
 ### Model (Blackbox)
 
 **Zweck/ Verantwortung**
@@ -229,7 +244,6 @@ Um einen Spielstart und ein Spielende zu signalisieren, benötigt das Model die 
 | ``changePlayerDirection(int,String)`` | Für Verarbeitung der Tasteneingaben für einen Spieler |
 | ``setNumPlayers`` | Zum Setzen der Spieleranzahl |
 
-<a name="viewblackbox"></a>
 ### View (Blackbox) 
 
 **Zweck/ Verantwortung**
@@ -258,7 +272,6 @@ Die View erlaubt das Aktualisieren der Spielerdaten über die Schnittstelle **IM
 |updatePlayer(int, int, int, int) | Aktualisiert die Spielerliste, die in der View gehalten wird. Der erste Parameter ist die ID des zu aktualisierenden Spielers. Der zweite und dritte Parameter sind die neuen X- und Y-Koordinate des Spielers. Wenn die Koordinaten -1 und -1 betragen, dann ist der Spieler tot. |
 
 
-<a name="controllerblackbox"></a>
 ### Controller (Blackbox) 
 
 **Zweck/ Verantwortung**
@@ -300,7 +313,6 @@ Die einzige von außen aufrufbare Klasse heißt MVCFactory, die in den Klassen g
 |-|-|
 | Object getInterface(String, boolean) | Es wird ein Objekt vom Interface im übergebenen String zurückgegeben. Wenn remote gespielt wird, ist der zweite Parameter true und das Caller Objekt wird zurückgegeben, sonst das der Realimplementierung |
 
-<a name="applicationstubblackblox"></a>
 ### Application Stub (Blackbox) 
 
 **Zweck/ Verantwortung**
@@ -317,7 +329,6 @@ Die Schnittstelle **IRemoteObject** bietet die Funktionalität zum Empfangen von
 | Methode | Kurzbeschreibung |
 |call(String methodName, Object[] args) | Eine zu importierende Schnittstelle wird gefragt, ob eine Methode mit dem Namen "methodName" vorhanden ist. Wenn ja, dann wird diese Methode mit den Aufrufparametern im Array "args" aufgerufen.|
 
-<a name="ebene2"></a>
 ## Ebene 2 
 
 ### Whitebox Model
@@ -343,8 +354,6 @@ Die Schnittstelle **IRemoteObject** bietet die Funktionalität zum Empfangen von
 
 ![AppStub_Ebene2](./images/Whitebox_AppStub.png)
 
-
-<a name="ebene3"></a>
 ## Ebene 3 
 
 ### Whitebox Model
@@ -399,11 +408,9 @@ Die Schnittstelle **IRemoteObject** bietet die Funktionalität zum Empfangen von
 ### Whitebox Controller
 
 ![Controller_WB3_1](./images/Controller_WB3.png)
-<br>
 
 State Machine
 ![SM_WB3_1](./images/SM_WB3.png)
-<br>
 
 Controller
 | Methode | Kurzbeschreibung |
@@ -437,21 +444,20 @@ IConfig
    
 **Caller-Whitebox**
 ![Appstub_Caller.png](./images/caller_whitebox.png)
-<br>
+
 |Methode| Kurzbeschreibung|
 | --- | --- |
 |join(int) <br> cancelWait() <br> startGame(int, int)<br> changePlayerDirection(int, String) <br> setCurrentState(String<br> endGame(int)<br> updateNumplayers(int)<br> updatePlayer(int,int,int,int)<br> informUser(String)<br>| Ruft die invoke(int interfaceID, String methodName, Object[] args)-Schnittstelle der Middleware auf. Für den Aufruf wird das InterfaceID der Caller-Klasse genommen, und die Aufrufparameter der Methode werden in ein Object-Array gepackt.|
 
  **Callee-Whitebox**
 ![Appstub_Callee.png](./images/callee_whitebox.png)
-<br>
+
 |Methode| Kurzbeschreibung|
 | --- | --- |
 |call(String methodName, Object[])| Eine zu importierende Schnittstelle wird gefragt, ob eine Methode mit dem Namen "methodName" vorhanden ist. Wenn ja, dann wird diese Methode mit den Aufrufparametern im Array "args" aufgerufen.|
 
 Die komplette Methodenliste ist bereits in der Blackbox-Sicht (#applicationstubblackblox) des Application Stubs beschrieben, da alle Methoden über Schnittstellen nach außen hin angeboten werden.
 
-<a name="laufzeitsicht"></a>
 # Laufzeitsicht
 
 
@@ -487,7 +493,6 @@ Die komplette Methodenliste ist bereits in der Blackbox-Sicht (#applicationstubb
 
 ## UC8 Tie
 ![Sequenzdiagramm_Spielende](images/SD_UC8Tie.png)
-...
 
 ## AD join
 ![Aktivitätsdiagramm_join](images/AD_join.png)
@@ -525,30 +530,12 @@ Die komplette Methodenliste ist bereits in der Blackbox-Sicht (#applicationstubb
 ## AD killPlayers
 ![Aktivitätsdiagramm_killPlayers](images/AD_killPlayers.png)
 
-
-<a name="verteilungssicht"></a>
 # Verteilungssicht 
 ![Deployment_Tron](images/Deployment_Tron.png)
 
 
-<a name="querschnitt"></a>
-# Querschnittliche Konzepte {#section-concepts}
+# Querschnittliche Konzepte
 
-## *\<Konzept 1>* {#__emphasis_konzept_1_emphasis}
-
-*\<Erklärung>*
-
-## *\<Konzept 2>* {#__emphasis_konzept_2_emphasis}
-
-*\<Erklärung>*
-
-...
-
-## *\<Konzept n>* {#__emphasis_konzept_n_emphasis}
-
-*\<Erklärung>*
-
-<a name="architektur"></a>
 # Architekturentscheidungen 
 
 Ausschlaggebend für die Architektur ist das MVC-Entwurfsmuster, das häufig bei Anwendungen mit Benutzeroberfläche eingesetzt wird, was auch bei der hier behandelten Anwendung der Fall ist.
@@ -557,7 +544,6 @@ Dieses Entwurfsmuster implementiert das Prinzip des Separation of Concerns, wodu
 
 Die Vorteile, die das Einsetzen dieses Patterns bringen, sind für die Entwicklung dieser Software unerlässlich, da der Softwareentwicklungsprozess iterativ gestaltet ist und da Änderungen in der Logik oder Architektur aufgrund von neuen Wunschäußerungen durch die Stakeholder oder aufgrund von Fehleinschätzungen durch das unerfahrene Entwicklungsteam zu erwarten sind.
 
-<a name="qualitaet"></a>
 # Qualitätsanforderungen
 
 ## Qualitätsbaum
@@ -576,10 +562,8 @@ Die Vorteile, die das Einsetzen dieses Patterns bringen, sind für die Entwicklu
 
 **TODO Wahrscheinlich noch mehr Szenarien**
 
-<a name="risiken"></a>
 # Risiken und technische Schulden {#section-technical-risks}
 
-<a name="glossar"></a>
 # Glossar {#section-glossary}
 
 |Begriff    |Definition|
