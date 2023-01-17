@@ -534,22 +534,22 @@ Die komplette Methodenliste ist bereits in der Blackbox-Sicht (#applicationstubb
 # Laufzeitsicht
 
 
-## Usecase 1 Create
+## UC1 Create
 ![UC1-final](images/UC1-final.png)
    
-## Usecase 2a CancelWait
+## UC2a CancelWait
 ![UC2a-final](images/UC2a-final.png)
 
-## Usecase 2b TimeUp
+## UC2b TimeUp
 ![UC2b-final](images/UC2b-final.png)
 
-## Usecase 3 Start
+## UC3 Start
 ![UC3-final](images/UC3-final.png)
 
-## Usecase 4 Spieler steuern
+## UC4 Spieler steuern
 ![Sequenzdiagramm_Steer](images/SD_UC4Steer.png)
 
-## Usecase 5 gegen Spielobjekt kollidieren
+## UC5 gegen Spielobjekt kollidieren
 ![Sequenzdiagramm_Collide](images/SD_UC5Collide.png)
 
 ## UC6 Win
