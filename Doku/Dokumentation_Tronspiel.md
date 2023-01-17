@@ -181,17 +181,16 @@ Die Anforderungen wurden mit Hilfe der Storyboard-Methode aufgenommen. Dafür wu
 
 |Use Case| Akteur | Funktionssignatur |Vorbedingung| Nachbedingung | Ablaufsemantik | Fehlersemantik |
 | --- | --- | --- | --- | --- | --- | --- |
-|UC1 | Controller | int handleInputPlayerCount() | Der Nutzer hat die gewünschte Spieleranzahl eingegeben und auf den Button "Start" gedrückt. | Die Spieleranzahl der Spielinstanz wird im Model gespeichert. |Die Methode liefert die durch den Benutzer eingegebenen Spieleranzahl | Wenn die Spieleranzahl keine Zahl zwischen 2 und 6 ist, wird die Methode loadDefaultPlayerCount() aufgerufen |
-|UC1 | Controller | int loadDefaultPlayerCount() | Der Nutzer hat eine ungültige Spieleranzahl eingegeben. | Die Default-Spieleranzahl wird im Model gespeichert.  |Die Methode liefert den Default-Wert für die Spieleranzahl aus der Config-Datei und ruft die Methode informUser("Spieleranzahl muss eine Zahl zwischen 2 und 6 sein. Der Default-Wert <<Default-Wert>> wird gesetzt") | Wenn keine Zahl geladen werden konnte, wird eine Exception mit Fehlerbeschreibung geworfen. |
-|UC1 | Controller |int[] loadConfigParams() | Eine gültige Spieleranzahl wurd im Model gespeichert.  | Es wurde eine Liste mit Spielparametern erzeugt. |Die Methode liefert die Parameter aus der Config-Datei in einem int-Array der Länge 4. <br> **Index 0:** Die maximale Wartezeit <br> **Index 1:** Die Tastenbelegung (0: Steuerung über die Pfeiltasten rechts/links; 1: Steuerung über die Tasten 'A'/'D') <br> **Index 2:** Die Geschwindigkeit<br> **Index 3:** Die Spielfeldgröße | Wenn ein Parameter nicht im gültigen Wertebereich liegt oder nicht geladen werden konnte, wird der entsprechende Default-Wert gesetzt: <br> **Default maximale Wartezeit:** 120 Sekunden<br> **Default Geschwindkeit:** 100 (Einheit: Bewegungen/Sekunde) <br> **Default Spielfeldgröße:** Geschwindigkeit * 5 <br><br> Anschließend wird die Methode informUser("Ein oder mehr Parameter aus der Konfigurationsdatei waren ungültig oder konnten nicht geladen werden. Die betroffenen Parameter wurde auf Default-Werte gesetzt.") aufgerufen |
-|UC2 | Controller | void handleWaitingButtonClick() | Der Nutzer befindet sich alleine in der Lobby und hat auf den Button "Cancel" geklickt.| Der Spieler wird  zum Startbildschirm zurückgeleitet. |Die Methode bricht den Wartevorgang ab. | |
-|UC2, UC6, UC8 | Controller | void deleteGameInstance() | Der Wartevorgang wurde durch Nutezraktion oder Timerablauf abgebrochen oder das Spiel wurde zu Ende gespielt. | Die Spielinstanz wurde gelöscht. |Die Methode löscht die aktuelle Spielinstanz. |  |
-|UC2 | Controller| void cancelWaitingTimer() | Der Nutzer befindet sich im Warteraum und der Timer des Warteraums ist abgelaufen, weil zu lange auf anderen Spieler gewartet wurde. |Der Nutzer wird zum Startbildschirm weitergeleitet. |Die Methode bricht den Wartevorgang ab und informiert den Nutzer über den Aufruf der Methode informUser("Wartezeit zu lang. Der Wartevorgang wird abgebrochen ...").| |
-|UC3 | Controller | void notifyCountdownOver() | Der Countdown wurde von der View dem Nutzer angezeigt. | Der Controller bekommt mit, dass der Countdown vorbei ist und ruft die Methode startGame() des Models auf. | Die Methode erzeugt einen Event für den Controller, dass der Countdown vorbei ist.|  |
-|UC4| Controller | String handleDirectionKeyboardInput() |Der Nutzer hat eine Taste füe die Steuerung seines Spielers gedrückt.| Die gewünschte Richtungsänderung wird zurückgegeben. | Die Methode liefert die Richtung, die über die Tastatur vom Nutzer eingegeben wurde. Wenn die entsprechende Tastenbelegung für die Steuerung des Motorrads nach links gedrückt wurde, gibt die Methode den String 'left' zurück. <br> Wenn die entsprechende Tastenbelegung für die Steuerung des Motorrads nach rechts gedrückt wurde, gibt die Methode den String 'right' zurück.| Im Fehlerfall wird eine Exception mit Fehlerbeschreibung geworfen |
-| UC1,2a,2b,3,6,7,8 | Controller | void setCurrentState(String) | Der Controller wurde gestartet oder ist bereits am laufen und befindet sich in einem State.  | Der State des Controllers wurde gewechselt und die behavior() Methode des aktuellen States kann ausgeführt werden. | Die Methode kann vom Controller (bzw. der State Machine) selbst innerhalb der behavior() Methode aufgerufen werden oder von außen durch das Model. In einem String wird der Folgezustand übergeben. Beim setzen des nächsten States wird direkt die behavior()-Methode ausgeführt. |  |   
-| UC1,2a,2b,3,6,7,8 | Controller | void behavior() | Die State Machine hat ihren Zustand gewechselt und führt die behavior Methode aus. | Die behvaior()-Methode wurde ausgeführt und ggf. der Zustand gewechselt. | Je nachdem in welchem State sich die State Machine aktuell befindet, wird die entsprechende behvior()-Methodenimplementierung ausgewählt und ausgeführt. |  |  
-|UC6,7,8| Controller| void endGame(int)| Im Model wurde ein Gewinner festgelegt oder das Spiel wurde als unentschieden entschieden. | Die State Maschine im Controller befindet sich im Zustand "End" | Die Methode ändert die State Maschine im Controller zum Zustand "End"| |
+|UC1 | Controller | void handleInputPlayerCount(int playerCount) | Der Nutzer hat die gewünschte Spieleranzahl eingegeben und auf den Button "Start" gedrückt. | Der Nutzer befindet sich in der Lobby. | Der Controller lädt alle für das Spiel benötigten Parameter aus der Config-Datei. Der Controller schickt spezifische Parameter jeweils an die View und an das Model, sodass der User in der Lobby auf weitere Mitspieler warten kann. | Wenn die Spieleranzahl keine Zahl zwischen 2 und 6 ist, wird die Methode loadDefaultPlayerCount() aufgerufen |
+|UC1 | Controller | int loadDefaultPlayerCount() | Der Nutzer hat eine ungültige Spieleranzahl eingegeben. | Die Default-Spieleranzahl wird im Controller gespeichert. | Die Methode liefert den Default-Wert für die Spieleranzahl aus der Config-Datei. |  |
+|UC1 | Controller |int[] loadConfigParameters() | Der User hat den "Start"-Button angeklickt. | Es wurde eine Liste mit Spielparametern erzeugt. |Die Methode liefert die Parameter aus der Config-Datei in einem int-Array der Länge 8. <br> **Index 0:** Die Spieleranzahl <br> **Index 1:** Die maximale Wartezeit <br> **Index 2:** Die Geschwindigkeit <br> **Index 3:** Die Spielfeldgröße <br> **Index 4:** Der minimale Wert der gültigen Spieleranzahlen <br> **Index 5:** Der maximale Wert der gültigen Spieleranzahlen <br> **Index 6:** Das Flag für den remote-Spielmodus <br> **Index 7:** Das Flag für den partner-Spielmodus <br> |  |
+|UC1 | Controller | HashMap<Integer, String[]> loadControls() | Der User hat den "Start"-Button angeklickt. | Die Steuerungen für alle Spieler wurden aus der Config geladen. | <br>**Spieler 1:** 'A'/'D' <br> **Spieler 2:** 'LEFT'/'RIGHT' <br>**Spieler 3:** 'G'/'J' <br>**Spieler 4:** 'DIGIT1'/'DIGIT3' <br>**Spieler 5:** 'DIGIT5'/'DIGIT9' <br>**Spieler 6:** 'I'/'P' <br>  | |
+|UC2 | Controller | void handleWaitingButtonClick() | Der Nutzer befindet sich alleine in der Lobby und hat auf den Button "Cancel" geklickt.| Der Spieler wird  zum Startbildschirm zurückgeleitet. | Die Methode bricht den Wartevorgang ab. Der Controller wechselt in den DELETE Zustand. | |
+|UC3 | Controller | void notifyCountdownOver() | Der Countdown wurde von der View dem Nutzer angezeigt. | Die View und das Model laden den Spielstart. | Der Countdown ist vorbei und der Controller ruft die startGame()-Methoden des Models und der View auf. |  |
+|UC4| Controller | void handleDirectionKeyboardInput(String key) |Der Nutzer hat eine Taste zur Steuerung seines Spielers gedrückt.| Die gewünschte Bewegung des Spielers wird im Model berechnet. | Es wird geprüft, ob für die gedrückte Taste eine Steuerung hinterlegt wurde. Die Richtung wird zusammen mit der Spielerid an das Model weitergeleitet. | Wenn eine Taste gedrückt wird für die keine Steuerung hinterlegt wurde, wird die Tasteneingabe ignoriert und nicht zum Model für weitere Berechnungen weitergeleitet. |
+| UC1,2a,2b,3,6,7,8 | Controller | void setCurrentState(String) | Der Controller wurde gestartet oder ist bereits am laufen und befindet sich in einem State. | Der State des Controllers wurde gewechselt und die behavior() Methode des aktuellen States kann ausgeführt werden. | Die Methode kann vom Controller (bzw. der State Machine) selbst innerhalb der behavior() Methode aufgerufen werden oder von außen durch das Model. In einem String wird der Folgezustand übergeben. Beim Setzen des nächsten States wird direkt die behavior()-Methode ausgeführt. |  |   
+| UC1,2a,2b,3,6,7,8 | Controller | void behavior() | Die State Machine hat ihren Zustand gewechselt und führt die behavior Methode aus. | Die behavior()-Methode wurde ausgeführt und ggf. der Zustand gewechselt. | Je nachdem in welchem State sich die State Machine aktuell befindet, wird die entsprechende behvior()-Methodenimplementierung ausgewählt und ausgeführt. |  |  
+|UC6,7,8| Controller| void endGame(int result)| Im Model wurde ein Gewinner festgelegt oder das Spiel wurde als unentschieden entschieden. | Die State Machine im Controller befindet sich im Zustand "End" | Die Methode leitet das Spielergebnis an die View weiter und die State Machine wechselt zum Zustand "End"| |
 |UC1| Model | ``void join(int, int)`` | Ein Spieler möchte dem Spiel durch Drücken auf Start beitreten oder ist der erste und erstellt damit ein Spiel | Der Spieler wurde im Spiel registriert. Wenn das Spiel voll ist, wird es gestartet | Nach Klick auf Start wird diese Methode mit der Anzahl der Spieler aus dem Feld des Startbildschirms und der maximalen Wartezeit aufgerufen. Ist noch kein `fullPlayerCount` gesetzt, ist die übergebene Anzahl die Lobbygröße. Die Anzahl der Spieler in der Lobby werden hochgezählt. Dann wird geschaut, ob die Lobby voll ist und dann entweder das Spiel gestartet oder die Anzahl der wartenden Spieler in der View aktualisiert und der Warte-Timer zurückgesetzt | 1. Ein Spieler tritt mit seiner eingetragenen Anzahl an Spielern bei, die Lobby hat aber schon eine gesetzte Größe. Dann wird der Spieler darüber informiert (`informUser()`) |
 |UC2a+b | Model | ``void cancelWait()`` | Der Cancel-Button wurde gedrückt oder die maximale Wartezeit ist abgelaufen | Das Spiel wurde abgebrochen und alles zurückgesetzt | fullPlayerCount und numPlayers werden auf 0 gesetzt, der Timer abgebrochen, der User informiert und die Spielinstanz im Controller gelöscht | |
 |UC3| Model |``void startGame(int, int)``| Es sind genug Spieler beigetreten|Das Spiel wurde initialisiert und alle Spieler befinden sich auf ihrer Startposition und sehen den Spielbildschirm | startGame() wird mit Anzahl Reihen (Spalten entfallen, da das Spielfeld quadratisch ist) und Spielgeschwindigkeit aufgerufen. Das Spielfeld und die Spieler werden initialisiert und die Spieler auf ihre Startpositionen gesetzt ||
@@ -289,28 +288,21 @@ Die View erlaubt das Aktualisieren der Spielerdaten und die Anzeige von Meldunge
 
 **Zweck/ Verantwortung**
 
-Der Controller steuert den gesamten Ablauf rund um das Spiel. Dieser umfasst das Weiterleiten vom Startbildschirm in die Lobby, das Warten auf weitere Mitspieler, das Mitteilen des Siegers am Ende des Spiels, das Löschen der beendeten Runde und das Zurückleiten zum Startbildschirm. Außerdem setzt der Controller die Kommunikation zwischen der View- und der Modelkomponente sowohl vor und nach als auch während der laufenden Runde über mehrere Schnittstellen um.
-Während des Spiels nimmt der Controller die Benutzereingaben zur Steuerung des Spielers an und leitet diese an das Model weiter.
+Der Controller steuert den gesamten Ablauf rund um das Spiel. Diese Aufgabe umfasst das Laden der Spielparameter aus der Config, das Weiterleiten zwischen den verschiedenen Screens und an vielen Stellen Kommunikation mit und zwischen Model und View. In der Vorbereitung des Spiels, koordiniert der Controller das Informieren der View und des Models über alle Spielparameter. Während des Spiels nimmt der Controller die Benutzereingaben zur Steuerung des Spielers an, verarbeitet diese und leitet sie an das Model weiter. Nach dem Spiel informiert der Controller die View über das Spielergebnis und leitet das Löschen des Spiels ein.
 
 **Schnittstelle(n)**
 
-Der Controller bietet Funktionalitäten für das Model v.a. zur Kommunikation mit der View über die Schnittstelle **IModelController** an.
+Der Controller bietet Funktionalitäten für das Model und die View über die Schnittstelle **IContext** an.
 
 
 | Methode | Kurzbeschreibung |
 | --- | --- |
-| void endGame(int) | Das Model ruft die Methode endGame() auf und übergibt als Parameter das Spielergebnis in Form eines int. Die State Machine wechselt vom Zustand GAME in den Zustand END. | |
-| void setCurrentState(String) | Das Model einen Zustandswechsel der State Machine mit dieser Methode bewirken. Der nächste Zustand wird hierbei in einem String übergeben. |
-
-
-Der Controller bietet Funktionalitäten für die View v.a. zur Kommunikation mit dem Model über die Schnittstelle **IViewController** an.
-
-| Methode | Kurzbeschreibung |
-| --- | --- |
-| int handleInputPlayerCount() | Der Nutzer drückt den Start-Button. Falls eine gültige Eingabe für die Spieleranzahl vom Nutzer getätigt wurde, wird der Wert in einer Variable gespeichert. Andernfalls wird die Methode loadDefaultPlayerCount() aufgerufen. |
-| void handleWaitingButtonClick()| Der Nutzer drückt den Cancel-Button. Wartevorgang wird abgebrochen, falls der Nutzer alleinein der Lobby wartet. Andernfalls wird mit informUser() eine Nachricht versendet, dass der Wartevorgang nicht abgebrochen werden kann. |
-| String handleDirectionKeyboardInput()| Der Nutzer tätigt  eine Tastatureingabe zur Steuerung seines Spielers. Zurückgegeben wird die für die Taste hinterlegte Richtung. Bei keiner Belegung wird eine Exception geworfen. |
-| void notifyCountdownOver() | Die View hat die Countdownanzeige abgeschlossen und benachrichtigt den Controller, dass der Countdown vorbei ist. Der Controller ruft die Methode startGame() des Models auf. |
+| void setCurrentState(String state)| Den Übergang der State Machine in den nächsten Zustand kann das Model anstoßen oder der Controller selbst bewirken. Die behavior()-Methode wird durch den Zustandswechsel gestartet. |
+| void handleInputPlayerCount(int playerCount) | Der Nutzer drückt den Start-Button. Das Laden und die Verarbeitung der Config-Parameter wird eingeleitet. Der Spieler tritt der Lobby bei. |
+| void handleWaitingButtonClick()| Der Nutzer drückt den Cancel-Button. Wartevorgang wird abgebrochen. |
+| void handleDirectionKeyboardInput(String key)| Der Nutzer tätigt  eine Tastatureingabe zur Steuerung seines Spielers. Wenn eine Richtung für die Taste in der Config hinterlegt wurde, wird die Richtung zusammen mit der Spielerid an das Model geschickt. |
+| void notifyCountdownOver() | Die View hat die Countdownanzeige abgeschlossen und benachrichtigt den Controller, dass der Countdown vorbei ist. Der Controller ruft die startGame()-Methoden des Models und der View auf und leitet den Spielstart ein. |
+| void endGame(int result)| Das Model ruft die Methode endGame() auf und übergibt als Parameter das Spielergebnis in Form eines int. Das Spielergebnis wird an die View weitergeleitet. Die State Machine wechselt vom Zustand GAME in den Zustand END. |
 
 ### Factory
 
@@ -495,14 +487,14 @@ Die Schnittstelle **IRemoteObject** bietet die Funktionalität zum Empfangen von
 Controller
 | Methode | Kurzbeschreibung |
 | --- | --- |
-| behavior() | Führt nach einem Zustandswechsel die dem aktuellen State entsprechende behavior()-Implementierung aus. |
-| deleteGameInstance() | Löscht die aktuelle Spielinstanz. |
+| void behavior() | Führt nach einem Zustandswechsel die dem aktuellen State entsprechende behavior()-Implementierung aus. |
 
 IConfig
 | Methode | Kurzbeschreibung|
 | --- | --- |
-| loadConfigParameters() | Liefert die für das Spiel relevanten Parameter aus der Config-Datei in einem Array. |   
-| loadDefaultPlayerCount() | Lädt den in der Config gespeicherten Defaultwert für die Spieleranzahl |   
+| int[] loadConfigParameters() | Liefert die für das Spiel relevanten Parameter aus der Config-Datei in einem Array. |   
+| int loadDefaultPlayerCount() | Lädt den in der Config gespeicherten Defaultwert für die Spieleranzahl |   
+| HashMap<Integer,String[]> loadControls() | Lädt die in der Config gespeicherten Tastensteuerungen für die Spieler. |
 
 ### Whitebox Factory
 
