@@ -281,11 +281,11 @@ Dafür wird die Schnittstelle IMiddleware angeboten.
 
 # Laufzeitsicht 
 
-## Use Case 1 Register Method
+## UC1 Register Method
 
 ![MW_UC1](./images/MW_UC1.png)
 
-## Use Case 2/3 Invoke Method / Lookup Method
+## UC2/3 Invoke Method / Lookup Method
 
 ![MW_UC2_3](./images/MW_UC2_3.png)
 
