@@ -1,6 +1,10 @@
 package de.hawh.beta3.application.game.view.Screen;
 
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.effect.Glow;
@@ -25,6 +29,7 @@ public class EndScreen extends VBox {
         this.getChildren().add(winnerLabel);
         registerWinnerListener();
 
+
     }
 
     private void styleScreen() {
@@ -38,18 +43,30 @@ public class EndScreen extends VBox {
     }
 
     private void registerWinnerListener() {
-        winner.addListener(
-                e -> {
-                    if (winner.get() < 0) {
-                        winnerLabel.setText("The game finished as a tie.");
-                    } else {
-                        winnerLabel.setText("The winner is player " + ScreenCommons.getColorName(winner.get()));
-                    }
-
+        ChangeListener listener = new ChangeListener() {
+            @Override
+            public void changed(ObservableValue observableValue, Object o, Object t1) {
+                if (winner.get() < 0) {
+                    winnerLabel.setText("The game finished as a tie.");
+                } else {
+                    winnerLabel.setText("The winner is player " + ScreenCommons.getColorName(winner.get()));
+                    winner.removeListener(this);
                 }
-        );
+            }
+        };
+
+
+
+        winner.addListener(listener);
+
     }
 
+
+
+    private void exitGame() throws InterruptedException {
+        Thread.sleep(3000);
+        System.exit(0);
+}
 
 }
 
