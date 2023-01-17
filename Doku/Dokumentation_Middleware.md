@@ -402,7 +402,14 @@ Wenn die Lookup-Anfrage fehlgeschlagen ist (kein Eintrag vorhanden), dann werden
 | Controller | - | ``setLocalPlayer(int)`` | Teilt ID des lokalen Spieler mit(?) |
 
 # Architekturentscheidungen
-
+  
+  Die entwickelte Middleware dient dem Zweck das von uns entwickelte Spiel "Game of Trons" verteilt zu spielen. Dafür müssen die teilnehmenden Node sich gegenseitig aktualisieren und Operationen anstoßen.
+  Um diesem Zweck nachzukommen, haben wir uns darauf geeinigt, dass sie teilnehmenden Nodes über RPC kommunizieren, da die Kommunikation zwischen den Spielkomponente sich problemlos auf RPCs abbilden lassen. Des Weiteren können mit RPCs geringe Verarbeitungszeiten erreicht werden.
+  
+  Die entwickelte Middleware kann jedoch wiederverwendet werden, da keine Anwendungsspezifische Details integriert wurden. Durch die Kommunikation über Nachrichten, die im einfachen und weit verbreiteten JSON-Format definiert sind, kann die Kommunikation zwischen unterschiedlichen Applikationen und Systemen recht einfach implementiert werden.
+  
+ Falls nur ein Node des verteilten Systems über Datenhoheit verfügen soll, kann dies über die entwickelte Middleware erfolgen. Beim Registrieren kann nämlich ein isSingleton-Flag gesetzt werden, sodass die Komponente, die die Datenhoheit besitzen soll, sich beim Registrieren als solche gekennzeichnen kann. Die Implementierungsdetails davon werden von der Middleware weggekapselt.
+ 
 # Qualitätsanforderungen
 
 ::: formalpara-title
@@ -418,12 +425,30 @@ der online-Dokumentation (auf Englisch!).
 
 # Risiken und technische Schulden
 
-# Glossar
+## Risiken
+  Im Folgenden führen wir tabellarisch unsere im Vorfeld identifizierten Risiekn auf:
+  
+| Risiko | Erläuterung | Risikominderung
+|-|-|
+| Deadline kann nicht eingehalten werden | Unser Team ist klein und in der Middleware-Entwicklung komplett unerfahren. Es besteht das Risiko, dass theoretische Konzepte nicht schnell genug erfasst und in die Praxis umgesetzt werden können. | Frühzeitig anfangen und Rat einholen. |
+| VPN funktioniert nicht | Da das Spiel nicht online gespielt werden kann, kann das Spiel nur in einem LAN oder VPN getestet werden. Wenn LAN keine Möglichkeit ist, dann muss VPN eingesetzt werden, dessen Funktionsfähigkeit nicht garantiert ist. | LAN anstreben, VPN frühzeitig testen. |
+  
 
-+-----------------------+-----------------------------------------------+
-| Begriff               | Definition                                    |
-+=======================+===============================================+
-| *\<Begriff-1>*        | *\<Definition-1>*                             |
-+-----------------------+-----------------------------------------------+
-| *\<Begriff-2*         | *\<Definition-2>*                             |
-+-----------------------+-----------------------------------------------+
+## Technische Schulden
+
+  Im Folgenden führen wir tabellarisch unsere im Nachhinein festgestellten technische Schulden auf:
+  
+| Technische Schuld | Erläuterung |
+|-|-|
+| Verfügbarkeit | Sowohl unser NameServer als auch die Spielelogik (Model) laufen nur auf einem Node. Wenn eins ausfällt, lässt sich nicht weiterspielen. Dies bietet auch die Möglichkeit eines Bottlenecks. |
+| Ausbaufähige Fehlersemantik | Unser Spielfeld und damit auch die GUI wird mit Deltas der Spielerpositionen als Unicast an alle Teilnehmer von der Model-Node aus mit UDP geschickt. Bei verlorengegangenen Nachrichten könnten dadurch also Lücken in den Spuren entstehen. |
+| Spielanzahl | Innerhalb des Netzwerks kann pro gestarteten Nameserver nur ein Spiel zur Zeit gespielt werden. |
+| Performanceminderung | Durch die fehlende Möglichkeit der Multicast-Durchführung über RPC, führt ein Cache für die lookup-Anfragen im ClientStub zu Fehlerzuständen, weshalb jedes Mal ein lookup über TCP an den Nameserver geschickt werden muss. Dadurch ist das Spiel langsamer. |
+
+# Glossar
+  
+| Begriff | Definition|
+| --- | --- |
+| Node| Teilnehmende Komponenten des verteilten Systems. Nodes kommunizieren in dem verteilten System miteinander. |
+| RPC | Remote Procedure Call: Aufruf von Funktionen auf entfernten Systemen |
+

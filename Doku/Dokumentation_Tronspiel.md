@@ -71,11 +71,12 @@
   - [Controller: SEQ endGame()](#controller-seq-endgame)
 - [Verteilungssicht](#verteilungssicht)
 - [Querschnittliche Konzepte](#querschnittliche-konzepte)
+  - [Spielfeldaktualisierungen](#spielfeldaktualisierungen)
 - [Architekturentscheidungen](#architekturentscheidungen)
 - [Qualitätsanforderungen](#qualitätsanforderungen)
   - [Qualitätsbaum](#qualitätsbaum)
   - [Qualitätsszenarien](#qualitätsszenarien)
-- [Risiken und technische Schulden {#section-technical-risks}](#risiken-und-technische-schulden-section-technical-risks)
+- [Risiken und technische Schulden](#risiken-und-technische-schulden)
 - [Glossar {#section-glossary}](#glossar-section-glossary)
 
 # Einführung und Ziele
@@ -631,6 +632,24 @@ Die komplette Methodenliste ist bereits in der Blackbox-Sicht (#applicationstubb
 
 
 # Querschnittliche Konzepte
+  
+## GUI
+  
+Die graphische Benutzeroberfläche wird mit dem JavaFX-Framework implementiert. Zu jedem Spielzustand gibt es eine separate Bildschirm-Klasse, die von einem JavaFx-Node ableitet.
+ 
+Es gibt eine Klasse *ScreenManager*, die die Bildschirmklassen verwaltet und als "root" fungiert. Je nach Spielzustand, wird ein Bildschirm sichtbar oder unsichtbar gemacht. Außerdem wird über ScreenManager die Daten der Bildschirm aktualisiert und Methoden der Bildschirme aufgerufen.
+  
+## Daten
+  
+In unserer Applikation werden Daten nicht persistiert. Die Spieldaten sind also ausschließlich zur Laufzeit vorhanden. Dabei ist die Model-Komponente zuständig für die Datenhaltung und Datenoperationen. 
+  
+## Fehler- / Ausnahmesituationen
+  
+Wenn eine Fehler- oder Ausnahmesituation auftritt, z.B. fehlerhafte Nutzereingabe, tritt vordefiniertes Default-Verhalten in Kraft. Darüber wird der Nutzer über eine Meldung informiert.
+
+## Spielfeldaktualisierungen
+
+Das Spielfeld wird immer in Deltas der Positionen der Spieler aktualisiert.
 
 # Architekturentscheidungen 
 
@@ -656,12 +675,20 @@ Die Vorteile, die das Einsetzen dieses Patterns bringen, sind für die Entwicklu
 |Z01|Pakete im Netzwerk haben Varianz in der Laufzeit (Jittering). Das Spiel geht trotzdem gleich schnell weiter|
 |R01|Ein Spiel wurde beendet. Alle Spieler können den Endbildschirm sehen und werden dann zurück zum Startbildschirm geleitet. Die Option dasselbe Spiel zu wiederholen gibt es nicht.|
 
-**TODO Wahrscheinlich noch mehr Szenarien**
+# Risiken und technische Schulden
+  
+Im Folgenden führen wir tabellarisch auf, welche Risiken wir im Vorfeld identifizieren konnten.
 
-# Risiken und technische Schulden {#section-technical-risks}
+| Risiko | Beschreibung | Risikominderung |
+| --- | --- | --- |
+| Deadlineeinhaltung | Es liegen begrenzt Kenntnisse über Spielenticklung und vor allem Spiel-GUI-Entwicklung vor. Das könnte die Entwicklungszeit in die Länge ziehen und die Deadline-Einhaltung verlängern. | Wir bauen auf eine vorhandene Spiel-GUI auf und holen uns externen technischen Rat von Prof. Martin Becke. | 
+| Mitarbeiterausfall | Die Entwicklungszeit liegt in der Grippe-Saison, was zu Ausfällen in unserem kleinen Team führen kann. Es besteht das Risiko, dass die Entwicklung einiger Komponenten zu kurz kommen. | Gesund Teammitglider springen nach Möglichkeit ein.|
+| Schlechte Spielperformance | Durch die vielen Spielfelddatenaktualisierungen und das fehlende Wissen über Frontend-Technologien ist die Spielperformance im Voraus schlecht abzuschätzen und könnte sich für das Spielerlebnis als störend erweisen. | Spielperformance wird bei der Entwicklung beachtet und möglichst optimiert. |
 
 # Glossar {#section-glossary}
 
 |Begriff    |Definition|
 |-----------|----------|
-|||
+|Game Of Trons | Unser Spielname lehnt sich an die Fernsehserie "Game Of Thrones" an, da das Spielkonzept aus dem Film "TRONS" stammt. |
+|Trail | Die Spur, die ein Spieler beim Bewegen auf dem Spielfeld hinterlässt. |
+|Config-Datei | Einige Spieleinstellungen können textuell über diese Datei festgelegt werden. |
