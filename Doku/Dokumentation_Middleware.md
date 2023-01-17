@@ -379,6 +379,9 @@ Wenn die Lookup-Anfrage fehlgeschlagen ist (kein Eintrag vorhanden), dann werden
 (JSONObjectLookupResponseError = { "IpAddr1": "",
 })
 ```
+  
+Für das Zusammenspiel mit unserer Partnergruppe Gamma 4 gibt es den Spielmodus "partner". In diesem Modus nutzen wir das Adapter-Pattern zwischen unseren MVC-Komponenten und dem App Stub. Der jeweilige Methodenname wird auf den zugeordneten Methodenname der Partnergruppe gemappt und die Argumente in passender Form übergeben. Die Caller-Objekte im App-Stub führen invoke() mit den neuen Parametern aus. Für die umgekehrte Richtung wird die empfangene Methode mithilfe des Adapter-Patterns wieder übersetzt und der call()-Aufruf mit den lokal bekannten Methodennamen- und parametern auf den Callee-Objekten ausgeführt. Die Methoden werden folgendermaßen übersetzt:
+
 
 ## Adaptionstabelle mit Partnergruppe
 
@@ -390,7 +393,7 @@ Wenn die Lookup-Anfrage fehlgeschlagen ist (kein Eintrag vorhanden), dann werden
 | Model | ``cancelWait()`` | **``cancelWait()``** | Spielabbruch nach Ablauf der Wartezeit oder Klick auf Cancel |
 | Model | ``update()`` | ``updateBoard()`` | gameloop/ tick-Methode. |
 | View | ``updateNumPlayer(int)`` | ``updatePlayersReady(int)`` | Anzahl wartender Spieler in der Lobby |
-| View | ``updatePlayer(int,int,int,int)`` | ``setBoard(int[][])`` | Aktualisieren des Spielfelds. Beta-3 nutzt Deltas, Gamma-4 schickt gesamtes Spielfeld |
+| View | ``updatePlayer(int,int,int,int)`` | ``setPlayerPositions(HashMap<Integer, List<Tuple<Integer, Inter>>>)`` | Aktualisieren des Spielfelds. Beta-3 nutzt Deltas, Gamma-4 schickt letzte 5 Positionen von allen Spielern |
 | View | ``informUser(String)`` | **``informUser(String)``** | Für Darstellen von Infonachrichten für den Spieler |
 | View | ``kill(int)`` | ``playerCrashed(int)`` | Um Spieler in der View zu löschen |
 | View | ``notifyGameResult(int)`` | ``setWinner(int)`` | Sieger anzeigen. |
@@ -401,6 +404,7 @@ Wenn die Lookup-Anfrage fehlgeschlagen ist (kein Eintrag vorhanden), dann werden
 | Controller | **``setLocalPlayer(int)``** | ``setLocalPlayer(int)`` | Teilt ID des lokalen Spieler mit |
 
 **Anmerkung:** Die hervorgehobenen Methoden werden in der jeweiligen Gruppe ergänzt, sodass die Spielfunktionalitäten beider Gruppen abgedeckt sind.   
+
   
 # Architekturentscheidungen
   
