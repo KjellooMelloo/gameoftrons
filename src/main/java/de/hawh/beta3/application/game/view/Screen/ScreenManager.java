@@ -64,6 +64,14 @@ public class ScreenManager {
 
         StackPane.clearConstraints(screenToShow);
         screenToShow.setVisible(true);
+        if(screenName.equals("end")){
+            try {
+                Thread.sleep(3000);
+                System.exit(0);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     public void showCountDown() {

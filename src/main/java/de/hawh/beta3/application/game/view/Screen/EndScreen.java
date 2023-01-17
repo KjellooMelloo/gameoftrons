@@ -44,11 +44,6 @@ public class EndScreen extends VBox {
                         winnerLabel.setText("The game finished as a tie.");
                     } else {
                         winnerLabel.setText("The winner is player " + ScreenCommons.getColorName(winner.get()));
-                        try {
-                            Thread.sleep(3000);
-                        } catch (InterruptedException ex) {
-                            throw new RuntimeException(ex);
-                        }
                     }
 
                 }
