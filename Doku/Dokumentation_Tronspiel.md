@@ -530,11 +530,14 @@ Die komplette Methodenliste ist bereits in der Blackbox-Sicht (#applicationstubb
 ![Aktivitätsdiagramm_killPlayers](images/AD_killPlayers.png)
   
 ## AD View: updatePlayer()
+![AD_updatePlayer_view](images/AD_View_update.png)
 
 
 ## AD View:  kill()
+![AD_kill_View](images/AD_View_kill.png)
   
 ## AD View: updateTrailAndOrientation()
+![AD_updateTrailAndOrientation_view](images/AD_View_drawTiles.png)
 
 
 # Verteilungssicht 
