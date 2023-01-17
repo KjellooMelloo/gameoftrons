@@ -344,7 +344,7 @@ Die Schnittstelle **IRemoteObject** bietet die Funktionalität zum Empfangen von
 
 ### Whitebox Controller
 
-![Controller_WB2](./images/Controller_WB2.png)
+![CWB2](./images/CWB2.png)
 <br>
 
 ### Whitebox Factory
@@ -408,10 +408,7 @@ Die Schnittstelle **IRemoteObject** bietet die Funktionalität zum Empfangen von
    
 ### Whitebox Controller
 
-![Controller_WB3_1](./images/Controller_WB3.png)
-
-State Machine
-![SM_WB3_1](./images/SM_WB3.png)
+![CWB3](./images/CWB3.png)
 
 Controller
 | Methode | Kurzbeschreibung |
@@ -463,23 +460,22 @@ Die komplette Methodenliste ist bereits in der Blackbox-Sicht (#applicationstubb
 
 
 ## Usecase 1 Create
-![uc1](images/uc1.png)
+![UC1-final](images/UC1-final.png)
    
 ## Usecase 2a CancelWait
-![uc2a](images/uc2a.png)
+![UC2a-final](images/UC2a-final.png)
 
 ## Usecase 2b TimeUp
-![uc2b](images/uc2b.png)
+![UC2b-final](images/UC2b-final.png)
 
 ## Usecase 3 Start
-![uc3_](images/uc3_.png)
+![UC3-final](images/UC3-final.png)
 
 ## Usecase 4 Spieler steuern
 ![Sequenzdiagramm_Steer](images/SD_UC4Steer.png)
 
 ## Usecase 5 gegen Spielobjekt kollidieren
 ![Sequenzdiagramm_Collide](images/SD_UC5Collide.png)
-
 
 ## UC6 Win
 ![Sequenzdiagramm_Spielende](images/SD_UC6Win.png)
@@ -493,53 +489,69 @@ Die komplette Methodenliste ist bereits in der Blackbox-Sicht (#applicationstubb
 ## AD Start Applikation/ Entrypoint
 ![AD_Entrypoint](images/AD_Entrypoint.png)
 
-## AD join
+## Model: AD join()
 ![Aktivitätsdiagramm_join](images/AD_join.png)
 
-## AD cancelWait
+## Model: AD cancelWait()
 ![Aktivitätsdiagramm_cancelWait](images/AD_cancelWait.png)
 
-## AD startGame
+## Model: AD startGame()
 ![Aktivitätsdiagramm_startGame](images/AD_startGame.png)
 
-## AD init
+## Model: AD init()
 ![Aktivitätsdiagramm_init](images/AD_init.png)
 
-## AD update
+## Model: AD update()
 ![Aktivitätsdiagramm_update](images/AD_update.png)
 
-## AD changePlayerDirection
+## Model: AD changePlayerDirection()
 ![Aktivitätsdiagramm_changePlayerDirection](images/AD_changePlayerDirection.png)
 
-## AD calcNextPos
+## Model: AD calcNextPos()
 ![Aktivitätsdiagramm_calcNextPos](images/AD_calcNextPos.png)
 
-## AD getPlayerPositions
+## Model: AD getPlayerPositions()
 ![Aktivitätsdiagramm_getPlayerPositions](images/AD_getPlayerPositions.png)
 
-## AD updatePlayers
+## Model: AD updatePlayers()
 ![Aktivitätsdiagramm_updatePlayers](images/AD_updatePlayers.png)
 
-## AD movePlayer
+## Model: AD movePlayer()
 ![Aktivitätsdiagramm_movePlayer](images/AD_movePlayer.png)
 
-## AD checkForCollision
+## Model: AD checkForCollision()
 ![Aktivitätsdiagramm_checkForCollision](images/AD_checkForCollision.png)
 
-## AD killPlayers
+## Model: AD killPlayers()
 ![Aktivitätsdiagramm_killPlayers](images/AD_killPlayers.png)
   
-## AD View: updatePlayer()
+## View: AD updatePlayer()
 ![AD_updatePlayer_view](images/AD_View_update.png)
 
-
-## AD View:  kill()
+## View: AD kill()
 ![AD_kill_View](images/AD_View_kill.png)
   
-## AD View: updateTrailAndOrientation()
+## View: AD updateTrailAndOrientation()
 ![AD_updateTrailAndOrientation_view](images/AD_View_drawTiles.png)
 
-
+## Controller: AD handleDirectionKeyboardInput()
+![ad_handleDirectionKeyboardInput](images/ad_handleDirectionKeyboardInput().png)
+  
+## Controller: AD handleInputPlayerCount()
+![ad_handleInputPlayerCount](images/ad_handleInputPlayerCount().png)
+  
+## Controller: SEQ behavior()
+![seq_behavior](images/seq_behavior().png)
+  
+## Controller: SEQ handleWaitingButtonClick()
+![seq_handleWaitingButtonClick](images/seq_handleWaitingButtonClick().png)  
+  
+## Controller: SEQ notifyCountdownOver()
+![seq_notifyCountdownOver](images/seq_notifyCountdownOver().png)
+  
+## Controller: SEQ endGame()
+![seq_endGame](images/seq_endGame().png)
+  
 # Verteilungssicht 
 ![Deployment_Tron](images/Deployment_Tron.png)
 
