@@ -82,10 +82,12 @@ public class GameManager implements IModel {
      */
     @Override
     public void cancelWait() {
+        System.out.println("NumPlayer vor cancel: " + numPlayers);
         fullPlayerCount = 0;
         numPlayers = 0;
         timer.cancel();
         modelView.informUser("Spiel wurde abgebrochen");
+        System.out.println("NumPlayer nach cancel: " + numPlayers);
         controller.setCurrentState("DELETE");
     }
 

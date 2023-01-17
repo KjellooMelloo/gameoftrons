@@ -13,6 +13,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -126,6 +127,7 @@ public class Unmarshaler implements IRegister, IReceiver {
     private void unmarshal(byte[] message) {
         String json = new String(message, StandardCharsets.UTF_8);
         JSONObject byteMsgToJSON = new JSONObject(json);
+        System.out.println("Unmarshaling method: " + byteMsgToJSON);
         callRemoteObjectInterface(byteMsgToJSON);
     }
 
@@ -161,15 +163,16 @@ public class Unmarshaler implements IRegister, IReceiver {
                 //System.out.println("Converted Val: " + convertValueToType(type, val));
                 callParameters[i] = convertValueToType(type, val);
             }
+        }
 
-            if(methodName.equalsIgnoreCase("updateNumPlayers"))
-            System.out.println("Call to updateNumPlayer: " + methodName );
+
+            System.out.println("Call to " + methodName + ", Params: " + Arrays.toString(callParameters));
 
             // call method
             IRemoteObject interfaceToBeCalled = registeredRemoteObjects.get(interfaceID);
             interfaceToBeCalled.call(methodName, callParameters);
 
-        }
+
 
 
     }
