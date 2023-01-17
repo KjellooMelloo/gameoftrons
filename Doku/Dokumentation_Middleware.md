@@ -30,8 +30,8 @@
     - [Whitebox Name Service](#whitebox-name-service)
     - [Whitebox Facade](#whitebox-facade)
 - [Laufzeitsicht](#laufzeitsicht)
-  - [Use Case 1 Register Method](#use-case-1-register-method)
-  - [Use Case 2/3 Invoke Method / Lookup Method](#use-case-23-invoke-method--lookup-method)
+  - [UC1 Register Method](#uc1-register-method)
+  - [UC2/3 Invoke Method / Lookup Method](#uc23-invoke-method--lookup-method)
   - [AD register](#ad-register)
   - [AD bind](#ad-bind)
   - [AD lookup ClientStub](#ad-lookup-clientstub)
@@ -45,6 +45,8 @@
   - [Qualitätsbaum](#qualitätsbaum)
   - [Qualitätsszenarien](#qualitätsszenarien)
 - [Risiken und technische Schulden](#risiken-und-technische-schulden)
+  - [Risiken](#risiken)
+  - [Technische Schulden](#technische-schulden)
 - [Glossar](#glossar)
 
 # Einführung und Ziele
@@ -426,10 +428,10 @@ der online-Dokumentation (auf Englisch!).
 # Risiken und technische Schulden
 
 ## Risiken
-  Im Folgenden führen wir tabellarisch unsere im Vorfeld identifizierten Risiekn auf:
+  Im Folgenden führen wir tabellarisch unsere im Vorfeld identifizierten Risiken auf:
   
-| Risiko | Erläuterung | Risikominderung
-|-|-|
+| Risiko | Erläuterung | Risikominderung|
+|-|-|-|
 | Deadline kann nicht eingehalten werden | Unser Team ist klein und in der Middleware-Entwicklung komplett unerfahren. Es besteht das Risiko, dass theoretische Konzepte nicht schnell genug erfasst und in die Praxis umgesetzt werden können. | Frühzeitig anfangen und Rat einholen. |
 | VPN funktioniert nicht | Da das Spiel nicht online gespielt werden kann, kann das Spiel nur in einem LAN oder VPN getestet werden. Wenn LAN keine Möglichkeit ist, dann muss VPN eingesetzt werden, dessen Funktionsfähigkeit nicht garantiert ist. | LAN anstreben, VPN frühzeitig testen. |
   
@@ -451,4 +453,3 @@ der online-Dokumentation (auf Englisch!).
 | --- | --- |
 | Node| Teilnehmende Komponenten des verteilten Systems. Nodes kommunizieren in dem verteilten System miteinander. |
 | RPC | Remote Procedure Call: Aufruf von Funktionen auf entfernten Systemen |
-
