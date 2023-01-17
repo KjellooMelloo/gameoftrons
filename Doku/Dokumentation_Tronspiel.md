@@ -399,17 +399,27 @@ Die Schnittstelle **IRemoteObject** bietet die Funktionalität zum Empfangen von
 ### Whitebox View
 
 ![View_Ebene3](./images/Whitebox_View.png)
+  
+  
+ *ScreenManager* 
 
 |Methode| Kurzbeschreibung|
 | --- | --- |
-|drawScreen() | Abstrakte Methode, die in den konkreten Klassen die Bildschirmanzeige zeichnet. |
-|informUser(String) | konkrete Methode, die eine Meldung (als String-Aufrufparameter übergebe) dem Nutzer anzeigt. |
-|Color getColor(int) |Bildet Spieler-IDs eindeutig auf Anzeigefarben ab und liefert die Farbe zur angefragten ID.|
-|drawPlayers() | Zeigt die aktuell lebenden Spieler an ihrer aktuellen Position an. |
-|drawTileColors(int, int, int, int, int,String) | Wird mit der Spieler-ID, mit den alten Spielerkoodinaten und der Differenz zwischen den  alten und neuen Spielerkoordinaten aufgerufen. Für die Berechnung wird die Ausrichtung des Spielers benötigt (String-Parameter). Die Methode berechnet die Spielfelder, die von dem Spieler besetzt wurden und aktualisiert die Spielfelddaten entsprechend.|
-|kill(int)| Ruft RemoteTileColors auf und entfernt den Spieler aus der Spielerliste|
-|updateCurrentPlayerID(int)|Wenn updateNumPlayers(int) aufgerufen wird, wird geprüft, ob eine die currentPlayerID schon gesetzt ist, Wenn nicht, dann wird diese Methode aufgerufen. Dabei wird der übergebene Parameter die aktuelle Spieleranzahl-1 und wird als ID für den Spieler genutzt.|
+|drawScreen(String screenName) | Wenn der übergebene Bildschirmname vorhanden ist, werden alle anderen Bildschirminstanzen auf unsichtbar gemacht (Aufruf resetScreen(). Die Instanz, die zum übergebenen Bildschirmnamen passt, wird sichtbar gemacht.|
+|resetScreen() | Iteriert über alle vorhandenen Screens und macht sie unsichtbar. |
+| showCountdown() | Holt die CountdownScreen-Instanz und ruft darauf die Methode startCountdown() auf. |
+| updateView(int playerCount, int fieldSize) | Holt die GameScreen-Instanz, setzt die Spieleranzahl und die Spielfeldgröße und ruft initializeGameField() auf die GameScreen-Instanz auf.|
+|updatePlayer(int id, int x, int y, int orientation | Prüft, ob x oder y -1 ist. Wenn ja dann wird kill() aufgerufen. Sonst wird die Player-Instanz mit der übergebenen ID geholt, die "orientation" wird in ein String-Format übersetzt und damit wird updateTrailAndOrientation aufgerufen. |
+|informUser(String message) | Zeigt die ein Meldungsfenster mit der übergebenen Message als Inhalt dem Nutzer an.|
+|drawTileColors(Player playerToDraw) | Iteriert über den Trail des übergebenen Spielers und malt jedes Feld, das zum Trail gehört in der Farbe des übergebenen Spielers.|
+|kill(int playerID)| Entfernt den Spieler aus der Spielerliste und ruft remoteTileColors() mit dem betroffenen Spieler auf.|
+|updateCurrentPlayerID(int id)|Es wird geprüft, ob eine die currentPlayerID schon gesetzt ist. Wenn nicht, dann wird die aktuelle ID auf den übergebenen Wert gesetzt.|
+|endGame(int) | Setzt die Id des Gewinners in der EndScreen-Instanz und ruft drawScreen("end") auf. |
 
+*ScreenCommons*
+|Methode| Kurzbeschreibung|
+| --- | --- |
+|Color getColor(int) |Bildet Spieler-IDs eindeutig auf Anzeigefarben ab und liefert die Farbe zur angefragten ID.|
    
 ### Whitebox Controller
 
