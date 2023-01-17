@@ -64,11 +64,12 @@
   - [AD killPlayers](#ad-killplayers)
 - [Verteilungssicht](#verteilungssicht)
 - [Querschnittliche Konzepte](#querschnittliche-konzepte)
+  - [Spielfeldaktualisierungen](#spielfeldaktualisierungen)
 - [Architekturentscheidungen](#architekturentscheidungen)
 - [Qualitätsanforderungen](#qualitätsanforderungen)
   - [Qualitätsbaum](#qualitätsbaum)
   - [Qualitätsszenarien](#qualitätsszenarien)
-- [Risiken und technische Schulden {#section-technical-risks}](#risiken-und-technische-schulden-section-technical-risks)
+- [Risiken und technische Schulden](#risiken-und-technische-schulden)
 - [Glossar {#section-glossary}](#glossar-section-glossary)
 
 # Einführung und Ziele
@@ -540,6 +541,10 @@ Die komplette Methodenliste ist bereits in der Blackbox-Sicht (#applicationstubb
 
 # Querschnittliche Konzepte
 
+## Spielfeldaktualisierungen
+
+Das Spielfeld wird immer in Deltas der Positionen der Spieler aktualisiert.
+
 # Architekturentscheidungen 
 
 Ausschlaggebend für die Architektur ist das MVC-Entwurfsmuster, das häufig bei Anwendungen mit Benutzeroberfläche eingesetzt wird, was auch bei der hier behandelten Anwendung der Fall ist.
@@ -564,9 +569,10 @@ Die Vorteile, die das Einsetzen dieses Patterns bringen, sind für die Entwicklu
 |Z01|Pakete im Netzwerk haben Varianz in der Laufzeit (Jittering). Das Spiel geht trotzdem gleich schnell weiter|
 |R01|Ein Spiel wurde beendet. Alle Spieler können den Endbildschirm sehen und werden dann zurück zum Startbildschirm geleitet. Die Option dasselbe Spiel zu wiederholen gibt es nicht.|
 
-**TODO Wahrscheinlich noch mehr Szenarien**
+# Risiken und technische Schulden
 
-# Risiken und technische Schulden {#section-technical-risks}
+| Risiko | Beschreibung |
+|-|-|
 
 # Glossar {#section-glossary}
 

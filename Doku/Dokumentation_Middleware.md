@@ -413,6 +413,13 @@ der online-Dokumentation (auf Englisch!).
 
 # Risiken und technische Schulden
 
+| Risiko | Erläuterung |
+|-|-|
+| Verfügbarkeit | Sowohl unser NameServer als auch die Spielelogik (Model) laufen nur auf einer Node. Wenn eins ausfällt, lässt sich nicht weiterspielen. Technisch gesehen ist das unsere Schuld |
+| Ausbaufähige Fehlersemantik | Unser Spielfeld und damit auch die GUI wird mit Deltas der Spielerpositionen als Unicast an alle Teilnehmer von der Model-Node aus mit UDP geschickt. Bei verlorengegangenen Nachrichten könnten dadurch also Lücken in den Spuren entstehen. Technisch gesehen ist das unsere Schuld |
+| Spielanzahl | Innerhalb des Netzwerks kann pro gestarteten Nameserver nur ein Spiel zur Zeit gespielt werden. Technisch gesehen ist das unsere Schuld |
+| Performanceminderung | Es gab Probleme einen Cache für die lookup-Anfragen im ClientStub korrekt zu etablieren, weshalb jedes Mal ein lookup über TCP an den Nameserver geschickt werden muss. Dadurch ist das Spiel langsamer. Technisch gesehen ist das unsere Schuld |
+
 # Glossar
 
 +-----------------------+-----------------------------------------------+
