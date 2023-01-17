@@ -34,7 +34,8 @@
   - [Use Case 2/3 Invoke Method / Lookup Method](#use-case-23-invoke-method--lookup-method)
   - [AD register](#ad-register)
   - [AD bind](#ad-bind)
-  - [AD lookup](#ad-lookup)
+  - [AD lookup ClientStub](#ad-lookup-clientstub)
+  - [AD lookup NameServer](#ad-lookup-nameserver)
 - [Verteilungssicht](#verteilungssicht)
 - [Querschnittliche Konzepte](#querschnittliche-konzepte)
   - [Nachrichtenformat](#nachrichtenformat)
@@ -296,9 +297,13 @@ Dafür wird die Schnittstelle IMiddleware angeboten.
 
 ![MW_AD_bind](images/MW_AD_bind.png)
 
-## AD lookup
+## AD lookup ClientStub
 
-![MW_AD_lookup](./images/MW_AD_lookup.png)
+![MW_AD_lookup](./images/MW_AD_lookup_CS.png)
+
+## AD lookup NameServer
+
+![MW_AD_lookup](./images/MW_AD_lookup_NS.png)
 
 # Verteilungssicht
 
