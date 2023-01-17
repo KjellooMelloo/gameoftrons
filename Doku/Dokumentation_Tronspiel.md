@@ -528,14 +528,30 @@ Die komplette Methodenliste ist bereits in der Blackbox-Sicht (#applicationstubb
 ## View: AD updatePlayer()
 ![AD_updatePlayer_view](images/AD_View_update.png)
 
-
 ## View: AD kill()
 ![AD_kill_View](images/AD_View_kill.png)
   
 ## View: AD updateTrailAndOrientation()
 ![AD_updateTrailAndOrientation_view](images/AD_View_drawTiles.png)
 
-
+## Controller: AD handleDirectionKeyboardInput()
+![ad_handleDirectionKeyboardInput](images/ad_handleDirectionKeyboardInput().png)
+  
+## Controller: AD handleInputPlayerCount()
+![ad_handleInputPlayerCount](images/ad_handleInputPlayerCount().png)
+  
+## Controller: SEQ behavior()
+![seq_behavior](images/seq_behavior().png)
+  
+## Controller: SEQ handleWaitingButtonClick()
+![seq_handleWaitingButtonClick](images/seq_handleWaitingButtonClick().png)  
+  
+## Controller: SEQ notifyCountdownOver()
+![seq_notifyCountdownOver](images/seq_notifyCountdownOver().png)
+  
+## Controller: SEQ endGame()
+![seq_endGame](images/seq_endGame().png)
+  
 # Verteilungssicht 
 ![Deployment_Tron](images/Deployment_Tron.png)
 
