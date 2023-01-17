@@ -685,7 +685,7 @@ Im Folgenden führen wir tabellarisch auf, welche Risiken wir im Vorfeld identif
 | Mitarbeiterausfall | Die Entwicklungszeit liegt in der Grippe-Saison, was zu Ausfällen in unserem kleinen Team führen kann. Es besteht das Risiko, dass die Entwicklung einiger Komponenten zu kurz kommen. | Gesund Teammitglider springen nach Möglichkeit ein.|
 | Schlechte Spielperformance | Durch die vielen Spielfelddatenaktualisierungen und das fehlende Wissen über Frontend-Technologien ist die Spielperformance im Voraus schlecht abzuschätzen und könnte sich für das Spielerlebnis als störend erweisen. | Spielperformance wird bei der Entwicklung beachtet und möglichst optimiert. |
 
-# Glossar {#section-glossary}
+# Glossar
 
 |Begriff    |Definition|
 |-----------|----------|
