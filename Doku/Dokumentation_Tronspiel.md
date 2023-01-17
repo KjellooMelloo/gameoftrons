@@ -269,7 +269,7 @@ Die View bietet die Bildschirmanzeigefunktionalität, das Setzen der Spielfeldgr
 
 
 
-Die View erlaubt das Aktualisieren der Spielerdaten über die Schnittstelle **IModelView**
+Die View erlaubt das Aktualisieren der Spielerdaten und die Anzeige von Meldungen über die Schnittstelle **IModelView**
 
 | Methode | Kurzbeschreibung |
 | --- | --- |
@@ -333,6 +333,7 @@ Außerdem leitet der Application Stub einen durch die Middleware empfangenen Met
 Die Schnittstelle **IRemoteObject** bietet die Funktionalität zum Empfangen von Remote-Methodenaufrufen an. 
 
 | Methode | Kurzbeschreibung |
+| - | - |
 |call(String methodName, Object[] args) | Eine zu importierende Schnittstelle wird gefragt, ob eine Methode mit dem Namen "methodName" vorhanden ist. Wenn ja, dann wird diese Methode mit den Aufrufparametern im Array "args" aufgerufen.|
 
 ## Ebene 2 
@@ -467,6 +468,19 @@ Die Schnittstelle **IRemoteObject** bietet die Funktionalität zum Empfangen von
 |updateTrailAndOrientation(int x, int x, String orientation) | Fügt die neu hinzugekommenen Positionen dem Trail des Spielers zu. Ruft rotateImage(orientation) auf. |
 |rotateImage(orientation) | Prüft, ob sich die Ausrichtung des Spielers verändert hat. Wenn ja, dann wird das Bild des Spielers entsprechende gedreht und die orientation wird auf den übergebenen Wert gesetzt. |
    
+  
+*IViewImpl*
+|Methode| Kurzbeschreibung|
+| --- | --- |
+|IViewImpl getInstance() | Implementierung des Singleton-Patterns. Liefert die IViewImpl-Instanz zurück.|
+| showScreen(String screenName) | Zeigt den Bildschirm an, der zum als String übergebenen Programmzustand passt. Wenn der Bildschirmname "countdown" ist, wird auch startCountdown() aufgerufen. |
+| startGame(int playerCount, int fieldSize) | Ruft updateView() in ScreenManager auf.|
+| notifyGameResult(int) | setzt ein Spielergebnis in der View. Die Methode wird mit der SpielerID des Gewinners aufgerufen oder mit -1, wenn das Spiel unentschieden ist. Ruft endGame() im Endbildschirm auf. |
+|updatePlayer(int, int, int, int) | Ruft updatePlayer() in GameScreen auf. |
+|informUser(String message) | Erzeugt ein Alert-Fenster mit der übergebenen Nachricht als Inhalt.|
+|updateNumPlayers(int) | Aktualisiert die Anzahl der Spieler in der View und weist wartenden Spielern ohne SpielerID eine neue SpielerID zu. |
+ 
+  
 ### Whitebox Controller
 
 ![Controller_WB3_1](./images/Controller_WB3.png)
