@@ -49,6 +49,7 @@
   - [UC6 Win](#uc6-win)
   - [UC7 Lose](#uc7-lose)
   - [UC8 Tie](#uc8-tie)
+  - [AD Start Applikation/ Entrypoint](#ad-start-applikation-entrypoint)
   - [AD join](#ad-join)
   - [AD cancelWait](#ad-cancelwait)
   - [AD startGame](#ad-startgame)
@@ -493,6 +494,9 @@ Die komplette Methodenliste ist bereits in der Blackbox-Sicht (#applicationstubb
 
 ## UC8 Tie
 ![Sequenzdiagramm_Spielende](images/SD_UC8Tie.png)
+
+## AD Start Applikation/ Entrypoint
+![AD_Entrypoint](images/AD_Entrypoint.png)
 
 ## AD join
 ![Aktivitätsdiagramm_join](images/AD_join.png)
