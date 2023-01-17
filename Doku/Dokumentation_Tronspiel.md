@@ -415,6 +415,43 @@ Die Schnittstelle **IRemoteObject** bietet die Funktionalität zum Empfangen von
 |kill(int playerID)| Entfernt den Spieler aus der Spielerliste und ruft remoteTileColors() mit dem betroffenen Spieler auf.|
 |updateCurrentPlayerID(int id)|Es wird geprüft, ob eine die currentPlayerID schon gesetzt ist. Wenn nicht, dann wird die aktuelle ID auf den übergebenen Wert gesetzt.|
 |endGame(int) | Setzt die Id des Gewinners in der EndScreen-Instanz und ruft drawScreen("end") auf. |
+  
+  
+*StartScreen*
+  
+|Methode| Kurzbeschreibung|
+| --- | --- |
+|registerStartButtonEventHandler(TextField textfield, Button startButton) | Registriert einen Event-Handler, um die Controller-Schnittstelle aufzurufen, wenn der Start-Button gedrückt wird. Der Inhalt des Textfeldes wird dem Controller übergeben, wenn er nicht leer ist.|
+  
+*LobbyScreen*
+|Methode| Kurzbeschreibung|
+| --- | --- |
+|registerCancelButtonEventHandler(Button cancelButton)| Registriert einen Event-Handler, um die Controller-Schnittstelle aufzurufen, wenn der Cancel-Button gedrückt wird.|
+|addPlayerCounterListener(ObservableInteger playersInLobby) |Registriert einen Listener auf die Anzahl der wartenden Spieler. Wenn diese aktualisiert wird, dann wird der aktuelle Wert im Lobby-Bildschirm angezeigt. |
+|addCurrentPlayerIDListener(ObservableInteger currentPlayerID) | Registriert einen Listener auf die PlayerID des Spielers. Wenn die gesetzt wird, dann wir din der Lobby seine Spielerfarbe und Steuerungstastaturbelegung angezeigt. |
+ 
+  
+*CountdownScreen*
+|Methode| Kurzbeschreibung|
+| --- | --- |
+| startCountdown() | Startet den Countdown von 5 bis 0 für alle Spieler, die in der Lobby sind. |
+  
+   
+*EndScreen*
+|Methode| Kurzbeschreibung|
+| --- | --- |
+|registerWinnerListener() |Registriert einen Listener auf das Spielergebnis. Wenn das Ergebnis gesetzt wird, wird es in dem Endbildschirm angezeigt. |
+ 
+*GameScreen*
+|Methode| Kurzbeschreibung|
+| --- | --- |
+|registerKEyEventHandler()| Registriert einen Event-Handler, um die Controller-Schnittstelle aufzurufen.|
+|initializeGameField(int playerNumber) | Zeichnet das Spielfeldraster, ruft initPlayersInPositions() und drawTileColors() auf alle Spieler auf. |
+| initPlayersInPositions(int playerNumber)| Berechnet faire Startpositionen für jeden Spieler (abhängig von der Spieleranzahl). Berechnet die Startausrichtung von jedem Spieler, sodass jeder Spieler zum Zentrum des Spielfeldes ausgerichtet ist. Instanziiert die Spieler mit den berechneten Startpositionen- und Ausrichtungen und fügt sie der Spielerliste hinzu.|
+| updatePlayer(int id,int x,int y,int orientation)| Prüft, ob der Spieler kollidiert ist. Wenn ja, dann wird kill() aufgerufen. Wenn nicht, wird die Ausrichtung in ein String-Format umgewandelt und updateCurrentTrailAndOrientation() aufgerufen. |
+| removeTileColors(Player) | Entfernt die Einfärbung des Trails des übergebenen Spielers aus dem Spielfeld.|
+| drawTileColors(Player) | Färbt die Felder des Spielfeldes, die zum Trail des übergebenen Spielers gehören in der Farbe des Spielers ein.|
+| kill(int) | Entfernt den Spieler mit der übergebenen SpielerID aus der Spielerliste und ruft removeTileColors() auf. |
 
 *ScreenCommons*
 |Methode| Kurzbeschreibung|
