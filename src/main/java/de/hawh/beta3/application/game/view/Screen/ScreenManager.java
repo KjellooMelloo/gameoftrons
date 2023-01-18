@@ -34,7 +34,7 @@ public class ScreenManager {
         // register screen states
         screens.put("start", new StartScreen());
         screens.put("lobby", new LobbyScreen(currentPlayerID, numPlayers));
-        screens.put("game", new GameScreen());
+        screens.put("game", new GameScreen(base));
         screens.put("countdown", new CountdownScreen(5));
         screens.put("end", new EndScreen());
 

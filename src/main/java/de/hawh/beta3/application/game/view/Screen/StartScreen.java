@@ -26,7 +26,7 @@ public class StartScreen extends VBox {
         Label labelReadyText = new Label("Are you ready to enter a new reality?");
         TextField inputPlayerCountField = new TextField("Player Count between 2-6");
         Button btnStart = new Button("Start Game");
-        ToggleButton toggleRemote = new ToggleButton("online mode");
+
 
 
         // Edit style
@@ -43,28 +43,17 @@ public class StartScreen extends VBox {
         //  Button Press Event Logic
         registerStartButtonEventHandler(inputPlayerCountField, btnStart);
 
-        registerToggleButtonEventHandler(toggleRemote);
+
 
         // Add Control Elements to VBox
         this.getChildren().add(labelReadyText);
         this.getChildren().add(inputPlayerCountField);
         this.getChildren().add(btnStart);
-        this.getChildren().add(toggleRemote);
+
 
     }
 
-    private static void registerToggleButtonEventHandler(ToggleButton toggleRemote) {
-        toggleRemote.setOnAction(event -> {
-            toggleRemote.setText(toggleRemote.getText().equals("online mode") ?
-                    "offline mode": "online mode");
-/*
-            try {
-                ScreenCommons.CONTROLLER.handleOfflineButton();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }*/
-        });
-    }
+
 
     private void registerStartButtonEventHandler(TextField inputPlayerCountField, Button btnStart) {
         btnStart.setOnAction(event -> {
