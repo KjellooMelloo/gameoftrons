@@ -9,6 +9,7 @@ import de.hawh.beta3.middleware.serverstub.Receiver;
 import de.hawh.beta3.middleware.serverstub.Unmarshaler;
 
 import java.net.InetAddress;
+import java.util.UUID;
 
 /**
  * Middleware als Facade-Klasse für den AppStub.
@@ -49,7 +50,10 @@ public class Middleware implements IMiddleware {
      * @param params      Parameter des Methodenaufrufs
      */
     @Override
-    public void invoke(int interfaceID, String methodName, Object[] params) {
+    /**public void invoke(int interfaceID, String methodName, Object[] params) {
+        clientStub.invoke(interfaceID, methodName, params);
+    }**/
+    public void invoke(UUID interfaceID, String methodName, Object[] params) {
         clientStub.invoke(interfaceID, methodName, params);
     }
 
@@ -64,7 +68,10 @@ public class Middleware implements IMiddleware {
      * @param isSingleton         Flag, ob sich nur eine instanz dieser Schnittstelle registriert werden darf
      */
     @Override
-    public void register(int interfaceID, IRemoteObject remoteObject, String methodName, InetAddress ipAddr, boolean isSingleton) {
+    /**public void register(int interfaceID, IRemoteObject remoteObject, String methodName, InetAddress ipAddr, boolean isSingleton) {
+        serverStub.register(interfaceID, remoteObject, methodName, ipAddr, isSingleton);
+    }**/
+    public void register(UUID interfaceID, IRemoteObject remoteObject, String methodName, InetAddress ipAddr, boolean isSingleton) {
         serverStub.register(interfaceID, remoteObject, methodName, ipAddr, isSingleton);
     }
 }

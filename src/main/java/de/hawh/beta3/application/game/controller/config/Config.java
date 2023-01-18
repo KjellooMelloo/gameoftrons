@@ -140,6 +140,10 @@ public class Config implements IConfig {
         return configParameters[6] == 1;
     }
 
+    public boolean getPartner(){
+        return configParameters[7] == 1;
+    }
+
     public int[] getConfigParameters(){
         return configParameters;
     }

@@ -16,11 +16,15 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class Unmarshaler implements IRegister, IReceiver {
 
-    private final Map<Integer, IRemoteObject> registeredRemoteObjects = new HashMap<>() {
+    /**private final Map<Integer, IRemoteObject> registeredRemoteObjects = new HashMap<>() {
+    };**/
+    private final Map<UUID, IRemoteObject> registeredRemoteObjects = new HashMap<>() {
     };
+
 
     private final InetAddress NSIPaddr;
     private final int port;
@@ -41,7 +45,32 @@ public class Unmarshaler implements IRegister, IReceiver {
      * @param isSingleton   Flag, ob sich nur eine instanz dieser Schnittstelle registriert werden darf
      */
     @Override
-    public void register(int interfaceID, IRemoteObject remoteObject, String methodName, InetAddress ipAddr, boolean isSingleton) {
+    /**public void register(int interfaceID, IRemoteObject remoteObject, String methodName, InetAddress ipAddr, boolean isSingleton) {
+        // call serializeNS
+        byte[] registerMsg = serializeNS(interfaceID, methodName, ipAddr.getHostAddress(), isSingleton);
+
+        // send to NS;
+        // Client Socket to send
+        Socket socket = null;
+        try {
+            socket = new Socket(NSIPaddr, port);
+            DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
+            dOut.writeInt(registerMsg.length);
+            dOut.write(registerMsg);
+            // close socket
+            socket.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        if(!registeredRemoteObjects.containsKey(interfaceID)) {
+
+            // add RemoteObject to Map
+            registeredRemoteObjects.put(interfaceID, remoteObject);
+        }
+
+    }**/
+    public void register(UUID interfaceID, IRemoteObject remoteObject, String methodName, InetAddress ipAddr, boolean isSingleton) {
         // call serializeNS
         byte[] registerMsg = serializeNS(interfaceID, methodName, ipAddr.getHostAddress(), isSingleton);
 
@@ -67,6 +96,7 @@ public class Unmarshaler implements IRegister, IReceiver {
 
     }
 
+
     /**
      * <code>message</code> wird zur Verarbeitung weitergegeben
      *
@@ -86,7 +116,30 @@ public class Unmarshaler implements IRegister, IReceiver {
      * @param isSingleton   Flag, ob sich nur eine instanz dieser Schnittstelle registriert werden darf
      * @return JSON-Objekt als byte[] bereit zum Versenden
      */
-    private byte[] serializeNS(int interfaceID, String methodName, String ipAddr, boolean isSingleton) {
+    /**private byte[] serializeNS(int interfaceID, String methodName, String ipAddr, boolean isSingleton) {
+
+        // create JSON of interfaceID, methodName, ipAddr, isSingleton
+
+        JSONObject jsonMsg = new JSONObject();
+        JSONArray jsonMsgArgsArray = new JSONArray();
+        JSONObject jsonMsgArgsObject = new JSONObject();
+
+        jsonMsg.put("method",1);
+        jsonMsgArgsObject.put("ifaceID", interfaceID);
+        jsonMsgArgsObject.put("methodName", methodName);
+        jsonMsgArgsObject.put("ipAddr", ipAddr);
+        jsonMsgArgsObject.put("isSingleton", isSingleton);
+
+        jsonMsgArgsArray.put(jsonMsgArgsObject);
+        jsonMsg.put("args",jsonMsgArgsArray);
+        System.out.println("register jsonObj: " + jsonMsg);
+
+        // serialize JSON
+        byte[] byteMsg = jsonMsg.toString().getBytes(StandardCharsets.UTF_8);
+        return byteMsg;
+    }**/
+
+    private byte[] serializeNS(UUID interfaceID, String methodName, String ipAddr, boolean isSingleton) {
 
         // create JSON of interfaceID, methodName, ipAddr, isSingleton
 
@@ -139,7 +192,9 @@ public class Unmarshaler implements IRegister, IReceiver {
     private void callRemoteObjectInterface(JSONObject jsonMsg) {
 
         // Get interfaceID and Mmethod name
-        int interfaceID = jsonMsg.getInt("interfaceID");
+        //int interfaceID = jsonMsg.getInt("interfaceID");
+
+        UUID interfaceID = UUID.fromString(jsonMsg.getString("interfaceID"));
         //System.out.println("interfaceID: " + interfaceID);
         String methodName = jsonMsg.getString("methodName");
         //System.out.println("methodName: " + methodName);

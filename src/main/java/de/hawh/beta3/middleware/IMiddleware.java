@@ -3,6 +3,7 @@ package de.hawh.beta3.middleware;
 import de.hawh.beta3.application.stub.callee.IRemoteObject;
 
 import java.net.InetAddress;
+import java.util.UUID;
 
 public interface IMiddleware {
 
@@ -14,7 +15,9 @@ public interface IMiddleware {
      * @param methodName  Name der remote Methode
      * @param params      Parameter des Methodenaufrufs
      */
-    void invoke(int interfaceID, String methodName, Object[] params);
+    //void invoke(int interfaceID, String methodName, Object[] params);
+
+    void invoke(UUID interfaceID, String methodName, Object[] params);
 
     /**
      * Zum registrieren eines <code>IRemoteObject</code> im Nameserver mit seiner <code>interfaceID</code> und
@@ -26,5 +29,6 @@ public interface IMiddleware {
      * @param ipAddr       IP-Adresse für remote-Ansprechbarkeit
      * @param isSingleton  Flag, ob sich nur eine instanz dieser Schnittstelle registriert werden darf
      */
-    void register(int interfaceID, IRemoteObject remoteObject, String methodName, InetAddress ipAddr, boolean isSingleton);
+    //void register(int interfaceID, IRemoteObject remoteObject, String methodName, InetAddress ipAddr, boolean isSingleton);
+    void register(UUID interfaceID, IRemoteObject remoteObject, String methodName, InetAddress ipAddr, boolean isSingleton);
 }

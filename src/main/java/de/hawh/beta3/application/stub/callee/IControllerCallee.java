@@ -6,11 +6,13 @@ import de.hawh.beta3.application.game.controller.statemachine.IContext;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.UUID;
 
-public class IControllerCallee implements IRemoteObject {
+public class  IControllerCallee implements IRemoteObject {
     private IContext iContext = Context.getInstance();
     private Method method;
     private int id = 2;
+    private UUID uuid = UUID.fromString("dc9b47f5-a7cc-456c-9cc8-78c7e457f1c2");
 
     /**
      * Eine im Voraus registrierte Methode mit dem Namen <code>methodName</code> und den Parametern <code>args</code>
@@ -40,4 +42,6 @@ public class IControllerCallee implements IRemoteObject {
     public int getId() {
         return id;
     }
+
+    public UUID getUUID() {return uuid;}
 }

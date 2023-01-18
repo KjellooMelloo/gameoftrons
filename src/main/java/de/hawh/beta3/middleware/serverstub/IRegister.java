@@ -3,6 +3,7 @@ package de.hawh.beta3.middleware.serverstub;
 import de.hawh.beta3.application.stub.callee.IRemoteObject;
 
 import java.net.InetAddress;
+import java.util.UUID;
 
 public interface IRegister {
 
@@ -16,5 +17,6 @@ public interface IRegister {
      * @param ipAddr       IP-Adresse für remote-Ansprechbarkeit
      * @param isSingleton  Flag, ob sich nur eine instanz dieser Schnittstelle registriert werden darf
      */
-    void register(int interfaceID, IRemoteObject remoteObject, String methodName, InetAddress ipAddr, boolean isSingleton);
+    /**void register(int interfaceID, IRemoteObject remoteObject, String methodName, InetAddress ipAddr, boolean isSingleton);**/
+    void register(UUID interfaceID, IRemoteObject remoteObject, String methodName, InetAddress ipAddr, boolean isSingleton);
 }

@@ -64,28 +64,44 @@ public class GameOfTrons extends Application {
 
             // VPN Adresse ermitteln
             InetAddress[] ipAddrs = InetAddress.getAllByName(InetAddress.getLocalHost().getHostName()); //get all IPs
-            InetAddress ipVPN = Arrays.stream(ipAddrs).filter(ip -> ip.getHostAddress().startsWith("10.242."))
+            InetAddress ipVPN = Arrays.stream(ipAddrs).filter(ip -> ip.getHostAddress().startsWith("172.22."))
                     .collect(Collectors.toList()).get(0);   //find ip of vpn with 10.242.*.*
 
             // RemoteObjects registrieren
             // IModel
-            middleware.register(0, modelCallee, "join",
+            /**middleware.register(0, modelCallee, "join",
+                    InetAddress.getByName(ipVPN.getHostAddress()), true);**/
+            middleware.register(modelCallee.getUUID(),modelCallee, "join",
                     InetAddress.getByName(ipVPN.getHostAddress()), true);
-            middleware.register(0, modelCallee, "cancelWait",
+            /**middleware.register(0, modelCallee, "cancelWait",
+                    InetAddress.getByName(ipVPN.getHostAddress()), true);**/
+            middleware.register(modelCallee.getUUID(),modelCallee,"cancelWait",
                     InetAddress.getByName(ipVPN.getHostAddress()), true);
-            middleware.register(0, modelCallee, "startGame",
+            /**middleware.register(0, modelCallee, "startGame",
+                    InetAddress.getByName(ipVPN.getHostAddress()), true);**/
+            middleware.register(modelCallee.getUUID(), modelCallee, "startGame",
                     InetAddress.getByName(ipVPN.getHostAddress()), true);
-            middleware.register(0, modelCallee, "changePlayerDirection",
+            /**middleware.register(0, modelCallee, "changePlayerDirection",
+                    InetAddress.getByName(ipVPN.getHostAddress()), true);**/
+            middleware.register(modelCallee.getUUID(), modelCallee, "changePlayerDirection",
                     InetAddress.getByName(ipVPN.getHostAddress()), true);
             // IModelView
-            middleware.register(1, modelViewCallee, "updateNumPlayers",
+            /**middleware.register(1, modelViewCallee, "updateNumPlayers",
+                    InetAddress.getByName(ipVPN.getHostAddress()), false);**/
+            middleware.register(modelViewCallee.getUUID(), modelViewCallee, "updateNumPlayers",
                     InetAddress.getByName(ipVPN.getHostAddress()), false);
-            middleware.register(1, modelViewCallee, "updatePlayer",
+            /**middleware.register(1, modelViewCallee, "updatePlayer",
+                    InetAddress.getByName(ipVPN.getHostAddress()), false);**/
+            middleware.register(modelViewCallee.getUUID(), modelViewCallee, "updatePlayer",
                     InetAddress.getByName(ipVPN.getHostAddress()), false);
-            middleware.register(1, modelViewCallee, "informUser",
+            /**middleware.register(1, modelViewCallee, "informUser",
+                    InetAddress.getByName(ipVPN.getHostAddress()), false);**/
+            middleware.register(modelViewCallee.getUUID(), modelViewCallee, "informUser",
                     InetAddress.getByName(ipVPN.getHostAddress()), false);
             // Controller
-            middleware.register(2, controllerCallee, "setCurrentState",
+            /**middleware.register(2, controllerCallee, "setCurrentState",
+                    InetAddress.getByName(ipVPN.getHostAddress()), false);**/
+            middleware.register(controllerCallee.getUUID(), controllerCallee, "setCurrentState",
                     InetAddress.getByName(ipVPN.getHostAddress()), false);
             /*middleware.register(2, controllerCallee, "handleInputPlayerCount",
                     InetAddress.getByName(ipVPN.getHostAddress()), false);
@@ -95,7 +111,9 @@ public class GameOfTrons extends Application {
                     InetAddress.getByName(ipVPN.getHostAddress()), false);
             middleware.register(2, controllerCallee, "notifyCountdownOver",
                     InetAddress.getByName(ipVPN.getHostAddress()), false);*/
-            middleware.register(2, controllerCallee, "endGame",
+            /**middleware.register(2, controllerCallee, "endGame",
+                    InetAddress.getByName(ipVPN.getHostAddress()), false);**/
+            middleware.register(controllerCallee.getUUID(), controllerCallee, "endGame",
                     InetAddress.getByName(ipVPN.getHostAddress()), false);
         }
 

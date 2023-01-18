@@ -17,4 +17,5 @@ public interface IConfig {
     void setOffline() throws IOException;
 
     boolean getRemote();
+    boolean getPartner();
 }
