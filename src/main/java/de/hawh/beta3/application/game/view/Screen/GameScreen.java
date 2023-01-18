@@ -9,6 +9,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.Glow;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 
 import java.util.Arrays;
@@ -24,13 +25,14 @@ public class GameScreen extends Canvas {
     private int fieldSize = 10;
 
 
-    public GameScreen() {
+    public GameScreen(StackPane parentNode) {
 
         // Set up canvas size
         this.setWidth(windowSize);
         this.setHeight(windowSize);
 
-
+       /* this.widthProperty().bind(parentNode.widthProperty());
+        this.heightProperty().bind(parentNode.heightProperty());*/
 
         // Register Key Event Handler
         registerKeyEventHandler();
@@ -186,17 +188,6 @@ public class GameScreen extends Canvas {
         removeTileColors(playerToRemove);
     }
 
-   /* public void prepareTest(){
-        currentPlayerID=1;
-        int i = 0;
-        for(Player p:playerMap.values()){
-            p.setPos(i,i);
-            p.getTrail().add(p.getPos());
-            i+=2;
-        }
-
-    }*/
-
     public void setFieldSize(int fieldSize) {
         this.fieldSize = fieldSize;
     }
@@ -204,5 +195,11 @@ public class GameScreen extends Canvas {
     public void setCurrentPlayerID(int currentPlayerID) {
         this.currentPlayerID = currentPlayerID;
     }
+
+    @Override
+    public boolean isResizable(){
+        return true;
+    }
+
 
 }
