@@ -77,6 +77,8 @@ public class GameOfTrons extends Application {
                     InetAddress.getByName(ipVPN.getHostAddress()), true);
             middleware.register(0, modelCallee, "changePlayerDirection",
                     InetAddress.getByName(ipVPN.getHostAddress()), true);
+            middleware.register(0, modelCallee, "stopGameLoop",
+                    InetAddress.getByName(ipVPN.getHostAddress()), true);
             // IModelView
             middleware.register(1, modelViewCallee, "updateNumPlayers",
                     InetAddress.getByName(ipVPN.getHostAddress()), false);

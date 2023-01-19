@@ -99,6 +99,7 @@ public class Context implements IContext {
     public void endGame(int result){
         iView.notifyGameResult(result);
         context.setCurrentState("END");
+        iModel.stopGameLoop();
     }
 
     public State getStateFromString(String state){

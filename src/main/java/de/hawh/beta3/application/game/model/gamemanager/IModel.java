@@ -33,4 +33,6 @@ public interface IModel {
     void changePlayerDirection(int id, String action);
 
     void setNumPlayers(int numPlayers);
+
+    void stopGameLoop();
 }

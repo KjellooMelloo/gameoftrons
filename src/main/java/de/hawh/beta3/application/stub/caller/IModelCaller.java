@@ -55,4 +55,7 @@ public class IModelCaller implements IModel {
     public void setNumPlayers(int numPlayers){
         mw.invoke(id,"setNumPlayers", new Object[]{numPlayers});
     }
+
+    @Override
+    public void stopGameLoop() {mw.invoke(id, "stopGameLoop", new Object[]{});}
 }
