@@ -110,9 +110,9 @@ public class GameOfTrons extends Application {
         controller.initialize((IModel) MVCFactory.getInterface("IModel", remote));
 
         // Stage bauen
-        /*stage.setWidth(javafx.stage.Screen.getPrimary().getBounds().getWidth() / 1.2);
-        stage.setHeight(javafx.stage.Screen.getPrimary().getBounds().getHeight() / 1.2);*/
-        stage.setFullScreen(true);
+        stage.setWidth(javafx.stage.Screen.getPrimary().getBounds().getWidth() / 1.1);
+        stage.setHeight(javafx.stage.Screen.getPrimary().getBounds().getHeight() / 1.1);
+        //stage.setFullScreen(true);
 
         view.showScreen("start");
 

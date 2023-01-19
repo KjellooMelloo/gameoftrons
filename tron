@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-java -jar target/gameoftrons-1.0.jar
+java -jar mods/artifacts/view_jar/view.jar
